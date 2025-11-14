@@ -23,18 +23,20 @@ These SPARQL queries help identify potential modeling errors, inconsistencies, o
 
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX folk: <https://w3id.org/valuenet/folk#>
-PREFIX vn-schwartz: <https://w3id.org/valuenet/schwartz-values#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX folk: <https://fandaws.com/ontology/bfo/valuenet-folk#>
+PREFIX vn-schwartz: <https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#>
+PREFIX vn-core: <https://fandaws.com/ontology/bfo/valuenet-core.owl#>
 
 SELECT ?folk_value ?parent1 ?parent2
 WHERE {
-  ?folk_value rdfs:subClassOf folk: .
-  
+  ?folk_value a owl:Class .
+  FILTER(STRSTARTS(STR(?folk_value), STR(folk:)))
+
   ?folk_value rdfs:subClassOf ?parent1 .
-  ?parent1 rdfs:subClassOf vn-schwartz:PersonalValueDisposition .
-  
+  ?parent1 rdfs:subClassOf* vn-core:PersonalValueDisposition .
   ?folk_value rdfs:subClassOf ?parent2 .
-  ?parent2 rdfs:subClassOf vn-schwartz:PersonalValueDisposition .
+  ?parent2 rdfs:subClassOf* vn-core:PersonalValueDisposition .
   
   FILTER(?parent1 != ?parent2)
 }
@@ -49,12 +51,13 @@ WHERE {
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX folk: <https://w3id.org/valuenet/folk#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX folk: <https://fandaws.com/ontology/bfo/valuenet-folk#>
 
 SELECT ?class
 WHERE {
   ?class a owl:Class .
-  FILTER(STRSTARTS(STR(?class), "https://w3id.org/valuenet/folk#"))
+  FILTER(STRSTARTS(STR(?class), STR(folk:)))
   
   FILTER NOT EXISTS { ?class rdfs:label ?label . }
   # Or use the query below for definitions

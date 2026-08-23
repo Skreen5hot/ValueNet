@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fandaws.com/marep/schemas/sprint_input.schema.json",
+  "title": "MAREP Sprint Input Substrate",
+  "description": "SPRINT_INPUT.yaml, per MAREP v2.2 §7. The only admissible ground for evidence: an evidence item is verified if and only if its source.ref resolves to a record here.",
+  "type": "object",
+  "required": ["sprint", "records"],
+  "additionalProperties": false,
+  "properties": {
+    "sprint": {
+      "type": "object",
+      "required": ["id", "started", "ended"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "started": {"type": "string"},
+        "ended": {"type": "string"}
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "ref", "timestamp", "summary"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "type": {"$ref": "#/$defs/record_type"},
+          "ref": {"type": "string", "minLength": 1},
+          "uri": {"type": "string"},
+          "timestamp": {"type": "string"},
+          "summary": {"type": "string", "minLength": 1},
+          "payload": {"type": "object"}
+        }
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "available"],
+        "additionalProperties": false,
+        "properties": {
+          "type": {"$ref": "#/$defs/record_type"},
+          "available": {"type": "boolean"},
+          "reason": {"type": "string"}
+        },
+        "if": {"properties": {"available": {"const": false}}},
+        "then": {"required": ["type", "available", "reason"]}
+      }
+    }
+  },
+  "$defs": {
+    "record_type": {
+      "enum": ["commit", "pull_request", "ticket", "ci_run", "deploy", "incident", "metric", "review", "document", "note"]
+    }
+  }
+}

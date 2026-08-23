@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fandaws.com/marep/schemas/retro_state.schema.json",
+  "title": "MAREP Canonical State",
+  "description": "RETRO_STATE.yaml, per MAREP v2.2 §8. Published in satisfaction of the §8.1 requirement that conforming implementations publish a JSON Schema for the full state document.",
+  "type": "object",
+  "required": ["retro", "issues", "actions", "decisions", "votes", "conflict_record", "archive", "audit"],
+  "additionalProperties": false,
+  "properties": {
+    "retro": {
+      "type": "object",
+      "required": ["sprint", "sprint_input_checksum", "phase", "version", "schema_version"],
+      "additionalProperties": false,
+      "properties": {
+        "sprint": {"type": "string", "minLength": 1},
+        "sprint_input_checksum": {"type": "string", "minLength": 1},
+        "phase": {"enum": ["gathering", "merge", "analysis", "consensus", "actions", "compression", "complete"]},
+        "version": {"type": "integer", "minimum": 0},
+        "schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"}
+      }
+    },
+    "issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
+    "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}},
+    "decisions": {"type": "array", "items": {"$ref": "#/$defs/decision"}},
+    "votes": {"type": "array", "items": {"$ref": "#/$defs/vote"}},
+    "conflict_record": {"type": "array", "items": {"$ref": "#/$defs/conflict"}},
+    "archive": {"type": "array", "items": {"type": "object"}},
+    "token_ledger": {"$ref": "#/$defs/token_ledger"},
+    "turn": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/turn"}]},
+    "audit": {"type": "array", "items": {"$ref": "#/$defs/audit_entry"}}
+  },
+  "$defs": {
+    "agent": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$"},
+    "issue": {
+      "type": "object",
+      "required": ["id", "title", "severity", "status", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-\\d{3,}$"},
+        "title": {"type": "string", "minLength": 1},
+        "severity": {"enum": ["low", "medium", "high", "critical"]},
+        "status": {"enum": ["proposed", "contested", "confirmed", "rejected", "unresolved", "archived"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "confirmed_by": {"type": "array", "items": {"$ref": "#/$defs/agent"}},
+        "contested_by": {"type": "array", "items": {"$ref": "#/$defs/agent"}},
+        "related_actions": {"type": "array", "items": {"type": "string"}},
+        "reopen_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["id", "claim", "source", "submitted_by"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^EV-\\d{3,}$"},
+        "claim": {"type": "string", "minLength": 1},
+        "source": {
+          "type": "object",
+          "required": ["type", "ref"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {"enum": ["commit", "pull_request", "ticket", "ci_run", "deploy", "incident", "metric", "review", "document", "note"]},
+            "ref": {"type": "string", "minLength": 1}
+          }
+        },
+        "verified": {"type": "boolean"},
+        "submitted_by": {"$ref": "#/$defs/agent"}
+      }
+    },
+    "action": {
+      "type": "object",
+      "required": ["id", "description", "owner", "status", "outcome_criteria"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^ACT-\\d{3,}$"},
+        "description": {"type": "string", "minLength": 1},
+        "owner": {"$ref": "#/$defs/agent"},
+        "status": {"enum": ["proposed", "accepted", "rejected", "deferred"]},
+        "outcome_criteria": {"type": "string", "minLength": 1},
+        "due_by": {"type": "string"},
+        "addresses": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "decision": {
+      "type": "object",
+      "required": ["id", "type", "subject", "outcome", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^DEC-\\d{3,}$"},
+        "type": {"enum": ["consensus_outcome", "no_action_required", "reopen_blocked", "unevaluated_archive", "compression"]},
+        "subject": {"type": "string", "minLength": 1},
+        "outcome": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string"},
+        "basis": {"type": "string", "minLength": 1},
+        "decided_at": {"type": "string"}
+      }
+    },
+    "vote": {
+      "type": "object",
+      "required": ["subject", "threshold", "denominator", "cast", "outcome"],
+      "additionalProperties": false,
+      "properties": {
+        "subject": {"type": "string", "minLength": 1},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "denominator": {"enum": ["voting_agents", "all_agents"]},
+        "cast": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["agent", "position"],
+            "additionalProperties": false,
+            "properties": {
+              "agent": {"$ref": "#/$defs/agent"},
+              "position": {"enum": ["confirm", "reject", "abstain"]}
+            }
+          }
+        },
+        "outcome": {"enum": ["confirmed", "rejected", "unresolved", "open"]},
+        "closed_at": {"type": "string"}
+      }
+    },
+    "conflict": {
+      "type": "object",
+      "required": ["issue_id", "positions"],
+      "additionalProperties": false,
+      "properties": {
+        "issue_id": {"type": "string"},
+        "positions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["agent", "claim"],
+            "additionalProperties": false,
+            "properties": {
+              "agent": {"$ref": "#/$defs/agent"},
+              "claim": {"type": "string", "minLength": 1},
+              "evidence": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "resolution_required_by": {"type": "string"}
+      }
+    },
+    "token_ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "consumed_total": {"type": "integer", "minimum": 0},
+        "consumed_by_phase": {"type": "object", "additionalProperties": {"type": "integer"}},
+        "consumed_by_agent": {"type": "object", "additionalProperties": {"type": "integer"}},
+        "last_updated_version": {"type": "integer", "minimum": 0}
+      }
+    },
+    "turn": {
+      "type": "object",
+      "required": ["operation", "holder", "state_version", "lock_acquired", "lock_expiration"],
+      "additionalProperties": false,
+      "properties": {
+        "operation": {"enum": ["phase_transition", "compression", "merge", "vote_closure", "rollback"]},
+        "holder": {"type": "string", "minLength": 1},
+        "state_version": {"type": "integer", "minimum": 0},
+        "lock_acquired": {"type": "string"},
+        "lock_expiration": {"type": "string"},
+        "permitted_sections": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "audit_entry": {
+      "type": "object",
+      "required": ["version", "agent", "timestamp", "update_id", "diff_summary", "affected_sections"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {"type": "integer", "minimum": 0},
+        "agent": {"type": "string", "minLength": 1},
+        "timestamp": {"type": "string"},
+        "update_id": {"type": "string"},
+        "diff_summary": {"type": "string"},
+        "affected_sections": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

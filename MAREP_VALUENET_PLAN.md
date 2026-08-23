@@ -1,8 +1,8 @@
 # Running MAREP over the full ValueNet suite
 
-**Status:** Steps 1 and 2 complete — substrate source (§2) and agents (§3) both built
+**Status:** Run 1 complete (27 findings); instruments widened in response
 **Target:** every ontology module in this repository, BFO layer and DUL layer
-**Remaining:** run it (§4, §5)
+**Remaining:** the `ThatsAllFolks` decision, then Runs 2 and 3
 
 ---
 
@@ -148,6 +148,49 @@ Two design constraints carried from the review of MAREP itself:
 * **Agents get scoped reads (§14.1), not the corpus.** 84,149 triples will not fit in a context and do not need to. Agents read the `metric` and `document` records — a few hundred rows — and request specific file content only when a finding requires it.
 
 **Actual:** ~430 lines across two modules plus 18 tests, sharing the backend protocol the Adjudicator defines. `ScriptedAgentBackend` runs the roster with no API key; `SilentAgentBackend` models an agent with nothing to say.
+
+---
+
+## 3a. Run 1 result, and what it changed
+
+*27 findings — 21 confirmed, 4 unresolved, 2 archived, none left proposed. Every
+one carried 100% verified evidence. Full log: `examples/_run/run1-complete.log`.*
+
+Eight of the 27 were about the measuring apparatus rather than the ontology,
+and they were right. Acted on before running anything else, because running
+further audits with instruments that measure a quarter of the corpus would
+repeat the error those findings identify:
+
+* **Upper-ontology rooting is now asked corpus-wide, and asked properly.**
+  Run 1's literal suggestion — widen the BFO grounding check — would have
+  swapped one distortion for another. `ThatsAllFolks` would have read 2/378
+  grounded and looked catastrophic, when 376 of its 378 classes root correctly
+  in DOLCE. The check now asks *what* a class roots in. The real finding is
+  larger than the one reported: **2,269 classes reach no upper ontology at
+  all**, including 379 in the DUL layer proper, all 26 in `MoralMolecules`, and
+  all 1,861 in `vale2024`.
+* **SHACL now reports its denominator.** `shacl_violations: 0` was being read as
+  a clean bill of health for a corpus 127 of whose files never entered the data
+  graph. It now sits beside `shacl_focus_nodes` and `shacl_files_validated` —
+  14 nodes across 6 files — so "checked and clean" is distinguishable from
+  "not checked".
+* **The conversational-opener rule cost six sound findings.** All six
+  `conversational_artifact` rejections fired on the word "No", killing titles
+  like "No upper ontology is imported". §18.3 now rejects `No`/`Yes`/`Just`
+  only when a comma follows. This was a defect identified when the spec was
+  written and deliberately left; it took a live run to make the cost concrete.
+
+The eight `reopen_blocked` rejections were the §16.4 guard working correctly.
+
+### Still open, and genuinely blocked on intent
+
+`ThatsAllFolks` holds **50,737 `vcvf:triggers` statements** — 31,703 Framester,
+3,977 Wiktionary, 575 DBpedia — none of which load, because the files declare
+no prefixes. That is four times the `MFTriggers` corpus. PARSE-002 additionally
+found the failures are *not* one uniform missing prefix, which contradicts the
+assumption this plan started with. Whether the fragments are a defect or an
+undocumented include convention decides whether the fix is a header, a build
+step, or a redesign.
 
 ---
 

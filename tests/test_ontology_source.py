@@ -175,6 +175,57 @@ def test_group_counts_say_they_are_sums(tmp_path: Path):
 
 
 # ======================================================================
+# a check must not mistake "grounded elsewhere" for "ungrounded"
+# ======================================================================
+
+BFO_ROOTED = """@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+<http://example.org/A> a owl:Class ; rdfs:subClassOf obo:BFO_0000016 .
+"""
+
+DUL_ROOTED = """@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dul: <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
+<http://example.org/B> a owl:Class ; rdfs:subClassOf dul:Description .
+"""
+
+UNROOTED = """@prefix owl: <http://www.w3.org/2002/07/owl#> .
+<http://example.org/C> a owl:Class .
+"""
+
+
+def test_dul_rooted_classes_are_not_reported_as_ungrounded(tmp_path: Path):
+    """Run 1 said the hygiene checks covered 179 of ~2,900 classes, which was
+    true. Widening the BFO check alone would have swapped one distortion for
+    another: the DUL layer is grounded in DOLCE, and a BFO-only question calls
+    it broken. The check asks what a class roots in, not whether it roots in BFO.
+    """
+    _write(tmp_path, "bfo.ttl", BFO_ROOTED)
+    _write(tmp_path, "dul.ttl", DUL_ROOTED)
+    _write(tmp_path, "none.ttl", UNROOTED)
+    facts = [onto.measure_file(p, tmp_path) for p in onto.discover(tmp_path)]
+    m = {(x.check, x.scope): x.value for x in onto.rooting_metrics(tmp_path, facts)}
+
+    scope = "repository-root"
+    assert m[("classes_declared", scope)] == 3
+    assert m[("classes_rooted_in_bfo", scope)] == 1
+    assert m[("classes_rooted_in_dul", scope)] == 1, "DUL rooting is rooting"
+    assert m[("classes_with_no_upper_root", scope)] == 1, "only the genuine orphan"
+
+
+def test_shacl_reports_the_denominator(tmp_path: Path):
+    """`0 violations` over a graph nothing targets is vacuous. Run 1 read it as
+    a clean bill of health for a corpus most of which never entered the graph.
+    """
+    metrics = {m.check for m in onto.shacl_metrics(Path(".").resolve())}
+    if not metrics:
+        pytest.skip("no shapes present")
+    assert "shacl_focus_nodes" in metrics, "a violation count needs a denominator"
+    assert "shacl_files_validated" in metrics
+
+
+# ======================================================================
 # substrate integration
 # ======================================================================
 

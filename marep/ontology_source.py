@@ -100,6 +100,18 @@ class FileFacts:
                 f"{self.classes} classes, {len(self.imports or [])} imports")
 
 
+#: Upper ontologies a class can root in. "Not rooted in BFO" and "not rooted
+#: at all" are different findings, and a check that only knows about BFO
+#: reports the DUL layer as ungrounded when it is grounded elsewhere.
+UPPER_ONTOLOGIES: tuple[tuple[str, str], ...] = (
+    ("bfo", "http://purl.obolibrary.org/obo/BFO_"),
+    ("dul", "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#"),
+    ("dolce", "http://www.loa-cnr.it/ontologies/DOLCE"),
+    ("skos", "http://www.w3.org/2004/02/skos/core#"),
+    ("sumo", "http://www.adampease.org/OP/SUMO.owl#"),
+)
+
+
 _TRIPLE_QUOTED = re.compile(r'"""[\s\S]*?"""')
 _QUOTED = re.compile(r'"(?:[^"\\\n]|\\.)*"')
 _COMMENT = re.compile(r"(?m)#.*$")
@@ -316,6 +328,71 @@ def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     return out
 
 
+def rooting_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
+    """Where each group's classes bottom out, across the whole corpus.
+
+    Run 1 reported that hygiene metrics covered 179 of ~2,900 classes, which
+    was true. Widening the BFO check alone would have swapped one distortion
+    for another: the DUL layer is not ungrounded, it is grounded in DOLCE, and
+    a BFO-only check would have called it broken. So the question asked here is
+    "what does this class root in", not "does it root in BFO".
+    """
+    import rdflib
+    from rdflib.namespace import RDFS
+
+    merged = rdflib.Graph()
+    for path in discover(repo):
+        for fmt in PARSE_FORMATS:
+            try:
+                merged.parse(str(path), format=fmt)
+                break
+            except Exception:
+                continue
+
+    parents: dict[Any, set] = {}
+    for a, b in merged.subject_objects(RDFS.subClassOf):
+        if isinstance(b, rdflib.URIRef):
+            parents.setdefault(a, set()).add(b)
+
+    def roots(node) -> set[str]:
+        seen, stack, hit = set(), [node], set()
+        while stack:
+            cur = stack.pop()
+            for parent in parents.get(cur, ()):
+                if parent in seen:
+                    continue
+                seen.add(parent)
+                text = str(parent)
+                for name, prefix in UPPER_ONTOLOGIES:
+                    if text.startswith(prefix):
+                        hit.add(name)
+                stack.append(parent)
+        return hit
+
+    out: list[Metric] = []
+    by_group: dict[str, set[str]] = {}
+    for f in facts:
+        by_group.setdefault(f.group, set()).update(f.class_iris)
+
+    for group, iris in sorted(by_group.items()):
+        counts: dict[str, int] = {name: 0 for name, _ in UPPER_ONTOLOGIES}
+        unrooted = 0
+        for iri in iris:
+            hit = roots(rdflib.URIRef(iri))
+            if not hit:
+                unrooted += 1
+            for name in hit:
+                counts[name] += 1
+        out.append(Metric("classes_declared", group, len(iris),
+                          detail="distinct class IRIs in this group"))
+        for name, _ in UPPER_ONTOLOGIES:
+            if counts[name]:
+                out.append(Metric(f"classes_rooted_in_{name}", group, counts[name]))
+        out.append(Metric("classes_with_no_upper_root", group, unrooted,
+                          detail="reach no known upper ontology by rdfs:subClassOf"))
+    return out
+
+
 def shacl_metrics(repo: Path) -> list[Metric]:
     """SHACL results, or an honest record that the check could not run."""
     out: list[Metric] = []
@@ -346,8 +423,27 @@ def shacl_metrics(repo: Path) -> list[Metric]:
     # and pointed out it is largely an artifact of 127 files never being
     # loadable: a file that cannot be parsed cannot violate a shape. Same
     # scope-blindness as the grounding metric, so it gets the same treatment.
+    # How many nodes the shapes actually reached. "Zero violations" over a
+    # graph nothing targets is vacuous, and Run 1 caught exactly that: the
+    # result was read as a clean bill of health for a corpus 127 of whose
+    # files never entered the data graph. A denominator makes the difference
+    # between "checked and clean" and "not checked" visible.
+    focus = 0
+    for shape_graph_file in shapes:
+        try:
+            sg = rdflib.Graph(); sg.parse(str(shape_graph_file))
+        except Exception:
+            continue
+        for cls in sg.objects(None, SH.targetClass):
+            focus += sum(1 for _ in data.subjects(RDF.type, cls))
+        for prop in sg.objects(None, SH.targetSubjectsOf):
+            focus += len({s for s in data.subjects(prop, None)})
+
     out.append(Metric("shacl_files_validated", "corpus", loaded,
-                      detail="files actually loaded into the SHACL data graph", tool="pyshacl"))
+                      detail="files loaded into the SHACL data graph", tool="pyshacl"))
+    out.append(Metric("shacl_focus_nodes", "corpus", focus,
+                      detail="nodes the shapes actually targeted; zero violations over "
+                             "zero focus nodes says nothing", tool="pyshacl"))
 
     for shape_file in shapes:
         try:

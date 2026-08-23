@@ -185,6 +185,23 @@ class Adjudicator:
     def _view(self, sections: list[str]) -> dict[str, Any]:
         return self.rt.read(self.name, sections)
 
+    def propose(self, method: str, *args: Any) -> tuple[Any, Result | None]:
+        """Call the backend with §19.5 protection. Returns ``(value, error)``.
+
+        The degradation guarantee only holds for calls that go through here.
+        Reaching for ``adjudicator.backend.<method>()`` directly gets the
+        proposal but loses the protection, so an API failure becomes an
+        unhandled exception instead of a retryable rejection — which is exactly
+        how the first live run died. Callers that want to inspect a proposal
+        before acting on it should use this rather than the backend.
+        """
+        try:
+            return getattr(self.backend, method)(*args), None
+        except Exception as exc:
+            return None, reject(Cause.ADJUDICATOR_UNAVAILABLE,
+                                f"adjudicator backend failed: {exc}",
+                                version=self.rt.version)
+
     # ---- §15 semantic contradiction ----------------------------------
 
     def adjudicate_contradictions(
@@ -197,12 +214,10 @@ class Adjudicator:
         it costs two model calls for one decision.
         """
         if findings is None:
-            view = self._view(["issues", "conflict_record"])
-            try:
-                findings = self.backend.detect_contradictions(view)
-            except Exception as exc:  # §19.5 — degrade, never corrupt
-                return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
-                               f"adjudicator backend failed: {exc}", version=self.rt.version)]
+            findings, err = self.propose("detect_contradictions",
+                                         self._view(["issues", "conflict_record"]))
+            if err is not None:
+                return [err]
 
         results = []
         for f in findings:
@@ -242,12 +257,9 @@ class Adjudicator:
         if not lock:
             return [lock]
         try:
-            view = self._view(["issues"])
-            try:
-                merges = self.backend.propose_merges(view)
-            except Exception as exc:
-                return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
-                               f"adjudicator backend failed: {exc}", version=self.rt.version)]
+            merges, err = self.propose("propose_merges", self._view(["issues"]))
+            if err is not None:
+                return [err]
 
             results = []
             for m in merges:
@@ -288,12 +300,10 @@ class Adjudicator:
         if not lock:
             return [lock]
         try:
-            view = self._view(["issues", "decisions", "archive"])
-            try:
-                proposal = self.backend.compress(view)
-            except Exception as exc:
-                return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
-                               f"adjudicator backend failed: {exc}", version=self.rt.version)]
+            proposal, err = self.propose("compress",
+                                         self._view(["issues", "decisions", "archive"]))
+            if err is not None:
+                return [err]
             if proposal is None:
                 return []
             return [self._submit("compression", {
@@ -330,12 +340,9 @@ class Adjudicator:
                     continue
                 results.append(self._apply_tie_break(vote, decision, tokens))
                 continue
-            try:
-                decision = self.backend.break_tie(view, vote)
-            except Exception as exc:
-                results.append(reject(Cause.ADJUDICATOR_UNAVAILABLE,
-                                      f"adjudicator backend failed: {exc}",
-                                      version=self.rt.version))
+            decision, err = self.propose("break_tie", view, vote)
+            if err is not None:
+                results.append(err)
                 continue
             if decision is None:
                 continue

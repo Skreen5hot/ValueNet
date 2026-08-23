@@ -57,6 +57,18 @@ def test_substrate_rejects_duplicate_record_ids(tmp_path):
 # §10 / §11 concurrency
 # ======================================================================
 
+def test_a_rejection_is_falsy_which_makes_presence_checks_a_trap(rt: Runtime):
+    """Pins the ergonomics that broke the Adjudicator's error path.
+
+    `if result:` asking "did it work" is the intended reading. `if err:` asking
+    "is there an error" is the trap: a rejection is falsy, so it never fires.
+    """
+    r = rt.submit(upd("U1", 999, {"issues": [issue()]}), "Developer")
+    assert not r
+    assert bool(r) is False, "a rejection is falsy"
+    assert r is not None, "...so presence must be tested with `is not None`"
+
+
 def test_cas_rejects_stale_base_version(rt: Runtime):
     assert rt.submit(upd("U1", 0, {"issues": [issue()]}), "Developer")
     stale = rt.submit(upd("U2", 0, {"issues": [issue("PERF-001")]}), "QA")

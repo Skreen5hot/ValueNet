@@ -88,7 +88,16 @@ class Result:
     def retryable(self) -> bool:
         return self.cause in RETRYABLE
 
-    def __bool__(self) -> bool:  # `if result:` reads naturally
+    def __bool__(self) -> bool:
+        """True when the operation was accepted.
+
+        This makes ``if result:`` and ``if not result:`` read naturally, at the
+        cost of one trap worth knowing about: a **rejection is falsy**, so a
+        presence check written ``if err:`` silently never fires. Test optional
+        Results with ``if err is not None:``. This bit the Adjudicator's
+        backend-protection path, where a swallowed error let a None proposal
+        through to code that iterated it.
+        """
         return self.accepted
 
     def __str__(self) -> str:

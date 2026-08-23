@@ -233,6 +233,25 @@ def test_backend_failure_degrades_rather_than_corrupts(rt: Runtime):
         {"id": "PERF-001", "confirmed_by": ["QA"]}]}), "QA")
 
 
+def test_propose_protects_inspection_calls(rt: Runtime):
+    """The first live run died because inspecting a proposal bypassed §19.5.
+
+    Reaching for adjudicator.backend directly gets the proposal and loses the
+    protection. propose() is the supported way to look before acting.
+    """
+    _seed(rt, "PERF-001")
+    adj = Adjudicator(rt, ScriptedBackend(fail_with=RuntimeError("credit exhausted")))
+
+    with pytest.raises(RuntimeError):
+        adj.backend.detect_contradictions({})           # unprotected, as before
+
+    value, err = adj.propose("detect_contradictions", {})   # protected
+    assert value is None
+    assert err is not None and err.cause is Cause.ADJUDICATOR_UNAVAILABLE
+    assert err.retryable
+    assert "credit exhausted" in err.detail
+
+
 def test_run_for_phase_dispatches_by_phase(rt: Runtime):
     _seed(rt, "DUP-001", "DUP-002", phase="merge")
     backend = ScriptedBackend(merges=[MergeProposal("DUP-001", "DUP-002", "dup")])

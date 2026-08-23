@@ -76,7 +76,11 @@ CONTRADICTION_SCHEMA = {
                             "properties": {
                                 "agent": {"type": "string"},
                                 "claim": {"type": "string"},
-                                "evidence": {"type": "array", "items": {"type": "string"}},
+                                "evidence": {
+                                    "type": "array",
+                                    "items": {"type": "string", "pattern": "^EV-[0-9]{3,}$"},
+                                    "description": "Evidence item ids on the issue, e.g. EV-001. Ids only, never prose.",
+                                },
                             },
                             "required": ["agent", "claim", "evidence"],
                             "additionalProperties": False,

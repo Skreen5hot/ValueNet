@@ -112,6 +112,44 @@ def test_adjudicator_cannot_set_verified(rt: Runtime):
     assert r.cause is Cause.OUT_OF_SCOPE
 
 
+def test_contradiction_rationale_is_recorded(rt: Runtime):
+    """The live run discarded ~1,900 characters of reasoning per contradiction.
+
+    An issue marked contested with no record of why anyone thought so is a
+    worse artifact than no adjudication at all.
+    """
+    _seed(rt, "PERF-001")
+    adj = Adjudicator(rt, ScriptedBackend(contradictions=[
+        ContradictionFinding("PERF-001", [Position("QA", "egress saturation", ["EV-001"])],
+                             "The two positions cannot both hold.")]))
+    assert all(r.accepted for r in adj.adjudicate_contradictions())
+    dec = [d for d in rt.state["decisions"] if d["subject"] == "ISSUE:PERF-001"]
+    assert dec and dec[0]["rationale"] == "The two positions cannot both hold."
+    assert dec[0]["basis"] == "adjudicator"
+
+
+def test_supplied_findings_skip_the_backend(rt: Runtime):
+    """Inspecting a proposal then acting on it must not cost two model calls."""
+    _seed(rt, "PERF-001")
+    backend = ScriptedBackend()
+    adj = Adjudicator(rt, backend)
+    finding = ContradictionFinding("PERF-001", [Position("QA", "x", ["EV-001"])], "y")
+    assert all(r.accepted for r in adj.adjudicate_contradictions(findings=[finding]))
+    assert backend.calls == [], "the backend must not be consulted a second time"
+
+
+def test_conflict_evidence_must_be_ids_not_prose(rt: Runtime):
+    """The live model filled this field with sentences; the schema now refuses."""
+    _seed(rt, "PERF-001")
+    adj = Adjudicator(rt, ScriptedBackend())
+    r = adj._submit("probe", {
+        "issues": [{"id": "PERF-001", "status": "contested"}],
+        "conflict_record": [{"issue_id": "PERF-001", "positions": [
+            {"agent": "QA", "claim": "contests it",
+             "evidence": ["EV-001 (verified, ci_run CI-4001): latency rose"]}]}]})
+    assert r.cause is Cause.SCHEMA_VIOLATION
+
+
 # ======================================================================
 # §13.2 merge
 # ======================================================================

@@ -187,18 +187,26 @@ class Adjudicator:
 
     # ---- §15 semantic contradiction ----------------------------------
 
-    def adjudicate_contradictions(self, *, tokens: int = 0) -> list[Result]:
-        """Mark contested and record positions for each contradiction found."""
-        view = self._view(["issues", "conflict_record"])
-        try:
-            findings = self.backend.detect_contradictions(view)
-        except Exception as exc:  # §19.5 — degrade, never corrupt
-            return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
-                           f"adjudicator backend failed: {exc}", version=self.rt.version)]
+    def adjudicate_contradictions(
+        self, *, tokens: int = 0, findings: list[ContradictionFinding] | None = None
+    ) -> list[Result]:
+        """Mark contested and record positions for each contradiction found.
+
+        ``findings`` lets a caller supply proposals already obtained from the
+        backend. Without it, inspecting what the backend said and then acting on
+        it costs two model calls for one decision.
+        """
+        if findings is None:
+            view = self._view(["issues", "conflict_record"])
+            try:
+                findings = self.backend.detect_contradictions(view)
+            except Exception as exc:  # §19.5 — degrade, never corrupt
+                return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
+                               f"adjudicator backend failed: {exc}", version=self.rt.version)]
 
         results = []
         for f in findings:
-            results.append(self._submit("contradiction", {
+            body: dict[str, Any] = {
                 "issues": [{"id": f.issue_id, "status": "contested"}],
                 "conflict_record": [{
                     "issue_id": f.issue_id,
@@ -207,7 +215,18 @@ class Adjudicator:
                         for p in f.positions
                     ],
                 }],
-            }, tokens=tokens))
+            }
+            # The reasoning behind a contradiction is the most useful thing the
+            # Adjudicator produces; discarding it leaves the record saying an
+            # issue is contested without saying why anyone thought so.
+            if f.rationale:
+                body["decisions"] = [{
+                    "id": self._next_decision_id(), "type": "consensus_outcome",
+                    "subject": f"ISSUE:{f.issue_id}", "outcome": "contested",
+                    "rationale": f.rationale, "basis": "adjudicator",
+                    "decided_at": st.utcnow(),
+                }]
+            results.append(self._submit("contradiction", body, tokens=tokens))
         return results
 
     # ---- §13.2 thematic merge ----------------------------------------
@@ -291,7 +310,9 @@ class Adjudicator:
 
     # ---- §16.1 tie-break ---------------------------------------------
 
-    def adjudicate_tie_breaks(self, *, tokens: int = 0) -> list[Result]:
+    def adjudicate_tie_breaks(
+        self, *, tokens: int = 0, decisions: dict[str, TieBreak] | None = None
+    ) -> list[Result]:
         """Settle open votes. A sub-threshold split is not a tie (§16.2).
 
         Only votes still marked `open` are offered to the backend; a vote that
@@ -303,6 +324,12 @@ class Adjudicator:
         for vote in view.get("votes", []) or []:
             if vote.get("outcome") != "open":
                 continue
+            if decisions is not None:
+                decision = decisions.get(vote.get("subject", ""))
+                if decision is None:
+                    continue
+                results.append(self._apply_tie_break(vote, decision, tokens))
+                continue
             try:
                 decision = self.backend.break_tie(view, vote)
             except Exception as exc:
@@ -312,6 +339,10 @@ class Adjudicator:
                 continue
             if decision is None:
                 continue
+            results.append(self._apply_tie_break(vote, decision, tokens))
+        return results
+
+    def _apply_tie_break(self, vote: dict[str, Any], decision: TieBreak, tokens: int) -> Result:
             issue_id = decision.subject.split(":")[1] if ":" in decision.subject else decision.subject
             body: dict[str, Any] = {
                 "votes": [{**vote, "outcome": decision.outcome, "closed_at": st.utcnow()}],
@@ -324,8 +355,7 @@ class Adjudicator:
             }
             if decision.outcome in ("confirmed", "rejected", "unresolved"):
                 body["issues"] = [{"id": issue_id, "status": decision.outcome}]
-            results.append(self._submit("tiebreak", body, tokens=tokens))
-        return results
+            return self._submit("tiebreak", body, tokens=tokens)
 
     # ---- convenience --------------------------------------------------
 

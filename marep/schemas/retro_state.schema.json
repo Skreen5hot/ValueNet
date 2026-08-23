@@ -422,8 +422,10 @@
               "evidence": {
                 "type": "array",
                 "items": {
-                  "type": "string"
-                }
+                  "type": "string",
+                  "pattern": "^EV-[0-9]{3,}$"
+                },
+                "description": "Evidence item identifiers on the issue. IDs, not prose: a reference that cannot be resolved back to an evidence item is not a reference."
               }
             }
           }

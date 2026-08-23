@@ -154,9 +154,23 @@ def main(argv: list[str] | None = None) -> int:
             print(f"\nNo key file at {key_path}", file=sys.stderr)
             return 2
         # Read straight into the SDK. The value is never printed, logged, or returned.
+        # utf-8-sig, not utf-8: PowerShell 5.1's Out-File and Set-Content write a
+        # BOM, and U+FEFF is not whitespace, so .strip() would leave it on the
+        # front of the key and produce a baffling 401. Surrounding quotes are
+        # stripped for the same reason — they are an easy thing to paste in.
+        raw = key_path.read_text(encoding="utf-8-sig").strip().strip("'\"")
+        if not raw:
+            print(f"\n{key_path} is empty.", file=sys.stderr)
+            return 2
+        if not raw.startswith("sk-ant-"):
+            print(f"\n{key_path} does not look like an Anthropic API key: it should "
+                  f"start with 'sk-ant-'. Found {len(raw)} characters starting "
+                  f"{raw[:3]!r}. (The key itself is not shown.)", file=sys.stderr)
+            return 2
         import anthropic
-        client = anthropic.Anthropic(api_key=key_path.read_text(encoding="utf-8").strip())
-        print(f"  credentials: key file {key_path.name} in {key_path.parent}")
+        client = anthropic.Anthropic(api_key=raw)
+        print(f"  credentials: key file {key_path.name} in {key_path.parent} "
+              f"({len(raw)} chars)")
     else:
         has_key = bool(os.environ.get("ANTHROPIC_API_KEY")
                        or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
@@ -202,7 +216,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  VERDICT: {'found PERF-001' if hit else 'MISSED PERF-001'}"
           f"{'; also flagged ' + str(spurious) if spurious else ''}")
 
-    results = adj.adjudicate_contradictions(tokens=4000)
+    results = adj.adjudicate_contradictions(tokens=4000, findings=findings)
     for r in results:
         print(f"  runtime: {r}")
 
@@ -227,7 +241,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  model said: {tb.outcome if tb else 'nothing'}")
     if tb:
         print(f"      {tb.rationale}")
-    tie_results = adj.adjudicate_tie_breaks(tokens=3000)
+    tie_results = adj.adjudicate_tie_breaks(
+        tokens=3000, decisions={tb.subject: tb} if tb else {})
     for r in tie_results:
         print(f"  runtime: {r}")
     if tb and tb.outcome == "confirmed":

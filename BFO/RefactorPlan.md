@@ -140,7 +140,12 @@ Defects found while adding the moral epistemics module. All fixed and verified; 
 
 #### Open items
 
-*   [ ] **Reasoner validation.** Every check run so far is SPARQL- and SHACL-based. `valuenet-moral-epistemics.owl` contains the suite's first `owl:complementOf` and its first `owl:disjointWith`, and `valuenet-core.owl` now has its first `owl:equivalentClass` and a new existential on every value class, so the suite should be opened in Protégé and classified with HermiT or Pellet to confirm no unsatisfiable classes. This also re-runs Task 3.1 against a hierarchy that is, for the first time, actually connected.
+*   [x] **Task 7.4: Reasoner validation.** — *Completed.* HermiT (via owlready2, Java 23) was run over the merged import closure of `bfo-core`, `valuenet-core`, `valuenet-schwartz-values`, `valuenet-moral-foundations`, `valuenet-folk`, `valuenet-moral-epistemics` and `valuenet-mappings` — 2,318 triples, 210 classes, 48 object properties — and again with the scenario individuals loaded (2,391 triples). Both runs report the ontology **consistent with 0 unsatisfiable classes**. This exercises the suite's first `owl:complementOf` and `owl:disjointWith` (moral epistemics) and its first `owl:equivalentClass` and universal existential on value classes (core), and it re-runs Task 3.1 against a hierarchy that is, for the first time, actually connected.
+
+    Two design decisions were confirmed by entailment rather than by inspection:
+
+    * `:protectiveActionByA`, asserted only as a `ProtectiveAction`, was **inferred** to be a `vn-core:ValueViolationProcess` from its `contravenes :trustOfA` axiom via the defined-class definition. Automatic classification of violations works as intended.
+    * The same individual holds both `ValueRealizationProcess` and `ValueViolationProcess`, while `:rashJudgmentByB` holds only the latter. The deliberate non-disjointness of the two classes (§Task 6.1) is what permits a moral trade-off to be represented, and it does not collapse.
 *   [ ] **`ClosureHaidtValueFrames.ttl` duplicates the individual frame files.** Measured with `rdflib`: the 12 individual frames contribute 12,318 trigger statements and every one of them also appears in `ClosureHaidtValueFrames.ttl`, which holds 12,338 — a strict superset, with 20 statements of its own. Nothing is lost by loading only the Closure file, and nothing but those 20 is lost by loading only the individual frames. Harmless to a triplestore, which deduplicates, but it doubles the on-disk corpus and makes per-file counts misleading. Deciding whether the Closure file is a build artefact that should be generated rather than committed is a maintenance question, not an ontology one.
 
 ## Validation Summary
@@ -164,8 +169,11 @@ Run over the whole `BFO/` suite after Phases 5 and 6. Reproduce with `rdflib` an
 | SHACL `valuenet-moral-epistemics-shapes.ttl` over the scenario | 1 result, the intended rash-judgment warning |
 | SHACL agent shape, negative control (a rock bearing a value) | fires as expected |
 | Competency questions returning expected rows | 6 / 6 |
+| HermiT: ontology consistency | consistent |
+| HermiT: unsatisfiable classes | 0 of 210 |
+| HermiT: consistency with scenario individuals | consistent, 0 unsatisfiable |
 | `MFTriggers/` trigger statements under the canonical namespace | 12,338 |
 | `MFTriggers/` trigger statements under the stale namespace | 0 (was 19,872 per-file) |
 | Stale `semanticweb.org/sdg` IRIs anywhere in the repository | 0 (was 28 across 14 files) |
 
-Not yet done: OWL reasoner classification. See the open items above.
+Reasoner classification completed under Task 7.4; see the open items above for what remains.

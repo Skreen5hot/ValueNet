@@ -21,6 +21,8 @@ Furthermore, some additional modules are being developed:
 
 [MM](http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl) ``http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl``
 
+A parallel, BFO-aligned re-engineering of the suite lives in [BFO/](BFO/) and is described under [BFO-Aligned ValueNet](#bfo-aligned-valuenet) below.
+
 
 ![ValueNet_usage_network](https://github.com/StenDoipanni/ValueNet/blob/d625ceca215d5cfaea508e7e064dfbe601990361/ValueNet_import_schema_def.png)
 
@@ -61,7 +63,32 @@ MFTriggers operationalizes Graham and Haidt’s Moral Foundation Theory, providi
 ## MM
 MM is the ontological transposition of Curry's Moral Molecules theory, considering values as "cooperation strategies". It is still under development.
 
+## BFO-Aligned ValueNet
 
+The modules above model values as ``dul:Description`` instances satisfied by situations. The suite in [BFO/](BFO/) re-engineers the same content against [BFO 2020](http://purl.obolibrary.org/obo/bfo/2020/bfo-core.ttl) (ISO/IEC 21838-2), modelling values instead as **realizable entities that inhere in agents**: a ``vn-core:ValueDisposition`` is internally grounded and a ``vn-core:ValueRole`` externally grounded, and both are *realized in* a ``vn-core:ValueRealizationProcess`` rather than *satisfied by* a situation. The rationale is set out in [BFOizing ValueNet.md](BFO/BFOizing%20ValueNet.md).
+
+Canonical namespace: ``https://fandaws.com/ontology/bfo/valuenet-<module>#``. The ``https://w3id.org/valuenet/<module>#`` IRIs that appear as ``rdfs:seeAlso`` are reserved aliases; nothing is declared under them.
+
+| Module | Contents |
+| --- | --- |
+| [valuenet-core](BFO/valuenet-core.ttl) | ``ValueDisposition``, ``ValueRole``, ``ValueRealizationProcess``, ``ValueViolationProcess``, ``contravenes``, the annotation layer (``TextSpan``, ``isEvidenceFor``, ``evokesFrame``), and CCO ``Agent`` (``ont00001017``), in which every value inheres |
+| [valuenet-schwartz-values](BFO/valuenet-schwartz-values.ttl) | Schwartz's 10 Basic Human Values as dispositions |
+| [valuenet-moral-foundations](BFO/valuenet-moral-foundations.ttl) | Haidt's Moral Foundations as dispositions |
+| [valuenet-folk](BFO/valuenet-folk.ttl) | 136 everyday folk values |
+| [valuenet-moral-epistemics](BFO/valuenet-moral-epistemics.ttl) | Moral assessment: behavioural observation, prudent discernment, rash judgment, protective action |
+| [valuenet-mappings](BFO/valuenet-mappings.ttl) | ``skos`` mappings back to the original ValueNet IRIs |
+
+Each module has a ``.ttl`` and an ``.owl`` serialization; both are Turtle and the pair is kept isomorphic.
+
+Supporting material: [annotationGuide.md](BFO/annotationGuide.md) (annotator workflow), [TestingFramework.md](BFO/TestingFramework.md) (reasoner and SPARQL checks), [RefactorPlan.md](BFO/RefactorPlan.md) (progress tracker), SHACL shapes ([core](BFO/valuenet-core-shapes.ttl), [moral epistemics](BFO/valuenet-moral-epistemics-shapes.ttl)), and competency questions with a worked scenario ([CQ](BFO/valuenet-moral-epistemics-CQ.md), [scenario](BFO/valuenet-moral-epistemics-scenario.ttl)).
+
+### Reaching the trigger data from the BFO suite
+
+The BFO refactor drops ``vcvf:triggers`` but does not discard the 12,338 trigger statements in [MFTriggers/](MFTriggers/). A ``vn-core:TextSpan`` reaches a BFO-aligned disposition through them:
+
+``TextSpan --evokesFrame--> FrameNet frame --vcvf:triggers--> Haidt value <--skos:broadMatch-- ValueDisposition``
+
+All trigger statements use a single namespace, ``http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#`` — the one ValueCore itself declares and the one documented under *Ontology Prefixes* below — so one prefix binding reaches the whole corpus.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 

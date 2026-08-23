@@ -9,7 +9,8 @@
   owl:imports <http://purl.obolibrary.org/obo/bfo/2020/bfo-core.ttl> ;
   dc:title "ValueNet Core Ontology (BFO-Aligned)"@en ;
   dc:description "The core module of the BFO-aligned ValueNet suite. It defines the top-level entities for modeling human values as BFO realizable entities."@en ;
-  rdfs:comment "This ontology refactors the original ValueNet (which used DUL) into a realist framework based on BFO 2020."@en .
+  rdfs:comment "This ontology refactors the original ValueNet (which used DUL) into a realist framework based on BFO 2020."@en ,
+    "Namespace policy: https://fandaws.com/ontology/bfo/valuenet-<module># is the canonical, resolvable namespace for every entity in this suite. The https://w3id.org/valuenet/<module># IRIs that appear throughout as rdfs:seeAlso are reserved aliases and are not currently registered; nothing should be declared under them, and no query should rely on them."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity>
   a owl:Class ;
@@ -56,3 +57,134 @@
   rdfs:label "value realization process"@en ;
   skos:definition "A process in which a value-related realizable entity (a value disposition or value role) is actualized."@en ;
   skos:example "A process of helping someone in need, which realizes a benevolence disposition. A process of voting, which may realize a 'good citizen' role."@en .
+skos:definition
+  a owl:AnnotationProperty ;
+  rdfs:subPropertyOf <http://purl.obolibrary.org/obo/IAO_0000115> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#contravenes>
+  a owl:ObjectProperty ;
+  rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
+  rdfs:range <https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity> ;
+  rdfs:label "contravenes"@en ;
+  skos:definition "A relation between a process and a value-related realizable entity that holds when the process runs contrary to the characteristic realization of that entity by its bearer."@en ;
+  skos:closeMatch <https://w3id.org/spice/SON/HaidtValues#violates> ;
+  rdfs:comment "The BFO-aligned successor to the dyadic violation structure of the original MFT module (mft:violates, mft:opposedTo, mft:Violation), which the BFO refactor did not carry over. A process cannot bfo:realize a value it violates, so violation requires a relation of its own."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#contravenes> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#ValueViolationProcess>
+  a owl:Class ;
+  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> ;
+  owl:equivalentClass [
+    a owl:Class ;
+    owl:intersectionOf (
+      <http://purl.obolibrary.org/obo/BFO_0000015>
+      [ a owl:Restriction ;
+        owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-core#contravenes> ;
+        owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity> ]
+    )
+  ] ;
+  rdfs:label "value violation process"@en ;
+  skos:definition "A process that runs contrary to the characteristic realization of some value-related realizable entity, whether that entity is borne by the agent performing the process or by another agent."@en ;
+  skos:example "An act of cheating, which contravenes a fairness disposition. An act of rash judgment, which contravenes a justice disposition."@en ;
+  rdfs:comment "Deliberately NOT disjoint with ValueRealizationProcess: a single process may realize one value while contravening another, which is the ordinary shape of a moral trade-off. Defined (owl:equivalentClass) so that a reasoner classifies violations automatically from their contravenes axioms."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#ValueViolationProcess> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan>
+  a owl:Class ;
+  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ;
+  rdfs:label "text span"@en ;
+  skos:definition "A generically dependent continuant that is a delimited stretch of linguistic content, borne by some information bearing entity, and used as the unit of annotation in the ValueNet linguistic grounding workflow."@en ;
+  skos:example "The span 'published the story to expose the corruption' within a news article."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#TextSpan> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor>
+  a owl:AnnotationProperty ;
+  rdfs:label "is evidence for"@en ;
+  rdfs:comment "A relation that links a linguistic entity, such as a text span or document, to a BFO entity (typically a process) that the linguistic entity provides evidence for or describes."@en ;
+  skos:definition "An annotation property used to connect a textual or observational data point to the ontological entity it describes. For example, the text 'The firefighter ran into the building' can be linked via 'isEvidenceFor' to an instance of a ValueRealizationProcess."@en ;
+  rdfs:comment "The BFO-aligned replacement for the original ValueNet vcvf:triggers property. Specified in Phase4_LinguisticGrounding.md; kept an annotation property so that linking linguistic data to reality carries no logical commitment about the text itself."@en ;
+  rdfs:isDefinedBy <https://fandaws.com/ontology/bfo/valuenet-core.owl> ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#isEvidenceFor> .
+
+#################################################################
+#    Text span content, provenance, and the lexical bridge
+#
+#    Without these a vn-core:TextSpan can be pointed at but cannot
+#    carry the text it delimits, say where that text came from, or
+#    reach the existing MFTriggers lexical data.
+#################################################################
+
+<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue>
+  a owl:DatatypeProperty ;
+  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#string> ;
+  rdfs:label "has text value"@en ;
+  skos:definition "The literal text that a text span delimits."@en ;
+  rdfs:comment "Use this rather than rdfs:label to carry span content. A label names an entity for a reader; the text value is the datum being annotated."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#hasTextValue> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#isTextSpanOf>
+  a owl:ObjectProperty ;
+  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> ;
+  rdfs:range <http://purl.obolibrary.org/obo/BFO_0000031> ;
+  rdfs:label "is text span of"@en ;
+  skos:definition "A relation between a text span and the larger information content entity, such as a document or transcript, of which it is a part."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#isTextSpanOf> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#hasStartOffset>
+  a owl:DatatypeProperty ;
+  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#nonNegativeInteger> ;
+  rdfs:label "has start offset"@en ;
+  skos:definition "The zero-based character offset at which a text span begins within the information content entity it is a span of."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#hasStartOffset> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#hasEndOffset>
+  a owl:DatatypeProperty ;
+  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#nonNegativeInteger> ;
+  rdfs:label "has end offset"@en ;
+  skos:definition "The zero-based character offset, exclusive, at which a text span ends within the information content entity it is a span of."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#hasEndOffset> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#evokesFrame>
+  a owl:ObjectProperty ;
+  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> ;
+  rdfs:label "evokes frame"@en ;
+  skos:definition "A relation between a text span and a semantic frame that the span's lexical material evokes, as produced by a frame-semantic parser."@en ;
+  rdfs:comment "The bridge from BFO-aligned annotation to the existing ValueNet trigger data. A frame reached by this property is the subject of the vcvf:triggers statements in MFTriggers, whose objects are Haidt values, which the BFO-aligned dispositions reach by skos:broadMatch in valuenet-mappings. Text span -> frame -> Haidt value -> ValueDisposition."@en ,
+    "Querying MFTriggers: the corpus holds 12,338 distinct vcvf:triggers statements, all under http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#, the namespace ValueCore itself declares. This was consolidated from two rival bindings, so a single prefix now suffices where a UNION was previously required."@en ;
+  rdfs:comment "No range is asserted: frames are external Framester individuals (https://w3id.org/framester/framenet/abox/frame/...) and this module does not import Framester."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#evokesFrame> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor>
+  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> ;
+  rdfs:range <http://purl.obolibrary.org/obo/BFO_0000015> ;
+  rdfs:comment "Domain and range are stated for documentation. As annotation property axioms they are not enforced by an OWL reasoner, and the property cannot appear in class restrictions; use SHACL to enforce annotation well-formedness."@en .
+
+#################################################################
+#    Agent (MIREOT from the Common Core Ontologies)
+#
+#    The suite previously had no class for the bearer of a value:
+#    annotationGuide.md spoke of "the Agent" throughout while the
+#    examples fell back to bfo:material entity. CCO's Agent is
+#    adopted by its canonical IRI rather than duplicated locally.
+#################################################################
+
+<https://www.commoncoreontologies.org/ont00001017>
+  a owl:Class ;
+  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040> ;
+  rdfs:label "Agent"@en ;
+  skos:definition "A Material Entity that bears an Agent Capability."@en ;
+  rdfs:isDefinedBy <https://www.commoncoreontologies.org/AgentOntology> ;
+  rdfs:comment "MIREOT stub: the class is adopted by IRI, not redefined. In CCO proper, Agent is a defined class, equivalent to Material Entity and bearer of some Agent Capability (cco:ont00001379), and that equivalence is what lets a reasoner recognise agents. This stub carries only the asserted parent, so importing https://www.commoncoreontologies.org/AgentOntology restores the full semantics. That import was not taken here because AgentOntology transitively imports the CCO Event and Information Entity ontologies, roughly 490KB, which would change the dependency profile of the whole suite for one class."@en ,
+    "Note on groups: CCO does not place Person or Organization under Agent. Person is an Animal, and Organization is a Group of Agents (cco:ont00000300), which is an object aggregate rather than an Agent. Value bearing is asserted below over Agent alone, which fits the current content: loyalty to an in-group is a disposition inhering in an individual and directed at a group, not one borne by the group. Group-level value bearing would need cco:ont00000300 added to the range."@en .
+
+### The realist commitment of the refactor, now stated formally:
+### a value is a property of an agent.
+<https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity>
+  rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000197> ;
+    owl:someValuesFrom <https://www.commoncoreontologies.org/ont00001017>
+  ] .

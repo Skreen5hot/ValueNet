@@ -1,0 +1,92 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
+@prefix vn-me: <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#> .
+@prefix me-shapes: <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes#> .
+
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl>
+  a owl:Ontology ;
+  dc:title "ValueNet Moral Epistemics Shapes"@en ;
+  dc:description "SHACL shapes that enforce the evidential-warrant conditions of the moral epistemics module."@en ;
+  rdfs:comment "OWL reasoning is open-world: a reasoner will never conclude that a culpability ascription is unwarranted merely because no warrant has been recorded. These shapes supply the closed-world half of the design. Run them over an annotated data graph together with valuenet-moral-epistemics.ttl."@en .
+
+### 1. A safety assessment must actually rest on an observation.
+me-shapes:SafetyAssessmentWarrantShape
+  a sh:NodeShape ;
+  sh:targetClass vn-me:SafetyAssessmentICE ;
+  sh:property [
+    sh:path vn-me:isWarrantedBy ;
+    sh:minCount 1 ;
+    sh:class vn-me:BehavioralObservationICE ;
+    sh:severity sh:Violation ;
+    sh:message "A SafetyAssessmentICE must be warranted by at least one BehavioralObservationICE. Without recorded observational warrant this is an unwarranted assessment, not a discernment output."@en ;
+  ] .
+
+### 2. An ascription of interior culpability with no recorded warrant.
+###    A detector, not an error: sh:Warning, because an unwarranted
+###    ascription is a well-formed instance of what this module models.
+###    A graph containing a genuine rash judgment is expected to report here.
+me-shapes:UnwarrantedCulpabilityAscriptionShape
+  a sh:NodeShape ;
+  rdfs:comment "Reports rash judgments rather than rejecting them. Expect one result per unwarranted ascription in any corpus that records rash judgment at all."@en ;
+  sh:targetClass vn-me:CulpabilityAscriptionICE ;
+  sh:property [
+    sh:path vn-me:isWarrantedBy ;
+    sh:minCount 1 ;
+    sh:severity sh:Warning ;
+    sh:message "This CulpabilityAscriptionICE records no evidential warrant. The act that produced it meets the criterion for vn-me:RashJudgmentAct."@en ;
+  ] .
+
+### 3. An act cannot be a discernment if its output is an unwarranted culpability ascription.
+me-shapes:DiscernmentNotRashShape
+  a sh:NodeShape ;
+  sh:targetClass vn-me:MoralDiscernmentAct ;
+  sh:sparql [
+    sh:severity sh:Violation ;
+    sh:message "This act is typed as a MoralDiscernmentAct but produces a culpability ascription with no recorded warrant, which satisfies the criterion for RashJudgmentAct. The two classes are disjoint."@en ;
+    sh:prefixes <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl> ;
+    sh:select """
+      SELECT $this ?value
+      WHERE {
+        $this vn-me:hasInformationalOutput ?value .
+        ?value a vn-me:CulpabilityAscriptionICE .
+        FILTER NOT EXISTS { ?value vn-me:isWarrantedBy ?evidence }
+      }
+    """ ;
+  ] .
+
+### 4. Protective action must be grounded in a prior discernment.
+me-shapes:ProtectiveActionGroundingShape
+  a sh:NodeShape ;
+  sh:targetClass vn-me:ProtectiveAction ;
+  sh:property [
+    sh:path obo:BFO_0000062 ;
+    sh:qualifiedValueShape [ sh:class vn-me:MoralDiscernmentAct ] ;
+    sh:qualifiedMinCount 1 ;
+    sh:severity sh:Violation ;
+    sh:message "A ProtectiveAction must be preceded by (obo:BFO_0000062) at least one MoralDiscernmentAct. Protective action taken without a recorded assessment has no auditable grounding."@en ;
+  ] .
+
+### 5. A value violation must say what it contravenes.
+me-shapes:ViolationTargetShape
+  a sh:NodeShape ;
+  sh:targetClass vn-core:ValueViolationProcess ;
+  sh:property [
+    sh:path vn-core:contravenes ;
+    sh:minCount 1 ;
+    sh:class vn-core:ValueRelatedRealizableEntity ;
+    sh:severity sh:Violation ;
+    sh:message "A ValueViolationProcess must contravene at least one value-related realizable entity."@en ;
+  ] .
+
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl>
+  sh:declare [
+    sh:prefix "vn-me" ;
+    sh:namespace "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
+  ] , [
+    sh:prefix "vn-core" ;
+    sh:namespace "https://fandaws.com/ontology/bfo/valuenet-core#"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
+  ] .

@@ -1,0 +1,122 @@
+@prefix : <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
+@prefix vn-mf: <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#> .
+@prefix vn-me: <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#> .
+@prefix folk: <https://fandaws.com/ontology/bfo/valuenet-folk#> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario.ttl>
+  a owl:Ontology ;
+  owl:imports <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics.owl> ;
+  dc:title "ValueNet Moral Epistemics Scenario"@en ;
+  rdfs:comment "A fictional worked scenario satisfying the competency questions in valuenet-moral-epistemics-CQ.md. Two agents witness the same conduct. One discerns and acts; the other judges rashly. All individuals are invented."@en .
+
+#################################################################
+#    Agents and the realizable entities they bear
+#################################################################
+
+:agentA a cco:ont00001017 ; rdfs:label "Agent A, a parent"@en .
+:agentB a cco:ont00001017 ; rdfs:label "Agent B, a relative"@en .
+:agentC a cco:ont00001017 ; rdfs:label "Agent C, a visitor"@en .
+
+:protectorRoleOfA a vn-me:ProtectorRole .
+:prudenceOfA      a vn-me:PrudenceDisposition .
+:careOfA          a vn-mf:CareDisposition .
+:agentA obo:BFO_0000196 :protectorRoleOfA , :prudenceOfA , :careOfA .
+
+# Agent B bears the very dispositions that B's own act will contravene.
+:justiceOfB a folk:JusticeDisposition .
+:honestyOfB a folk:HonestyDisposition .
+:careOfB    a vn-mf:CareDisposition .
+:agentB obo:BFO_0000196 :justiceOfB , :honestyOfB , :careOfB .
+
+#################################################################
+#    The conduct, and its observation
+#################################################################
+
+:conductOfC a vn-me:AgentBehaviorProcess ;
+  obo:BFO_0000057 :agentC ;
+  rdfs:label "Agent C repeatedly ignores a stated household rule"@en .
+
+:observationByA a vn-me:ActOfBehavioralObservation ;
+  obo:BFO_0000057 :agentA ;
+  vn-me:hasInformationalOutput :obsRecordA .
+
+:obsRecordA a vn-me:BehavioralObservationICE ;
+  rdfs:label "Record of what Agent A saw Agent C do"@en .
+
+:householdRule a vn-me:MoralNormICE ;
+  rdfs:label "The household rule Agent C disregarded"@en .
+
+#################################################################
+#    Path 1: discernment, then protective action
+#################################################################
+
+:assessmentByA a vn-me:SafetyAssessmentICE ;
+  vn-me:isWarrantedBy :obsRecordA ;
+  rdfs:label "Agent A's assessment of the risk Agent C's conduct poses"@en .
+
+:discernmentByA a vn-me:MoralDiscernmentAct ;
+  obo:BFO_0000057 :agentA ;
+  obo:BFO_0000062 :observationByA ;
+  obo:BFO_0000055 :prudenceOfA ;
+  vn-me:hasInformationalInput :obsRecordA , :householdRule ;
+  vn-me:hasInformationalOutput :assessmentByA .
+
+# The protective action realizes two values and runs against a third that
+# Agent A also bears. It is therefore both a ValueRealizationProcess and,
+# by the definition of vn-core:ValueViolationProcess, a value violation.
+# The two are deliberately not disjoint: this is the ordinary shape of a
+# moral trade-off, and the reason the suite needs both relations.
+:trustOfA a folk:TrustDisposition .
+:agentA obo:BFO_0000196 :trustOfA .
+
+:protectiveActionByA a vn-me:ProtectiveAction ;
+  obo:BFO_0000057 :agentA ;
+  obo:BFO_0000062 :discernmentByA ;
+  obo:BFO_0000055 :protectorRoleOfA , :careOfA ;
+  vn-core:contravenes :trustOfA ;
+  vn-me:hasInformationalInput :assessmentByA ;
+  rdfs:label "Agent A limits Agent C's unsupervised contact with the children"@en .
+
+#################################################################
+#    Path 2: rash judgment on the same conduct
+#################################################################
+
+:verdictByB a vn-me:CulpabilityAscriptionICE ;
+  rdfs:label "Agent B's conclusion that Agent C is malicious and beyond redemption"@en .
+
+:rashJudgmentByB a vn-me:RashJudgmentAct ;
+  obo:BFO_0000057 :agentB ;
+  vn-me:hasInformationalOutput :verdictByB ;
+  vn-core:contravenes :justiceOfB , :honestyOfB , :careOfB .
+
+#################################################################
+#    Linguistic grounding
+#################################################################
+
+:transcript1 a obo:BFO_0000031 ;
+  rdfs:label "Transcript of a family interview"@en .
+
+# evokesFrame reaches the existing MFTriggers data:
+# framenet:Protecting  vcvf:triggers  haidt:Care , and
+# vn-mf:CareDisposition  skos:broadMatch  haidt:Care  (valuenet-mappings).
+:textSpan1 a vn-core:TextSpan ;
+  vn-core:hasTextValue "kept an eye on him and made sure he was never alone with the kids" ;
+  vn-core:isTextSpanOf :transcript1 ;
+  vn-core:hasStartOffset "204"^^xsd:nonNegativeInteger ;
+  vn-core:hasEndOffset   "268"^^xsd:nonNegativeInteger ;
+  vn-core:evokesFrame <https://w3id.org/framester/framenet/abox/frame/Protecting> ;
+  vn-core:isEvidenceFor :protectiveActionByA .
+
+:textSpan2 a vn-core:TextSpan ;
+  vn-core:hasTextValue "you could just tell he had bad intentions" ;
+  vn-core:isTextSpanOf :transcript1 ;
+  vn-core:hasStartOffset "331"^^xsd:nonNegativeInteger ;
+  vn-core:hasEndOffset   "372"^^xsd:nonNegativeInteger ;
+  vn-core:isEvidenceFor :rashJudgmentByB .

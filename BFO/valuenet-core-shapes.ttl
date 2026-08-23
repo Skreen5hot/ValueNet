@@ -1,0 +1,118 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix core-shapes: <https://fandaws.com/ontology/bfo/valuenet-core-shapes#> .
+
+<https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl>
+  a owl:Ontology ;
+  dc:title "ValueNet Core Shapes"@en ;
+  dc:description "SHACL shapes for annotation well-formedness, covering vn-core:TextSpan and vn-core:isEvidenceFor."@en ;
+  rdfs:comment "vn-core:isEvidenceFor is an annotation property: its rdfs:domain and rdfs:range are documentary and no OWL reasoner enforces them, and it cannot appear in a class restriction. These shapes are where annotation structure is actually checked. Run them over an annotated data graph together with valuenet-core.ttl. Referenced from annotationGuide.md."@en .
+
+### 1. A text span must carry the text it delimits.
+core-shapes:TextSpanContentShape
+  a sh:NodeShape ;
+  sh:targetClass vn-core:TextSpan ;
+  sh:property [
+    sh:path vn-core:hasTextValue ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+    sh:severity sh:Violation ;
+    sh:message "A TextSpan must carry exactly one vn-core:hasTextValue. A span recorded only as a link cannot be re-read or re-scored, and the annotation becomes unauditable once the source corpus changes."@en ;
+  ] .
+
+### 2. A text span should say where it came from.
+core-shapes:TextSpanProvenanceShape
+  a sh:NodeShape ;
+  sh:targetClass vn-core:TextSpan ;
+  sh:property [
+    sh:path vn-core:isTextSpanOf ;
+    sh:minCount 1 ;
+    sh:severity sh:Warning ;
+    sh:message "This TextSpan records no source document (vn-core:isTextSpanOf). Offsets are meaningless without one."@en ;
+  ] .
+
+### 3. Offsets, where given, must be well formed and ordered.
+core-shapes:TextSpanOffsetShape
+  a sh:NodeShape ;
+  sh:targetClass vn-core:TextSpan ;
+  sh:property [
+    sh:path vn-core:hasStartOffset ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:nonNegativeInteger ;
+  ] ;
+  sh:property [
+    sh:path vn-core:hasEndOffset ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:nonNegativeInteger ;
+  ] ;
+  sh:sparql [
+    sh:severity sh:Violation ;
+    sh:message "A TextSpan's end offset must be greater than its start offset."@en ;
+    sh:prefixes <https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl> ;
+    sh:select """
+      SELECT $this ?value
+      WHERE {
+        $this vn-core:hasStartOffset ?start ;
+              vn-core:hasEndOffset   ?value .
+        FILTER (xsd:integer(?value) <= xsd:integer(?start))
+      }
+    """ ;
+  ] .
+
+### 4. Annotation must point at something real.
+core-shapes:EvidenceTargetShape
+  a sh:NodeShape ;
+  sh:targetSubjectsOf vn-core:isEvidenceFor ;
+  sh:property [
+    sh:path vn-core:isEvidenceFor ;
+    sh:nodeKind sh:IRI ;
+    sh:severity sh:Violation ;
+    sh:message "vn-core:isEvidenceFor must point at a named entity, normally a process instance."@en ;
+  ] .
+
+### 5. Whatever bears a value must be an agent.
+core-shapes:ValueBearerIsAgentShape
+  a sh:NodeShape ;
+  rdfs:comment "The closed-world counterpart of the core axiom that a ValueRelatedRealizableEntity inheres in some cco:Agent. The OWL axiom entails that an agent bearer exists; this shape checks that the bearer actually recorded in the data is typed as one."@en ;
+  sh:targetSubjectsOf obo:BFO_0000196 ;
+  sh:sparql [
+    sh:severity sh:Violation ;
+    sh:message "This entity bears a value-related realizable entity but is not typed as a cco:Agent (ont00001017)."@en ;
+    sh:prefixes <https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl> ;
+    sh:select """
+      SELECT $this ?value
+      WHERE {
+        $this obo:BFO_0000196 ?value .
+        ?value rdf:type/rdfs:subClassOf* vn-core:ValueRelatedRealizableEntity .
+        FILTER NOT EXISTS { $this rdf:type/rdfs:subClassOf* cco:ont00001017 }
+      }
+    """ ;
+  ] .
+
+<https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl>
+  sh:declare [
+    sh:prefix "vn-core" ;
+    sh:namespace "https://fandaws.com/ontology/bfo/valuenet-core#"^^xsd:anyURI ;
+  ] , [
+    sh:prefix "xsd" ;
+    sh:namespace "http://www.w3.org/2001/XMLSchema#"^^xsd:anyURI ;
+  ] , [
+    sh:prefix "cco" ;
+    sh:namespace "https://www.commoncoreontologies.org/"^^xsd:anyURI ;
+  ] , [
+    sh:prefix "obo" ;
+    sh:namespace "http://purl.obolibrary.org/obo/"^^xsd:anyURI ;
+  ] , [
+    sh:prefix "rdf" ;
+    sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ;
+  ] , [
+    sh:prefix "rdfs" ;
+    sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ;
+  ] .

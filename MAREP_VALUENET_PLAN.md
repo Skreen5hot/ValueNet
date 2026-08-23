@@ -1,31 +1,33 @@
 # Running MAREP over the full ValueNet suite
 
-**Status:** Plan — not yet executed
+**Status:** Step 1 of 4 complete — the ontology substrate source is built (§2)
 **Target:** every ontology module in this repository, BFO layer and DUL layer
-**Prerequisite work:** two components that do not exist yet (§2, §3)
+**Remaining before a run:** the analytical agents (§3)
 
 ---
 
 ## 0. The measured starting point
 
-Taken now, not assumed. `rdflib` over every `.ttl` and `.owl` in the repository:
+Measured by `python -m marep ingest --ontology`, which is now the authority for these numbers. It replaces a hand survey that motivated this plan and got two of them wrong.
 
-| Group | Files | Parse OK | Parse FAIL | Triples |
-| --- | ---: | ---: | ---: | ---: |
-| BFO layer (new modules) | 9 | 9 | 0 | 1,600 |
-| DUL core (`ValueCore`, `bhv`, `mft`, `folk_aligned`, `bhvtriggers`, `wvs`) | 6 | 5 | **1** | 13,191 |
-| `ThatsAllFolks/` | 129 | 2 | **127** | 44,386 |
-| `MFTriggers/` | 13 | 13 | 0 | 24,684 |
-| `MoralMolecules/` | 1 | 1 | 0 | 288 |
-| **Total** | **158** | **30** | **128** | **84,149** |
+| Group | Files | Parse OK | Parse FAIL |
+| --- | ---: | ---: | ---: |
+| `bfo-layer` (new modules, `.ttl` + `.owl`) | 15 | 15 | 0 |
+| `bfo-vendored` (`bfo-core.ttl`) | 1 | 1 | 0 |
+| `repository-root` (`ValueCore`, `bhv`, `mft`, `folk_aligned`, `bhvtriggers`, `wvs`) | 6 | 6 | 0 |
+| `mf-triggers` | 13 | 13 | 0 |
+| `moral-molecules` | 1 | 1 | 0 |
+| `vale2024` | 5 | 5 | 0 |
+| `thats-all-folks` | 130 | 3 | **127** |
+| **Total** | **171** | **44** | **127** |
 
-**128 of 158 ontology files in this repository do not parse standalone.**
+**127 of 171 ontology files do not parse standalone, and every one of them is in `ThatsAllFolks/`.**
 
-The `ThatsAllFolks` failures share one cause: the `folk_*.ttl` files carry no `@prefix` declarations at all, while using `folk:`, `vcvf:`, `owl:` and `skos:`. They are fragments meant to be read alongside a parent that declares the prefixes, not standalone documents. Whether that is a defect or an undocumented convention is exactly the kind of question a retrospective exists to settle — and it is not a question I should settle unilaterally, because the answer depends on intent I do not have.
+> **Correction.** The hand survey behind the first draft of this plan reported 128 failures across two groups, including `wvs.owl`. `wvs.owl` parses. So do the six BFO `.owl` files the first version of the measurement tool also condemned. Both were the same mistake — guessing serialization from the file extension — and the tool made it before the tool caught it. The lesson is not about `wvs.owl`; it is that the numbers a retrospective reasons over must come from something reproducible, because a survey run once by hand is exactly as fallible as a first draft of a script and leaves no trace when it is wrong.
 
-`wvs.owl` fails for a different reason and needs separate diagnosis.
+The `ThatsAllFolks` failures share one cause: the `folk_*.ttl` files carry no `@prefix` declarations at all while using `folk:`, `vcvf:`, `owl:` and `skos:`. They are fragments meant to be read alongside a parent that declares the prefixes, not standalone documents. Whether that is a defect or an undocumented convention is exactly the kind of question a retrospective exists to settle — and not one I should settle unilaterally, because the answer depends on intent I do not have.
 
-This table is the reason to run the retrospective on the DUL layer and `ThatsAllFolks` first. The BFO layer has been audited to death this week; those 30 parsing files are the ones everyone has looked at. The 128 that do not parse are the ones nobody has.
+This table is the reason to point the retrospective at `ThatsAllFolks` and the DUL layer first. The BFO layer has been audited to exhaustion this week. The 127 that do not parse are the ones nobody has looked at.
 
 ---
 
@@ -69,11 +71,9 @@ cited — so `ingest.py`'s stability claim was an overstatement. Resolution now
 accepts id or `ref`, `ref` being content-derived and durable, and §8.3 of the
 spec records which to prefer.
 
-### As-built
+### As built
 
-
-
-Extend `marep/ingest.py` with a collector that runs the validation battery and emits each result as a substrate record. The point is not to check the ontology; it is to make ontology facts **citable**, so that judgement about them can be grounded.
+`marep/ontology_source.py` measures the corpus; `ingest.build(ontology=True)` turns the measurements into substrate records. The point is not to check the ontology — the checks already existed, run by hand — it is to make ontology facts **citable**, so judgement about them can be grounded.
 
 ### Record types it emits
 
@@ -102,7 +102,7 @@ Every one of these is deterministic, and every one has been run by hand during t
 
 It closes the same circularity the git ingest closed. Without it, an agent claiming "the folk module is ungrounded" is making an assertion; with it, the claim resolves to `MET-0043: classes_reaching_bfo_root, scope=valuenet-folk, value=136/136`. The grounding gate then does real work instead of blocking everything.
 
-**Estimated size:** ~300 lines, no new dependencies (`rdflib`, `pyshacl`, `owlready2` are already in use).
+**Actual:** ~390 lines plus 12 tests, no new dependencies. Competency questions and the `TestingFramework.md` queries are not yet emitted as metrics; duplicate-triple ratio is not either. Those are the three checks from the list above still missing, and each is a place a Run 1 finding could go unciteable.
 
 ---
 

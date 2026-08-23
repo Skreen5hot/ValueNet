@@ -286,29 +286,54 @@ def test_run_for_phase_dispatches_by_phase(rt: Runtime):
 # the Anthropic adapter — shape only, no network
 # ======================================================================
 
+def _fake_client(text='{"merges": []}', stop_reason="end_turn", category=None):
+    """A client whose `stream()` behaves like the SDK's.
+
+    The backend streams, so a fake exposing only `create()` no longer stands in
+    for one — which is the point of testing against the shape rather than the
+    method name.
+    """
+    class _Block:
+        type = "text"
+    _Block.text = text
+
+    class _Details:
+        pass
+    _Details.category = category
+
+    class _Response:
+        content = [] if text is None else [_Block()]
+    _Response.stop_reason = stop_reason
+    _Response.stop_details = _Details() if category else None
+
+    class _Stream:
+        def __init__(self, sink, kwargs):
+            self.sink, self.kwargs = sink, kwargs
+        def __enter__(self):
+            self.sink.append(self.kwargs)
+            return self
+        def __exit__(self, *a):
+            return False
+        def get_final_message(self):
+            return _Response()
+
+    class _Messages:
+        def __init__(self, sink): self.sink = sink
+        def stream(self, **kw): return _Stream(self.sink, kw)
+
+    class _Client:
+        def __init__(self):
+            self.calls = []
+            self.messages = _Messages(self.calls)
+            self.beta = type("B", (), {"messages": _Messages(self.calls)})()
+    return _Client()
+
+
 def test_anthropic_backend_satisfies_the_protocol_without_a_key():
     from marep.adjudicator import AdjudicatorBackend
     from marep.anthropic_backend import DEFAULT_MODEL, AnthropicBackend
 
-    class FakeClient:
-        def __init__(self): self.calls = []
-        class _Messages:
-            def __init__(self, outer): self.outer = outer
-            def create(self, **kw):
-                self.outer.calls.append(kw)
-                class B: type = "text"; text = '{"merges": []}'
-                class R: content = [B()]; stop_reason = "end_turn"
-                return R()
-        @property
-        def messages(self): return self._Messages(self)
-        @property
-        def beta(self):
-            outer = self
-            class _Beta:
-                messages = outer._Messages(outer)
-            return _Beta()
-
-    fake = FakeClient()
+    fake = _fake_client()
     backend = AnthropicBackend(client=fake)
     assert isinstance(backend, AdjudicatorBackend)
     assert backend.propose_merges({"issues": []}) == []
@@ -316,6 +341,7 @@ def test_anthropic_backend_satisfies_the_protocol_without_a_key():
     assert sent["model"] == DEFAULT_MODEL == "claude-opus-5"
     assert sent["thinking"] == {"type": "adaptive"}
     assert sent["output_config"]["format"]["type"] == "json_schema"
+    assert sent["max_tokens"] >= 32_000, "a lowballed cap truncates structured JSON"
     assert "budget_tokens" not in json_dumps(sent), "budget_tokens is rejected on Opus 5"
 
 
@@ -327,25 +353,39 @@ def json_dumps(obj) -> str:
 def test_anthropic_backend_raises_on_refusal():
     from marep.anthropic_backend import AnthropicBackend
 
-    class _Refusing:
-        def create(self, **kw):
-            class D:
-                category = "cyber"
-
-            class R:
-                content = []
-                stop_reason = "refusal"
-                stop_details = D()
-
-            return R()
-
-    class _Beta:
-        messages = _Refusing()
-
-    class RefusingClient:
-        messages = _Refusing()
-        beta = _Beta()
-
-    backend = AnthropicBackend(client=RefusingClient())
+    backend = AnthropicBackend(client=_fake_client(stop_reason="refusal", category="cyber"))
     with pytest.raises(RuntimeError, match="declined"):
         backend.propose_merges({"issues": []})
+
+
+def test_truncated_output_reports_the_cap_not_a_json_error():
+    """A live run failed with "Unterminated string at column 4708".
+
+    The cause was max_tokens, three layers away from where it surfaced.
+    """
+    from marep.anthropic_backend import AnthropicBackend
+
+    backend = AnthropicBackend(client=_fake_client(text='{"merges": [{"surv',
+                                                   stop_reason="max_tokens"))
+    with pytest.raises(RuntimeError, match="max_tokens"):
+        backend.propose_merges({"issues": []})
+
+
+def test_agent_backend_does_not_override_the_adjudicators_helper():
+    """A live run died with "string indices must be integers, not 'str'".
+
+    AnthropicAgentBackend._brief(records: list) had silently overridden
+    AnthropicBackend._brief(view: dict). Handing an Adjudicator an agent
+    backend then iterated a dict's keys as though they were records — a
+    subclass that was not substitutable for its parent.
+    """
+    from marep.anthropic_agents import AnthropicAgentBackend
+    from marep.anthropic_backend import AnthropicBackend
+
+    assert "_brief" not in AnthropicAgentBackend.__dict__,         "the agent backend must not redefine the parent's _brief"
+    assert AnthropicAgentBackend._brief is AnthropicBackend._brief
+
+    # And the parent's helper still works when called on a subclass instance.
+    backend = AnthropicAgentBackend(client=_fake_client())
+    assert backend.propose_merges({"issues": [
+        {"id": "A-001", "title": "t", "status": "proposed", "evidence": []}]}) == []

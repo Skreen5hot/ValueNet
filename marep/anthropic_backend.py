@@ -159,7 +159,7 @@ class AnthropicBackend:
         *,
         model: str = DEFAULT_MODEL,
         client: Any | None = None,
-        max_tokens: int = 16_000,
+        max_tokens: int = 32_000,
         effort: str = "high",
         enable_fallbacks: bool = True,
     ):
@@ -194,24 +194,41 @@ class AnthropicBackend:
                 "format": {"type": "json_schema", "schema": schema},
             },
         }
+        # Streamed. A structured response covering twenty-odd issues runs long,
+        # and a non-streamed call that hits max_tokens returns truncated JSON —
+        # which surfaces as "Unterminated string at column 4708" three layers
+        # away from the cause. Streaming also keeps a multi-minute call from
+        # hitting the HTTP timeout.
         if self.enable_fallbacks:
             # A policy decline on a retrospective is unlikely but not
             # impossible; without fallbacks a refused request simply stops.
             kwargs["betas"] = ["server-side-fallback-2026-07-01"]
             kwargs["fallbacks"] = "default"
-            response = self.client.beta.messages.create(**kwargs)
+            with self.client.beta.messages.stream(**kwargs) as stream:
+                response = stream.get_final_message()
         else:
-            response = self.client.messages.create(**kwargs)
+            with self.client.messages.stream(**kwargs) as stream:
+                response = stream.get_final_message()
 
-        if getattr(response, "stop_reason", None) == "refusal":
+        stop = getattr(response, "stop_reason", None)
+        if stop == "refusal":
             details = getattr(response, "stop_details", None)
             raise RuntimeError(
-                f"Adjudicator request declined: {getattr(details, 'category', 'unknown')}")
+                f"request declined: {getattr(details, 'category', 'unknown')}")
+        if stop == "max_tokens":
+            raise RuntimeError(
+                f"response hit max_tokens ({self.max_tokens}) and the JSON is "
+                "truncated; raise max_tokens or narrow the question")
 
         text = next((b.text for b in response.content if b.type == "text"), None)
         if text is None:
-            raise RuntimeError("Adjudicator response contained no text block")
-        return json.loads(text)
+            raise RuntimeError("response contained no text block")
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise RuntimeError(
+                f"model returned unparseable JSON ({exc}); {len(text)} chars, "
+                f"stop_reason={stop}") from exc
 
     @staticmethod
     def _brief(view: dict[str, Any]) -> str:

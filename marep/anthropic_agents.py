@@ -141,11 +141,17 @@ class AnthropicAgentBackend(AnthropicBackend):
         return AGENT_SYSTEM.format(name=role.name, focus=role.focus, guidance=role.guidance)
 
     @staticmethod
-    def _brief(records: list[dict[str, Any]]) -> str:
+    def _substrate_brief(records: list[dict[str, Any]]) -> str:
         """Substrate as one line per record.
 
         Summaries only. A finding cites a record, it does not quote it, so
         sending payloads would multiply context by corpus size for nothing.
+
+        Deliberately *not* named `_brief`. The parent's `_brief` takes a state
+        dict; naming this one the same silently overrode it, and an Adjudicator
+        handed an agent backend then iterated a dict's keys as if they were
+        records. Same name, incompatible argument — the subclass was not
+        substitutable for its parent, and nothing caught it until a live run.
         """
         return "\n".join(f"{r['ref']}  [{r['type']}]  {r['summary']}" for r in records)
 
@@ -157,7 +163,7 @@ class AnthropicAgentBackend(AnthropicBackend):
             "These are the measured facts available to you. Propose findings that follow "
             "from them and that matter, each citing at least one record by its ref. "
             "Propose nothing if nothing in your area warrants it.\n\n"
-            "SUBSTRATE\n" + self._brief(substrate),
+            "SUBSTRATE\n" + self._substrate_brief(substrate),
             FINDINGS_SCHEMA, system=self._system_for(role))
         return [
             Finding(domain=f["domain"], title=f["title"], severity=f["severity"],
@@ -183,7 +189,7 @@ class AnthropicAgentBackend(AnthropicBackend):
             "have no view. Contesting forces adjudication and blocks the consensus "
             "phase from closing, so use it when warranted and not otherwise.\n\n"
             f"ISSUES\n{json.dumps(issues, indent=1)}\n\n"
-            "SUBSTRATE\n" + self._brief(substrate),
+            "SUBSTRATE\n" + self._substrate_brief(substrate),
             ASSESSMENT_SCHEMA, system=self._system_for(role))
         return [
             Assessment(issue_id=a["issue_id"], position=a["position"],

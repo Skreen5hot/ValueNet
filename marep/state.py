@@ -8,6 +8,7 @@ and never a silent overwrite of a whole section.
 from __future__ import annotations
 
 import copy
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -65,15 +66,46 @@ def load(path: str | Path) -> dict[str, Any]:
     return yaml.safe_load(Path(path).read_text(encoding="utf-8"))
 
 
-def save(state: dict[str, Any], path: str | Path) -> None:
-    """Write atomically. A half-written canonical state is a corruption event."""
+#: How many times to retry the atomic rename before giving up on atomicity.
+SAVE_RETRIES = 6
+
+
+def save(state: dict[str, Any], path: str | Path, *, retries: int = SAVE_RETRIES) -> None:
+    """Write atomically where the platform allows it.
+
+    Write-to-temp-then-rename is atomic on POSIX and merely usual on Windows,
+    where any process holding a handle on the target — a sync client, an
+    indexer, a virus scanner — makes `os.replace` fail with a sharing
+    violation. A live retrospective died three phases in on exactly that,
+    because the state file sat inside a synced folder.
+
+    So: retry with backoff, and if the rename still will not go through, write
+    in place. That trades atomicity for not losing the run. The trade is worth
+    making in this direction — a torn state file is recoverable from the audit
+    log and a lost hour of model calls is not — but it is a trade, and callers
+    who need the stronger guarantee should keep state off synced storage.
+    """
     p = Path(path)
     tmp = p.with_suffix(p.suffix + ".tmp")
-    tmp.write_text(
-        yaml.safe_dump(state, sort_keys=False, allow_unicode=True, width=100),
-        encoding="utf-8",
-    )
-    tmp.replace(p)
+    body = yaml.safe_dump(state, sort_keys=False, allow_unicode=True, width=100)
+    tmp.write_text(body, encoding="utf-8")
+
+    for attempt in range(retries):
+        try:
+            tmp.replace(p)
+            return
+        except PermissionError:
+            if attempt == retries - 1:
+                break
+            time.sleep(0.05 * (2 ** attempt))
+
+    # Rename is being refused persistently. Write directly rather than lose the
+    # state, and clean up the temp file so the next save is not confused by it.
+    p.write_text(body, encoding="utf-8")
+    try:
+        tmp.unlink()
+    except OSError:
+        pass
 
 
 def clone(state: dict[str, Any]) -> dict[str, Any]:

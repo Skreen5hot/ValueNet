@@ -7,6 +7,8 @@ wrong in v2.1 and the parts a careless implementation would get backwards.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from conftest import ROSTER, issue, upd
@@ -56,6 +58,32 @@ def test_substrate_rejects_duplicate_record_ids(tmp_path):
 # ======================================================================
 # §10 / §11 concurrency
 # ======================================================================
+
+def test_save_survives_a_locked_target(tmp_path, monkeypatch):
+    """A live run died three phases in when os.replace hit a sharing violation.
+
+    Write-to-temp-then-rename is atomic on POSIX and merely customary on
+    Windows, where a sync client holding the target makes the rename fail.
+    Losing an hour of model calls to that is the worse outcome.
+    """
+    from marep import state as st
+
+    target = tmp_path / "STATE.yaml"
+    calls = {"n": 0}
+    real_replace = Path.replace
+
+    def flaky(self, other):
+        calls["n"] += 1
+        raise PermissionError(5, "Access is denied")
+
+    monkeypatch.setattr(Path, "replace", flaky)
+    st.save({"retro": {"version": 1}}, target, retries=3)
+
+    assert calls["n"] == 3, "it should retry before giving up on atomicity"
+    assert target.exists(), "and still write the state rather than lose it"
+    assert not target.with_suffix(".yaml.tmp").exists(), "temp file cleaned up"
+    monkeypatch.setattr(Path, "replace", real_replace)
+
 
 def test_a_rejection_is_falsy_which_makes_presence_checks_a_trap(rt: Runtime):
     """Pins the ergonomics that broke the Adjudicator's error path.

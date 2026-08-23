@@ -117,6 +117,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--effort", default="high")
     ap.add_argument("--dry-run", action="store_true",
                     help="set everything up and report, without calling the API")
+    ap.add_argument("--key-file", default=None,
+                    help="path to a file containing only the API key. Use when the key is "
+                         "not in the environment. Must live outside this repository.")
     args = ap.parse_args(argv)
 
     out = Path(__file__).parent / "_run"
@@ -138,17 +141,38 @@ def main(argv: list[str] | None = None) -> int:
         print("\n--dry-run: no API call made.")
         return 0
 
-    has_key = bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
-    if not has_key and not (Path.home() / ".config" / "anthropic").exists():
-        print("\nNo credentials found. Either:\n"
-              "  ant auth login                 (stores a profile the SDK reads automatically)\n"
-              "  export ANTHROPIC_API_KEY=...   (or set it in the Windows environment)\n"
-              "Then re-run. Use --dry-run to exercise everything except the API call.",
-              file=sys.stderr)
-        return 2
+    client = None
+    if args.key_file:
+        key_path = Path(args.key_file).expanduser().resolve()
+        repo = Path(__file__).resolve().parents[1]
+        if repo in key_path.parents:
+            print(f"\nRefusing to read a key from inside the repository ({key_path}). "
+                  "A secret in the working tree is one `git add -A` away from being "
+                  "published; keep it in your home directory instead.", file=sys.stderr)
+            return 2
+        if not key_path.exists():
+            print(f"\nNo key file at {key_path}", file=sys.stderr)
+            return 2
+        # Read straight into the SDK. The value is never printed, logged, or returned.
+        import anthropic
+        client = anthropic.Anthropic(api_key=key_path.read_text(encoding="utf-8").strip())
+        print(f"  credentials: key file {key_path.name} in {key_path.parent}")
+    else:
+        has_key = bool(os.environ.get("ANTHROPIC_API_KEY")
+                       or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
+        if not has_key and not (Path.home() / ".config" / "anthropic").exists():
+            print("\nNo credentials found. Any one of:\n"
+                  "  --key-file PATH      a file holding only the key, outside this repo\n"
+                  "  ANTHROPIC_API_KEY    set in the environment (an already-running parent\n"
+                  "                       process must be restarted to inherit it)\n"
+                  "  ant auth login       stores a profile the SDK reads automatically\n"
+                  "Use --dry-run to exercise everything except the API call.",
+                  file=sys.stderr)
+            return 2
+        print("  credentials: resolved from the environment by the SDK")
 
     from marep.anthropic_backend import AnthropicBackend
-    backend = AnthropicBackend(model=args.model, effort=args.effort)
+    backend = AnthropicBackend(model=args.model, effort=args.effort, client=client)
 
     # ---- scenario 2 first: will it merge two corroborating findings? ----
     print("\nSCENARIO 2  merge phase — PERF-001 and SUPPORT-001 corroborate.")

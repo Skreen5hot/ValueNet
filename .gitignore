@@ -3,3 +3,9 @@ __pycache__/
 .pytest_cache/
 examples/_run/
 *.tmp
+
+# never commit a credential
+.anthropic_key
+*.key
+*.pem
+secrets/

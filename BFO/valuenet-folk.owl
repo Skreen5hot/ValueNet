@@ -5,8 +5,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core.owl#> .
-@prefix vn-schwartz: <https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
+@prefix vn-schwartz: <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#> .
 @base <https://fandaws.com/ontology/bfo/valuenet-folk.owl> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk.owl> rdf:type owl:Ontology ;

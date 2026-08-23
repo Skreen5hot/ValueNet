@@ -4,7 +4,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-mappings.owl>
   a owl:Ontology ;
-  owl:imports <https://fandaws.com/ontology/bfo/1.0/valuenet-moral-foundations.owl> ;
+  owl:imports <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> ;
   dc:title "ValueNet Mappings"@en ;
   dc:description "Provides SKOS mappings from the BFO-aligned ValueNet back to the original ValueNet and related value ontologies."@en .
 

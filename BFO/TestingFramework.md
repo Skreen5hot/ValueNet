@@ -25,8 +25,8 @@ These SPARQL queries help identify potential modeling errors, inconsistencies, o
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX folk: <https://fandaws.com/ontology/bfo/valuenet-folk#>
-PREFIX vn-schwartz: <https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#>
-PREFIX vn-core: <https://fandaws.com/ontology/bfo/valuenet-core.owl#>
+PREFIX vn-schwartz: <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#>
+PREFIX vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#>
 
 SELECT ?folk_value ?parent1 ?parent2
 WHERE {

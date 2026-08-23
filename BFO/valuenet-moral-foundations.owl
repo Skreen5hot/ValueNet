@@ -11,7 +11,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> rdf:type owl:Ontology ;
     owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-moral-foundations.owl> ;
-    owl:imports <https://fandaws.com/ontology/bfo/1.0/valuenet-core.owl> ;
+    owl:imports <https://fandaws.com/ontology/bfo/valuenet-core.owl> ;
     dc:title "ValueNet Moral Foundations Module"@en ;
     dc:description "An ontology of Haidt's Moral Foundations (Care, Fairness, Loyalty, Authority, Sanctity) modeled as BFO dispositions."@en .
 

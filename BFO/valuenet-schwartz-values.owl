@@ -5,7 +5,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core.owl#> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
 
 @base <https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl> .
 
@@ -28,69 +28,69 @@ skos:definition rdf:type owl:AnnotationProperty .
 #    Classes for Schwartz's Basic Human Values
 #################################################################
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#SelfDirectionDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition
 :SelfDirectionDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Self-Direction Disposition"@en ;
     skos:definition "A personal value disposition to seek independent thought and action—choosing, creating, exploring."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#StimulationDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition
 :StimulationDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Stimulation Disposition"@en ;
 skos:altLabel "Stimulation"@en ;
     skos:definition "A personal value disposition to seek excitement, novelty, and challenge in life."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#HedonismDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition
 :HedonismDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Hedonism Disposition"@en ;
 skos:altLabel "Hedonism"@en ;
     skos:definition "A personal value disposition to seek pleasure and sensuous gratification for oneself."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#AchievementDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition
 :AchievementDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Achievement Disposition"@en ;
 skos:altLabel "Achievement"@en ;
     skos:definition "A personal value disposition to seek personal success through demonstrating competence according to social standards."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#PowerDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition
 :PowerDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Power Disposition"@en ;
     skos:altLabel "Power"@en ;
     skos:definition "A personal value disposition to seek social status and prestige, and control or dominance over people and resources."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#SecurityDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition
 :SecurityDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Security Disposition"@en ;
     skos:altLabel "Security"@en ;
     skos:definition "A personal value disposition to seek safety, harmony, and stability of society, of relationships, and of self."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#ConformityDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition
 :ConformityDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Conformity Disposition"@en ;
     skos:altLabel "Conformity"@en ;
     skos:definition "A personal value disposition to restrain actions, inclinations, and impulses likely to upset or harm others and violate social expectations or norms."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#TraditionDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition
 :TraditionDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Tradition Disposition"@en ;
     skos:altLabel "Tradition"@en ;
     skos:definition "A personal value disposition to respect, be committed to, and accept the customs and ideas that traditional culture or religion provide."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#BenevolenceDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#BenevolenceDisposition
 :BenevolenceDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Benevolence Disposition"@en ;
     skos:altLabel "Benevolence"@en ;
     skos:definition "A personal value disposition to preserve and enhance the welfare of those with whom one is in frequent personal contact (the 'in-group')."@en .
 
-###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl#UniversalismDisposition
+###  https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition
 :UniversalismDisposition rdf:type owl:Class ;
     rdfs:subClassOf vn-core:PersonalValueDisposition ;
     rdfs:label "Universalism Disposition"@en ;

@@ -9,8 +9,14 @@ that verification means something.
 Two properties matter more than coverage breadth:
 
 **Determinism.** The same repository and the same date range produce byte-
-identical output. Records are sorted before identifiers are minted, so a
-re-run does not renumber everything and invalidate evidence already cited.
+identical output, because records are sorted before identifiers are minted.
+
+That is weaker than it sounds, and worth being exact about: sorting keeps
+identifiers stable only while the record *set* is unchanged. Add one file to a
+scanned directory and every later identifier shifts. Evidence meant to outlive
+a single run should therefore cite a record's `ref` — a commit SHA, a
+`check:scope` pair — which is content-derived and survives. `Substrate.resolve`
+accepts either.
 
 **Honest gaps.** Every record type in the schema gets a coverage entry. A
 source that is absent, unauthenticated, or erroring is reported as unavailable
@@ -31,6 +37,7 @@ from typing import Any, Callable
 
 import yaml
 
+from . import ontology_source as onto
 from .substrate import RECORD_TYPES
 from .validate import validate_substrate
 
@@ -282,6 +289,74 @@ def collect_notes(path: Path | None) -> Collected:
     return Collected("note", records=records)
 
 
+def _git_file_timestamp(repo: Path, rel: str, fallback: str) -> str:
+    """When the file last changed, per git.
+
+    Not the filesystem mtime: a fresh clone rewrites every mtime, which would
+    make the substrate differ per machine and silently renumber records that
+    earlier evidence already cites.
+    """
+    code, out, _err = _run(["git", "log", "-1", "--format=%aI", "--", rel], cwd=repo, timeout=30)
+    return out.strip() if code == 0 and out.strip() else fallback
+
+
+def _head_timestamp(repo: Path) -> str:
+    code, out, _err = _run(["git", "log", "-1", "--format=%aI"], cwd=repo, timeout=30)
+    return out.strip() if code == 0 and out.strip() else "1970-01-01T00:00:00+00:00"
+
+
+def collect_ontology(
+    repo: Path, *, scopes: list[str] | None = None, reasoner: bool = False
+) -> tuple[Collected, Collected]:
+    """Measure the ontology corpus, returning (documents, metrics).
+
+    Every fact an agent might cite about the state of the ontology has to exist
+    here first, or the grounding gate will refuse every finding about it.
+    """
+    try:
+        import rdflib  # noqa: F401
+    except ImportError:
+        why = "rdflib not installed; the ontology corpus could not be measured"
+        return (Collected("document", available=False, reason=why),
+                Collected("metric", available=False, reason=why))
+
+    paths = onto.discover(repo, scopes)
+    if not paths:
+        why = f"no ontology files found under {scopes or repo}"
+        return (Collected("document", available=False, reason=why),
+                Collected("metric", available=False, reason=why))
+
+    head = _head_timestamp(repo)
+    facts = [onto.measure_file(p, repo) for p in paths]
+
+    documents = [{
+        "type": "document", "ref": f.rel,
+        "timestamp": _git_file_timestamp(repo, f.rel, head),
+        "summary": f.summary(),
+        "payload": {"group": f.group, "checksum": f.checksum, "bytes": f.bytes,
+                    "parses": f.parses, "parse_error": f.parse_error,
+                    "triples": f.triples, "classes": f.classes,
+                    "imports": f.imports or [],
+                    "undeclared_prefixes": f.undeclared_prefixes or [],
+                    "vendored": f.vendored},
+    } for f in facts]
+
+    metrics = list(onto.group_metrics(facts))
+    metrics += onto.suite_metrics(repo, facts)
+    metrics += onto.shacl_metrics(repo)
+    if reasoner:
+        metrics += onto.reasoner_metrics(repo)
+
+    metric_records = [{
+        "type": "metric", "ref": m.ref, "timestamp": head, "summary": m.summary(),
+        "payload": {"check": m.check, "scope": m.scope, "value": m.value,
+                    "detail": m.detail, "tool": m.tool},
+    } for m in metrics]
+
+    return (Collected("document", records=documents),
+            Collected("metric", records=metric_records))
+
+
 #: Types with no automatic source. Declared unavailable with a standing reason
 #: rather than quietly missing.
 UNSOURCED: dict[str, str] = {
@@ -290,6 +365,9 @@ UNSOURCED: dict[str, str] = {
     "review": "review data not collected; gh does not expose it cheaply in list form",
     "document": "no document source configured",
 }
+
+#: Types the ontology source supplies when it is enabled.
+ONTOLOGY_TYPES = ("document", "metric")
 
 
 # ----------------------------------------------------------------------
@@ -316,6 +394,9 @@ def build(
     repo: str | Path = ".",
     notes: str | Path | None = None,
     include_github: bool = True,
+    ontology: bool = False,
+    ontology_scopes: list[str] | None = None,
+    reasoner: bool = False,
 ) -> BuildResult:
     """Assemble a conformant substrate document."""
     repo = Path(repo).resolve()
@@ -334,7 +415,15 @@ def build(
                                        reason="GitHub collection disabled for this build"))
 
     collected.append(collect_notes(Path(notes) if notes else None))
+
+    supplied = set()
+    if ontology:
+        docs, mets = collect_ontology(repo, scopes=ontology_scopes, reasoner=reasoner)
+        collected += [docs, mets]
+        supplied = set(ONTOLOGY_TYPES)
     for rtype, reason in UNSOURCED.items():
+        if rtype in supplied:
+            continue
         collected.append(Collected(rtype, available=False, reason=reason))
 
     # Deterministic ordering, then identifiers. Sorting before minting is what
@@ -363,6 +452,18 @@ def build(
         "coverage": coverage,
     }
     errors = validate_substrate(document)
+
+    # Two records answering to one reference makes evidence citing it
+    # ambiguous, and the schema cannot see it because the ids differ. Caught
+    # here rather than discovered by a finding that resolves to the wrong fact.
+    seen: dict[tuple[str, str], str] = {}
+    for rec in records:
+        key = (rec["type"], rec["ref"])
+        if key in seen:
+            errors.append(f"duplicate reference {rec['type']}:{rec['ref']} "
+                          f"used by both {seen[key]} and {rec['id']}")
+        seen[key] = rec["id"]
+
     return BuildResult(document, counts, coverage, errors)
 
 

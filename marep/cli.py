@@ -141,6 +141,8 @@ def cmd_ingest(args) -> int:
     result = ing.build(
         args.sprint, args.since, args.until,
         repo=args.repo, notes=args.notes, include_github=not args.no_github,
+        ontology=args.ontology, reasoner=args.reasoner,
+        ontology_scopes=[s for s in (args.ontology_scope or "").split(",") if s] or None,
     )
     if result.errors:
         print(f"substrate does not validate: {result.errors[0]}", file=sys.stderr)
@@ -215,6 +217,12 @@ def build_parser() -> argparse.ArgumentParser:
     q.add_argument("--out", default=DEFAULT_SUBSTRATE)
     q.add_argument("--notes", default=None, help="YAML list of unlogged observations (§7.4)")
     q.add_argument("--no-github", action="store_true", help="git only; no gh queries")
+    q.add_argument("--ontology", action="store_true",
+                   help="measure the ontology corpus and emit document + metric records (§7)")
+    q.add_argument("--ontology-scope", default=None,
+                   help="comma-separated subpaths to limit the ontology scan, e.g. BFO,ThatsAllFolks")
+    q.add_argument("--reasoner", action="store_true",
+                   help="also run HermiT; needs a JRE and takes seconds")
     q.set_defaults(func=cmd_ingest)
 
     sub.add_parser("report", help="the figures §20 requires").set_defaults(func=cmd_report)

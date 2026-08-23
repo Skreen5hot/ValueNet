@@ -39,7 +39,39 @@ So the plan is in three parts, and the first two are prerequisites rather than t
 
 ---
 
-## 2. Prerequisite A — an ontology source for the substrate
+## 2. Prerequisite A — an ontology source for the substrate — **BUILT**
+
+*Status: `marep/ontology_source.py`, wired into `ingest.build(ontology=True)` and
+`python -m marep ingest --ontology`. 12 tests. A full-corpus scan emits 237
+records: 171 `document`, 51 `metric`, 15 `commit`.*
+
+The prediction in §8 held, though not in the way stated. The source did not emit
+a shape the grounding gate refused; it emitted **false facts the gate would have
+happily accepted**, which is worse. Four, all caught by inspecting the first
+output rather than by any test:
+
+* Six BFO files reported as unparseable. They parse — every `.owl` here is
+  Turtle, and rdflib was guessing format from the suffix. A substrate asserting
+  a failure that did not happen is worse than one omitting the check.
+* `classes_total:bfo-layer` emitted twice with different values, because group
+  metrics and suite metrics shared a scope. Two numbers answering to one
+  reference, invisible to the schema because the ids differ.
+* `OBI`, `RO` and `MFTriggers` reported as undeclared prefixes in files that
+  declare everything — the regex was reading prose inside `rdfs:comment`.
+* `classes_total` for a group summed per-file counts, so a module kept as both
+  `.ttl` and `.owl` counted twice: 360 for a layer holding 179. Renamed to
+  `classes_sum_over_files`, with the double-count stated in the record.
+
+And one design flaw the tests caught: `Substrate.resolve` matched only on record
+**id**, which is minted positionally. Adding a file to a scanned directory
+shifts every later id and silently breaks evidence an earlier retrospective
+cited — so `ingest.py`'s stability claim was an overstatement. Resolution now
+accepts id or `ref`, `ref` being content-derived and durable, and §8.3 of the
+spec records which to prefer.
+
+### As-built
+
+
 
 Extend `marep/ingest.py` with a collector that runs the validation battery and emits each result as a substrate record. The point is not to check the ontology; it is to make ontology facts **citable**, so that judgement about them can be grounded.
 

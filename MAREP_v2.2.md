@@ -272,12 +272,12 @@ Evidence is typed and source-referenced. Free-string evidence is not conformant.
   claim: <string>         # What the evidence asserts
   source:
     type: <enum>          # Record type from §7.2
-    ref: <string>         # MUST correspond to a records[].id in the substrate
+    ref: <string>         # MUST correspond to a records[].id or records[].ref
   verified: <bool>        # Set exclusively by Runtime; agent-supplied values discarded
   submitted_by: <agent>
 ```
 
-The Runtime MUST resolve `source.ref` against `SPRINT_INPUT.yaml` on submission and set `verified` accordingly. Unresolvable references MUST set `verified: false`; they MUST NOT cause the update to be rejected, because an unverifiable observation is still worth recording as unverifiable.
+The Runtime MUST resolve `source.ref` against `SPRINT_INPUT.yaml` on submission and set `verified` accordingly. Resolution accepts a record identifier or a record reference. Identifiers are minted positionally and are stable only while the substrate's record set is unchanged; references are content-derived and survive additions, so evidence intended to outlive one retrospective SHOULD cite a reference. Unresolvable references MUST set `verified: false`; they MUST NOT cause the update to be rejected, because an unverifiable observation is still worth recording as unverifiable.
 
 #### 8.3.1 Confirmation Grounding Gate
 

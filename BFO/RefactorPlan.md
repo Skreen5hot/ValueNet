@@ -138,6 +138,14 @@ Defects found while adding the moral epistemics module. All fixed and verified; 
     > Why a stub and not an import. CCO's AgentOntology transitively imports the CCO Event and Information Entity ontologies, roughly 490KB, which would change the dependency profile of the whole suite for one class. The stub carries the asserted parent only; in CCO proper `Agent` is a *defined* class, equivalent to a material entity bearing some Agent Capability, and that equivalence is what lets a reasoner recognise agents. Swapping the stub for `owl:imports <https://www.commoncoreontologies.org/AgentOntology>` restores it and is a one-line change.
     > Groups. CCO places neither `Person` nor `Organization` under `Agent`: a person is an animal, and an organization is a `Group of Agents` (`cco:ont00000300`), an object aggregate. Value bearing is asserted over `Agent` alone, which fits the current content — loyalty to an in-group is a disposition inhering in an individual and directed at a group, not one borne by the group. Group-level value bearing would need `cco:ont00000300` added to the range.
 
+### Phase 8: Dyadic Structure
+
+*   [x] **Task 8.1: Encode the Moral Foundations dyads.** - *Completed.* The original `mft.ttl` declares `Violation` with six subclasses and declares an `opposedTo` property, but asserts that property **zero times**; `vcvf:oppositeTo`, which the repository README's second example query depends on, is likewise never asserted. The pairings had therefore never been encoded anywhere in this repository, in either the DUL or the BFO layer. They are asserted here for the first time: `HarmProcess`, `CheatingProcess`, `BetrayalProcess`, `SubversionProcess`, `DegradationProcess`, and `OppressionProcess`, paired with Care, Fairness, Loyalty, Authority, Sanctity, and Liberty respectively.
+
+    A violation is modelled as a **process**, not a disposition. "Harm" in MFT is not a trait an agent bears; it is what an act does to the Care foundation. Each class is a subclass of `vn-core:ValueViolationProcess` with a `contravenes` restriction, so the dyad is logical content a reasoner can use rather than a bare annotation. `vn-mf:dyadicOppositeOf` records the pairing in both directions for documentation and is an **annotation** property: its arguments are classes, and relating classes with an object property is punning.
+
+    Verified with HermiT over the merged closure plus a probe individual asserted only as `HarmProcess`: consistent, 0 unsatisfiable classes of 216, all six violations classify under `ValueViolationProcess`, and the probe is inferred `ValueViolationProcess` and `bfo:process`.
+
 #### Open items
 
 *   [x] **Task 7.4: Reasoner validation.** — *Completed.* HermiT (via owlready2, Java 23) was run over the merged import closure of `bfo-core`, `valuenet-core`, `valuenet-schwartz-values`, `valuenet-moral-foundations`, `valuenet-folk`, `valuenet-moral-epistemics` and `valuenet-mappings` — 2,318 triples, 210 classes, 48 object properties — and again with the scenario individuals loaded (2,391 triples). Both runs report the ontology **consistent with 0 unsatisfiable classes**. This exercises the suite's first `owl:complementOf` and `owl:disjointWith` (moral epistemics) and its first `owl:equivalentClass` and universal existential on value classes (core), and it re-runs Task 3.1 against a hierarchy that is, for the first time, actually connected.
@@ -170,7 +178,7 @@ Run over the whole `BFO/` suite after Phases 5 and 6. Reproduce with `rdflib` an
 | SHACL agent shape, negative control (a rock bearing a value) | fires as expected |
 | Competency questions returning expected rows | 6 / 6 |
 | HermiT: ontology consistency | consistent |
-| HermiT: unsatisfiable classes | 0 of 210 |
+| HermiT: unsatisfiable classes | 0 of 216 |
 | HermiT: consistency with scenario individuals | consistent, 0 unsatisfiable |
 | `MFTriggers/` trigger statements under the canonical namespace | 12,338 |
 | `MFTriggers/` trigger statements under the stale namespace | 0 (was 19,872 per-file) |

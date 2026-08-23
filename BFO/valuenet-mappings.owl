@@ -1,30 +1,40 @@
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dc: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
 @prefix vn-mf: <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#> .
-@prefix haidt: <https://w3id.org/spice/SON/HaidtValues#> .
-@prefix cmm: <http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl#> .
-@prefix vcvf: <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#> .
 
-@base <https://fandaws.com/ontology/bfo/valuenet-mappings> .
+vn-core:ValueRelatedRealizableEntity skos:broadMatch <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#Value> .
 
-<https://fandaws.com/ontology/bfo/valuenet-mappings.owl> rdf:type owl:Ontology ;
-    owl:imports <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> ;
+vn-core:ValueViolationProcess skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Violation> .
+
+<https://fandaws.com/ontology/bfo/valuenet-mappings.owl> a owl:Ontology ;
+    dc:description "Provides SKOS mappings from the BFO-aligned ValueNet back to the original ValueNet and related value ontologies."@en ;
     dc:title "ValueNet Mappings"@en ;
-    dc:description "Provides SKOS mappings from the BFO-aligned ValueNet back to the original ValueNet and related value ontologies."@en .
+    owl:imports <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> .
 
-#################################################################
-#    Mappings
-#################################################################
+vn-mf:AuthorityDisposition skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Authority> .
 
-vn-mf:CareDisposition skos:broadMatch haidt:Care .
-vn-mf:FairnessDisposition skos:broadMatch haidt:Fairness, cmm:Fairness .
-vn-mf:LoyaltyDisposition skos:broadMatch haidt:Loyalty .
-vn-mf:AuthorityDisposition skos:broadMatch haidt:Authority .
-vn-mf:SanctityDisposition skos:broadMatch haidt:Sanctity .
-vn-mf:LibertyDisposition skos:broadMatch haidt:Liberty .
+vn-mf:BetrayalProcess skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Betrayal> .
 
-# The concept of a value itself is re-engineered from a Description to a Realizable Entity
-<https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity> skos:broadMatch vcvf:Value .
+vn-mf:CareDisposition skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Care> .
+
+vn-mf:CheatingProcess skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Cheating> .
+
+vn-mf:DegradationProcess skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Degradation> .
+
+vn-mf:FairnessDisposition skos:broadMatch <http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl#Fairness>,
+        <https://w3id.org/spice/SON/HaidtValues#Fairness> .
+
+vn-mf:HarmProcess skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Harm> .
+
+vn-mf:LibertyDisposition skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Liberty> .
+
+vn-mf:LoyaltyDisposition skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Loyalty> .
+
+vn-mf:OppressionProcess skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Oppression> .
+
+vn-mf:SanctityDisposition skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Sanctity> .
+
+vn-mf:SubversionProcess skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Subversion> .
+

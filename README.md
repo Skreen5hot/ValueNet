@@ -73,7 +73,7 @@ Canonical namespace: ``https://fandaws.com/ontology/bfo/valuenet-<module>#``. Th
 | --- | --- |
 | [valuenet-core](BFO/valuenet-core.ttl) | ``ValueDisposition``, ``ValueRole``, ``ValueRealizationProcess``, ``ValueViolationProcess``, ``contravenes``, the annotation layer (``TextSpan``, ``isEvidenceFor``, ``evokesFrame``), and CCO ``Agent`` (``ont00001017``), in which every value inheres |
 | [valuenet-schwartz-values](BFO/valuenet-schwartz-values.ttl) | Schwartz's 10 Basic Human Values as dispositions |
-| [valuenet-moral-foundations](BFO/valuenet-moral-foundations.ttl) | Haidt's Moral Foundations as dispositions |
+| [valuenet-moral-foundations](BFO/valuenet-moral-foundations.ttl) | Haidt's Moral Foundations as dispositions, and the six violations that contravene them, as processes |
 | [valuenet-folk](BFO/valuenet-folk.ttl) | 136 everyday folk values |
 | [valuenet-moral-epistemics](BFO/valuenet-moral-epistemics.ttl) | Moral assessment: behavioural observation, prudent discernment, rash judgment, protective action |
 | [valuenet-mappings](BFO/valuenet-mappings.ttl) | ``skos`` mappings back to the original ValueNet IRIs |
@@ -116,6 +116,8 @@ The queries can be performed on the [Framester endpoint](http://etna.istc.cnr.it
 Enjoy! <br/>
 
 
+
+> **Note on the query below.** Its second clause, `?o vcvf:oppositeTo ?o2`, matches nothing: `oppositeTo` is declared but asserted zero times anywhere in this repository, as is `mft:opposedTo`. The dyadic pairings were never encoded. They are now, in the BFO-aligned suite: each violation process carries a `contravenes` restriction naming the foundation it violates, plus a `dyadicOppositeOf` annotation in both directions. Drop the second clause to make the query below return rows.
 
 Query to find all value triggers starting from a lexical variable, e.g. "war", retrieving in addition all the Moral Foundations triggered, and their opposite value in the dyad.
 

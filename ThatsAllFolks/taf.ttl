@@ -29,7 +29,7 @@
 
 
 <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl> rdf:type owl:Ontology ;
-	owl:imports <http://www.semanticweb.org/sdg/ontologies/2022/0/valuecore_with_value_frames.owl> .
+	owl:imports <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl> .
 
 
 

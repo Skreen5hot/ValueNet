@@ -88,6 +88,10 @@ class FileFacts:
     undeclared_prefixes: list[str] = None
     vendored: bool = False
     parsed_as: str = ""
+    #: Class IRIs declared in this file. Kept out of the emitted record — a
+    #: payload listing thousands of IRIs helps nobody — but needed to count
+    #: how much of the corpus a scoped check leaves unmeasured.
+    class_iris: frozenset = frozenset()
 
     def summary(self) -> str:
         if not self.parses:
@@ -148,8 +152,9 @@ def measure_file(path: Path, repo: Path) -> FileFacts:
         return facts
     facts.parses = True
     facts.triples = len(g)
-    facts.classes = sum(1 for s in g.subjects(RDF.type, OWL.Class)
-                        if isinstance(s, rdflib.URIRef))
+    iris = {str(x) for x in g.subjects(RDF.type, OWL.Class) if isinstance(x, rdflib.URIRef)}
+    facts.class_iris = frozenset(iris)
+    facts.classes = len(iris)
     facts.imports = sorted(str(o) for o in g.objects(None, OWL.imports))
     return facts
 
@@ -277,6 +282,24 @@ def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
                       sum(1 for c in classes if not list(merged.objects(c, RDFS.label)))))
     out.append(Metric("classes_missing_definition", SCOPE,
                       sum(1 for c in classes if not list(merged.objects(c, SKOS.definition)))))
+
+    # How much of the corpus this check does not see. Three agents in a live
+    # run independently read `classes_reaching_bfo_root: 179 / 179` as "the
+    # ontology is grounded", which it does not say: the check is scoped to one
+    # layer. The scope was in the record's ref all along and that was not
+    # enough — an absence has to be measured to be citable, not merely implied
+    # by the presence of something narrower.
+    corpus_classes = set()
+    for f in facts:
+        corpus_classes |= f.class_iris
+    measured = {str(c) for c in classes}
+    out.append(Metric("classes_distinct_in_corpus", "corpus", len(corpus_classes),
+                      detail="distinct class IRIs across every parsing file"))
+    out.append(Metric("classes_measured_for_grounding", "corpus", len(measured),
+                      detail="the population classes_reaching_bfo_root is computed over"))
+    out.append(Metric("classes_unmeasured_for_grounding", "corpus",
+                      len(corpus_classes - measured),
+                      detail="declared in the corpus but outside the grounding check's scope"))
 
     for m in modules:
         owl = m.with_suffix(".owl")

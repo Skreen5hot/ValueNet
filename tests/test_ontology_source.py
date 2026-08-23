@@ -115,6 +115,46 @@ def test_build_rejects_a_duplicate_reference(tmp_path: Path):
 
 
 # ======================================================================
+# a scoped check has to measure its own scope
+# ======================================================================
+
+def test_the_grounding_check_reports_what_it_does_not_cover(tmp_path: Path):
+    """Three live agents read `classes_reaching_bfo_root: 179/179` as "the
+    ontology is grounded". It does not say that: the check is scoped to one
+    layer, and the rest of the corpus is simply unmeasured.
+
+    Putting the scope in the record's ref was not enough. An absence has to be
+    measured to be citable, rather than left to be inferred from the presence
+    of something narrower.
+    """
+    _write(tmp_path, "a.ttl", TURTLE)
+    _write(tmp_path, "b.ttl", TURTLE.replace("example.org/A", "example.org/B"))
+    facts = [onto.measure_file(p, tmp_path) for p in onto.discover(tmp_path)]
+    metrics = {m.check: m for m in onto.suite_metrics(tmp_path, facts)}
+
+    if "classes_distinct_in_corpus" not in metrics:
+        pytest.skip("suite metrics need the BFO modules present")
+    total = metrics["classes_distinct_in_corpus"].value
+    measured = metrics["classes_measured_for_grounding"].value
+    unmeasured = metrics["classes_unmeasured_for_grounding"].value
+    assert total == measured + unmeasured, "the three numbers must reconcile"
+
+
+def test_distinct_class_count_does_not_double_count_pairs(tmp_path: Path):
+    """`classes_sum_over_files` counts a .ttl/.owl pair twice by design.
+    The corpus figure must not, or it repeats the error it exists to correct.
+    """
+    _write(tmp_path, "m.ttl", TURTLE)
+    _write(tmp_path, "m.owl", TURTLE)
+    facts = [onto.measure_file(p, tmp_path) for p in onto.discover(tmp_path)]
+    union = set()
+    for f in facts:
+        union |= f.class_iris
+    assert len(union) == 1, "one class declared in two serializations is one class"
+    assert sum(f.classes for f in facts) == 2, "the per-file sum still counts both"
+
+
+# ======================================================================
 # sums are sums
 # ======================================================================
 

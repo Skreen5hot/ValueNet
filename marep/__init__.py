@@ -6,9 +6,12 @@ versioning, the status transition graph and its reopening guards, evidence
 resolution against the frozen substrate, scope, the anti-pattern checks, and
 phase advancement.
 
-Nothing here calls a model. That is the design, not an omission: v2.2 split the
+The Runtime calls no model, by design rather than omission: v2.2 split the
 Orchestrator precisely because an LLM doing JSON Schema validation is both more
-expensive and less reliable than a validator.
+expensive and less reliable than a validator. The Adjudicator (§4.1.2) is the
+other half — four judgement calls, a pluggable backend, and no privileged write
+path. `marep.anthropic_backend` is the only module that imports the SDK, and
+only when constructed.
 
 Typical use::
 
@@ -38,6 +41,17 @@ Typical use::
         print(result.cause, result.detail)
 """
 
+from .adjudicator import (
+    Adjudicator,
+    AdjudicatorBackend,
+    CompressionProposal,
+    ContradictionFinding,
+    MergeProposal,
+    NullBackend,
+    Position,
+    ScriptedBackend,
+    TieBreak,
+)
 from .errors import Cause, MarepError, Result, StateCorruption
 from .runtime import Runtime
 from .substrate import Record, Substrate
@@ -50,6 +64,15 @@ SPEC_VERSION = "2.2"
 
 __all__ = [
     "Runtime",
+    "Adjudicator",
+    "AdjudicatorBackend",
+    "ScriptedBackend",
+    "NullBackend",
+    "ContradictionFinding",
+    "MergeProposal",
+    "CompressionProposal",
+    "TieBreak",
+    "Position",
     "Substrate",
     "Record",
     "Cause",

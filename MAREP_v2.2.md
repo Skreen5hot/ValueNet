@@ -308,7 +308,7 @@ A Decision records a settled judgement and the basis for it. Every terminal stat
 ```yaml
 - id: <string>            # Unique; convention DEC-<NNN>
   type: <enum>            # consensus_outcome | no_action_required | reopen_blocked |
-                          # unevaluated_archive | compression | declination
+                          # unevaluated_archive | compression | declination | merged
   subject: <string>       # Reference, e.g. ISSUE:PERF-001 or ACTION:ACT-004
   outcome: <string>       # The settled result
   rationale: <string>     # Why; free text, subject to §18.3 budgets
@@ -317,6 +317,8 @@ A Decision records a settled judgement and the basis for it. Every terminal stat
 ```
 
 `basis: runtime` is reserved for mechanically determined decisions (unevaluated archive, blocked reopening). `basis: adjudicator` MUST cite the judgement made. `basis: <vote_id>` MUST reference an entry in `votes`.
+
+`merged` records a duplicate retired into a survivor during Phase 2. Retiring it moves the duplicate `proposed → archived`, which §16.3 marks control-plane only: the Adjudicator may perform it during the merge phase, and the Runtime at analysis close. Without that, §13.2 specifies a deduplication the transition graph forbids. The duplicate's evidence MUST be carried onto the survivor before the merge, so deduplication never weakens grounding.
 
 `declination` is how an agent satisfies the Phase 1 exit criterion (§13.1) with nothing to report; its `subject` MUST be `AGENT:<name>`. Agents are therefore authorized to write `decisions` during gathering. Without both of those, "submitted findings or explicitly declined" is unsatisfiable for a silent agent, and one such agent deadlocks the phase — the same defect as a status with no outgoing edge.
 
@@ -623,7 +625,9 @@ Issue status transitions MUST follow this graph:
 proposed   → contested
 proposed   → confirmed          [requires verified evidence, §8.3.1]
 proposed   → rejected
-proposed   → archived           [Runtime only, at Phase 3 close, cause unevaluated]
+proposed   → archived           [control plane only: Runtime at Phase 3 close
+                                 (cause unevaluated), or Adjudicator during
+                                 Phase 2 retiring a merged duplicate]
 
 contested  → confirmed          [requires verified evidence, §8.3.1]
 contested  → rejected

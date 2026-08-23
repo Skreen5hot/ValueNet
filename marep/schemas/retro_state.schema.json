@@ -305,7 +305,8 @@
             "reopen_blocked",
             "unevaluated_archive",
             "compression",
-            "declination"
+            "declination",
+            "merged"
           ]
         },
         "subject": {

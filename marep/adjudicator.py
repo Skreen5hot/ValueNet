@@ -1,0 +1,343 @@
+"""The Adjudicator — the model-driven half of MAREP's control plane (v2.2 §4.1.2).
+
+Four responsibilities, and only four: semantic contradiction, thematic merge,
+compression, and tie-break. Everything mechanically decidable belongs to the
+Runtime, so this module is deliberately small.
+
+The property that matters most is negative. **The Adjudicator holds no
+privileged write path.** Every proposal it makes is submitted through
+``Runtime.submit()``, validated under the same rules as any agent's update, and
+recorded in `audit` under its own identity. It cannot advance phases, edit the
+audit log, set `verified`, or bypass the transition graph. A backend that
+hallucinates produces rejected updates, not corrupt state — which is the whole
+reason v2.2 split the Orchestrator in two.
+
+The backend is a protocol with a deterministic implementation, so the entire
+control plane is testable end to end without an API key or a single model call.
+The Anthropic adapter lives in ``marep.anthropic_backend`` and is imported only
+when asked for.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Any, Protocol, runtime_checkable
+
+from . import state as st
+from .errors import Cause, Result, reject
+from .runtime import Runtime
+
+ADJUDICATOR = "Adjudicator"
+
+
+# ----------------------------------------------------------------------
+# proposals — what a backend returns
+# ----------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class Position:
+    agent: str
+    claim: str
+    evidence: list[str] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class ContradictionFinding:
+    """Two agents asserting incompatible things about one issue (§15)."""
+
+    issue_id: str
+    positions: list[Position]
+    rationale: str = ""
+
+
+@dataclass(frozen=True)
+class MergeProposal:
+    """Two issues that are the same finding under different names (§13.2)."""
+
+    survivor_id: str
+    duplicate_id: str
+    rationale: str
+
+
+@dataclass(frozen=True)
+class CompressionProposal:
+    """History to relocate under `archive`, plus a summary (§14)."""
+
+    summary: str
+    archive_entries: list[dict[str, Any]] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class TieBreak:
+    """Resolution of a vote the decision rules could not settle (§16.1)."""
+
+    subject: str
+    outcome: str            # confirmed | rejected | unresolved
+    rationale: str
+
+
+# ----------------------------------------------------------------------
+# backend protocol
+# ----------------------------------------------------------------------
+
+@runtime_checkable
+class AdjudicatorBackend(Protocol):
+    """Where judgement happens. The only place a model may be involved.
+
+    Each method receives a scoped read of canonical state and returns
+    proposals. A backend never writes: it cannot reach the Runtime.
+    """
+
+    def detect_contradictions(self, view: dict[str, Any]) -> list[ContradictionFinding]: ...
+
+    def propose_merges(self, view: dict[str, Any]) -> list[MergeProposal]: ...
+
+    def compress(self, view: dict[str, Any]) -> CompressionProposal | None: ...
+
+    def break_tie(self, view: dict[str, Any], vote: dict[str, Any]) -> TieBreak | None: ...
+
+
+class NullBackend:
+    """Proposes nothing. Models §19.5 degraded operation.
+
+    With this installed the Runtime keeps accepting agent appends and keeps
+    advancing phases whose exit criteria are mechanically decidable; only the
+    judgement calls stall. That is the specified behaviour when the Adjudicator
+    is unavailable, and it is worth having as a first-class object rather than
+    as an error path.
+    """
+
+    def detect_contradictions(self, view): return []
+    def propose_merges(self, view): return []
+    def compress(self, view): return None
+    def break_tie(self, view, vote): return None
+
+
+class ScriptedBackend:
+    """Deterministic backend driven by pre-supplied proposals.
+
+    Not a mock of a model — a substitute for one. It makes the control plane
+    testable without an API key, and it is how the "a hallucinating Adjudicator
+    cannot corrupt state" property is exercised: script an illegal proposal and
+    watch the Runtime refuse it.
+    """
+
+    def __init__(
+        self,
+        contradictions: list[ContradictionFinding] | None = None,
+        merges: list[MergeProposal] | None = None,
+        compression: CompressionProposal | None = None,
+        tie_breaks: dict[str, TieBreak] | None = None,
+        fail_with: Exception | None = None,
+    ):
+        self._contradictions = contradictions or []
+        self._merges = merges or []
+        self._compression = compression
+        self._tie_breaks = tie_breaks or {}
+        self._fail_with = fail_with
+        self.calls: list[str] = []
+
+    def _record(self, name: str) -> None:
+        self.calls.append(name)
+        if self._fail_with is not None:
+            raise self._fail_with
+
+    def detect_contradictions(self, view):
+        self._record("detect_contradictions"); return list(self._contradictions)
+
+    def propose_merges(self, view):
+        self._record("propose_merges"); return list(self._merges)
+
+    def compress(self, view):
+        self._record("compress"); return self._compression
+
+    def break_tie(self, view, vote):
+        self._record("break_tie"); return self._tie_breaks.get(vote.get("subject", ""))
+
+
+# ----------------------------------------------------------------------
+# the Adjudicator
+# ----------------------------------------------------------------------
+
+class Adjudicator:
+    """Translates backend judgement into updates the Runtime validates."""
+
+    def __init__(self, runtime: Runtime, backend: AdjudicatorBackend, *, name: str = ADJUDICATOR):
+        self.rt = runtime
+        self.backend = backend
+        self.name = name
+        self._seq = 0
+
+    # ---- helpers -----------------------------------------------------
+
+    def _update_id(self, kind: str) -> str:
+        self._seq += 1
+        return f"ADJ-{kind}-{self._seq:04d}"
+
+    def _next_decision_id(self) -> str:
+        existing = self.rt.state.get("decisions", []) or []
+        return f"DEC-{len(existing) + 1:03d}"
+
+    def _submit(self, kind: str, body: dict[str, Any], *, tokens: int = 0) -> Result:
+        body = {"update_id": self._update_id(kind), "base_version": self.rt.version, **body}
+        return self.rt.submit(body, self.name, tokens=tokens)
+
+    def _view(self, sections: list[str]) -> dict[str, Any]:
+        return self.rt.read(self.name, sections)
+
+    # ---- §15 semantic contradiction ----------------------------------
+
+    def adjudicate_contradictions(self, *, tokens: int = 0) -> list[Result]:
+        """Mark contested and record positions for each contradiction found."""
+        view = self._view(["issues", "conflict_record"])
+        try:
+            findings = self.backend.detect_contradictions(view)
+        except Exception as exc:  # §19.5 — degrade, never corrupt
+            return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
+                           f"adjudicator backend failed: {exc}", version=self.rt.version)]
+
+        results = []
+        for f in findings:
+            results.append(self._submit("contradiction", {
+                "issues": [{"id": f.issue_id, "status": "contested"}],
+                "conflict_record": [{
+                    "issue_id": f.issue_id,
+                    "positions": [
+                        {"agent": p.agent, "claim": p.claim, "evidence": list(p.evidence)}
+                        for p in f.positions
+                    ],
+                }],
+            }, tokens=tokens))
+        return results
+
+    # ---- §13.2 thematic merge ----------------------------------------
+
+    def adjudicate_merges(self, *, tokens: int = 0) -> list[Result]:
+        """Fold duplicates into a survivor, under an exclusive lock (§11.2).
+
+        The duplicate's evidence is carried over before it is archived, so the
+        grounding of the surviving issue is never weakened by a merge.
+        """
+        lock = self.rt.acquire_lock("merge", self.name,
+                                    permitted_sections=["issues", "decisions"])
+        if not lock:
+            return [lock]
+        try:
+            view = self._view(["issues"])
+            try:
+                merges = self.backend.propose_merges(view)
+            except Exception as exc:
+                return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
+                               f"adjudicator backend failed: {exc}", version=self.rt.version)]
+
+            results = []
+            for m in merges:
+                by_id = st.issues_by_id(self.rt.state)
+                dup = by_id.get(m.duplicate_id)
+                if dup is None or m.survivor_id not in by_id:
+                    results.append(reject(
+                        Cause.SCHEMA_VIOLATION,
+                        f"merge names an issue that does not exist: "
+                        f"{m.survivor_id} <- {m.duplicate_id}", version=self.rt.version))
+                    continue
+                carried = [
+                    {k: v for k, v in e.items() if k != "verified"}
+                    for e in (dup.get("evidence") or [])
+                ]
+                results.append(self._submit("merge", {
+                    "issues": [
+                        {"id": m.survivor_id, "evidence": carried},
+                        {"id": m.duplicate_id, "status": "archived"},
+                    ],
+                    "decisions": [{
+                        "id": self._next_decision_id(), "type": "merged",
+                        "subject": f"ISSUE:{m.duplicate_id}",
+                        "outcome": f"merged into {m.survivor_id}",
+                        "rationale": m.rationale, "basis": "adjudicator",
+                        "decided_at": st.utcnow(),
+                    }],
+                }, tokens=tokens))
+            return results
+        finally:
+            self.rt.release_lock(self.name)
+
+    # ---- §14 compression ---------------------------------------------
+
+    def adjudicate_compression(self, *, tokens: int = 0) -> list[Result]:
+        lock = self.rt.acquire_lock("compression", self.name,
+                                    permitted_sections=["archive", "decisions"])
+        if not lock:
+            return [lock]
+        try:
+            view = self._view(["issues", "decisions", "archive"])
+            try:
+                proposal = self.backend.compress(view)
+            except Exception as exc:
+                return [reject(Cause.ADJUDICATOR_UNAVAILABLE,
+                               f"adjudicator backend failed: {exc}", version=self.rt.version)]
+            if proposal is None:
+                return []
+            return [self._submit("compression", {
+                "archive": list(proposal.archive_entries),
+                "decisions": [{
+                    "id": self._next_decision_id(), "type": "compression",
+                    "subject": "RETROSPECTIVE", "outcome": "history archived",
+                    "rationale": proposal.summary, "basis": "adjudicator",
+                    "decided_at": st.utcnow(),
+                }],
+            }, tokens=tokens)]
+        finally:
+            self.rt.release_lock(self.name)
+
+    # ---- §16.1 tie-break ---------------------------------------------
+
+    def adjudicate_tie_breaks(self, *, tokens: int = 0) -> list[Result]:
+        """Settle open votes. A sub-threshold split is not a tie (§16.2).
+
+        Only votes still marked `open` are offered to the backend; a vote that
+        already resolved to `unresolved` is a legitimate terminal outcome and
+        must not be reopened by judgement.
+        """
+        view = self._view(["issues", "votes"])
+        results = []
+        for vote in view.get("votes", []) or []:
+            if vote.get("outcome") != "open":
+                continue
+            try:
+                decision = self.backend.break_tie(view, vote)
+            except Exception as exc:
+                results.append(reject(Cause.ADJUDICATOR_UNAVAILABLE,
+                                      f"adjudicator backend failed: {exc}",
+                                      version=self.rt.version))
+                continue
+            if decision is None:
+                continue
+            issue_id = decision.subject.split(":")[1] if ":" in decision.subject else decision.subject
+            body: dict[str, Any] = {
+                "votes": [{**vote, "outcome": decision.outcome, "closed_at": st.utcnow()}],
+                "decisions": [{
+                    "id": self._next_decision_id(), "type": "consensus_outcome",
+                    "subject": decision.subject, "outcome": decision.outcome,
+                    "rationale": decision.rationale, "basis": "adjudicator",
+                    "decided_at": st.utcnow(),
+                }],
+            }
+            if decision.outcome in ("confirmed", "rejected", "unresolved"):
+                body["issues"] = [{"id": issue_id, "status": decision.outcome}]
+            results.append(self._submit("tiebreak", body, tokens=tokens))
+        return results
+
+    # ---- convenience --------------------------------------------------
+
+    def run_for_phase(self, *, tokens: int = 0) -> list[Result]:
+        """Do whatever the current phase asks of the Adjudicator."""
+        phase = self.rt.phase
+        if phase == "merge":
+            return self.adjudicate_merges(tokens=tokens)
+        if phase == "analysis":
+            return self.adjudicate_contradictions(tokens=tokens)
+        if phase == "consensus":
+            return self.adjudicate_tie_breaks(tokens=tokens)
+        if phase == "compression":
+            return self.adjudicate_compression(tokens=tokens)
+        return []

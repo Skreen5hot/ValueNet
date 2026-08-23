@@ -48,6 +48,9 @@ class Cause(str, Enum):
     PHASE_ENTRY_UNSATISFIED = "phase_entry_unsatisfied"
     PHASE_EXIT_UNSATISFIED = "phase_exit_unsatisfied"
 
+    # --- control plane (§19.5) ---
+    ADJUDICATOR_UNAVAILABLE = "adjudicator_unavailable"
+
     # --- budget (§14.1) ---
     BUDGET_EXHAUSTED = "budget_exhausted"
 
@@ -57,9 +60,13 @@ class Cause(str, Enum):
 
 
 #: Causes that mean "retry after rebasing", as opposed to "fix your update".
-RETRYABLE = frozenset(
-    {Cause.VERSION_CONFLICT, Cause.EXCLUSIVE_OPERATION_IN_PROGRESS}
-)
+RETRYABLE = frozenset({
+    Cause.VERSION_CONFLICT,
+    Cause.EXCLUSIVE_OPERATION_IN_PROGRESS,
+    # §19.5: an unavailable Adjudicator degrades rather than fails. The work is
+    # worth retrying once it is back, so callers can treat it like contention.
+    Cause.ADJUDICATOR_UNAVAILABLE,
+})
 
 
 @dataclass(frozen=True)

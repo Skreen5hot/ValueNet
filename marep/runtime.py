@@ -226,7 +226,8 @@ class Runtime:
         self, candidate: dict[str, Any], agent: str, newly_verified: dict[str, set[str]]
     ) -> tuple[Cause | None, str]:
         current = st.issues_by_id(self.state)
-        actor_is_runtime = agent == RUNTIME
+        may_archive = agent == RUNTIME or (
+            agent == self.adjudicator_name and self.phase == "merge")
         for issue in candidate.get("issues", []) or []:
             old = current.get(issue["id"], {}).get("status")
             if old is None:
@@ -242,7 +243,7 @@ class Runtime:
             has_verified = any(e.get("verified") for e in issue.get("evidence", []) or [])
             cause, detail = transitions.check(
                 old, new,
-                actor_is_runtime=actor_is_runtime,
+                may_archive_proposed=may_archive,
                 has_verified_evidence=has_verified,
                 new_verified_evidence_ids=newly_verified.get(issue["id"], set()),
                 reopen_count=int(issue.get("reopen_count", 0)),

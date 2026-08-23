@@ -42,8 +42,12 @@ REOPENING: frozenset[tuple[str, str]] = frozenset(
     (s, "contested") for s in SETTLED
 )
 
-#: Edges only the Runtime may perform, never an agent.
-RUNTIME_ONLY: frozenset[tuple[str, str]] = frozenset({("proposed", "archived")})
+#: Edges an ordinary agent may never perform. `proposed -> archived` retires an
+#: issue without anyone judging it, which is a control-plane act: the Runtime
+#: does it at Phase 3 close for unevaluated issues, and the Adjudicator does it
+#: during Phase 2 to retire a duplicate it has folded into a survivor.
+CONTROL_PLANE_ONLY: frozenset[tuple[str, str]] = frozenset({("proposed", "archived")})
+RUNTIME_ONLY = CONTROL_PLANE_ONLY  # retained name; see CONTROL_PLANE_ONLY
 
 #: Edges gated on verified evidence (§8.3.1).
 REQUIRES_VERIFIED_EVIDENCE: frozenset[tuple[str, str]] = frozenset({
@@ -68,7 +72,7 @@ def check(
     old: str,
     new: str,
     *,
-    actor_is_runtime: bool = False,
+    may_archive_proposed: bool = False,
     has_verified_evidence: bool = False,
     new_verified_evidence_ids: Iterable[str] = (),
     reopen_count: int = 0,
@@ -93,10 +97,11 @@ def check(
             f"{old} -> {new} is not in the transition graph; from {old!r} allowed: {allowed}",
         )
 
-    if (old, new) in RUNTIME_ONLY and not actor_is_runtime:
+    if (old, new) in CONTROL_PLANE_ONLY and not may_archive_proposed:
         return (
             Cause.ILLEGAL_TRANSITION,
-            f"{old} -> {new} may only be performed by the Runtime",
+            f"{old} -> {new} is a control-plane transition: the Runtime at analysis "
+            "close, or the Adjudicator retiring a merged duplicate during merge",
         )
 
     if (old, new) in REQUIRES_VERIFIED_EVIDENCE and not has_verified_evidence:

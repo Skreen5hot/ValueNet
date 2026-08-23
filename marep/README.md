@@ -21,6 +21,8 @@ Build the Runtime first. It is plain code, it is where every reliability propert
 | Phase entry/exit criteria and advancement | §13 | `phases.py` |
 | Token ledger, scoped reads, compression reserve | §14.1 | `tokens.py` |
 | Building the substrate from real repository data | §7 | `ingest.py` |
+| Judgement: contradiction, merge, compression, tie-break | §4.1.2 | `adjudicator.py` |
+| The Anthropic-backed Adjudicator | §4.1.2 | `anthropic_backend.py` |
 
 ## Use
 
@@ -105,16 +107,36 @@ Two properties matter more than how many sources it covers:
 ## Tests
 
 ```
-python -m pytest tests/ -q          # 56 conformance tests
+python -m pytest tests/ -q          # 72 conformance tests
 python examples/walkthrough.py      # a full six-phase retrospective, no model
 python examples/real_sprint.py      # grounded in this repository's real git history
 ```
 
 The walkthrough is the useful demo: every agent is a hard-coded dict, which isolates what the Runtime does from what an agent would do. It exercises a stale-version rebase, a lock refusal, an ungrounded confirmation, an unevaluated-issue archive that would otherwise deadlock Phase 3, a sub-threshold vote landing on `unresolved`, and a Phase 5 exit blocked until a confirmed issue gets an action or a waiver.
 
-## Deliberately not here
+## The Adjudicator
 
-**Anything requiring judgement.** Semantic contradiction, thematic merge, compression, and tie-break belong to the Adjudicator (§4.1.2), which holds no privileged write path: its updates come through `submit()` and are validated exactly like any agent's.
+`adjudicator.py` is the model-driven half of the control plane, and it is deliberately small: four methods, because everything mechanically decidable already lives in the Runtime.
+
+Its defining property is negative. **It holds no privileged write path.** Every proposal goes through `Runtime.submit()`, is validated under the same rules as any agent's update, and is audited under its own identity. It cannot advance phases, edit `audit`, set `verified`, or bypass the transition graph. A backend that hallucinates produces *rejected updates, not corrupt state* — which is the whole reason v2.2 split the Orchestrator, and which the tests exercise directly: scripted proposals that confirm an ungrounded issue, make an illegal transition, write out of phase, or merge a nonexistent issue are all refused.
+
+Backends implement a four-method protocol:
+
+| Backend | Use |
+| --- | --- |
+| `ScriptedBackend` | deterministic, pre-supplied proposals — the whole control plane runs end to end with no API key |
+| `NullBackend` | proposes nothing; models §19.5 degraded operation as a first-class object rather than an error path |
+| `AnthropicBackend` | asks Claude. The only module importing the SDK, and only when constructed |
+
+```python
+from marep import Adjudicator, ScriptedBackend
+adj = Adjudicator(runtime, ScriptedBackend())
+adj.run_for_phase()          # dispatches to whatever the current phase asks for
+```
+
+`AnthropicBackend` uses structured outputs (`output_config.format`) so a proposal is either well-formed JSON or an API failure — no prose parsing between the model and the Runtime. The schema buys parseability, not correctness: a well-formed proposal can still be wrong, and being refused at `submit()` is the design working.
+
+## Deliberately not here
 
 **Human review.** MAREP is specified as a fully autonomous protocol (§1.1). That is an experimental constraint, not an omission, and implementations that add a human gate are not conforming deployments.
 

@@ -52,6 +52,19 @@ from .adjudicator import (
     ScriptedBackend,
     TieBreak,
 )
+from .agents import (
+    ONTOLOGY_ROSTER,
+    ActionProposal,
+    Agent,
+    AgentBackend,
+    AgentRole,
+    Assessment,
+    EvidenceRef,
+    Finding,
+    ScriptedAgentBackend,
+    SilentAgentBackend,
+    build_roster,
+)
 from .errors import Cause, MarepError, Result, StateCorruption
 from .runtime import Runtime
 from .substrate import Record, Substrate
@@ -69,6 +82,17 @@ __all__ = [
     "ScriptedBackend",
     "NullBackend",
     "ContradictionFinding",
+    "Agent",
+    "AgentBackend",
+    "AgentRole",
+    "ONTOLOGY_ROSTER",
+    "build_roster",
+    "ScriptedAgentBackend",
+    "SilentAgentBackend",
+    "Finding",
+    "Assessment",
+    "EvidenceRef",
+    "ActionProposal",
     "MergeProposal",
     "CompressionProposal",
     "TieBreak",

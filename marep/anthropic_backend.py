@@ -181,11 +181,12 @@ class AnthropicBackend:
 
     # ------------------------------------------------------------------
 
-    def _ask(self, prompt: str, schema: dict[str, Any]) -> dict[str, Any]:
+    def _ask(self, prompt: str, schema: dict[str, Any],
+             system: str | None = None) -> dict[str, Any]:
         kwargs: dict[str, Any] = {
             "model": self.model,
             "max_tokens": self.max_tokens,
-            "system": SYSTEM,
+            "system": system or SYSTEM,
             "messages": [{"role": "user", "content": prompt}],
             "thinking": {"type": "adaptive"},
             "output_config": {

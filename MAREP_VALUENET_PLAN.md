@@ -1,8 +1,8 @@
 # Running MAREP over the full ValueNet suite
 
-**Status:** Step 1 of 4 complete — the ontology substrate source is built (§2)
+**Status:** Steps 1 and 2 complete — substrate source (§2) and agents (§3) both built
 **Target:** every ontology module in this repository, BFO layer and DUL layer
-**Remaining before a run:** the analytical agents (§3)
+**Remaining:** run it (§4, §5)
 
 ---
 
@@ -97,6 +97,7 @@ Every one of these is deterministic, and every one has been run by hand during t
 * `TestingFramework.md` Query 1 and Query 3 hit counts
 * duplicate-triple ratio per file (the `ClosureHaidtValueFrames` problem, generalised)
 * prefix declared-versus-used per file (the `ThatsAllFolks` problem, generalised)
+* malformed IRIs in files that nonetheless parse — rdflib warns "does not look like a valid URI" on part of the corpus, and because those files *do* parse, `files_not_parsing` says nothing about them. Found while running the composition test. Not yet emitted, so a finding about it would be uncitable.
 
 ### Why this is the load-bearing piece
 
@@ -106,9 +107,30 @@ It closes the same circularity the git ingest closed. Without it, an agent claim
 
 ---
 
-## 3. Prerequisite B — the analytical agents
+## 3. Prerequisite B — the analytical agents — **BUILT**
 
-MAREP has a Runtime and an Adjudicator. **It has no agents.** Phase 1 is Independent Gathering and there is currently nothing to gather from.
+*Status: `marep/agents.py` and `marep/anthropic_agents.py`, 18 tests. The full
+roster runs all six phases end to end in `examples/full_retrospective.py`
+against the real corpus, with zero rejections and no model calls.*
+
+One correction to the design below, arrived at while building it. The plan said
+`@Skeptic` needs a special capability because at threshold 0.7 a lone dissenter
+can never swing a vote. That was true and the conclusion was wrong: the
+Skeptic's power is not in the tally but in `proposed → contested`, since Phase 4
+cannot exit while anything is contested (§13.4). One agent contesting therefore
+forces adjudication of any finding — more authority than a vote share would
+give it, already present in the transition graph, and a test pins it. Inventing
+a capability would have obscured a mechanism that already worked.
+
+One design decision worth recording. When an agent confirms an issue whose
+evidence does not verify, it records its endorsement in `confirmed_by` but does
+*not* propose the status change. Proposing it would have the Runtime refuse the
+whole update, losing the agent's position along with the illegal transition.
+The gate still bars confirmation; the opinion survives.
+
+### As designed
+
+MAREP had a Runtime and an Adjudicator and **no agents**. Phase 1 is Independent Gathering and there was nothing to gather from.
 
 §4 requires epistemic diversity and forbids two agents covering the same ground. The default roster in the spec (`@Developer`, `@QA`, `@DeliveryManager`) is shaped for a software sprint and is wrong for an ontology. Proposed roster:
 
@@ -125,7 +147,7 @@ Two design constraints carried from the review of MAREP itself:
 * **`@Skeptic` must be able to block.** At `standard_threshold: 0.7` with a five-agent roster, confirmation needs 4 of 5, so 2 dissenters block and a lone Skeptic is never pivotal. Either set `tie_break: skeptic` or give the role a bounded forced-re-vote. A Skeptic that cannot affect an outcome is decoration.
 * **Agents get scoped reads (§14.1), not the corpus.** 84,149 triples will not fit in a context and do not need to. Agents read the `metric` and `document` records — a few hundred rows — and request specific file content only when a finding requires it.
 
-**Estimated size:** ~250 lines plus prompts, sharing the backend protocol the Adjudicator already defines.
+**Actual:** ~430 lines across two modules plus 18 tests, sharing the backend protocol the Adjudicator defines. `ScriptedAgentBackend` runs the roster with no API key; `SilentAgentBackend` models an agent with nothing to say.
 
 ---
 

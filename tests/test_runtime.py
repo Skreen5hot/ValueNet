@@ -335,6 +335,24 @@ def test_phase_exit_blocked_until_roster_submits(rt: Runtime):
     assert "QA" in r.detail
 
 
+def test_silent_agent_can_decline_and_unblock_phase_1(rt: Runtime):
+    """§13.1 — without a declination path one quiet agent deadlocks gathering."""
+    for n, agent in enumerate(["Developer", "QA", "Architect"], start=1):
+        rt.submit(upd(f"S{n}", rt.version, {"issues": [issue(
+            f"AAA-{n:03d}",
+            evidence=[{"id": f"EV-{n:03d}", "claim": "Rollback needed manual work",
+                       "source": {"type": "ci_run", "ref": "CI-1204"},
+                       "submitted_by": agent}])]}), agent)
+    blocked = rt.advance_phase()
+    assert blocked.cause is Cause.PHASE_EXIT_UNSATISFIED and "Skeptic" in blocked.detail
+
+    assert rt.submit(upd("S9", rt.version, {"decisions": [{
+        "id": "DEC-001", "type": "declination", "subject": "AGENT:Skeptic",
+        "outcome": "declined", "basis": "Skeptic"}]}), "Skeptic"), "declination must be writable"
+    assert rt.advance_phase(), "declination should satisfy the exit criterion"
+    assert rt.phase == "merge"
+
+
 def test_unevaluated_issue_would_deadlock_analysis_but_is_archived(rt: Runtime):
     """§13.3 — the v2.1 deadlock: `proposed` had no exit edge."""
     rt.submit(upd("U1", 0, {"issues": [issue()]}), "Developer")
@@ -410,4 +428,7 @@ def test_reserve_is_withheld_from_ordinary_turns(rt: Runtime):
 
 def test_scoped_read_excludes_unauthorized_sections(rt: Runtime):
     view = rt.read("Developer")
-    assert set(view) == {"retro", "issues"}, "gathering authorizes issues only (§14.1)"
+    assert set(view) == {"retro", "issues", "decisions"}, (
+        "gathering authorizes issues plus decisions, the latter so an agent can "
+        "record a declination (§13.1)")
+    assert "votes" not in view and "archive" not in view

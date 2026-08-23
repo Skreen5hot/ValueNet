@@ -308,7 +308,7 @@ A Decision records a settled judgement and the basis for it. Every terminal stat
 ```yaml
 - id: <string>            # Unique; convention DEC-<NNN>
   type: <enum>            # consensus_outcome | no_action_required | reopen_blocked |
-                          # unevaluated_archive | compression
+                          # unevaluated_archive | compression | declination
   subject: <string>       # Reference, e.g. ISSUE:PERF-001 or ACTION:ACT-004
   outcome: <string>       # The settled result
   rationale: <string>     # Why; free text, subject to §18.3 budgets
@@ -317,6 +317,8 @@ A Decision records a settled judgement and the basis for it. Every terminal stat
 ```
 
 `basis: runtime` is reserved for mechanically determined decisions (unevaluated archive, blocked reopening). `basis: adjudicator` MUST cite the judgement made. `basis: <vote_id>` MUST reference an entry in `votes`.
+
+`declination` is how an agent satisfies the Phase 1 exit criterion (§13.1) with nothing to report; its `subject` MUST be `AGENT:<name>`. Agents are therefore authorized to write `decisions` during gathering. Without both of those, "submitted findings or explicitly declined" is unsatisfiable for a silent agent, and one such agent deadlocks the phase — the same defect as a status with no outgoing edge.
 
 ---
 

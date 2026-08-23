@@ -4,6 +4,7 @@ Agents in MAREP need not be Python. They submit YAML update documents and read
 back a structured verdict, which is all this exposes. Every command is a thin
 wrapper over :class:`marep.Runtime`; no decision logic lives here.
 
+    python -m marep ingest    --sprint sprint-42 --since 2026-08-01 --until 2026-08-14
     python -m marep init      --sprint sprint-42 --substrate SPRINT_INPUT.yaml \\
                               --roster QA,Architect,Developer,Skeptic
     python -m marep submit    --agent QA --update update.yaml
@@ -26,6 +27,7 @@ from pathlib import Path
 
 import yaml
 
+from . import ingest as ing
 from . import state as st
 from .errors import MarepError
 from .runtime import Runtime
@@ -135,6 +137,24 @@ def cmd_report(args) -> int:
     return 0
 
 
+def cmd_ingest(args) -> int:
+    result = ing.build(
+        args.sprint, args.since, args.until,
+        repo=args.repo, notes=args.notes, include_github=not args.no_github,
+    )
+    if result.errors:
+        print(f"substrate does not validate: {result.errors[0]}", file=sys.stderr)
+        return 2
+    out = ing.write(result, args.out)
+    gaps = [c["type"] for c in result.coverage if not c["available"]]
+    _emit({"written": str(out), "sprint": args.sprint,
+           "range": f"{args.since} .. {args.until}",
+           "records": result.total,
+           "by_type": {k: v for k, v in result.counts.items() if v},
+           "coverage_gaps": gaps}, args.json)
+    return 0
+
+
 def cmd_validate(args) -> int:
     doc = st.load(args.state)
     errors = validate_state(doc)
@@ -186,6 +206,16 @@ def build_parser() -> argparse.ArgumentParser:
     q = sub.add_parser("unlock", help="release a lock")
     q.add_argument("--holder", required=True)
     q.set_defaults(func=cmd_unlock)
+
+    q = sub.add_parser("ingest", help="build a substrate from repository data")
+    q.add_argument("--sprint", required=True)
+    q.add_argument("--since", required=True, help="sprint start, ISO date")
+    q.add_argument("--until", required=True, help="sprint end, ISO date")
+    q.add_argument("--repo", default=".")
+    q.add_argument("--out", default=DEFAULT_SUBSTRATE)
+    q.add_argument("--notes", default=None, help="YAML list of unlogged observations (§7.4)")
+    q.add_argument("--no-github", action="store_true", help="git only; no gh queries")
+    q.set_defaults(func=cmd_ingest)
 
     sub.add_parser("report", help="the figures §20 requires").set_defaults(func=cmd_report)
     sub.add_parser("validate", help="schema and checksum check").set_defaults(func=cmd_validate)

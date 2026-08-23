@@ -20,6 +20,7 @@ Build the Runtime first. It is plain code, it is where every reliability propert
 | Anti-patterns: persona, openers, budgets, non-substantive | §18 | `checks.py` |
 | Phase entry/exit criteria and advancement | §13 | `phases.py` |
 | Token ledger, scoped reads, compression reserve | §14.1 | `tokens.py` |
+| Building the substrate from real repository data | §7 | `ingest.py` |
 
 ## Use
 
@@ -53,6 +54,7 @@ if not result:
 Agents need not be Python; the CLI takes YAML and returns a structured verdict.
 
 ```
+python -m marep ingest --sprint sprint-42 --since 2026-08-01 --until 2026-08-14
 python -m marep init   --sprint sprint-42 --roster QA,Developer,Architect,Skeptic
 python -m marep submit --agent QA --update update.yaml --json
 python -m marep status
@@ -90,11 +92,22 @@ Thirteen ordered steps. Any failure returns before step 13, so a rejected update
 
 **Checks judge what an update introduces, not the whole document.** Re-scanning everything means one string that trips a rule permanently blocks every later update. This was a real bug caught by the walkthrough: the Runtime's own generated rationale opened with "No", which is on the conversational-opener list, and deadlocked the retrospective from Phase 4 onward.
 
+## Building a substrate
+
+`ingest` produces `SPRINT_INPUT.yaml` from sources that exist independently of the retrospective: `git log` for commits, and the `gh` CLI for pull requests, issues, CI runs, and releases. Until it existed the substrate had to be hand-authored, which made the grounding gate circular — evidence was "verified" against a file somebody typed.
+
+Two properties matter more than how many sources it covers:
+
+**Determinism.** The same repository and date range produce byte-identical output. Records are sorted *before* identifiers are minted, so a re-run does not renumber everything and invalidate evidence a previous retrospective already cited.
+
+**Honest gaps.** Every one of the ten record types gets a coverage entry. A source that is missing, unauthenticated, or erroring is reported unavailable with the real reason (§7.3) rather than silently omitted — so a retrospective that draws conclusions about deployment while `deploy` was never collected says so on the face of its own input. This is load-bearing: the first run against this repository reported `deploy` unavailable because `gh release list` rejected a field, which is exactly how the bug was found.
+
 ## Tests
 
 ```
-python -m pytest tests/ -q          # 44 conformance tests
+python -m pytest tests/ -q          # 56 conformance tests
 python examples/walkthrough.py      # a full six-phase retrospective, no model
+python examples/real_sprint.py      # grounded in this repository's real git history
 ```
 
 The walkthrough is the useful demo: every agent is a hard-coded dict, which isolates what the Runtime does from what an agent would do. It exercises a stale-version rebase, a lock refusal, an ungrounded confirmation, an unevaluated-issue archive that would otherwise deadlock Phase 3, a sub-threshold vote landing on `unresolved`, and a Phase 5 exit blocked until a confirmed issue gets an action or a waiver.

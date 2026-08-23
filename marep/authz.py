@@ -26,7 +26,11 @@ RESERVED_FIELDS: frozenset[str] = frozenset({"verified"})
 
 #: phase -> role -> writable top-level sections.
 PHASE_AUTHORIZATION: dict[str, dict[str, frozenset[str]]] = {
-    "gathering":   {"agent": frozenset({"issues"}),
+    # `decisions` is writable by agents in gathering so an agent with nothing
+    # to report can record a declination. Without it §13.1's "submitted or
+    # explicitly declined" exit criterion is unsatisfiable and one silent agent
+    # deadlocks the phase.
+    "gathering":   {"agent": frozenset({"issues", "decisions"}),
                     "adjudicator": frozenset(),
                     "runtime": frozenset({"issues", "decisions"})},
     "merge":       {"agent": frozenset(),

@@ -40,11 +40,11 @@ def exit_criteria(state: dict[str, Any], roster: Iterable[str]) -> tuple[bool, l
         submitted = {
             ev.get("submitted_by")
             for i in issues for ev in (i.get("evidence") or [])
-        } | {d.get("basis") for d in state.get("decisions", []) or []
-             if d.get("type") == "no_action_required"}
+        }
         declined = {
-            d["subject"] for d in state.get("decisions", []) or []
-            if d.get("type") == "consensus_outcome" and d.get("outcome") == "declined"
+            d.get("subject", "").removeprefix("AGENT:")
+            for d in state.get("decisions", []) or []
+            if d.get("type") == "declination"
         }
         missing = [a for a in roster if a not in submitted and a not in declined]
         if missing:

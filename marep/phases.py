@@ -14,7 +14,8 @@ PHASES: tuple[str, ...] = (
 )
 
 #: Statuses that satisfy the Phase 3 exit criterion.
-_ANALYSIS_SETTLED = frozenset({"confirmed", "rejected", "contested", "archived"})
+_ANALYSIS_SETTLED = frozenset(
+    {"confirmed", "rejected", "contested", "unresolved", "archived"})
 
 
 def next_phase(phase: str) -> str | None:

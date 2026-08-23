@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from typing import Any, Protocol, runtime_checkable
 
 from . import state as st
+from .checks import DEFAULT_TEXT_BUDGETS
 from .errors import Cause, Result, reject
 from .runtime import Runtime
 
@@ -174,6 +175,19 @@ class Adjudicator:
         self._seq += 1
         return f"ADJ-{kind}-{self._seq:04d}"
 
+    def _fit(self, text: str, key: str = "decision.rationale") -> str:
+        """Clip free text to its budget rather than lose the update carrying it.
+
+        A rejected update loses the whole finding; a clipped rationale loses
+        only the tail of an explanation, and says so. Losing a correct
+        contradiction to a character count is the worse outcome.
+        """
+        limit = {**DEFAULT_TEXT_BUDGETS, **self.rt.text_budgets}.get(key)
+        if limit is None or len(text) <= limit:
+            return text
+        marker = " [clipped]"
+        return text[: limit - len(marker)].rstrip() + marker
+
     def _next_decision_id(self) -> str:
         existing = self.rt.state.get("decisions", []) or []
         return f"DEC-{len(existing) + 1:03d}"
@@ -238,7 +252,7 @@ class Adjudicator:
                 body["decisions"] = [{
                     "id": self._next_decision_id(), "type": "consensus_outcome",
                     "subject": f"ISSUE:{f.issue_id}", "outcome": "contested",
-                    "rationale": f.rationale, "basis": "adjudicator",
+                    "rationale": self._fit(f.rationale), "basis": "adjudicator",
                     "decided_at": st.utcnow(),
                 }]
             results.append(self._submit("contradiction", body, tokens=tokens))
@@ -284,7 +298,7 @@ class Adjudicator:
                         "id": self._next_decision_id(), "type": "merged",
                         "subject": f"ISSUE:{m.duplicate_id}",
                         "outcome": f"merged into {m.survivor_id}",
-                        "rationale": m.rationale, "basis": "adjudicator",
+                        "rationale": self._fit(m.rationale), "basis": "adjudicator",
                         "decided_at": st.utcnow(),
                     }],
                 }, tokens=tokens))
@@ -311,7 +325,7 @@ class Adjudicator:
                 "decisions": [{
                     "id": self._next_decision_id(), "type": "compression",
                     "subject": "RETROSPECTIVE", "outcome": "history archived",
-                    "rationale": proposal.summary, "basis": "adjudicator",
+                    "rationale": self._fit(proposal.summary), "basis": "adjudicator",
                     "decided_at": st.utcnow(),
                 }],
             }, tokens=tokens)]
@@ -356,7 +370,7 @@ class Adjudicator:
                 "decisions": [{
                     "id": self._next_decision_id(), "type": "consensus_outcome",
                     "subject": decision.subject, "outcome": decision.outcome,
-                    "rationale": decision.rationale, "basis": "adjudicator",
+                    "rationale": self._fit(decision.rationale), "basis": "adjudicator",
                     "decided_at": st.utcnow(),
                 }],
             }

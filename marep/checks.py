@@ -34,7 +34,11 @@ DEFAULT_TEXT_BUDGETS: dict[str, int] = {
     "evidence.claim": 300,
     "action.description": 400,
     "action.outcome_criteria": 300,
-    "decision.rationale": 600,
+    # Reasoning, not prose. §18.3 exists to stop conversational sprawl, not to
+    # cap explanation, and 600 characters is about a hundred words — too tight
+    # to say why two causal accounts are incompatible. A live run lost a correct
+    # contradiction to this number.
+    "decision.rationale": 2000,
     "conflict_record.positions.claim": 300,
 }
 

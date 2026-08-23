@@ -191,6 +191,25 @@ def test_can_confirm_with_verified_evidence(rt: Runtime):
 # §16.3 / §16.4 transitions and reopening
 # ======================================================================
 
+def test_true_but_unconfirmable_finding_has_an_honest_terminal_state(rt: Runtime):
+    """§16.3 — the gap a live run found.
+
+    An issue can be evaluated, uncontested, true, and unconfirmable for want of
+    verified evidence. Every other edge from `proposed` says something false
+    about it: `rejected` calls it untrue, `archived` calls it unevaluated,
+    `contested` invents a disagreement.
+    """
+    ev = [{"id": "EV-900", "claim": "true but unverifiable", "submitted_by": "Skeptic",
+           "source": {"type": "ticket", "ref": "NO-SUCH-RECORD"}}]
+    rt.submit(upd("U1", rt.version, {"issues": [issue("DUP-001", evidence=ev)]}), "Skeptic")
+    rt.state["retro"]["phase"] = "analysis"
+    r = rt.submit(upd("U2", rt.version,
+                      {"issues": [{"id": "DUP-001", "status": "unresolved"}]}), "Skeptic")
+    assert r, r.detail
+    ok_, unmet = rt.exit_ready()
+    assert ok_, f"unresolved must settle analysis: {unmet}"
+
+
 def test_transition_graph_matches_spec():
     assert transitions.outgoing("archived") == set()
     assert ("confirmed", "contested") in transitions.EDGES

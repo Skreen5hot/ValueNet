@@ -22,7 +22,13 @@ EDGES: frozenset[tuple[str, str]] = frozenset({
     ("proposed", "contested"),
     ("proposed", "confirmed"),
     ("proposed", "rejected"),
-    ("proposed", "archived"),     # Runtime only, at Phase 3 close, cause `unevaluated`
+    ("proposed", "archived"),     # control plane only; see CONTROL_PLANE_ONLY
+    # An issue can be evaluated, uncontested, true, and still unconfirmable for
+    # want of verified evidence. Without this edge it has nowhere honest to go:
+    # `confirmed` is barred by the grounding gate, `rejected` asserts it is
+    # false, `archived` is reserved for issues nobody evaluated, and `contested`
+    # invents a disagreement that did not happen.
+    ("proposed", "unresolved"),
 
     ("contested", "confirmed"),
     ("contested", "rejected"),

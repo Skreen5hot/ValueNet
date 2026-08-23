@@ -632,6 +632,8 @@ proposed   → archived           [control plane only: Runtime at Phase 3 close
 contested  → confirmed          [requires verified evidence, §8.3.1]
 contested  → rejected
 contested  → unresolved
+proposed   → unresolved         [evaluated, uncontested, and unconfirmable
+                                 for want of verified evidence]
 
 confirmed  → contested          [reopening; see §16.4]
 rejected   → contested          [reopening; see §16.4]
@@ -643,6 +645,8 @@ unresolved → archived
 ```
 
 All other transitions MUST be rejected by the Runtime with cause `illegal_transition`.
+
+An issue reaches `unresolved` from `proposed` when it has been evaluated, nobody contested it, and it still cannot be confirmed because no evidence on it verifies. Such a finding may be perfectly true. Without this edge it has nowhere honest to go: `confirmed` is barred by §8.3.1, `rejected` asserts it is false, `archived` is reserved for issues nobody evaluated, and `contested` invents a disagreement that never happened.
 
 `unresolved` is terminal for the purpose of phase exit: it satisfies Phase 4 exit and requires no action in Phase 5. It remains reopenable on new grounds, like any settled status.
 
@@ -717,7 +721,7 @@ text_budgets:            # characters
   evidence.claim: 300
   action.description: 400
   action.outcome_criteria: 300
-  decision.rationale: 600
+  decision.rationale: 2000
   conflict_record.positions.claim: 300
 ```
 

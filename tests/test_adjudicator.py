@@ -252,6 +252,25 @@ def test_propose_protects_inspection_calls(rt: Runtime):
     assert "credit exhausted" in err.detail
 
 
+def test_long_rationale_is_clipped_not_dropped(rt: Runtime):
+    """A live run lost a correct contradiction to a 600-character budget.
+
+    The finding matters more than the tail of its explanation, so an
+    over-budget rationale is clipped and says so, rather than taking the whole
+    update down with it.
+    """
+    _seed(rt, "PERF-001")
+    adj = Adjudicator(rt, ScriptedBackend(contradictions=[
+        ContradictionFinding("PERF-001", [Position("QA", "conflicting account", ["EV-001"])],
+                             "x" * 5000)]))
+    results = adj.adjudicate_contradictions()
+    assert all(r.accepted for r in results), [r.detail for r in results]
+    dec = next(d for d in rt.state["decisions"] if d["subject"] == "ISSUE:PERF-001")
+    assert dec["rationale"].endswith("[clipped]")
+    assert len(dec["rationale"]) <= 2000
+    assert rt.state["issues"][0]["status"] == "contested", "the finding survived"
+
+
 def test_run_for_phase_dispatches_by_phase(rt: Runtime):
     _seed(rt, "DUP-001", "DUP-002", phase="merge")
     backend = ScriptedBackend(merges=[MergeProposal("DUP-001", "DUP-002", "dup")])

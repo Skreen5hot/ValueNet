@@ -332,14 +332,23 @@ def shacl_metrics(repo: Path) -> list[Metric]:
                        tool="pyshacl")]
 
     data = rdflib.Graph()
+    loaded = 0
     for n in ("valuenet-core", "valuenet-schwartz-values", "valuenet-moral-foundations",
               "valuenet-folk", "valuenet-moral-epistemics", "valuenet-moral-epistemics-scenario"):
         p = repo / "BFO" / f"{n}.ttl"
         if p.exists():
             try:
                 data.parse(str(p))
+                loaded += 1
             except Exception:
                 pass
+    # What the shape check does not see. A live agent read `shacl_violations: 0`
+    # and pointed out it is largely an artifact of 127 files never being
+    # loadable: a file that cannot be parsed cannot violate a shape. Same
+    # scope-blindness as the grounding metric, so it gets the same treatment.
+    out.append(Metric("shacl_files_validated", "corpus", loaded,
+                      detail="files actually loaded into the SHACL data graph", tool="pyshacl"))
+
     for shape_file in shapes:
         try:
             sg = rdflib.Graph(); sg.parse(str(shape_file))

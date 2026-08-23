@@ -728,9 +728,11 @@ text_budgets:            # characters
 **Conversational openers.** A free-text field whose first non-whitespace token matches the marker list MUST be rejected with cause `conversational_artifact`. The default list is normative and closed, so the check stays decidable:
 
 ```text
-I  We  Well  So  Okay  OK  Actually  Honestly  Basically  Just
-Great  Agreed  Right  Sure  Thanks  Yes  No  Maybe  Perhaps  Indeed
+I  We  Well  So  Okay  OK  Actually  Honestly  Basically
+Great  Agreed  Right  Sure  Thanks  Maybe  Perhaps  Indeed
 ```
+
+`No`, `Yes` and `Just` are rejected **only when a comma follows**. They open a reply and a technical sentence equally well, and treating them as unconditional markers rejected six sound findings in a live run — "No upper ontology is imported" is a finding, while "No, that is not right" is a reply. The comma is what separates them.
 
 Connectives occurring mid-field (`however`, `moreover`, `that said`) SHOULD be flagged for revision but MUST NOT be auto-rejected: prose glue inside a rationale is not the same failure as a field that opens as dialogue, and rejecting it would fight legitimate technical writing.
 

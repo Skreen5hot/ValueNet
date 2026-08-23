@@ -46,9 +46,16 @@ DEFAULT_TEXT_BUDGETS: dict[str, int] = {
 #: Mid-field connectives are flagged, never auto-rejected: prose glue inside a
 #: rationale is not the same failure as a field that opens as dialogue.
 CONVERSATIONAL_OPENERS = frozenset({
-    "i", "we", "well", "so", "okay", "ok", "actually", "honestly", "basically", "just",
-    "great", "agreed", "right", "sure", "thanks", "yes", "no", "maybe", "perhaps", "indeed",
+    "i", "we", "well", "so", "okay", "ok", "actually", "honestly", "basically",
+    "great", "agreed", "right", "sure", "thanks", "maybe", "perhaps", "indeed",
 })
+
+#: Words that open a reply conversationally *and* open a technical sentence
+#: perfectly well. A live run rejected six sound findings — "No upper ontology
+#: is imported", "No class-bearing file declares an import" — because "no" was
+#: on the list above. They are rejected only when a comma follows, which is
+#: what separates "No, that's wrong" from "No import graph exists".
+AMBIGUOUS_OPENERS = frozenset({"no", "yes", "just"})
 
 MID_FIELD_CONNECTIVES = frozenset({"however", "moreover", "furthermore", "that said", "of course"})
 
@@ -150,7 +157,12 @@ def check_conversational_openers(
     """§18.3 opener half — a hard reject on a closed marker list."""
     for path, _key, text in introduced_text(doc, current):
         m = _FIRST_TOKEN.match(text)
-        if m and m.group(1).lower() in CONVERSATIONAL_OPENERS:
+        if not m:
+            continue
+        first = m.group(1).lower()
+        conversational = first in CONVERSATIONAL_OPENERS or (
+            first in AMBIGUOUS_OPENERS and text[m.end():m.end() + 1] == ",")
+        if conversational:
             return (
                 Cause.CONVERSATIONAL_ARTIFACT,
                 f"{path} opens with {m.group(1)!r}, a conversational marker; "

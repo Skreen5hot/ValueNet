@@ -333,6 +333,24 @@ def test_conversational_opener_rejected(rt: Runtime):
     assert r.cause is Cause.CONVERSATIONAL_ARTIFACT
 
 
+def test_a_negation_is_not_a_conversational_opener(rt: Runtime):
+    """A live run rejected six sound findings for opening with "No".
+
+    "No upper ontology is imported" is a finding. "No, that's wrong" is a
+    reply. The comma is what separates them, and the first version of the rule
+    could not tell.
+    """
+    ok = issue()
+    ok["title"] = "No upper ontology is imported by any class-bearing file"
+    ok["evidence"][0]["claim"] = "No import graph connects the modules"
+    assert rt.submit(upd("U1", 0, {"issues": [ok]}), "Developer"), "a negation is prose"
+
+    bad = issue("OTHER-001")
+    bad["evidence"][0]["claim"] = "No, that is not what the metric shows"
+    r = rt.submit(upd("U2", rt.version, {"issues": [bad]}), "Developer")
+    assert r.cause is Cause.CONVERSATIONAL_ARTIFACT, "a reply is still a reply"
+
+
 def test_text_budget_enforced(rt: Runtime):
     bad = issue()
     bad["title"] = "Deployment " + "x" * 200

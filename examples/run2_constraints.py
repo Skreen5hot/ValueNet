@@ -128,8 +128,13 @@ def main(argv=None) -> int:
         print(f"  substrate  {len(substrate)} records, loaded from disk")
     print(f"  gaps       {substrate.unavailable_types()}")
 
-    records = [r for r in (built.document["records"] if built else [])
-               if r["type"] == "metric"]
+    # Read the records from the substrate itself, not from the build result.
+    # Taking them from `built` meant a resumed run had none to read and the
+    # pre-flight announced "0/11 checks -- MISSING, so no finding can cite
+    # them" over a substrate holding all eleven. That is the exact failure
+    # this pre-flight exists to prevent, produced by the pre-flight.
+    records = [r for r in substrate.to_dict().get("records", [])
+               if r.get("type") == "metric"]
     present = {r["payload"]["check"] for r in records}
     missing = [c for c in CONSTRAINT_CHECKS if c not in present]
     print(f"\n  constraint evidence available: "

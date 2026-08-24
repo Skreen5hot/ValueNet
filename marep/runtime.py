@@ -249,7 +249,18 @@ class Runtime:
             prior_ids = {e["id"] for e in current.get(issue["id"], {}).get("evidence", []) or []}
             fresh: set[str] = set()
             for ev in issue.get("evidence", []) or []:
-                ev["verified"] = self.substrate.resolve(ev.get("source", {}))
+                verdict, why = self.substrate.assess(
+                    ev.get("source", {}), ev.get("claim", ""))
+                ev["grounding"] = verdict
+                ev["grounding_note"] = why
+                # `verified` now means the record supports the claim, not
+                # merely that the reference resolves. A Run 3 agent cited a
+                # statement-count metric for a claim about domain and range;
+                # the reference resolved, the claim was false, and it was
+                # marked verified on three findings. Assessed over Run 3's 228
+                # items this leaves 194 supported and blocks none of its 27
+                # findings, so the bar rises without rewriting history.
+                ev["verified"] = verdict == "supported"
                 if ev["verified"] and ev["id"] not in prior_ids:
                     fresh.add(ev["id"])
             if fresh:

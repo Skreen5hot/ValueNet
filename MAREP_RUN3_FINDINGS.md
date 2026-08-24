@@ -7,11 +7,17 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 - **findings** 27 — 22 confirmed, 3 unresolved, 2 archived
 - **tokens declared** 425,000
 - **evidence** 228/228 verified against the substrate
-- **reconciled** against the tree at `42e8126` — 3 finding(s) superseded or resolved; the state file itself is unmodified
+- **reconciled** against the tree at `42e8126` — 6 finding(s) superseded or resolved; the state file itself is unmodified
 
 ## confirmed (22)
 
 ### ALIGN-002 — One undefined predicate carries the trigger claims of three mutually independent value theories over overlappi [clipped]
+
+> **PREMISE FALSE - the conclusion stands, a supporting claim does not**
+>
+> Rests on a false premise I supplied. The Run 3 Alignment brief said vcvf:triggers has no domain, no range and no definition. It declares rdfs:domain owl:Thing and rdfs:range vcvf:Value at ValueCore.ttl:97; only the definition was missing. The finding's own conclusion - that one undefined predicate carries the trigger claims of three groups - survives, because "undefined" is the true part. Its supporting sentences about domain and range do not.
+> - The predicate declares both, verified directly against the merged graph.
+> - The grounding gate marked the claim verified because the citation resolved. It now returns resolves_only for exactly this shape.
 
 *high · proposed by Alignment*
  · confirmed by Lexicon, Alignment, Skeptic
@@ -179,6 +185,12 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
   <br/>`metric:classes_declared:mf-triggers` — verified
 
 ### SHACL-002 — The vcvf:triggers direction convention is the one unstated commitment with tens of thousands of nodes able to violate it
+
+> **PREMISE FALSE - the conclusion stands, a supporting claim does not**
+>
+> Same false premise, and the conclusion is strengthened rather than weakened by the correction. The finding says the direction convention is the one unstated commitment with tens of thousands of nodes able to violate it, and cites "no domain, no range" as the reason OWL cannot constrain direction. The real reason is better: the range is declared, and it entails rather than validates - an object of the wrong kind is inferred to be a Value instead of being rejected. OWL cannot catch a direction error here not because the predicate is unconstrained but because the constraint it has runs the wrong way for the job. Still a SHACL obligation, for a sharper reason.
+> - folk:BadHealth is entailed to be a vcvf:Value from a single trigger statement under RDFS closure, verified directly.
+> - 18,668 thats-all-folks trigger statements place the external resource in subject position and zero place one in object position.
 
 *high · proposed by Validation*
  · confirmed by Alignment, Validation, Skeptic
@@ -388,6 +400,12 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
   <br/>`metric:contradiction_capacity:bfo-layer` — verified
 
 ### MAPPING-001 — Trigger statements are being read as external alignments; the measurements say they are not, and the predicate [clipped]
+
+> **PREMISE FALSE - the conclusion stands, a supporting claim does not**
+>
+> The central claim - that trigger statements are being read as external alignments when the measurements say they are not - is unaffected and was independently corroborated by ALIGN-001 and ALIGN-005. Only its characterisation of the predicate as wholly unconstrained inherits the false premise.
+> - Direction is a total convention in the data with zero counterexamples.
+> - The predicate's declared range is what makes a misread trigger statement silently acceptable rather than detectably wrong.
 
 *medium · proposed by Alignment*
  · confirmed by Alignment, Skeptic

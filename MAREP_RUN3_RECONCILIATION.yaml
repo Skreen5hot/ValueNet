@@ -1,10 +1,16 @@
-# Dispositions for Run 3's three unresolved findings.
+# Dispositions for six Run 3 findings.
 #
-# All three ended `unresolved` because every voting agent abstained. That is
+# Three ended `unresolved` because every voting agent abstained. That is
 # the terminal status working, but it collapses three different situations
 # into one word: a finding whose count was misread, a finding whose subject is
 # real but whose proposition is not supportable, and a finding that was never
 # a finding at all because it proposed an action.
+#
+# The other three were confirmed on a premise I supplied and that was false:
+# the Run 3 Alignment brief said vcvf:triggers has no domain and no range. It
+# declares both. Their conclusions survive; their supporting sentences about
+# the predicate's constraints do not. That failure is why the grounding gate
+# now distinguishes a claim the record supports from one that merely cites it.
 #
 # RUN3_STATE.yaml is not modified, for the same reason RUN1_STATE.yaml was not.
 # It records what the run concluded from the substrate it was given.
@@ -90,6 +96,56 @@ findings:
         predicate, not a class.
       - SHACL-001, which states the predicate-retargeting fact rather than a
         recommendation, was confirmed with 7 of 7 evidence items verified.
+
+  - id: ALIGN-002
+    was: confirmed
+    disposition: premise-false-conclusion-survives
+    summary: >-
+      Rests on a false premise I supplied. The Run 3 Alignment brief said
+      vcvf:triggers has no domain, no range and no definition. It declares
+      rdfs:domain owl:Thing and rdfs:range vcvf:Value at ValueCore.ttl:97; only
+      the definition was missing. The finding's own conclusion - that one
+      undefined predicate carries the trigger claims of three groups - survives,
+      because "undefined" is the true part. Its supporting sentences about
+      domain and range do not.
+    evidence:
+      - The predicate declares both, verified directly against the merged graph.
+      - The grounding gate marked the claim verified because the citation
+        resolved. It now returns resolves_only for exactly this shape.
+
+  - id: SHACL-002
+    was: confirmed
+    disposition: premise-false-conclusion-survives
+    summary: >-
+      Same false premise, and the conclusion is strengthened rather than
+      weakened by the correction. The finding says the direction convention is
+      the one unstated commitment with tens of thousands of nodes able to
+      violate it, and cites "no domain, no range" as the reason OWL cannot
+      constrain direction. The real reason is better: the range is declared, and
+      it entails rather than validates - an object of the wrong kind is inferred
+      to be a Value instead of being rejected. OWL cannot catch a direction
+      error here not because the predicate is unconstrained but because the
+      constraint it has runs the wrong way for the job. Still a SHACL
+      obligation, for a sharper reason.
+    evidence:
+      - folk:BadHealth is entailed to be a vcvf:Value from a single trigger
+        statement under RDFS closure, verified directly.
+      - 18,668 thats-all-folks trigger statements place the external resource
+        in subject position and zero place one in object position.
+
+  - id: MAPPING-001
+    was: confirmed
+    disposition: premise-false-conclusion-survives
+    summary: >-
+      The central claim - that trigger statements are being read as external
+      alignments when the measurements say they are not - is unaffected and was
+      independently corroborated by ALIGN-001 and ALIGN-005. Only its
+      characterisation of the predicate as wholly unconstrained inherits the
+      false premise.
+    evidence:
+      - Direction is a total convention in the data with zero counterexamples.
+      - The predicate's declared range is what makes a misread trigger
+        statement silently acceptable rather than detectably wrong.
 
 # A note on the run as a whole, which shapes what comes next.
 #

@@ -299,7 +299,10 @@ def test_reopen_ceiling_enforced(rt: Runtime):
     for n, ref in enumerate(refs, start=1):
         rt.submit(upd(f"R{n}", rt.version, {"issues": [{
             "id": "DEPLOY-002", "status": "contested",
-            "evidence": [{"id": f"EV-{60+n:03d}", "claim": "new ground",
+            "evidence": [{"id": f"EV-{60+n:03d}",
+                          "claim": ("PROJ-7781 records staging/prod runtime divergence"
+                                    if ref.startswith("TIC")
+                                    else "gh-actions/13000 shows a flaky integration suite"),
                           "source": {"type": "ticket" if ref.startswith("TIC") else "ci_run",
                                      "ref": ref},
                           "submitted_by": "Skeptic"}]}]}), "Skeptic")
@@ -308,7 +311,7 @@ def test_reopen_ceiling_enforced(rt: Runtime):
     assert rt.state["issues"][0]["reopen_count"] == 2
     r = rt.submit(upd("R3", rt.version, {"issues": [{
         "id": "DEPLOY-002", "status": "contested",
-        "evidence": [{"id": "EV-099", "claim": "more",
+        "evidence": [{"id": "EV-099", "claim": "deploy/42.3 went to production",
                       "source": {"type": "deploy", "ref": "DEP-0311"},
                       "submitted_by": "Skeptic"}]}]}), "Skeptic")
     assert r.cause is Cause.REOPEN_BLOCKED

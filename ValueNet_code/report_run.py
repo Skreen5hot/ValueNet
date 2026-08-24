@@ -51,6 +51,8 @@ DISPOSITION_LABEL = {
     "conclusion-upheld-cause-refuted":
         "CAUSE REFUTED - the conclusion stands, the stated cause does not",
     "superseded": "SUPERSEDED - a better finding covers this",
+    "premise-false-conclusion-survives":
+        "PREMISE FALSE - the conclusion stands, a supporting claim does not",
     "unresolved-rewrite":
         "UNRESOLVED, TO BE REWRITTEN - the subject is real, this proposition is not",
     "reformulate-as-fact-plus-action":

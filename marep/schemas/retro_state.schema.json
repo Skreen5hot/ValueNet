@@ -235,6 +235,17 @@
         },
         "submitted_by": {
           "$ref": "#/$defs/agent"
+        },
+        "grounding": {
+          "enum": [
+            "supported",
+            "unsupported",
+            "resolves_only",
+            "unresolved"
+          ]
+        },
+        "grounding_note": {
+          "type": "string"
         }
       }
     },

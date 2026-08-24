@@ -10,6 +10,8 @@ dictionary lookup, not a judgement.
 
 from __future__ import annotations
 
+import re
+
 import hashlib
 import json
 from dataclasses import dataclass
@@ -46,6 +48,30 @@ class Record:
     summary: str
     uri: str | None = None
     payload: dict[str, Any] | None = None
+
+
+#: Digits with optional thousands separators, normalised so that "38,710" in a
+#: claim matches "38710" in a payload.
+_NUMBER_RE = re.compile(r"\d[\d,]*")
+
+#: Words distinctive enough to be worth matching. Short tokens and the
+#: vocabulary every record shares would match everything.
+_TOKEN_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_-]{3,}")
+_COMMON_TOKENS = frozenset({
+    "the", "and", "that", "this", "with", "from", "have", "which", "there",
+    "their", "than", "then", "them", "these", "those", "into", "over", "under",
+    "corpus", "record", "metric", "value", "values", "class", "classes",
+    "file", "files", "triples", "statements", "group", "groups", "declared",
+})
+
+
+def _numbers(text: str) -> set[str]:
+    return {m.replace(",", "") for m in _NUMBER_RE.findall(text or "")}
+
+
+def _tokens(text: str) -> set[str]:
+    return {t.lower() for t in _TOKEN_RE.findall(text or "")
+            if t.lower() not in _COMMON_TOKENS}
 
 
 class Substrate:
@@ -118,6 +144,86 @@ class Substrate:
         if rec is None:
             return False
         return rec.type == source.get("type")
+
+    def assess(self, source: dict[str, Any], claim: str) -> tuple[str, str]:
+        """How well a record actually supports the claim made from it (§8.3).
+
+        `resolve` answers a structural question: does this reference name a
+        real record of the declared type. It says nothing about the sentence
+        wrapped around the citation, and that gap is not theoretical. A Run 3
+        agent wrote "vcvf:triggers declares no domain, no range and no
+        definition" against `trigger_statements:thats-all-folks`, a record that
+        counts statements and mentions neither domain nor range. The claim was
+        false — the predicate declares both — and it was marked `verified`,
+        because the reference resolved. A false premise in an agent brief was
+        laundered into verified evidence on three findings.
+
+        This cannot be solved in general without understanding the sentence.
+        It can be narrowed usefully, because a metric record asserts a number,
+        and a claim that draws on a metric almost always states that number.
+        Across Run 3's 228 resolving evidence items, 157 quote a figure that
+        appears in the record they cite. So:
+
+        ``supported``
+            The claim quotes a number the record carries, or — for records
+            with no number to quote — names something distinctive from the
+            record's own reference or summary.
+        ``unsupported``
+            The claim quotes numbers and the record carries none of them. Six
+            Run 3 items are in this position. Most turned out to be sound
+            claims citing a record for a different figure, which is why this
+            is reported rather than treated as a falsehood.
+        ``resolves_only``
+            The reference is good and nothing in the claim can be checked
+            against it. This is the state the laundered claim was in, and
+            naming it is most of the value: it is not evidence of anything
+            except that a real record was named.
+        ``unresolved``
+            No such record, or the declared type is wrong.
+
+        Returns the verdict and a short reason, both recorded on the evidence
+        item so a reader can see which kind of grounding a finding rests on.
+        """
+        if not self.resolve(source):
+            return "unresolved", "no record of that reference and type"
+
+        rec = self.get(source.get("ref", ""))
+        claim_numbers = _numbers(claim)
+        record_numbers = _numbers(str((rec.payload or {}).get("value", "")))
+        record_numbers |= _numbers(rec.summary or "")
+        record_numbers |= _numbers(str((rec.payload or {}).get("detail", "")))
+
+        if rec.type == "metric" and record_numbers:
+            # A metric exists to assert a figure; that figure is its content,
+            # so a claim drawing on it quotes the figure. Token overlap is
+            # deliberately NOT accepted here — the laundered Run 3 claim shares
+            # the word "declares" with its record and would pass on that alone,
+            # which is exactly the standard being raised.
+            #
+            # Restricted to metrics on purpose. A document record carries
+            # triple and class counts in its payload, but its content is the
+            # file it names, so a claim naming that file is drawing on it
+            # properly even with no number in sight.
+            if not claim_numbers:
+                return ("resolves_only",
+                        "the record asserts a figure and the claim quotes none "
+                        "of it, so nothing here can be checked")
+            shared = claim_numbers & record_numbers
+            if shared:
+                return "supported", f"claim quotes {sorted(shared)[0]} from the record"
+            return ("unsupported",
+                    f"claim quotes {sorted(claim_numbers)[:3]} and the record "
+                    f"carries none of them")
+
+        # No figure to quote — a document, commit or note. Distinctive token
+        # overlap is the only check available, and it is a weak one.
+        tokens = _tokens(rec.ref) | _tokens(rec.summary or "")
+        hit = tokens & _tokens(claim)
+        if hit:
+            return "supported", f"claim names {sorted(hit)[0]} from the record"
+        return ("resolves_only",
+                "the reference is good and nothing in the claim can be checked "
+                "against it")
 
     def coverage(self) -> list[dict[str, Any]]:
         """Declared coverage (§7.3). Unavailable types must state a reason."""

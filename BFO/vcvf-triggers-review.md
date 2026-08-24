@@ -27,18 +27,29 @@ manufacturing type assertions for both.
 ### `Repayment` — 102 triggers — **retarget, do not declare**
 
 A whole-file mis-target. `ThatsAllFolks/folk_Repayment.ttl` does not exist;
-these triggers live in **`folk_Recognition.ttl`**, which is headed
-`## folk:Recognition`, and every trigger inside it is a lexical variant of
-*recognition* — `recognition`, `allorecognition`, `autorecognition`,
-`biorecognition`, `corecognition`, `derecognition`. All 102 point at
-`folk:Repayment`.
+these triggers live in **`folk_Recognition.ttl`**, headed `## folk:Recognition`,
+and all 106 statement lines point at `folk:Repayment` while the properly
+declared `folk:Recognition` receives **zero**.
 
-`folk:Recognition` is properly declared (`FolkValue`, `NamedIndividual`) and
-receives **zero** triggers. The object was simply wrong for the file.
+*An earlier draft of this section said every trigger in the file was a lexical
+variant of "recognition". That was too narrow, and checking it properly is what
+settled the question.* The file has three kinds of section: a `recognition lu`
+block (33 triggers), a `reward lu` block (44), and roughly 29 triggers drawn
+from the FrameNet **Repayment** frame — `framestercore/Repayment`,
+`fn17-repayment`, `Debtor.repayment`, `Loan.repayment` and so on. So it is not
+simply misspelled content; the file genuinely draws on repayment semantics.
 
-**Action:** retarget all 102 to `folk:Recognition`. `folk:Repayment` then has
-no referents and should not be declared. Nothing else in the corpus mentions
-it.
+The decisive evidence is the corpus-wide convention rather than the wording of
+any one section. Of 127 fragment files, **126 use exactly their own filename as
+the trigger object**, and `folk_Recognition.ttl` is the sole exception. One
+file names one value, and every section in it lists resources that evoke that
+value — which is exactly what a FrameNet frame about repayment is doing inside
+a file about Recognition.
+
+**Action taken:** all 106 retargeted to `folk:Recognition`, which now receives
+102 distinct triggers where it received none. `folk:Repayment` has no referents
+and is not declared. The `# Repayment frame` heading is left alone: it
+correctly names the FrameNet frame supplying those triggers.
 
 ### `Strenght` — 122 triggers — **spelling defect; retarget**
 
@@ -47,9 +58,14 @@ Run 1's `NAME-001` flagged this. `folk:Strength` is declared
 `folk:Strenght` receives all 122, from `folk_Strenght.ttl`. The vocabulary and
 the trigger data name the same value differently and never meet.
 
-**Action:** retarget the 122 to `folk:Strength`, rename the fragment file to
-`folk_Strength.ttl`, and retire the misspelled IRI. Do not declare `Strenght`
-— declaring it would make the typo permanent and give the value two identities.
+Here the file follows the convention correctly — filename and object agree —
+so both are wrong together and both are renamed together.
+
+**Action taken:** 206 occurrences retargeted to `folk:Strength`, which now
+receives 122 distinct triggers where it received none, and
+`folk_Strenght.ttl` renamed to `folk_Strength.ttl`. `folk:Strenght` is retired,
+not declared: declaring it would make the typo permanent and give one value two
+identities.
 
 ---
 
@@ -78,13 +94,15 @@ to be values and the declaration was never written.
 
 | target | triggers | note |
 |---|---:|---|
-| `BadHealth` | 3,631 | largest of the nine by a wide margin |
+| `BadHealth` | 3,631 | largest by a wide margin |
 | `Intuitive` | 201 | adjectival form — see below |
-| `Repayment` | — | *excluded, see above* |
 | `Willingness` | 91 | |
 | `Assertiveness` | 42 | |
 | `Inclusion` | 21 | |
 | `Involvement` | 10 | |
+
+With the two retargets applied, untyped trigger objects are down from nine to
+**seven**: these six plus `Belief`.
 
 **Action:** declare each as `owl:NamedIndividual, folk:FolkValue`, matching how
 the other 115 FolkValues are declared. Punning is the established pattern here
@@ -116,8 +134,9 @@ enforce a convention nobody has adopted.
 
 ## Sequence
 
-1. Retarget `Repayment` → `Recognition` and `Strenght` → `Strength`; retire
-   both bad IRIs. Purely mechanical, no modelling content.
+1. ~~Retarget `Repayment` → `Recognition` and `Strenght` → `Strength`; retire
+   both bad IRIs.~~ **Done** — `ValueNet_code/retarget_bad_trigger_objects.py`,
+   624 occurrences, both bad IRIs retired, untyped targets 9 → 7.
 2. Decide `Belief` vs `Beliefs`; retarget to the winner.
 3. Declare the six as `folk:FolkValue` individuals.
 4. Re-measure: untyped trigger objects should be **0**.

@@ -4942,3 +4942,15 @@ folk:Religion a folk:FolkValue,
                     owl:oneOf ( folk:Religion ) ] ] ;
     prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the religion lexicon of ThatsAllFolks/folk_Religion.ttl" ;
     fschema:subsumedUnder folk:Beliefs .
+
+folk:Involvement a folk:FolkValue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "involvement" ;
+    rdfs:comment "Valuing involvement refers to taking an active part in something rather than remaining apart from it. Evoked by the involvement lexicon and its variants: involvement, noninvolvement, overinvolvement, reinvolvement." ;
+    rdfs:subClassOf vcvf:ValueSituation ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty dul:satisfies ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:oneOf ( folk:Involvement ) ] ] ;
+    prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the lexicon of ThatsAllFolks/folk_Involvement.ttl" .

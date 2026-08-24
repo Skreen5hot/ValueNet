@@ -8375,3 +8375,14 @@ folk:Religion rdf:type owl:Class ;
                                                        ]
                                   ] ;
               rdfs:subClassOf folk:Beliefs .
+
+###  http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Involvement
+folk:Involvement rdf:type owl:Class ;
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty dul:satisfies ;
+                                  owl:someValuesFrom [ rdf:type owl:Class ;
+                                                       owl:oneOf ( folk:Involvement
+                                                                 )
+                                                     ]
+                                ] ;
+            rdfs:subClassOf vcvf:ValueSituation .

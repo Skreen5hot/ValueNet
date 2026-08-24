@@ -107,9 +107,31 @@ now ships beside it and reports **4**, which is the number of ownership
 decisions actually pending.
 
 So the decision is small and concrete: which of `folk.ttl` and
-`folk_aligned.ttl` is canonical. They hold 5,828 triples each and are **not
-isomorphic**, so this is a real question with a real answer, and it is one
-question rather than 378.
+`folk_aligned.ttl` is canonical. It is one question rather than 378.
+
+**Measured, after a wrong guess.** I first reported that `folk_aligned.ttl`
+looked like a *reduced projection* of `folk.ttl`, having read `folk:Faith` in
+each and found the aligned one carrying only type, equivalence and subclass
+where the other carried label, comment and provenance. That was wrong.
+`folk_aligned.ttl` is OWL-API serialized, which groups annotations into a
+separate section of the file, so the labels and comments are present — just
+not next to the declaration.
+
+Compared properly the two are near-identical: **473 named subjects each, with
+none unique to either side**, 3,006 against 3,000 ground triples, and matching
+counts across every predicate (426 `subClassOf`, 355 `equivalentClass`, 415
+against 414 `rdfs:label`). The whole ground difference is about five
+ontology-level metadata statements — a `versionInfo`, a couple of module
+comments — plus blank-node identity, which is semantically irrelevant and is
+the only reason the graphs are not isomorphic.
+
+That is a stronger argument for **canonical source plus generated
+projection** than the projection story was. Two files that already say the
+same thing in two serializations do not need a winner chosen between them;
+they need one of them generated from the other, at which point the divergence
+cannot recur. The remaining question is which serialization is authored and
+which is emitted — and the six-triple metadata gap is the list of what a
+generator would have to preserve.
 
 Beyond that: a stated rule for which namespace mints a term and who may define
 it. The corpus mints in four namespaces it controls and asserts about 43,616

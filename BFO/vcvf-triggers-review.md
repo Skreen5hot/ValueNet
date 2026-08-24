@@ -113,49 +113,62 @@ part of this modelling decision.*
 
 ---
 
-## The six that are intended values
+## The six that looked like intended values
 
-Each has a `folk_X.ttl` fragment named for it, is reached only by
-`vcvf:triggers`, and has no near-match among declared values. They were meant
-to be values and the declaration was never written.
+Each had a `folk_X.ttl` fragment named for it and no obvious near-match, so
+all six were put forward for declaration. Checking the fragments individually
+turned **three of them into something else**. The test that mattered was not
+"is there a fragment named for it" but "does anything already declared cover
+it", and the same signature kept appearing: a declared value with zero
+triggers sitting beside an undeclared near-twin holding all of them.
 
-| target | triggers | note |
-|---|---:|---|
-| `BadHealth` | 3,631 | largest by a wide margin |
-| `Intuitive` | 201 | adjectival form — see below |
-| `Willingness` | 91 | |
-| `Assertiveness` | 42 | |
-| `Inclusion` | 21 | |
-| `Involvement` | 10 | |
+### Declared
 
-With the retargets and `folk:Religion` applied, untyped trigger objects are
-down from nine to **six** — exactly the six below.
+| target | triggers | parent | note |
+|---|---:|---|---|
+| `Involvement` | 10 | `vcvf:ValueSituation` | header, filename and object agree; nothing declared covers it |
 
-**Action:** declare each as `owl:NamedIndividual, folk:FolkValue`, matching how
-the other 115 FolkValues are declared. Punning is the established pattern here
-— 103 of 147 trigger objects are typed both `owl:Class` and
-`owl:NamedIndividual`, and **none** is class-only, so the individual
-declaration is what `vcvf:triggers` actually refers to.
+`vcvf:ValueSituation` is used where no more specific parent is evidenced.
+Asserting a folk-value parent to fill a blank would invent a taxonomic claim,
+which is the failure this review exists to avoid; `folk:Beliefs` sits directly
+under ValueSituation for the same reason.
 
-### Two of the six carry a modelling question
+### Held — a declared term already covers them
 
-**`BadHealth`** is not a negative-polarity twin of `folk:Health`, which is
-separately declared. The declared `NegativeValue` members are propositional —
-`LifeIsMeaningless`, `OtherPeopleCannotBeTrusted`,
-`PeopleCannotChangeTheirSituation` — a different kind of thing entirely, and
-there are no other `Bad*` values. `FolkValue` is the defensible declaration;
-whether ValueNet wants a negative-polarity relation between `Health` and
-`BadHealth` is a separate question and should not be settled by a typing
-decision made to close a gap.
+| target | triggers | the declared term | its triggers |
+|---|---:|---|---:|
+| `Willingness` | 91 | `folk:Will` — fragment is headed `## folk:Will` | 0 |
+| `Inclusion` | 21 | `folk:Inclusiveness` — fragment is headed `## folk:Inclusiveness` | 0 |
+| `Assertiveness` | 42 | `folk:Assertion` — labelled "assertion, assertion , assertiveness" | 0 |
 
-**`Intuitive`** is adjectival where most values are nominal — Run 1's
-`NAME-002`. The nominal form `folk:Intuition` is undeclared and receives no
-triggers, so there is nothing to merge into. Adjectival forms are already
-present in the declared vocabulary (`Capable`, `Dutiful`), so declaring
-`Intuitive` as-is is consistent with what exists. The naming inconsistency
-belongs to the vocabulary-governance programme (implementation plan §7), not
-to this repair — renaming unilaterally would break 201 trigger statements to
-enforce a convention nobody has adopted.
+`folk:Inclusiveness` is the clearest: its definition opens *"Inclusion is a
+value that focuses on accepting diversity"*, so the two names denote one
+concept and declaring both would duplicate it. `folk:Will` is weaker — the
+lexemes are the *willing* family, which serves both readings, and unlike the
+`Repayment` case the filename and object agree with each other and only the
+header dissents. `folk:Assertion` is weaker still: the fragment is entirely
+self-consistent, and the overlap shows only in an alt-label.
+
+None is mechanical. Declaring `Assertiveness` beside `Assertion` would
+manufacture exactly the near-synonym pair that Run 1's `DEF-003` and Run 3's
+`LEXICON-003` already report as a defect.
+
+### Held — modelling questions
+
+**`BadHealth`** (3,631 triggers) is not a negative-polarity twin of
+`folk:Health`, which is separately declared. The declared `NegativeValue`
+members are propositional — `LifeIsMeaningless`,
+`OtherPeopleCannotBeTrusted`, `PeopleCannotChangeTheirSituation` — a different
+kind of thing, and there are no other `Bad*` values. Its relationship to
+`Health` and to the NegativeValue convention has to be settled before a type
+is assigned.
+
+**`Intuitive`** (201 triggers) is adjectival where most values are nominal —
+Run 1's `NAME-002`. The nominal `folk:Intuition` is undeclared and receives no
+triggers, so there is nothing to merge into, and adjectival forms are already
+present in the vocabulary (`Capable`, `Dutiful`). The question is what concept
+was intended, not whether to enforce a grammatical convention the corpus does
+not consistently apply.
 
 ---
 
@@ -168,7 +181,10 @@ enforce a convention nobody has adopted.
    resolved as neither: `ValueNet_code/add_folk_religion.py` declares
    `folk:Religion` under `folk:Beliefs` and retargets all 480. Untyped
    targets 7 → 6.
-3. Declare the six as `folk:FolkValue` individuals.
+3. ~~Declare the six as `folk:FolkValue` individuals.~~ **Partly done** —
+   `folk:Involvement` declared. Five held: `Willingness`, `Inclusion` and
+   `Assertiveness` because a declared term already covers each, `BadHealth`
+   and `Intuitive` as modelling questions. Untyped targets 6 → 5.
 4. Re-measure: untyped trigger objects should be **0**.
 5. Only then rely on `rdfs:range vcvf:Value`, and add the SHACL constraints so
    a future untyped target surfaces as a violation instead of disappearing

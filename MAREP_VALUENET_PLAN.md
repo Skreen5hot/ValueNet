@@ -182,15 +182,21 @@ repeat the error those findings identify:
 
 The eight `reopen_blocked` rejections were the §16.4 guard working correctly.
 
-### Still open, and genuinely blocked on intent
+### Resolved since
 
-`ThatsAllFolks` holds **50,737 `vcvf:triggers` statements** — 31,703 Framester,
-3,977 Wiktionary, 575 DBpedia — none of which load, because the files declare
-no prefixes. That is four times the `MFTriggers` corpus. PARSE-002 additionally
-found the failures are *not* one uniform missing prefix, which contradicts the
-assumption this plan started with. Whether the fragments are a defect or an
-undocumented include convention decides whether the fix is a header, a build
-step, or a redesign.
+`ThatsAllFolks` held **50,737 `vcvf:triggers` statements** that did not load,
+because the 127 fragment files declared none of the prefixes they used.
+PARSE-002 found the failures were *not* one uniform missing prefix, which
+contradicted the assumption this plan started with, and left open whether the
+fragments were a defect or an undocumented include convention.
+
+Settled as a defect. Each fragment now carries its own six prefix
+declarations, with fifteen further content repairs, and
+`test_every_fragment_parses_standalone` holds the invariant that a `.ttl` file
+in this repository is a valid document on its own. The corpus went from 0
+loadable triples to 38,949. The same principle then removed the eight `.owl`
+files, seven of which held Turtle: correctness belongs in the artifact, not in
+a reader that knows which extensions to disbelieve.
 
 ---
 
@@ -202,9 +208,59 @@ One run over 158 files would produce a shallow pass over everything. Better to r
 
 The 128 non-parsing files, `wvs.ttl`, `bhvtriggers.ttl`, `folk_aligned.ttl`, `MoralMolecules`. Nobody has audited these. The central question is the one I deliberately did not answer above: are the prefix-less `folk_*.ttl` files a broken module or an undocumented include convention, and what follows either way?
 
-### Run 2 — the BFO layer
+### Run 2 — what the corpus should assert and does not
 
-The nine new modules. Lower expected yield, since this week's work has already been through them, and that is precisely what makes it a good **calibration run**: findings it produces that I already know about tell me the system works; findings it produces that I do not are the interesting ones. Anything it *misses* that I found by hand is a coverage gap in the agents.
+*Rescoped. The original Run 2 was a calibration pass over the BFO layer: run the
+agents across ground already covered by hand, and read the overlap as evidence
+the system works. The reasoner survey has since supplied that calibration more
+cheaply and more precisely than a live run would have, so the budget is better
+spent on a question nothing has asked yet.*
+
+The survey found every group consistent with zero unsatisfiable classes, and
+then found that for four of the seven this was **guaranteed before the reasoner
+started**. `mf-triggers`, `moral-molecules`, `thats-all-folks` and `vale2024`
+declare no disjointness, no cardinality, no functionality and no complement
+between them: 143,717 of the corpus's 162,446 triples contain nothing a
+reasoner could contradict. The BFO layer's own modules contribute two such
+axioms. Only `repository-root` — 30 contradiction axioms over 694 individuals —
+is a genuine test, and it is the only group whose cost reflects that, at 1,382
+seconds against 29 for a graph three times larger.
+
+A corpus that cannot be found inconsistent is not thereby sound. It is
+unconstrained. So Run 2 asks:
+
+**What does this corpus treat as true that it never states, and where should
+each of those statements live?**
+
+Every candidate has to be sorted into one of three, and the sorting is the
+deliverable rather than a by-product:
+
+* **OWL** — where the constraint should license entailment. Disjointness
+  between sibling value dispositions, domain and range on the trigger
+  properties, inverse pairs, functionality. The test is whether a reasoner
+  should be able to *derive* something from it, or detect a contradiction.
+* **SHACL** — where the constraint should validate instances but must not
+  entail. Required fields, cardinality on annotation data, value patterns,
+  datatype conformance. The test is whether violating it should make a
+  dataset invalid rather than make the ontology inconsistent. OWL's open-world
+  reading makes most data-quality rules silently vacuous as OWL axioms, and
+  several of the likeliest candidates here are exactly that shape.
+* **Intentionally unconstrained** — and this is a real answer, not a residue.
+  Folk value vocabularies are meant to overlap; forcing disjointness on
+  `KindnessDisposition` and `GenerosityDisposition` would encode a claim the
+  domain does not make. A finding that says "leave this open, and here is why"
+  is worth as much as one that proposes an axiom, and the roster is told so
+  explicitly.
+
+Expected shape of the yield, from what the instruments already show: 2,269
+classes reaching no upper ontology, shapes reaching 14 focus nodes across 6 of
+165 files, whole groups with no domain or range on their properties, and
+sibling classes under a shared parent with nothing said about how they relate.
+
+**Out of scope.** Duplicate-triple cleanup, at 50% in `mf-triggers` and 46% in
+`thats-all-folks`, is tracked separately and deliberately excluded — it is a
+question about storage, not about what the ontology claims, and mixing the two
+would let a cheap mechanical finding crowd out the expensive conceptual ones.
 
 ### Run 3 — cross-layer
 

@@ -289,6 +289,225 @@ def duplication_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     return out
 
 
+def constraint_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
+    """What each group asserts about its own terms, and what it leaves open.
+
+    Run 1 could ask whether the corpus loads and whether it contradicts itself.
+    Neither question reaches the one Run 2 is scoped to: what does this corpus
+    treat as true without ever saying so. A finding of that kind — "sibling
+    dispositions under `MoralValueDisposition` are never declared disjoint" —
+    has no admissible evidence under the existing records, because absence of
+    an axiom is a fact about no file, no commit and no metric. It would sit in
+    `proposed` forever, exactly as findings about unparseable files did before
+    this module existed.
+
+    So each check here counts a population and the subset of it that carries a
+    given axiom. A bare "37 properties have no domain" invites the reading that
+    37 domains are missing, which is false: some properties are deliberately
+    polymorphic, and `vcvf:triggers` relating almost anything to almost
+    anything may well be correct. The denominator and the names travel with the
+    count so a finding has to argue rather than point.
+
+    Nothing here proposes a constraint. These records say what is and is not
+    asserted; deciding whether an absence is a gap or a considered choice is
+    the judgement Run 2 exists to make, and it is not one a count can settle.
+    """
+    import rdflib
+    from rdflib.namespace import OWL, RDF, RDFS
+
+    out: list[Metric] = []
+    by_group: dict[str, list[FileFacts]] = {}
+    for f in facts:
+        if f.parses:
+            by_group.setdefault(f.group, []).append(f)
+
+    def names(iris, n=5):
+        short = [str(i).split("#")[-1].split("/")[-1] for i in sorted(iris)[:n]]
+        return ", ".join(short) + ("…" if len(iris) > n else "")
+
+    # Every property declared anywhere in the corpus, gathered before the group
+    # loop so that "used but not declared" means what it says.
+    declared_anywhere: set = set()
+    for f in facts:
+        if not f.parses:
+            continue
+        cg = rdflib.Graph()
+        try:
+            cg.parse(str(repo / f.rel), format=f.parsed_as)
+        except Exception:
+            continue
+        for kind in (OWL.ObjectProperty, OWL.DatatypeProperty, OWL.AnnotationProperty,
+                     RDF.Property):
+            declared_anywhere |= {s for s in cg.subjects(RDF.type, kind)
+                                  if isinstance(s, rdflib.URIRef)}
+
+    for group, fs in sorted(by_group.items()):
+        g = rdflib.Graph()
+        for f in fs:
+            try:
+                g.parse(str(repo / f.rel), format=f.parsed_as)
+            except Exception:
+                continue
+
+        # Only terms this group declares. Counting imported BFO properties as
+        # lacking a domain would report the upstream ontology's choices as this
+        # repository's omissions.
+        obj_props = {s for s in g.subjects(RDF.type, OWL.ObjectProperty)
+                     if isinstance(s, rdflib.URIRef)}
+        data_props = {s for s in g.subjects(RDF.type, OWL.DatatypeProperty)
+                      if isinstance(s, rdflib.URIRef)}
+        props = obj_props | data_props
+        if props:
+            no_domain = {p for p in props if (p, RDFS.domain, None) not in g}
+            no_range = {p for p in props if (p, RDFS.range, None) not in g}
+            out.append(Metric("properties_declared", group, len(props),
+                              detail=f"{len(obj_props)} object, {len(data_props)} datatype"))
+            out.append(Metric("properties_without_domain", group, len(no_domain),
+                              detail=f"of {len(props)} declared: {names(no_domain)}"))
+            out.append(Metric("properties_without_range", group, len(no_range),
+                              detail=f"of {len(props)} declared: {names(no_range)}"))
+            characterised = set()
+            for c in (OWL.FunctionalProperty, OWL.InverseFunctionalProperty,
+                      OWL.TransitiveProperty, OWL.SymmetricProperty,
+                      OWL.AsymmetricProperty, OWL.ReflexiveProperty,
+                      OWL.IrreflexiveProperty):
+                characterised |= set(g.subjects(RDF.type, c))
+            characterised |= {s for s, _, _ in g.triples((None, OWL.inverseOf, None))}
+            characterised |= {o for _, _, o in g.triples((None, OWL.inverseOf, None))}
+            plain = props - characterised
+            out.append(Metric("properties_without_characteristics", group, len(plain),
+                              detail=f"of {len(props)} declared, no functionality, "
+                                     f"transitivity, symmetry or inverse: {names(plain)}"))
+
+        # Predicates the group asserts with but never declares. `mf-triggers`
+        # is the case that makes this worth a check: it declares no class and
+        # no property at all, so every other check here skips it silently,
+        # while it states `vcvf:triggers` thousands of times. A group can be
+        # invisible to a constraint audit precisely because it constrains
+        # nothing — which is the finding, not a reason to omit it.
+        used = {p for _, p, _ in g if isinstance(p, rdflib.URIRef)}
+        used -= {p for p in used if str(p).startswith(
+            ("http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+             "http://www.w3.org/2000/01/rdf-schema#",
+             "http://www.w3.org/2002/07/owl#",
+             "http://www.w3.org/2004/02/skos/core#",
+             "http://purl.org/dc/", "http://www.w3.org/ns/shacl#"))}
+        # Declaration is looked for corpus-wide, not group-wide. The BFO layer
+        # uses BFO_0000055 and three siblings without declaring them, but the
+        # vendored bfo-core.ttl does declare them and merely sits in another
+        # group. Scoping the lookup to the group reported four properties as
+        # undeclared when the corpus declares all four — the same false gap as
+        # matching imports on ontology IRI alone, arrived at from a different
+        # direction. A group boundary is a fact about this module's filing, not
+        # about the ontology.
+        # Emitted even when the count is zero. An absent metric is
+        # indistinguishable from a check that did not run, and this module's
+        # standing rule is that a gap says so as a record.
+        undeclared = used - declared_anywhere
+        out.append(Metric("predicates_used_but_not_declared", group, len(undeclared),
+                          detail=f"of {len(used)} non-builtin predicates in use; "
+                                 f"declaration looked for across the whole "
+                                 f"corpus, not just this group: {names(undeclared)}"))
+
+        # Sibling sets: a named parent with two or more named direct children.
+        # Whether siblings should be disjoint is a domain question — folk value
+        # vocabularies are meant to overlap — so this reports the population
+        # and how much of it is decided either way, not a shortfall.
+        children: dict[Any, set] = {}
+        for s, _, o in g.triples((None, RDFS.subClassOf, None)):
+            if isinstance(s, rdflib.URIRef) and isinstance(o, rdflib.URIRef):
+                children.setdefault(o, set()).add(s)
+        sibling_sets = {p: c for p, c in children.items() if len(c) > 1}
+        if sibling_sets:
+            disjoint_pairs = set()
+            for a, _, b in g.triples((None, OWL.disjointWith, None)):
+                disjoint_pairs.add(frozenset((a, b)))
+            for node in g.subjects(RDF.type, OWL.AllDisjointClasses):
+                for lst in g.objects(node, OWL.members):
+                    members = list(rdflib.collection.Collection(g, lst))
+                    for i, a in enumerate(members):
+                        for b in members[i + 1:]:
+                            disjoint_pairs.add(frozenset((a, b)))
+            decided = {p for p, kids in sibling_sets.items()
+                       if any(frozenset((a, b)) in disjoint_pairs
+                              for a in kids for b in kids if a != b)}
+            undecided = set(sibling_sets) - decided
+            out.append(Metric("sibling_sets", group, len(sibling_sets),
+                              detail="named parents with two or more named direct "
+                                     "subclasses"))
+            out.append(Metric("sibling_sets_without_disjointness", group, len(undecided),
+                              detail=f"of {len(sibling_sets)}; whether siblings should "
+                                     f"be disjoint is a domain question, not a "
+                                     f"shortfall: {names(undecided)}"))
+
+        # Classes whose only assertion is where they sit. No equivalent class,
+        # no restriction, nothing that constrains an instance of them.
+        declared = {s for s in g.subjects(RDF.type, OWL.Class)
+                    if isinstance(s, rdflib.URIRef)}
+        if declared:
+            constrained = {s for s, _, _ in g.triples((None, OWL.equivalentClass, None))}
+            constrained |= {s for s, _, o in g.triples((None, RDFS.subClassOf, None))
+                            if isinstance(o, rdflib.BNode)}
+            bare = declared - constrained
+            out.append(Metric("classes_without_necessary_conditions", group, len(bare),
+                              detail=f"of {len(declared)}; placed in a hierarchy but "
+                                     f"carrying no restriction or equivalence: "
+                                     f"{names(bare)}"))
+    return out
+
+
+def shape_coverage_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
+    """Classes that have instances but no SHACL shape targeting them.
+
+    The complement of `shacl_focus_nodes`, and the record a SHACL-side finding
+    needs. Fourteen focus nodes across a 162,446-triple corpus says the shapes
+    reach almost nothing; this says what they are failing to reach, which is
+    the part a proposal has to name.
+    """
+    import rdflib
+    from rdflib.namespace import RDF
+
+    SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
+    shape_files = sorted((repo / "BFO").glob("*-shapes.ttl")) if (repo / "BFO").exists() else []
+    targeted = set()
+    for sf in shape_files:
+        try:
+            sg = rdflib.Graph(); sg.parse(str(sf))
+        except Exception:
+            continue
+        targeted |= {str(o) for o in sg.objects(None, SH.targetClass)}
+
+    out: list[Metric] = []
+    by_group: dict[str, list[FileFacts]] = {}
+    for f in facts:
+        if f.parses:
+            by_group.setdefault(f.group, []).append(f)
+
+    for group, fs in sorted(by_group.items()):
+        g = rdflib.Graph()
+        for f in fs:
+            try:
+                g.parse(str(repo / f.rel), format=f.parsed_as)
+            except Exception:
+                continue
+        populated: dict[str, int] = {}
+        for _, _, o in g.triples((None, RDF.type, None)):
+            if isinstance(o, rdflib.URIRef) and str(o).startswith(
+                    ("http://www.ontologydesignpatterns.org", "https://fandaws.com",
+                     "http://purl.obolibrary.org", "https://www.commoncoreontologies.org")):
+                populated[str(o)] = populated.get(str(o), 0) + 1
+        if not populated:
+            continue
+        uncovered = {c: n for c, n in populated.items() if c not in targeted}
+        top = sorted(uncovered.items(), key=lambda kv: -kv[1])[:4]
+        out.append(Metric("populated_classes", group, len(populated),
+                          detail="classes with at least one instance in this group"))
+        out.append(Metric("populated_classes_without_a_shape", group, len(uncovered),
+                          detail=f"of {len(populated)}; largest: " + ", ".join(
+                              f"{c.split('#')[-1].split('/')[-1]} ({n})" for c, n in top)))
+    return out
+
+
 def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     """Checks specific to the BFO-aligned suite, where a namespace is known."""
     import rdflib

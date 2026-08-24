@@ -345,6 +345,8 @@ def collect_ontology(
     metrics += onto.duplication_metrics(repo, facts)
     metrics += onto.suite_metrics(repo, facts)
     metrics += onto.rooting_metrics(repo, facts)
+    metrics += onto.constraint_metrics(repo, facts)
+    metrics += onto.shape_coverage_metrics(repo, facts)
     metrics += onto.shacl_metrics(repo)
     if reasoner:
         metrics += onto.reasoner_metrics(repo)

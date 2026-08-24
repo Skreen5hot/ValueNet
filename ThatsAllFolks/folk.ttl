@@ -4930,3 +4930,15 @@ dul:satisfies a owl:ObjectProperty ;
     rdfs:domain dul:Situation ;
     rdfs:range dul:Description .
 
+folk:Religion a folk:FolkValue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "religion" ;
+    rdfs:comment "Valuing religion refers to holding a system of religious belief and practice as a guide to living. It sits under Beliefs alongside Faith and Belief in God, and is the value evoked by religious vocabulary: religion itself, its negations and variants, and the roles and places of religious practice." ;
+    rdfs:subClassOf folk:Beliefs ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty dul:satisfies ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:oneOf ( folk:Religion ) ] ] ;
+    prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the religion lexicon of ThatsAllFolks/folk_Religion.ttl" ;
+    fschema:subsumedUnder folk:Beliefs .

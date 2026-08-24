@@ -71,18 +71,45 @@ identities.
 
 ## The one that is a naming collision
 
-### `Belief` — 480 triggers — **decision required, do not declare yet**
+### `Belief` — 480 triggers — **resolved as `folk:Religion`**
 
-`folk:Beliefs` (plural) is declared and receives **zero** triggers.
-`folk:Belief` (singular) is undeclared and receives 480, from
-`folk_Belief.ttl`. The same split pattern as `Strenght`, but here neither form
-is misspelled and the choice is a modelling one: a folk value named for a
-disposition to believe (*Belief*) is not obviously the same as one named for
-the set of things believed (*Beliefs*).
+Framed at first as a singular/plural naming split against the declared
+`folk:Beliefs`, which receives zero triggers. Reading the fragment settled it
+differently, and the framing was wrong.
 
-**Action:** decide which form is canonical, then retarget to it and retire the
-other. This is a governance call, not a mechanical fix. Note that Run 1's
-`SENSE-001` separately flags `Belief` as glossed against a proper-name sense.
+`folk_Belief.ttl` is headed `# religion lu` and carries a
+`# ReligiousBelief frame` section. Its vocabulary is a religion lexicon
+throughout — *religion, antireligion, nonreligion, misreligion, parareligion,
+pseudoreligion, subreligion, urreligion, religionist, religionize, bishop,
+temple, spirit* — with DBpedia targets `Religion`, `Antireligion`, `Bishop`,
+`Temple`. Nothing in it is about believing in general or about propositional
+content.
+
+`folk:Beliefs` was the wrong home for it. It is a category term subclassing
+`vcvf:ValueSituation`, and it already has two more specific children,
+`folk:Faith` (48 triggers of its own) and `folk:Belief_in_God`. Putting a
+religion lexicon onto the parent would have sat a specific vocabulary above
+terms more specific than itself.
+
+**Action taken:** `folk:Religion` declared under `folk:Beliefs` as a third
+sibling, matching `folk:Faith`'s shape — `folk:FolkValue, owl:Class,
+owl:NamedIndividual`, a label, the `dul:satisfies` ValueSituation restriction,
+and `fschema:subsumedUnder`. All 480 triggers retargeted, `folk_Belief.ttl`
+renamed to `folk_Religion.ttl` to preserve the filename-equals-object
+convention that 126 of 127 fragments follow. `folk:Belief` is not declared: it
+names nothing once its triggers move.
+
+Its `prov:wasAttributedTo` names this decision rather than a core-values list.
+`folk:Faith` cites one; `folk:Religion` appears on none, which is why it was
+never declared, and copying a source it does not have would fabricate
+provenance.
+
+*A correction to an earlier draft of this section: `SENSE-001` does not flag
+`Belief`. It names Education, Helping, Grace, Faith, Excellence, Independence
+and Lively. `folk_Religion.ttl` does target capitalised `Bishop`, `Religion`,
+`Spirit` and `Temple` alongside lowercase forms of the same words, which makes
+it a further instance of that finding — tracked as SENSE-001 cleanup, not as
+part of this modelling decision.*
 
 ---
 
@@ -101,8 +128,8 @@ to be values and the declaration was never written.
 | `Inclusion` | 21 | |
 | `Involvement` | 10 | |
 
-With the two retargets applied, untyped trigger objects are down from nine to
-**seven**: these six plus `Belief`.
+With the retargets and `folk:Religion` applied, untyped trigger objects are
+down from nine to **six** — exactly the six below.
 
 **Action:** declare each as `owl:NamedIndividual, folk:FolkValue`, matching how
 the other 115 FolkValues are declared. Punning is the established pattern here
@@ -137,7 +164,10 @@ enforce a convention nobody has adopted.
 1. ~~Retarget `Repayment` → `Recognition` and `Strenght` → `Strength`; retire
    both bad IRIs.~~ **Done** — `ValueNet_code/retarget_bad_trigger_objects.py`,
    624 occurrences, both bad IRIs retired, untyped targets 9 → 7.
-2. Decide `Belief` vs `Beliefs`; retarget to the winner.
+2. ~~Decide `Belief` vs `Beliefs`; retarget to the winner.~~ **Done** —
+   resolved as neither: `ValueNet_code/add_folk_religion.py` declares
+   `folk:Religion` under `folk:Beliefs` and retargets all 480. Untyped
+   targets 7 → 6.
 3. Declare the six as `folk:FolkValue` individuals.
 4. Re-measure: untyped trigger objects should be **0**.
 5. Only then rely on `rdfs:range vcvf:Value`, and add the SHACL constraints so

@@ -245,6 +245,47 @@ def group_metrics(facts: list[FileFacts]) -> list[Metric]:
     return out
 
 
+#: Parsed graphs, keyed by content checksum. `measure_file` parses every file
+#: once, and then `duplication_metrics`, `constraint_metrics` and
+#: `shape_coverage_metrics` each parsed them all again — five passes over
+#: 162,446 triples to answer questions that could share one. Keyed on the
+#: checksum rather than the path so that a file edited between calls is
+#: re-read rather than served stale, which matters because these run inside a
+#: substrate build that must describe the tree as it is at HEAD.
+_GRAPH_CACHE: dict[str, Any] = {}
+
+
+def graph_for(repo: Path, fact: FileFacts):
+    """The parsed graph for one file, parsed at most once per content."""
+    import rdflib
+    cached = _GRAPH_CACHE.get(fact.checksum)
+    if cached is not None:
+        return cached
+    g = rdflib.Graph()
+    try:
+        g.parse(str(repo / fact.rel), format=fact.parsed_as or None)
+    except Exception:
+        g = rdflib.Graph()
+    _GRAPH_CACHE[fact.checksum] = g
+    return g
+
+
+def merged_graph(repo: Path, facts: Iterable[FileFacts]):
+    """One graph over several files, built from the per-file cache."""
+    import rdflib
+    out = rdflib.Graph()
+    for f in facts:
+        if f.parses:
+            for triple in graph_for(repo, f):
+                out.add(triple)
+    return out
+
+
+def clear_graph_cache() -> None:
+    """Drop the cache. Called by tests that write files in a tmp_path."""
+    _GRAPH_CACHE.clear()
+
+
 def duplication_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     """How much of each group's bulk is the same triple stated again.
 
@@ -271,12 +312,7 @@ def duplication_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
             by_group.setdefault(f.group, []).append(f)
 
     for group, fs in sorted(by_group.items()):
-        merged = rdflib.Graph()
-        for f in fs:
-            try:
-                merged.parse(str(repo / f.rel), format=f.parsed_as)
-            except Exception:
-                continue
+        merged = merged_graph(repo, fs)
         summed = sum(f.triples for f in fs)
         distinct = len(merged)
         out.append(Metric("triples_distinct_in_group", group, distinct,
@@ -331,23 +367,14 @@ def constraint_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     for f in facts:
         if not f.parses:
             continue
-        cg = rdflib.Graph()
-        try:
-            cg.parse(str(repo / f.rel), format=f.parsed_as)
-        except Exception:
-            continue
+        cg = graph_for(repo, f)
         for kind in (OWL.ObjectProperty, OWL.DatatypeProperty, OWL.AnnotationProperty,
                      RDF.Property):
             declared_anywhere |= {s for s in cg.subjects(RDF.type, kind)
                                   if isinstance(s, rdflib.URIRef)}
 
     for group, fs in sorted(by_group.items()):
-        g = rdflib.Graph()
-        for f in fs:
-            try:
-                g.parse(str(repo / f.rel), format=f.parsed_as)
-            except Exception:
-                continue
+        g = merged_graph(repo, fs)
 
         # Only terms this group declares. Counting imported BFO properties as
         # lacking a domain would report the upstream ontology's choices as this
@@ -378,6 +405,24 @@ def constraint_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
             out.append(Metric("properties_without_characteristics", group, len(plain),
                               detail=f"of {len(props)} declared, no functionality, "
                                      f"transitivity, symmetry or inverse: {names(plain)}"))
+
+        # What logical machinery the group has at all, per group and without a
+        # reasoner. HermiT runs only over the BFO layer inside a substrate
+        # build, because `repository-root` alone costs 23 minutes, so the
+        # survey's central fact — four groups holding 143,717 triples in which
+        # nothing can contradict anything — would otherwise be uncitable, and a
+        # finding resting on it could never leave `proposed`. These two are
+        # pure functions of the graph and cost nothing. Named apart from the
+        # `reasoner_*` records so the two never collide on a ref, which is a
+        # bug Run 1 already found once when `classes_total:bfo-layer` was
+        # emitted twice with different values.
+        capacity = _contradiction_axioms(g)
+        out.append(Metric("contradiction_capacity", group, capacity,
+                          detail="axioms by which a reasoner could find this group "
+                                 "inconsistent" + ("; none, so a consistency "
+                                 "verdict over it is guaranteed" if not capacity else "")))
+        out.append(Metric("individuals_declared", group, _individuals(g),
+                          detail="instances available to a SHACL shape or an ABox check"))
 
         # Predicates the group asserts with but never declares. `mf-triggers`
         # is the case that makes this worth a check: it declares no class and
@@ -484,12 +529,7 @@ def shape_coverage_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
             by_group.setdefault(f.group, []).append(f)
 
     for group, fs in sorted(by_group.items()):
-        g = rdflib.Graph()
-        for f in fs:
-            try:
-                g.parse(str(repo / f.rel), format=f.parsed_as)
-            except Exception:
-                continue
+        g = merged_graph(repo, fs)
         populated: dict[str, int] = {}
         for _, _, o in g.triples((None, RDF.type, None)):
             if isinstance(o, rdflib.URIRef) and str(o).startswith(

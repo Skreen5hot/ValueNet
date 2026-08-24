@@ -37,8 +37,9 @@ CONSTRAINT_CHECKS = (
     "properties_without_domain", "properties_without_range",
     "properties_without_characteristics", "predicates_used_but_not_declared",
     "sibling_sets_without_disjointness", "classes_without_necessary_conditions",
-    "populated_classes_without_a_shape", "reasoner_contradiction_axioms",
-    "shacl_focus_nodes", "classes_rooted_in_nothing",
+    "populated_classes_without_a_shape", "contradiction_capacity",
+    "individuals_declared",
+    "shacl_focus_nodes", "classes_with_no_upper_root",
 )
 
 

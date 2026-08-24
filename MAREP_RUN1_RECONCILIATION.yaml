@@ -1,0 +1,108 @@
+# Reconciliation of Run 1 findings against the repaired tree.
+#
+# Run 1 measured the corpus on 2026-08-23, before the ThatsAllFolks fragment
+# repair and before the .owl removal. Four of its findings rest on that
+# snapshot. This file records what each one measures now.
+#
+# RUN1_STATE.yaml is deliberately not modified. It is the record of what Run 1
+# concluded from the substrate it was given, and every one of its evidence
+# items was verified against that substrate at the time. Editing it to match a
+# later tree would destroy the only account of what was true when the findings
+# were made, and would make a run that got something wrong look as though it
+# had not. This overlay supersedes; it does not rewrite.
+#
+# `report_run.py --reconcile` renders these inline so a reader of the findings
+# report cannot mistake a superseded finding for a current one.
+
+reconciled_at_commit: d3b87ef
+run: valuenet-run1
+state: examples/_run/RUN1_STATE.yaml
+
+measurements:
+  - metric: files_not_parsing:thats-all-folks
+    at_run_1: 127
+    now: 0
+  - metric: files_parsing:thats-all-folks
+    at_run_1: 3
+    now: 130
+  - metric: files_with_undeclared_prefixes:thats-all-folks
+    at_run_1: 128
+    now: 0
+  - metric: shacl_violations:valuenet-core-shapes
+    at_run_1: 0
+    now: 0
+  - metric: shacl_violations:valuenet-moral-epistemics-shapes
+    at_run_1: 0
+    now: 0
+
+findings:
+
+  - id: NAMESPACE-001
+    was: confirmed
+    disposition: resolved
+    summary: >-
+      Fixed. Every one of the 130 ThatsAllFolks files now parses standalone as
+      Turtle, and files_with_undeclared_prefixes for the scope is 0. The
+      finding was correct and has been acted on.
+    evidence:
+      - Each fragment carries its own six prefix declarations.
+      - The corpus went from 0 loadable triples to 38,949.
+      - tests/test_ontology_artifacts.py::test_every_fragment_is_self_contained
+        and ::test_every_fragment_parses_standalone hold the invariant, so the
+        defect cannot return silently.
+
+  - id: PARSE-002
+    was: confirmed
+    disposition: superseded-vindicated
+    summary: >-
+      Right, and now obsolete. The claim was that the failures were not one
+      missing prefix and that the reported errors were first-failure-only, so
+      remediation could not be costed from the error set. The diagnosis run
+      confirmed exactly that: three files failed structurally rather than on a
+      binding, one failed on folk: rather than vcvf:, and the per-file error
+      showed only the first fault. All 130 now parse.
+    evidence:
+      - folk_Consciousness.ttl, folk_Victory.ttl and folk_Understanding.ttl
+        needed content repair, not a prefix binding, exactly as claimed.
+      - All three now parse (1,049, 399 and 79 triples).
+
+  - id: PARSE-001
+    was: unresolved
+    disposition: superseded-partly-wrong
+    summary: >-
+      The structural claim was right in kind and wrong in magnitude, and the
+      factual base is gone. It said the 127 were "one mechanical fix plus a
+      four-file residual". The mechanical fix was real — a six-line prefix
+      header, applied to all 127 — but the residual was 15 files needing
+      content repair, not four. It stayed `unresolved` in Run 1, which was the
+      correct outcome for a finding whose repair estimate the substrate could
+      not support.
+    evidence:
+      - 15 files needed a content repair beyond the header - 12 carrying export
+        debris, 2 with a doubled IRI terminator, 1 with a stray quote.
+      - files_not_parsing:thats-all-folks is now 0, from 127.
+
+  - id: VALIDATION-001
+    was: confirmed
+    disposition: conclusion-upheld-cause-refuted
+    summary: >-
+      The most useful reconciliation result, because the finding's prediction
+      was testable and failed. It claimed zero SHACL violations was "largely an
+      artifact of 127 files being invisible to the validator". All 127 are now
+      visible and contribute 44,934 triples, and shacl_violations is still 0 on
+      both shape sets. Fragment invisibility was not the cause.
+      The conclusion survives - zero violations is still not a clean bill of
+      health - but for a different and larger reason: the SHACL data graph
+      loads 6 of 165 files and reaches 14 focus nodes, and the shapes target
+      BFO-layer classes the folk corpus never instantiates. Repairing the
+      fragments could not have changed the result.
+      The finding said so itself. Its last evidence item reads "nothing in the
+      substrate states which data graph was validated, so the attribution of
+      the clean result to fragment invisibility is inference and not a measured
+      causal link". The agent flagged its own causal claim as unsupported, and
+      that flag was right.
+    evidence:
+      - shacl_violations is 0 on both shape sets before and after the repair.
+      - shacl_files_validated:corpus is 6 of 165; shacl_focus_nodes:corpus is 14.
+      - Run 2's SHACL-001 states the same fact with the correct cause and is
+        confirmed with 12 of 12 evidence items verified.

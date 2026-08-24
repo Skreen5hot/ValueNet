@@ -41,9 +41,22 @@ def proposer(issue: dict) -> str:
     return "unknown"
 
 
-def render(state: dict, source: str) -> str:
+#: How a superseded finding is flagged, and how loudly. A reader scanning the
+#: report has to be stopped before they act on an obsolete finding, so the
+#: banner sits directly under the title rather than at the end of the entry.
+DISPOSITION_LABEL = {
+    "resolved": "RESOLVED - fixed since this run",
+    "superseded-vindicated": "SUPERSEDED - was right, no longer applies",
+    "superseded-partly-wrong": "SUPERSEDED - partly wrong, no longer applies",
+    "conclusion-upheld-cause-refuted":
+        "CAUSE REFUTED - the conclusion stands, the stated cause does not",
+}
+
+
+def render(state: dict, source: str, reconciliation: dict | None = None) -> str:
     retro = state.get("retro") or {}
     issues = state.get("issues") or []
+    recon = {f["id"]: f for f in ((reconciliation or {}).get("findings") or [])}
     by_status: dict[str, list] = {}
     for i in issues:
         by_status.setdefault(i.get("status", "unknown"), []).append(i)
@@ -68,6 +81,11 @@ def render(state: dict, source: str) -> str:
     verified = sum(1 for i in issues for e in (i.get("evidence") or [])
                    if e.get("verified"))
     add(f"- **evidence** {verified}/{total_ev} verified against the substrate")
+    if recon:
+        add(f"- **reconciled** against the tree at "
+            f"`{(reconciliation or {}).get('reconciled_at_commit', '?')}` — "
+            f"{len(recon)} finding(s) superseded or resolved; "
+            f"the state file itself is unmodified")
     add("")
 
     for status in STATUS_ORDER:
@@ -81,6 +99,16 @@ def render(state: dict, source: str) -> str:
         for i in group:
             add(f"### {i.get('id')} — {i.get('title')}")
             add("")
+            r = recon.get(i.get("id"))
+            if r:
+                label = DISPOSITION_LABEL.get(r.get("disposition"),
+                                              r.get("disposition", "").upper())
+                add(f"> **{label}**")
+                add(">")
+                add("> " + " ".join((r.get("summary") or "").split()))
+                for line in r.get("evidence") or []:
+                    add("> - " + " ".join(str(line).split()))
+                add("")
             add(f"*{i.get('severity', '?')} · proposed by {proposer(i)}*")
             for key, label in (("confirmed_by", "confirmed by"),
                                ("contested_by", "contested by")):
@@ -132,13 +160,22 @@ def main(argv=None) -> int:
     ap.add_argument("state", help="path to a RETRO/RUN state YAML")
     ap.add_argument("-o", "--out", default=None,
                     help="write here instead of stdout")
+    ap.add_argument("--reconcile", default=None,
+                    help="a reconciliation YAML; its dispositions are rendered "
+                         "under the findings they supersede")
     args = ap.parse_args(argv)
 
     path = Path(args.state)
     if not path.exists():
         sys.exit(f"no state file at {path}")
     state = yaml.safe_load(path.read_text(encoding="utf-8"))
-    text = render(state, path.name)
+    recon = None
+    if args.reconcile:
+        rp = Path(args.reconcile)
+        if not rp.exists():
+            sys.exit(f"no reconciliation file at {rp}")
+        recon = yaml.safe_load(rp.read_text(encoding="utf-8"))
+    text = render(state, path.name, recon)
 
     if args.out:
         Path(args.out).write_text(text, encoding="utf-8", newline="\n")

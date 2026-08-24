@@ -358,8 +358,24 @@ def constraint_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
             by_group.setdefault(f.group, []).append(f)
 
     def names(iris, n=5):
-        short = [str(i).split("#")[-1].split("/")[-1] for i in sorted(iris)[:n]]
-        return ", ".join(short) + ("…" if len(iris) > n else "")
+        """Sample the set, and say plainly that it is a sample.
+
+        This printed the first five alphabetically followed by a bare ellipsis.
+        An agent then read a list that did not contain
+        `hasPositiveCounterpart` and concluded the property lacked an inverse,
+        which is false -- it is declared both ways and so never entered the
+        set at all. A second agent overturned the finding by noticing that the
+        list included a later-sorting name, which is a lot of work to ask of a
+        reader in order to not be misled. Absence from a truncated list is not
+        evidence of anything, so the truncation now names itself.
+        """
+        ordered = sorted(iris)
+        short = [str(i).split("#")[-1].split("/")[-1] for i in ordered[:n]]
+        if len(ordered) <= n:
+            return ", ".join(short) if short else "none"
+        return (", ".join(short)
+                + f" (first {n} of {len(ordered)} alphabetically; the rest are "
+                  f"not shown and absence from this list means nothing)")
 
     # Every property declared anywhere in the corpus, gathered before the group
     # loop so that "used but not declared" means what it says.

@@ -79,6 +79,40 @@ class Runtime:
         """Freeze the substrate into a fresh state document (§7.1)."""
         return cls(st.new_state(sprint, substrate.checksum), substrate, roster=roster, **kw)
 
+    @classmethod
+    def resume(
+        cls, path: str | Path, substrate: Substrate, *, roster: Iterable[str] = (), **kw
+    ) -> "Runtime":
+        """Continue a run from saved state, at whatever phase it stopped in.
+
+        Run 2 reached version 117 with 28 findings, every one carrying verified
+        evidence, and then stopped mid-vote because the API credit ran out.
+        Without this the only way forward was `initialize`, which discards all
+        of it and re-derives the same findings for the same 366,000 tokens.
+        Interruption is not an exotic case for a run that makes hundreds of
+        calls over an hour, and paying full price to recover from it is the
+        wrong default.
+
+        The substrate checksum must match. Every piece of evidence in the saved
+        state was verified against the substrate that was current when it was
+        submitted, and the grounding gate's guarantee is that a citation
+        resolves to the record it was checked against. Resuming onto a
+        different substrate would leave 28 findings marked verified against
+        records that may no longer say what they said, which is a worse
+        failure than losing the run: it would look sound.
+        """
+        state = st.load(path)
+        saved = (state.get("retro") or {}).get("sprint_input_checksum")
+        if saved != substrate.checksum:
+            raise ValueError(
+                f"cannot resume {Path(path).name}: it was built against substrate "
+                f"{saved}, and this one is {substrate.checksum}. Evidence verified "
+                "against the old substrate would carry its verified flag onto "
+                "records that may have changed. Rebuild the substrate from the "
+                "same commit, or start a fresh run.")
+        kw.setdefault("state_path", path)
+        return cls(state, substrate, roster=roster, **kw)
+
     # ------------------------------------------------------------------
     # accessors
     # ------------------------------------------------------------------

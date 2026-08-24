@@ -85,28 +85,51 @@ def main(argv=None) -> int:
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--no-reasoner", action="store_true",
                     help="skip HermiT; repository-root alone takes 23 minutes")
+    ap.add_argument("--resume", action="store_true",
+                    help="continue from RUN2_STATE.yaml rather than starting over; "
+                         "phases already closed are skipped")
     args = ap.parse_args(argv)
 
     out = Path(__file__).parent / "_run"
     out.mkdir(exist_ok=True)
     repo = Path(__file__).resolve().parents[1]
 
-    built = ingest.build("valuenet-run2", "2026-08-20", "2026-08-26", repo=repo,
-                         ontology=True, include_github=False,
-                         reasoner=not args.no_reasoner)
-    if built.errors:
-        print(f"substrate invalid: {built.errors[0]}", file=sys.stderr)
-        return 2
-    sub_path = ingest.write(built, out / "RUN2_INPUT.yaml")
-    substrate = Substrate.load(sub_path)
+    sub_path = out / "RUN2_INPUT.yaml"
+    if args.resume:
+        # Reuse the exact substrate the run was built against rather than
+        # rebuilding one and hoping it matches. It will not match: any change
+        # to a metric's detail string changes the checksum, and the first
+        # thing this run produced was a reason to change one. Rebuilding also
+        # costs three minutes to re-derive a file already on disk.
+        if not sub_path.exists():
+            print("--resume needs " + str(sub_path) + ", which is missing",
+                  file=sys.stderr)
+            return 2
+        built = None
+        substrate = Substrate.load(sub_path)
+        print("REUSING substrate " + sub_path.name + " (" + substrate.checksum[:19]
+              + "...), not rebuilding")
+    else:
+        built = ingest.build("valuenet-run2", "2026-08-20", "2026-08-26", repo=repo,
+                             ontology=True, include_github=False,
+                             reasoner=not args.no_reasoner)
+        if built.errors:
+            print(f"substrate invalid: {built.errors[0]}", file=sys.stderr)
+            return 2
+        sub_path = ingest.write(built, sub_path)
+        substrate = Substrate.load(sub_path)
 
     print("\nRUN 2  what the corpus should assert and does not")
-    print(f"  substrate  {len(substrate)} records "
-          f"({built.counts.get('document', 0)} document, "
-          f"{built.counts.get('metric', 0)} metric)")
+    if built:
+        print(f"  substrate  {len(substrate)} records "
+              f"({built.counts.get('document', 0)} document, "
+              f"{built.counts.get('metric', 0)} metric)")
+    else:
+        print(f"  substrate  {len(substrate)} records, loaded from disk")
     print(f"  gaps       {substrate.unavailable_types()}")
 
-    records = [r for r in built.document["records"] if r["type"] == "metric"]
+    records = [r for r in (built.document["records"] if built else [])
+               if r["type"] == "metric"]
     present = {r["payload"]["check"] for r in records}
     missing = [c for c in CONSTRAINT_CHECKS if c not in present]
     print(f"\n  constraint evidence available: "
@@ -131,118 +154,157 @@ def main(argv=None) -> int:
     adj_backend = AnthropicBackend(model=args.model, effort=args.effort, client=client)
 
     roster = [r.name for r in CONSTRAINT_ROSTER]
-    rt = Runtime.initialize("valuenet-run2", substrate, roster=roster,
-                            state_path=out / "RUN2_STATE.yaml")
+    state_path = out / "RUN2_STATE.yaml"
+    if args.resume:
+        if not state_path.exists():
+            print("--resume given but no state at " + str(state_path), file=sys.stderr)
+            return 2
+        rt = Runtime.resume(state_path, substrate, roster=roster)
+        print("RESUMED at phase " + rt.phase + ", version " + str(rt.version)
+              + ", " + str(len(rt.state["issues"])) + " issue(s) carried")
+    else:
+        rt = Runtime.initialize("valuenet-run2", substrate, roster=roster,
+                                state_path=state_path)
     adj = Adjudicator(rt, adj_backend)
+
+    #: Phases run in order, so anything before the one we resumed into is
+    #: closed. Re-running a closed phase would re-ask agents questions they
+    #: have already answered, and the no-new-content rule would reject the
+    #: answers -- after paying for them.
+    ORDER = ["gathering", "merge", "analysis", "consensus", "actions",
+             "compression", "complete"]
+
+    def done(phase: str) -> bool:
+        if rt.phase not in ORDER or phase not in ORDER:
+            return False
+        return ORDER.index(rt.phase) > ORDER.index(phase)
 
     def agents():
         return build_roster(rt, backend, CONSTRAINT_ROSTER)
 
     # ---- Phase 1 -------------------------------------------------------
-    print("\nPHASE 1  gathering")
-    for agent in agents():
-        findings, err = agent.ask("gather", agent.substrate_view(), rt.read(agent.name))
-        if err is not None:
-            print(f"  XX  {agent.name}: {err}")
-            continue
-        print(f"  --  {agent.name}: {len(findings)} finding(s)")
-        for f in findings:
-            print(f"        [{f.severity}] {f.title[:88]}")
-            for e in f.evidence:
-                print(f"           cites {e.source_type}:{e.source_ref}")
-        show(f"{agent.name} submits", agent.gather(tokens=4500, findings=findings))
+    if done("gathering"):
+        print("\nGATHERING - already closed on the saved state, skipping")
+    else:
+        print("\nPHASE 1  gathering")
+        for agent in agents():
+            findings, err = agent.ask("gather", agent.substrate_view(), rt.read(agent.name))
+            if err is not None:
+                print(f"  XX  {agent.name}: {err}")
+                continue
+            print(f"  --  {agent.name}: {len(findings)} finding(s)")
+            for f in findings:
+                print(f"        [{f.severity}] {f.title[:88]}")
+                for e in f.evidence:
+                    print(f"           cites {e.source_type}:{e.source_ref}")
+            show(f"{agent.name} submits", agent.gather(tokens=4500, findings=findings))
 
-    r = rt.advance_phase()
-    show("advance to merge", r)
-    if not r:
-        print("  phase 1 did not close; stopping.")
-        return 1
+        r = rt.advance_phase()
+        show("advance to merge", r)
+        if not r:
+            print("  phase 1 did not close; stopping.")
+            return 1
 
     # ---- Phase 2 -------------------------------------------------------
-    print("\nPHASE 2  merge")
-    merges, err = adj.propose("propose_merges", adj._view(["issues"]))
-    if err is None:
-        print(f"  --  Adjudicator proposes {len(merges)} merge(s)")
-        for m in merges:
-            print(f"        {m.duplicate_id} -> {m.survivor_id}: {m.rationale[:80]}")
-        show("merges", adj.adjudicate_merges(tokens=4000) if merges else [])
+    if done("merge"):
+        print("\nMERGE - already closed on the saved state, skipping")
     else:
-        print(f"  XX  {err}")
-    show("advance to analysis", rt.advance_phase())
+        print("\nPHASE 2  merge")
+        merges, err = adj.propose("propose_merges", adj._view(["issues"]))
+        if err is None:
+            print(f"  --  Adjudicator proposes {len(merges)} merge(s)")
+            for m in merges:
+                print(f"        {m.duplicate_id} -> {m.survivor_id}: {m.rationale[:80]}")
+            show("merges", adj.adjudicate_merges(tokens=4000) if merges else [])
+        else:
+            print(f"  XX  {err}")
+        show("advance to analysis", rt.advance_phase())
 
     # ---- Phase 3 -------------------------------------------------------
-    print("\nPHASE 3  analysis")
-    for agent in agents():
-        assessments, err = agent.ask("evaluate", agent.substrate_view(), rt.read(agent.name))
-        if err is not None:
-            print(f"  XX  {agent.name}: {err}")
-            continue
-        acting = [a for a in assessments if a.position != "abstain"]
-        print(f"  --  {agent.name}: {len(acting)} position(s)")
-        for a in acting:
-            print(f"        {a.position:8} {a.issue_id}  {a.rationale[:74]}")
-        show(f"{agent.name} submits", agent.evaluate(tokens=4000, assessments=assessments))
+    if done("analysis"):
+        print("\nANALYSIS - already closed on the saved state, skipping")
+    else:
+        print("\nPHASE 3  analysis")
+        for agent in agents():
+            assessments, err = agent.ask("evaluate", agent.substrate_view(), rt.read(agent.name))
+            if err is not None:
+                print(f"  XX  {agent.name}: {err}")
+                continue
+            acting = [a for a in assessments if a.position != "abstain"]
+            print(f"  --  {agent.name}: {len(acting)} position(s)")
+            for a in acting:
+                print(f"        {a.position:8} {a.issue_id}  {a.rationale[:74]}")
+            show(f"{agent.name} submits", agent.evaluate(tokens=4000, assessments=assessments))
 
-    findings, err = adj.propose("detect_contradictions",
-                                adj._view(["issues", "conflict_record"]))
-    if err is None and findings:
-        print(f"  --  Adjudicator finds {len(findings)} contradiction(s)")
-        show("contradictions", adj.adjudicate_contradictions(tokens=3500, findings=findings))
+        findings, err = adj.propose("detect_contradictions",
+                                    adj._view(["issues", "conflict_record"]))
+        if err is None and findings:
+            print(f"  --  Adjudicator finds {len(findings)} contradiction(s)")
+            show("contradictions", adj.adjudicate_contradictions(tokens=3500, findings=findings))
 
-    ready, unmet = rt.exit_ready()
-    if unmet:
-        print(f"  --  exit blocked by: {unmet[0][:100]}")
-    show("advance to consensus", rt.advance_phase(archive_unevaluated=True))
+        ready, unmet = rt.exit_ready()
+        if unmet:
+            print(f"  --  exit blocked by: {unmet[0][:100]}")
+        show("advance to consensus", rt.advance_phase(archive_unevaluated=True))
 
     # ---- Phase 4 -------------------------------------------------------
-    print("\nPHASE 4  consensus")
-    contested = [i["id"] for i in rt.state["issues"] if i["status"] == "contested"]
-    for iid in contested:
-        show(f"open vote on {iid}", rt.submit({
-            "update_id": f"V-{iid}", "base_version": rt.version,
-            "votes": [{"subject": f"ISSUE:{iid}:status:confirmed", "threshold": 0.7,
-                       "denominator": "voting_agents", "outcome": "open", "cast": []}]},
-            "Adjudicator"))
-    for agent in agents():
-        res = agent.cast_votes(tokens=1500)
-        if res:
-            show(f"{agent.name} votes", res)
-    for vote in [v for v in rt.state.get("votes", []) if v["outcome"] == "open"]:
-        tb, err = adj.propose("break_tie", adj._view(["issues", "votes"]), vote)
-        if err is None and tb:
-            print(f"  --  Adjudicator: {tb.outcome} - {tb.rationale[:100]}")
-            show("tie-break", adj.adjudicate_tie_breaks(
-                tokens=3000, decisions={tb.subject: tb}))
-    show("advance to actions", rt.advance_phase())
+    if done("consensus"):
+        print("\nCONSENSUS - already closed on the saved state, skipping")
+    else:
+        print("\nPHASE 4  consensus")
+        contested = [i["id"] for i in rt.state["issues"] if i["status"] == "contested"]
+        for iid in contested:
+            show(f"open vote on {iid}", rt.submit({
+                "update_id": f"V-{iid}", "base_version": rt.version,
+                "votes": [{"subject": f"ISSUE:{iid}:status:confirmed", "threshold": 0.7,
+                           "denominator": "voting_agents", "outcome": "open", "cast": []}]},
+                "Adjudicator"))
+        for agent in agents():
+            res = agent.cast_votes(tokens=1500)
+            if res:
+                show(f"{agent.name} votes", res)
+        for vote in [v for v in rt.state.get("votes", []) if v["outcome"] == "open"]:
+            tb, err = adj.propose("break_tie", adj._view(["issues", "votes"]), vote)
+            if err is None and tb:
+                print(f"  --  Adjudicator: {tb.outcome} - {tb.rationale[:100]}")
+                show("tie-break", adj.adjudicate_tie_breaks(
+                    tokens=3000, decisions={tb.subject: tb}))
+        show("advance to actions", rt.advance_phase())
 
     # ---- Phase 5 -------------------------------------------------------
-    print("\nPHASE 5  actions")
-    for agent in agents():
-        res = agent.propose_actions(tokens=3000)
-        if res:
-            show(f"{agent.name} proposes", res)
-    for a in list(rt.state.get("actions") or []):
-        show(f"accept {a['id']}", rt.submit({
-            "update_id": f"ACC-{a['id']}", "base_version": rt.version,
-            "actions": [{"id": a["id"], "status": "accepted"}]}, "Grounding"))
-    ready, unmet = rt.exit_ready()
-    if unmet:
-        print(f"  --  {unmet[0][:110]}")
-        for i in rt.state["issues"]:
-            if i["status"] == "confirmed":
-                n = len(rt.state.get("decisions") or []) + 1
-                show(f"waive {i['id']}", rt.submit({
-                    "update_id": f"W-{i['id']}", "base_version": rt.version,
-                    "decisions": [{"id": f"DEC-{n:03d}", "type": "no_action_required",
-                                   "subject": f"ISSUE:{i['id']}",
-                                   "outcome": "no action this cycle",
-                                   "basis": "adjudicator"}]}, "Adjudicator"))
-    show("advance to compression", rt.advance_phase())
+    if done("actions"):
+        print("\nACTIONS - already closed on the saved state, skipping")
+    else:
+        print("\nPHASE 5  actions")
+        for agent in agents():
+            res = agent.propose_actions(tokens=3000)
+            if res:
+                show(f"{agent.name} proposes", res)
+        for a in list(rt.state.get("actions") or []):
+            show(f"accept {a['id']}", rt.submit({
+                "update_id": f"ACC-{a['id']}", "base_version": rt.version,
+                "actions": [{"id": a["id"], "status": "accepted"}]}, "Grounding"))
+        ready, unmet = rt.exit_ready()
+        if unmet:
+            print(f"  --  {unmet[0][:110]}")
+            for i in rt.state["issues"]:
+                if i["status"] == "confirmed":
+                    n = len(rt.state.get("decisions") or []) + 1
+                    show(f"waive {i['id']}", rt.submit({
+                        "update_id": f"W-{i['id']}", "base_version": rt.version,
+                        "decisions": [{"id": f"DEC-{n:03d}", "type": "no_action_required",
+                                       "subject": f"ISSUE:{i['id']}",
+                                       "outcome": "no action this cycle",
+                                       "basis": "adjudicator"}]}, "Adjudicator"))
+        show("advance to compression", rt.advance_phase())
 
     # ---- Phase 6 -------------------------------------------------------
-    print("\nPHASE 6  compression")
-    show("archive", adj.adjudicate_compression(tokens=4000))
-    show("advance to complete", rt.advance_phase())
+    if done("compression"):
+        print("\nCOMPRESSION - already closed on the saved state, skipping")
+    else:
+        print("\nPHASE 6  compression")
+        show("archive", adj.adjudicate_compression(tokens=4000))
+        show("advance to complete", rt.advance_phase())
 
     # ---- report --------------------------------------------------------
     rep = rt.report()

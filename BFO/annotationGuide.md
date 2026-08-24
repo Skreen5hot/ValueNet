@@ -35,7 +35,7 @@ Who is performing this action? This person or group is your **`Agent`**.
 
 ### Step 3: Identify the Value(s)
 
-What value is the agent demonstrating through their action? Look through the `valuenet-folk.owl` ontology to find the best fit. An action can demonstrate multiple values. These are your **`ValueDisposition`** or **`ValueRole`** classes.
+What value is the agent demonstrating through their action? Look through the `valuenet-folk.ttl` ontology to find the best fit. An action can demonstrate multiple values. These are your **`ValueDisposition`** or **`ValueRole`** classes.
 
 > **Text:** "The volunteer spent her weekend cleaning the park."
 > **Values:** This action demonstrates a `folk:ContributionDisposition` (making an impact on the community) and a `folk:DiligenceDisposition` (applying persistent work).
@@ -131,7 +131,7 @@ Optionally add `vn-core:evokesFrame` pointing at the semantic frame a parser ass
 
 ## 4. Best Practices
 
-*   **Be Specific:** Always try to use the most specific value from the `valuenet-folk.owl` hierarchy. Prefer `folk:KindnessDisposition` over the more general `vn-schwartz:BenevolenceDisposition`.
+*   **Be Specific:** Always try to use the most specific value from the `valuenet-folk.ttl` hierarchy. Prefer `folk:KindnessDisposition` over the more general `vn-schwartz:BenevolenceDisposition`.
 *   **Multiple Values are Good:** Human actions are complex. Don't hesitate to annotate a single process as realizing multiple values.
 *   **Disposition vs. Role:** Remember the difference. Is the value coming from *within* the person (a disposition) or from the *expectations of their position* (a role)? Sometimes, it's both, as in the captain example above.
 *   **Focus on the Action:** The central point of the annotation is always the `ValueRealizationProcess`. Start by finding the verb or action phrase in the text.

@@ -10,7 +10,7 @@ The core of our new strategy is a new annotation property, `vn-core:isEvidenceFo
 
 ### Property Definition
 
-This property is defined in `valuenet-core.ttl` / `valuenet-core.owl`, together with `vn-core:TextSpan`, the class of annotation units it links from.
+This property is defined in `valuenet-core.ttl` / `valuenet-core.ttl`, together with `vn-core:TextSpan`, the class of annotation units it links from.
 
 ```turtle
 @prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .

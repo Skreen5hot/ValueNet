@@ -24,7 +24,7 @@ from marep import Adjudicator, Runtime, Substrate, build_roster, ingest  # noqa:
 from marep.agents import ONTOLOGY_ROSTER  # noqa: E402
 
 SCOPES = ["ThatsAllFolks", "MoralMolecules", "ValueCore.ttl", "bhv.ttl", "mft.ttl",
-          "folk_aligned.ttl", "bhvtriggers.ttl", "wvs.owl"]
+          "folk_aligned.ttl", "bhvtriggers.ttl", "wvs.ttl"]
 
 
 def show(label, results):

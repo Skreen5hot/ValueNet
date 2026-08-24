@@ -11,6 +11,12 @@ The invariant encoded here is that a `.ttl` file in this repository is a valid
 Turtle document on its own, with no header injection, no format guessing, and
 no knowledge of where it sits in a directory tree. Anything a loader has to
 know in order to read the file belongs in the file.
+
+The same principle produced a second invariant. Eight files carried a `.owl`
+extension; seven of them held Turtle, and a loader that believed the suffix
+reported six perfectly good ontologies as broken. The repository now states its
+serialization in the extension and `test_extensions_state_the_serialization`
+holds it there, so no reader needs private knowledge of which files lie.
 """
 
 from __future__ import annotations
@@ -97,6 +103,49 @@ def test_the_fragment_corpus_has_not_been_emptied():
         f"the fragment corpus holds {total:,} triples, below the "
         f"{FRAGMENT_TRIPLE_FLOOR:,} floor — a file was probably made to parse "
         "by removing what would not parse")
+
+
+#: rdflib's name for the serialization a given extension promises. A file whose
+#: suffix is absent here is not an ontology artifact and is not checked.
+EXTENSION_FORMAT = {".ttl": "turtle", ".owl": "xml", ".rdf": "xml",
+                    ".nt": "nt", ".n3": "n3", ".jsonld": "json-ld"}
+
+
+def ontology_files() -> list[Path]:
+    return sorted(p for p in REPO.rglob("*")
+                  if p.suffix.lower() in EXTENSION_FORMAT
+                  and not SKIP_DIRS & set(p.parts))
+
+
+@pytest.mark.slow
+def test_extensions_state_the_serialization():
+    """A file's extension is a fact about the file, not a hint.
+
+    The counterexample: `.owl` files holding Turtle. Nothing was wrong with
+    their content, but every reader had to be told which ones lied, which is
+    exactly the knowledge that should not live in the reader.
+    """
+    liars = []
+    for path in ontology_files():
+        promised = EXTENSION_FORMAT[path.suffix.lower()]
+        try:
+            rdflib.Graph().parse(str(path), format=promised)
+        except Exception:
+            actual = next((f for f in ("turtle", "xml", "n3", "nt", "json-ld")
+                           if f != promised and _parses_as(path, f)), None)
+            liars.append(f"{path.relative_to(REPO)}: named {promised}, "
+                         + (f"is {actual}" if actual else "parses as nothing"))
+    joined = "\n".join(f"  {x}" for x in liars)
+    assert not liars, ("these files do not hold the format their extension "
+                       "promises:\n" + joined)
+
+
+def _parses_as(path: Path, fmt: str) -> bool:
+    try:
+        rdflib.Graph().parse(str(path), format=fmt)
+        return True
+    except Exception:
+        return False
 
 
 @pytest.mark.slow

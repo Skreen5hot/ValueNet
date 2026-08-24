@@ -1,6 +1,6 @@
 # Competency Questions: Moral Epistemics Module
 
-Competency questions for `valuenet-moral-epistemics.owl`, in the style of the BHV and MFT competency questions listed in the repository README. CQ6 exercises the `vn-core` annotation layer.
+Competency questions for `valuenet-moral-epistemics.ttl`, in the style of the BHV and MFT competency questions listed in the repository README. CQ6 exercises the `vn-core` annotation layer.
 
 All six are satisfied by `valuenet-moral-epistemics-scenario.ttl`, a fictional scenario in which two agents witness the same conduct: one observes, discerns and acts; the other judges rashly. The results below were produced by running each query over the merged graph of `valuenet-core`, `valuenet-schwartz-values`, `valuenet-folk`, `valuenet-moral-foundations`, `valuenet-mappings`, `valuenet-moral-epistemics` and the scenario (1,394 triples). CQ6 additionally loads two MFTriggers files.
 

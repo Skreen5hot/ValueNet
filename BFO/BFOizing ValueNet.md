@@ -13,10 +13,10 @@ Our refactoring was a complete conceptual and structural re-engineering, guided 
 *   **`vn-core:ValueRole`**: A subclass of `bfo:role`, this represents externally-grounded, normative expectations placed on an agent by a social context. Values like being a *Good Citizen* are modeled as roles. An agent *bears* a role, which is realized through normative behavior.
 
 **Structural Re-Engineering:** We replaced the monolithic structure with a modular, OBO Foundry-style architecture. The new suite includes:
-*   `valuenet-core.owl`: Imports BFO and defines the top-level classes (`ValueDisposition`, `ValueRole`, `ValueRealizationProcess`).
-*   `valuenet-moral-foundations.owl`: Models Haidt's Moral Foundations as specific subclasses of `MoralValueDisposition`.
-*   `valuenet-schwartz-values.owl`: Models Schwartz's Basic Human Values as subclasses of `PersonalValueDisposition`.
-*   `valuenet-mappings.owl`: Provides `skos:broadMatch` mappings to the original ValueNet IRIs, ensuring backward compatibility and traceability.
+*   `valuenet-core.ttl`: Imports BFO and defines the top-level classes (`ValueDisposition`, `ValueRole`, `ValueRealizationProcess`).
+*   `valuenet-moral-foundations.ttl`: Models Haidt's Moral Foundations as specific subclasses of `MoralValueDisposition`.
+*   `valuenet-schwartz-values.ttl`: Models Schwartz's Basic Human Values as subclasses of `PersonalValueDisposition`.
+*   `valuenet-mappings.ttl`: Provides `skos:broadMatch` mappings to the original ValueNet IRIs, ensuring backward compatibility and traceability.
 
 **Semantic and Axiomatic Rewrite:** All axioms were rewritten to reflect the realist commitment.
 *   The descriptive `dul:satisfies` relation was replaced with BFO's `bfo:realizes`. A `ValueDisposition` is not satisfied by a situation; it is **realized in** a `vn-core:ValueRealizationProcess` (a subclass of `bfo:process`).
@@ -38,7 +38,7 @@ This realist, BFO-based approach is essential for interoperability within the br
 
 ## How We Did It — A Systematic Approach to Folk Values
 
-While the BFO-aligned core provided the formal structure, it was incomplete without a comprehensive collection of the "folk values" people use in everyday language. To build this module (`valuenet-folk.owl`), we executed a rigorous, four-phase plan to smartly manage the "messiness" of natural language.
+While the BFO-aligned core provided the formal structure, it was incomplete without a comprehensive collection of the "folk values" people use in everyday language. To build this module (`valuenet-folk.ttl`), we executed a rigorous, four-phase plan to smartly manage the "messiness" of natural language.
 
 1.  **Phase 1: Planning & Clustering:** We began by consolidating hundreds of candidate value terms from diverse sources. These were then normalized, de-duplicated, and grouped into thematic clusters (e.g., "Community & Social Connection," "Integrity & Principle"). This strategy allowed us to tackle the complexity in a structured, manageable way.
 
@@ -48,7 +48,7 @@ While the BFO-aligned core provided the formal structure, it was incomplete with
 
 4.  **Phase 4: Linguistic Grounding:** Finally, to make the ontology usable for data analysis, we developed a formal annotation strategy. We defined the `vn-core:isEvidenceFor` property to link linguistic data to the ontological entities it describes. This was accompanied by a detailed `AnnotationGuide.md` to provide a clear, step-by-step workflow for annotators, completing the bridge from abstract theory to practical application.
 
-This systematic process ensured the final `valuenet-folk.owl` module is not only comprehensive in its coverage but also logically sound, well-documented, and ready for real-world use.
+This systematic process ensured the final `valuenet-folk.ttl` module is not only comprehensive in its coverage but also logically sound, well-documented, and ready for real-world use.
 
 ## Why This Matters — The Value Proposition
 

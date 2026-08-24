@@ -42,8 +42,12 @@ def _write(tmp: Path, name: str, text: str) -> Path:
 def test_owl_extension_holding_turtle_still_parses(tmp_path: Path):
     """The first run reported six good BFO files as unparseable.
 
-    Every .owl in this repository is Turtle. Trusting the suffix produced a
-    metric asserting a failure that had not happened.
+    Those six .owl files held Turtle, and trusting the suffix produced a
+    metric asserting a failure that had not happened. The repository no longer
+    contains them — every ontology file is now a .ttl holding Turtle, and
+    `test_ontology_artifacts` asserts it — so this covers foreign input rather
+    than anything committed here. Kept because the defect it describes is a
+    property of the measuring code, which will meet such a file again.
     """
     p = _write(tmp_path, "module.owl", TURTLE)
     facts = onto.measure_file(p, tmp_path)

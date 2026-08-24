@@ -49,10 +49,11 @@ GROUPS: tuple[tuple[str, str], ...] = (
     ("vale2024/", "vale2024"),
 )
 
-#: Formats to try, in order. The extension is a hint, not a fact: every .owl
-#: file in this repository is Turtle, and trusting the suffix reported six
-#: perfectly good files as unparseable — a substrate that asserts a false
-#: failure is worse than one that omits the check.
+#: Formats to try, in order. Kept as a fallback for foreign input, but no
+#: longer load-bearing here: every ontology file in this repository is now a
+#: .ttl containing Turtle, and a test asserts that the extension tells the
+#: truth. This list once mattered because six .owl files held Turtle and
+#: trusting the suffix reported them as unparseable.
 PARSE_FORMATS = ("turtle", "xml", "n3", "nt")
 
 _PREFIX_DECL = re.compile(r"@prefix\s+([A-Za-z0-9_-]*):", re.I)
@@ -228,15 +229,15 @@ def group_metrics(facts: list[FileFacts]) -> list[Metric]:
         out.append(Metric("files_parsing", group, len(ok)))
         out.append(Metric("files_not_parsing", group, len(bad),
                           detail=", ".join(f.rel for f in bad[:4]) + ("…" if len(bad) > 4 else "")))
-        # Named as sums, not totals. These add up per-file counts, so a module
-        # kept in both .ttl and .owl contributes twice — "classes_total: 360"
-        # for a layer holding 179 classes is true of the arithmetic and false
-        # of the ontology, which is precisely the kind of number a finding
-        # would cite wrongly.
+        # Named as sums, not totals. They add per-file counts, so any module
+        # stored in two files contributes twice. That was routine when every
+        # BFO module was kept as both .ttl and .owl; the repository now keeps
+        # one serialization each, but the name still says what it does, since
+        # the next duplicate pair should not be able to hide inside a "total".
         out.append(Metric("triples_sum_over_files", group, sum(f.triples for f in ok),
-                          detail="sum across files; .ttl/.owl pairs counted twice"))
+                          detail="sum across files; a module stored twice is counted twice"))
         out.append(Metric("classes_sum_over_files", group, sum(f.classes for f in ok),
-                          detail="sum across files; .ttl/.owl pairs counted twice"))
+                          detail="sum across files; a module stored twice is counted twice"))
         noprefix = [f for f in fs if f.undeclared_prefixes]
         out.append(Metric("files_with_undeclared_prefixes", group, len(noprefix),
                           detail=", ".join(sorted({p for f in noprefix
@@ -248,7 +249,6 @@ def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     """Checks specific to the BFO-aligned suite, where a namespace is known."""
     import rdflib
     from rdflib.namespace import OWL, RDF, RDFS, SKOS
-    import rdflib.compare as compare
 
     NS = "https://fandaws.com/ontology/bfo/"
     BFO = "http://purl.obolibrary.org/obo/BFO_"
@@ -321,18 +321,10 @@ def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
                       len(corpus_classes - measured),
                       detail="declared in the corpus but outside the grounding check's scope"))
 
-    for m in modules:
-        owl = m.with_suffix(".owl")
-        if not owl.exists():
-            continue
-        try:
-            a = rdflib.Graph(); a.parse(str(m))
-            b = rdflib.Graph(); b.parse(str(owl))
-            same = compare.isomorphic(a, b)
-        except Exception:
-            continue
-        out.append(Metric("ttl_owl_isomorphic", m.stem, 1 if same else 0,
-                          detail="" if same else "serializations disagree"))
+    # A ttl_owl_isomorphic metric used to live here, checking that each module's
+    # two serializations agreed. The repository now keeps one serialization per
+    # module, so there is nothing to compare and the whole class of drift it
+    # guarded against cannot occur.
     return out
 
 

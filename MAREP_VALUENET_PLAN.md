@@ -23,7 +23,7 @@ Measured by `python -m marep ingest --ontology`, which is now the authority for 
 
 **127 of 171 ontology files do not parse standalone, and every one of them is in `ThatsAllFolks/`.**
 
-> **Correction.** The hand survey behind the first draft of this plan reported 128 failures across two groups, including `wvs.owl`. `wvs.owl` parses. So do the six BFO `.owl` files the first version of the measurement tool also condemned. Both were the same mistake — guessing serialization from the file extension — and the tool made it before the tool caught it. The lesson is not about `wvs.owl`; it is that the numbers a retrospective reasons over must come from something reproducible, because a survey run once by hand is exactly as fallible as a first draft of a script and leaves no trace when it is wrong.
+> **Correction.** The hand survey behind the first draft of this plan reported 128 failures across two groups, including `wvs.ttl`. `wvs.ttl` parses. So do the six BFO `.owl` files the first version of the measurement tool also condemned. Both were the same mistake — guessing serialization from the file extension — and the tool made it before the tool caught it. The lesson is not about `wvs.ttl`; it is that the numbers a retrospective reasons over must come from something reproducible, because a survey run once by hand is exactly as fallible as a first draft of a script and leaves no trace when it is wrong.
 
 The `ThatsAllFolks` failures share one cause: the `folk_*.ttl` files carry no `@prefix` declarations at all while using `folk:`, `vcvf:`, `owl:` and `skos:`. They are fragments meant to be read alongside a parent that declares the prefixes, not standalone documents. Whether that is a defect or an undocumented convention is exactly the kind of question a retrospective exists to settle — and not one I should settle unilaterally, because the answer depends on intent I do not have.
 
@@ -200,7 +200,7 @@ One run over 158 files would produce a shallow pass over everything. Better to r
 
 ### Run 1 — `ThatsAllFolks` and the DUL layer *(highest value)*
 
-The 128 non-parsing files, `wvs.owl`, `bhvtriggers.ttl`, `folk_aligned.ttl`, `MoralMolecules`. Nobody has audited these. The central question is the one I deliberately did not answer above: are the prefix-less `folk_*.ttl` files a broken module or an undocumented include convention, and what follows either way?
+The 128 non-parsing files, `wvs.ttl`, `bhvtriggers.ttl`, `folk_aligned.ttl`, `MoralMolecules`. Nobody has audited these. The central question is the one I deliberately did not answer above: are the prefix-less `folk_*.ttl` files a broken module or an undocumented include convention, and what follows either way?
 
 ### Run 2 — the BFO layer
 

@@ -1,13 +1,13 @@
 # ValueNet Ontology Testing Framework
 
-This document outlines a rigorous framework for testing, validating, and refining the ValueNet ontology suite, particularly the `valuenet-folk.owl` module. The goal is to ensure the ontology is logically consistent, structurally sound, and adheres to high-quality development standards.
+This document outlines a rigorous framework for testing, validating, and refining the ValueNet ontology suite, particularly the `valuenet-folk.ttl` module. The goal is to ensure the ontology is logically consistent, structurally sound, and adheres to high-quality development standards.
 
 ## Part 1: Automated Reasoner Validation
 
 The most fundamental test is to check for logical consistency using an OWL reasoner (e.g., HermiT, Pellet, ELK). This should be done regularly during development, typically within an ontology editor like Protégé.
 
 **Procedure:**
-1.  Load the `valuenet-folk.owl` ontology (which imports the core and Schwartz modules).
+1.  Load the `valuenet-folk.ttl` ontology (which imports the core and Schwartz modules).
 2.  Start the reasoner (e.g., `Reasoner -> Start Reasoner`).
 3.  Check for unsatisfiable classes. An unsatisfiable class (one that is equivalent to `owl:Nothing`) indicates a logical contradiction in the axioms. Any such classes must be investigated and fixed immediately.
 
@@ -86,4 +86,4 @@ WHERE {
 
 1.  **Definition Review (Task 3.2):** Manually review the definitions for all classes within each cluster to ensure they are sufficiently distinct and avoid ambiguity. For example, check that the definitions for `EqualityDisposition` and `EquityDisposition` clearly articulate the difference.
 2.  **Axiom Review (Task 3.3):** Manually review the use of `rdfs:subClassOf` versus `skos:broadMatch`. As the ontology has grown, some initial decisions might need refinement. For example, is `folk:KindnessDisposition` truly a *subclass* of `vn-schwartz:BenevolenceDisposition`, or is it so close in meaning that a simple `skos:exactMatch` would be better?
-3.  **Coverage Analysis:** Compare the set of all modeled classes in `valuenet-folk.owl` against the `Primary Value Concepts` list in `Phase1_NormalizedTerms.md`. Identify any high-priority concepts that were missed during the modeling sprints and schedule them for a future iteration.
+3.  **Coverage Analysis:** Compare the set of all modeled classes in `valuenet-folk.ttl` against the `Primary Value Concepts` list in `Phase1_NormalizedTerms.md`. Identify any high-priority concepts that were missed during the modeling sprints and schedule them for a future iteration.

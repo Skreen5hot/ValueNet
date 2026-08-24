@@ -26,7 +26,7 @@ try:
 except ImportError:  # pragma: no cover
     sys.exit("needs rdflib: pip install rdflib")
 
-#: The bindings the parent artifacts (folk.owl, taf.ttl) declare. Every prefix
+#: The bindings the parent artifacts (folk.ttl, taf.ttl) declare. Every prefix
 #: the fragments use is drawn from here; none of them invent one.
 HEADER = """@prefix folk: <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#> .
 @prefix vcvf: <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#> .

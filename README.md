@@ -78,7 +78,7 @@ Canonical namespace: ``https://fandaws.com/ontology/bfo/valuenet-<module>#``. Th
 | [valuenet-moral-epistemics](BFO/valuenet-moral-epistemics.ttl) | Moral assessment: behavioural observation, prudent discernment, rash judgment, protective action |
 | [valuenet-mappings](BFO/valuenet-mappings.ttl) | ``skos`` mappings back to the original ValueNet IRIs |
 
-Each module has a ``.ttl`` and an ``.owl`` serialization; both are Turtle and the pair is kept isomorphic.
+Every ontology file in this repository is a ``.ttl`` holding Turtle, and each is a valid document on its own — no header injection, no format guessing, no knowledge of where it sits in the tree. Modules were previously kept as a ``.ttl`` and an ``.owl`` that were both Turtle, which meant a reader had to be told which extension to disbelieve and made every class count double. Two tests hold the invariants: `test_extensions_state_the_serialization` and `test_every_ttl_in_the_repository_parses_standalone`.
 
 Supporting material: [annotationGuide.md](BFO/annotationGuide.md) (annotator workflow), [TestingFramework.md](BFO/TestingFramework.md) (reasoner and SPARQL checks), [RefactorPlan.md](BFO/RefactorPlan.md) (progress tracker), SHACL shapes ([core](BFO/valuenet-core-shapes.ttl), [moral epistemics](BFO/valuenet-moral-epistemics-shapes.ttl)), and competency questions with a worked scenario ([CQ](BFO/valuenet-moral-epistemics-CQ.md), [scenario](BFO/valuenet-moral-epistemics-scenario.ttl)).
 

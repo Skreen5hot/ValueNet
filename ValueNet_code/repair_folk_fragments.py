@@ -8,7 +8,7 @@ convention could load it. This script moves the correctness into the files.
 What it does, and nothing else:
 
 * prepends the six prefix declarations the parent artifacts already use, taking
-  the bindings verbatim from `folk.owl` and `taf.ttl` rather than inventing any;
+  the bindings verbatim from `folk.ttl` and `taf.ttl` rather than inventing any;
 * removes stray export debris — lines that are just `data` or `0`, evidently
   spreadsheet residue (12 files);
 * repairs a doubled IRI terminator, `>>` to `>` (2 files);
@@ -31,7 +31,7 @@ import glob
 import os
 import sys
 
-#: Verbatim from folk.owl and taf.ttl. All six go into every file: a uniform
+#: Verbatim from folk.ttl and taf.ttl. All six go into every file: a uniform
 #: header keeps the corpus editable without each file having a different
 #: preamble, and unused prefix declarations are inert in Turtle.
 PREFIXES = [

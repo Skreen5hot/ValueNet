@@ -22,7 +22,7 @@ A "bulk import" of hundreds of value terms would be unreliable and lead to an in
     *   A `ValueRole` (an external expectation).
     *   A synonym or specific type of an existing disposition/role.
     *   Something else entirely (e.g., a goal, a virtue, a capability) that should be modeled differently or excluded.
-4.  **Integrate & Document:** Approved classes will be added to `valuenet-folk.owl` with clear, OBO-style definitions and appropriate axioms (`rdfs:subClassOf`, `skos:broadMatch`) linking them to the core and Schwartz modules.
+4.  **Integrate & Document:** Approved classes will be added to `valuenet-folk.ttl` with clear, OBO-style definitions and appropriate axioms (`rdfs:subClassOf`, `skos:broadMatch`) linking them to the core and Schwartz modules.
 
 ## 3. Execution Plan & Progress Tracker
 
@@ -117,7 +117,7 @@ With the folk value module now mature, we can address the gap left by the remova
 Defects found while adding the moral epistemics module. All fixed and verified; see the validation summary at the end of this document.
 
 *   [x] **Task 5.1: Repair `valuenet-schwartz-values.ttl`.** The file was a copy-paste of an EasyRdf converter web page — HTML navigation, the input pasted once, converter UI text, the output pasted again, and the page footer. It did not parse. Rebuilt from the converted block (56 triples, isomorphic to the `.owl`). - *Completed*
-*   [x] **Task 5.2: Fix dangling parent IRIs.** `valuenet-folk` and `valuenet-schwartz-values` referenced their parents as `…/valuenet-core.owl#X` and `…/valuenet-schwartz-values.owl#X`, but those modules declare `…/valuenet-core#X` and `…/valuenet-schwartz-values#X`. 160 occurrences of 12 distinct IRIs resolved to nothing, leaving 146 of 158 classes with no path to a BFO root. The reasoner run recorded under Task 3.1 was therefore checking a hierarchy that was not connected. - *Completed*
+*   [x] **Task 5.2: Fix dangling parent IRIs.** `valuenet-folk` and `valuenet-schwartz-values` referenced their parents as `…/valuenet-core.ttl#X` and `…/valuenet-schwartz-values.ttl#X`, but those modules declare `…/valuenet-core#X` and `…/valuenet-schwartz-values#X`. 160 occurrences of 12 distinct IRIs resolved to nothing, leaving 146 of 158 classes with no path to a BFO root. The reasoner run recorded under Task 3.1 was therefore checking a hierarchy that was not connected. - *Completed*
 *   [x] **Task 5.3: Correct nonexistent BFO identifiers in the documentation.** `Phase4_LinguisticGrounding.md` and `annotationGuide.md` used `bfo:0000041` for *person*, `bfo:0000086` for *has_disposition*, and `bfo:0000133` for *realizes*. None of the three exist in BFO 2020. Replaced with `BFO_0000040` (material entity, with a note that BFO has no *person* class), `BFO_0000196` (bearer of), and `BFO_0000055` (realizes). - *Completed*
 *   [x] **Task 5.4: Correct the annotation pattern.** Both documents taught `:someProcess bfo:0000055 folk:CourageDisposition`, which points a relation at a class. That is OWL 2 punning, falls outside OWL 2 DL, and produces data no reasoner or SHACL shape can check. Examples now mint disposition individuals first. - *Completed*
 *   [x] **Task 5.5: Point imports at ontology IRIs.** `valuenet-moral-foundations` and `valuenet-mappings` imported version IRIs (`…/1.0/…`) while the other modules imported ontology IRIs. - *Completed*
@@ -126,7 +126,7 @@ Defects found while adding the moral epistemics module. All fixed and verified; 
 ### Phase 6: Moral Epistemics Module
 
 *   [x] **Task 6.1:** Add `vn-core:ValueViolationProcess` and `vn-core:contravenes`, restoring the violation and dyadic-opposition structure of the original MFT module (`mft:Violation`, `mft:violates`, `mft:opposedTo`), which the BFO refactor did not carry over. Deliberately not disjoint from `ValueRealizationProcess`: one act can realize one value while contravening another. - *Completed*
-*   [x] **Task 6.2:** Model moral assessment in `valuenet-moral-epistemics.owl` — `PrudenceDisposition`, `ProtectorRole`, `AgentBehaviorProcess`, `ActOfBehavioralObservation`, `MoralDiscernmentAct`, `RashJudgmentAct`, `ProtectiveAction`, and the information content entities they consume and produce. - *Completed*
+*   [x] **Task 6.2:** Model moral assessment in `valuenet-moral-epistemics.ttl` — `PrudenceDisposition`, `ProtectorRole`, `AgentBehaviorProcess`, `ActOfBehavioralObservation`, `MoralDiscernmentAct`, `RashJudgmentAct`, `ProtectiveAction`, and the information content entities they consume and produce. - *Completed*
 *   [x] **Task 6.3:** Supply competency questions and a worked scenario, following the pattern used for the BHV and MFT modules. - *Completed*
 
 ### Phase 7: Corpus Consolidation and the Agent Class

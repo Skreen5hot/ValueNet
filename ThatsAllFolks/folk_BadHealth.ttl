@@ -1,3 +1,10 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix be: <http://www.ontologydesignpatterns.org/ont/emotions/BasicEmotions.owl#> .
+@prefix folk: <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#> .
+@prefix vcvf: <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#> .
+
 
 
 
@@ -1134,7 +1141,7 @@
 <http://yago-knowledge.org/resource/wordnet_senior_moment_105673323> vcvf:triggers folk:BadHealth .
 <http://yago-knowledge.org/resource/wordnet_swine_influenza_114122813> vcvf:triggers folk:BadHealth .
 <http://yago-knowledge.org/resource/wordnet_upper_respiratory_infection_114180213> vcvf:triggers folk:BadHealth .
-<http://yago-knowledge.org/resource/wordnet_baker's_eczema_114225215>> vcvf:triggers folk:BadHealth .
+<http://yago-knowledge.org/resource/wordnet_baker's_eczema_114225215> vcvf:triggers folk:BadHealth .
 # skos:closeMatch to FrameNet frame
 <https://w3id.org/framester/wn/wn30/instances/synset-abrade-verb-1> vcvf:triggers folk:BadHealth .
 <https://w3id.org/framester/wn/wn30/instances/synset-ailment-noun-1> vcvf:triggers folk:BadHealth .

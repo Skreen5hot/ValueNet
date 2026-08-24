@@ -144,7 +144,7 @@ def measure_file(path: Path, repo: Path) -> FileFacts:
     text = path.read_text(encoding="utf-8", errors="replace")
     facts = FileFacts(
         rel=rel, group=group_of(rel), checksum=sha256(path), bytes=path.stat().st_size,
-        parses=False, imports=[], undeclared_prefixes=undeclared_prefixes(text),
+        parses=False, imports=[], undeclared_prefixes=[],
         vendored=path.name in VENDORED,
     )
     g = None
@@ -161,8 +161,16 @@ def measure_file(path: Path, repo: Path) -> FileFacts:
                 first_error = " ".join(str(exc).split())[:140]
     if g is None:
         facts.parse_error = first_error
+        facts.undeclared_prefixes = undeclared_prefixes(text)
         return facts
     facts.parses = True
+    # The prefix check is a Turtle rule and only means anything for Turtle. Run
+    # against RDF/XML it reads English prose inside text nodes as prefix uses
+    # and reports "Justice", "cohabitation" and "have" as undeclared. Files
+    # that fail to parse keep the check — an unparseable file is exactly where
+    # a missing prefix is worth naming.
+    if facts.parsed_as != "xml":
+        facts.undeclared_prefixes = undeclared_prefixes(text)
     facts.triples = len(g)
     iris = {str(x) for x in g.subjects(RDF.type, OWL.Class) if isinstance(x, rdflib.URIRef)}
     facts.class_iris = frozenset(iris)

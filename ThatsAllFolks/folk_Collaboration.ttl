@@ -1,3 +1,10 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix be: <http://www.ontologydesignpatterns.org/ont/emotions/BasicEmotions.owl#> .
+@prefix folk: <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#> .
+@prefix vcvf: <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#> .
+
 
 
 ### QUOKKA Folk Values triggers
@@ -40,8 +47,6 @@
 # Collaboration frame
 
 
-data
-0
 # Premon closeMatch to FrameNet frame
 <http://premon.fbk.eu/resource/fn17-collaboration> vcvf:triggers folk:Collaboration .
 # YAGO owl:sameAs Entities

@@ -70,6 +70,38 @@ def test_prefixes_inside_literals_are_not_uses(tmp_path: Path):
     assert onto.undeclared_prefixes(TURTLE) == []
 
 
+def test_prefix_check_is_not_applied_to_rdf_xml(tmp_path: Path):
+    """A Turtle rule run over RDF/XML reads prose as prefixes.
+
+    folk.owl was reported as using undeclared prefixes named "Justice",
+    "cohabitation" and "have" — English words followed by colons inside XML
+    text nodes.
+    """
+    xml = """<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+  <rdf:Description rdf:about="http://example.org/A">
+    <rdfs:comment>Justice: a value. See also cohabitation: shared living.</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>
+"""
+    p = tmp_path / "doc.owl"
+    p.write_text(xml, encoding="utf-8")
+    facts = onto.measure_file(p, tmp_path)
+    assert facts.parses and facts.parsed_as == "xml"
+    assert facts.undeclared_prefixes == [], \
+        "a Turtle prefix rule must not be applied to RDF/XML"
+
+
+def test_an_unparseable_file_still_gets_the_prefix_check(tmp_path: Path):
+    """That is the case where naming the missing prefix is most useful."""
+    p = tmp_path / "frag.ttl"
+    p.write_text(FRAGMENT, encoding="utf-8")
+    facts = onto.measure_file(p, tmp_path)
+    assert not facts.parses
+    assert facts.undeclared_prefixes == ["folk", "vcvf"]
+
+
 def test_a_real_undeclared_prefix_is_still_caught():
     assert onto.undeclared_prefixes(FRAGMENT) == ["folk", "vcvf"]
 

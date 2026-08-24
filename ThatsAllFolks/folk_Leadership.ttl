@@ -1,3 +1,10 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix be: <http://www.ontologydesignpatterns.org/ont/emotions/BasicEmotions.owl#> .
+@prefix folk: <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#> .
+@prefix vcvf: <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#> .
+
 
 
 
@@ -1423,7 +1430,7 @@
 <http://yago-knowledge.org/resource/wordnet_televangelist_110698241> vcvf:triggers folk:Leadership .
 <http://yago-knowledge.org/resource/wordnet_thurifer_110710171> vcvf:triggers folk:Leadership .
 <http://yago-knowledge.org/resource/wordnet_weigher_110773277> vcvf:triggers folk:Leadership .
-<http://yago-knowledge.org/resource/wordnet_U.S._108355791>> vcvf:triggers folk:Leadership .
+<http://yago-knowledge.org/resource/wordnet_U.S._108355791> vcvf:triggers folk:Leadership .
 <http://yago-knowledge.org/resource/wordnet_apparatchik_109799920> vcvf:triggers folk:Leadership .
 <http://yago-knowledge.org/resource/wordnet_authority_105196582> vcvf:triggers folk:Leadership .
 <http://yago-knowledge.org/resource/wordnet_class_act_110325549> vcvf:triggers folk:Leadership .

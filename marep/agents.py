@@ -219,6 +219,86 @@ CONSTRAINT_ROSTER: tuple[AgentRole, ...] = (
 )
 
 
+#: Run 3's roster. The question is what this corpus already commits to in its
+#: naming, file layout, mapping targets and documentation, without saying so
+#: anywhere a machine could check.
+#:
+#: Cut by *where the commitment is hiding* rather than by artefact type,
+#: because that is what makes a commitment invisible. A term whose meaning
+#: rests on its label, a definition whose owner is settled by which file it
+#: sits in, and a mapping whose direction determines whether it is defensible
+#: are three different failures, and an agent looking for one will not see the
+#: others.
+#:
+#: Two facts shape the briefs. Run 1 reported on all three areas by reading
+#: files that did not parse, and undercounted: it says three terms take a
+#: French gloss where the loadable graph holds 889 French Wiktionary triggers.
+#: And `vcvf:triggers` carries 38,710 statements with no domain, no range and
+#: no definition, so the single most load-bearing relation in the corpus means
+#: whatever its authors intended and nothing a reader can recover.
+COMMITMENT_ROSTER: tuple[AgentRole, ...] = (
+    AgentRole(
+        "Lexicon", "meaning that rests on a name",
+        "Find terms whose sense is carried by their label, their gloss or "
+        "their neighbours rather than by anything asserted. Near-synonym "
+        "families with no definition separating them; classes glossed against "
+        "the proper-name sense of a word rather than the value sense; "
+        "vocabulary split across language editions with nothing recording "
+        "which lexicon governs. Say for each what the corpus would have to "
+        "state for the distinction to survive someone who was not there when "
+        "it was written. Cite the definition-coverage and language metrics.",
+        ("metric", "document", "note"),
+    ),
+    AgentRole(
+        "Identity", "who owns an IRI and who may define it",
+        "Two commitments, both currently made by layout. Which namespace mints "
+        "a term, and therefore who is responsible for defining it. And which "
+        "file owns a definition when several declare the same class - 378 IRIs "
+        "are declared across group boundaries, which is the live question; the "
+        "larger 2,240 figure is mostly parameter variants of one ontology and "
+        "is not. The corpus also asserts about 43,616 resources in namespaces "
+        "it does not control. That is legitimate for a trigger layer and still "
+        "a commitment about identity. Say which of these need a stated rule.",
+        ("metric", "document", "note"),
+    ),
+    AgentRole(
+        "Alignment", "what the external mappings actually claim",
+        "The alignment layer is measurable for the first time: 38,710 "
+        "vcvf:triggers statements across 12 hosts. Direction matters and Run 1 "
+        "got it wrong. The corpus states <external> triggers <value>, so a "
+        "film title in subject position claims the page evokes the value - a "
+        "lexical-trigger claim, not an equivalence. Check what the mappings "
+        "commit to, whether the predicate can bear it given it has no domain, "
+        "range or definition, and whether different hosts are being used for "
+        "different purposes under one relation.",
+        ("metric", "document", "note"),
+    ),
+    AgentRole(
+        "Validation", "which commitments belong in SHACL",
+        "Not a measurement exercise. The reconciliation of VALIDATION-001 "
+        "showed repairing 127 files moved SHACL violations from 0 to 0, "
+        "because the shapes load 6 of 165 files and target classes the folk "
+        "corpus never instantiates. So the question is not coverage but "
+        "subject: given what the other three roles surface as an unstated "
+        "commitment, which of those should become a shape, and over which "
+        "focus nodes. A commitment that cannot be violated by any instance in "
+        "this corpus does not belong in SHACL, and saying so is a finding.",
+        ("metric", "document", "note"),
+    ),
+    AgentRole(
+        "Skeptic", "whether the others have earned their conclusions",
+        "Two hazards specific to this run. First, the Run 1 findings enter as "
+        "notes, which are exactly as trustworthy as whoever wrote them, and "
+        "several are already reconciled as superseded or refuted - a finding "
+        "that restates a note without testing it against a metric has earned "
+        "nothing. Second, a naming or mapping irregularity is not automatically "
+        "a defect: a French gloss may be correct for a term borrowed from "
+        "French. Contest anything that outruns its evidence.",
+        ("metric", "document", "note"),
+    ),
+)
+
+
 # ----------------------------------------------------------------------
 # backend protocol
 # ----------------------------------------------------------------------

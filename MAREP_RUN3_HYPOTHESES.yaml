@@ -1,0 +1,126 @@
+- ref: run1:SHACL-001
+  summary: 'RUN 1 HYPOTHESIS [validation scope] SHACL-001 (confirmed): Zero SHACL violations is not evidence
+    of categorial correctness and should not be read as such. Sampled evidence: valuenet-core-shapes reports
+    0 violations | valuenet-moral-epistemics-shapes reports 0 violations and 1 warning | the 789 corpus
+    classes are all outside the grounding check, so no categorial check backs the clean SHACL resul |
+    dangling_iris for bfo-suite-merged is 0 — the substrate''s only structural-integrity check is likewise
+    confined. This is a note, not a measurement. Run 1 read the alignment layer from files that did not
+    parse; treat it as a hypothesis to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:IRI-001
+  summary: 'RUN 1 HYPOTHESIS [IRI ownership] IRI-001 (confirmed): At least 54 class IRIs receive class
+    axioms in two or more separate files. Sampled evidence: repository-root sums 817 class declarations
+    across its files | thats-all-folks sums 378 class declarations | moral-molecules sums 26 class declarations
+    | only 789 distinct class IRIs exist across every parsing file, versus 1221 declarations. This is
+    a note, not a measurement. Run 1 read the alignment layer from files that did not parse; treat it
+    as a hypothesis to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:DEF-001
+  summary: 'RUN 1 HYPOTHESIS [definition coverage] DEF-001 (unresolved): 45k triples of assertional content
+    in ThatsAllFolks rest on type definitions supplied by a single unresolved import each. Sampled evidence:
+    taf.ttl parses with 38558 triples, 0 classes and 1 import | bhvtriggers.ttl parses with 6532 triples,
+    0 classes and 1 import | a representative MFRC graph carries 162 triples and 0 classes | the thats-all-folks
+    group totals 44548 triples. This is a note, not a measurement. Run 1 read the alignment layer from
+    files that did not parse; treat it as a hypothesis to test against the metric records, not as established
+    fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:DEF-002
+  summary: 'RUN 1 HYPOTHESIS [definition coverage] DEF-002 (unresolved): The "zero missing definitions"
+    result covers 23% of the corpus and cannot be read as corpus-wide definitional health. Sampled evidence:
+    classes_missing_definition and classes_missing_label are both 0, but only for the bfo-suite-merged
+    scope | the population the check is computed over is 179 classes | the corpus declares 789 distinct
+    class IRIs across every parsing file | 789 classes are recorded as declared but outside the grounding
+    check''s scope. This is a note, not a measurement. Run 1 read the alignment layer from files that
+    did not parse; treat it as a hypothesis to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:NAME-001
+  summary: 'RUN 1 HYPOTHESIS [naming as commitment] NAME-001 (confirmed): Two misspelled value terms are
+    carried in artefact names, one of them contradicting the class name inside the same file. Sampled
+    evidence: file is named folk_Happyness.ttl while its content declares ''## folk:Happiness'' | file
+    is named folk_Strenght.ttl while its content references the term ''strength'' | folk_Happyness.ttl
+    fails at line 10 with the correct spelling appearing only inside a ''## folk:Happiness'' comm | In
+    folk_Strenght.ttl the correct spelling occurs only as the lexical gloss target <http://en.wiktionary.org/wi.
+    This is a note, not a measurement. Run 1 read the alignment layer from files that did not parse; treat
+    it as a hypothesis to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:NAME-002
+  summary: 'RUN 1 HYPOTHESIS [naming as commitment] NAME-002 (confirmed): Folk value terms mix adjectival
+    and nominal forms and mix three multiword conventions. Sampled evidence: adjectival term name | adjectival
+    term name | propositional term name in a value vocabulary | propositional term name in a value vocabulary.
+    This is a note, not a measurement. Run 1 read the alignment layer from files that did not parse; treat
+    it as a hypothesis to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:SENSE-001
+  summary: 'RUN 1 HYPOTHESIS [sense ambiguity] SENSE-001 (confirmed): Several value classes are glossed
+    against the proper-name sense of their term rather than the value sense. Sampled evidence: Education
+    is glossed against the title ''An_Education'' | Helping is glossed against the title ''The_Help''
+    | Grace is glossed against the capitalised form ''Grace'' | Faith is glossed against the capitalised
+    form ''Faith''. This is a note, not a measurement. Run 1 read the alignment layer from files that
+    did not parse; treat it as a hypothesis to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:LANG-001
+  summary: 'RUN 1 HYPOTHESIS [sense ambiguity] LANG-001 (confirmed): Three value terms take their lexical
+    gloss from a French dictionary while the rest use English. Sampled evidence: Amusement glossed from
+    fr.wiktionary | Fun glossed from fr.wiktionary | Fitness glossed from fr.wiktionary | surrounding
+    terms are glossed from en.wiktionary. This is a note, not a measurement. Run 1 read the alignment
+    layer from files that did not parse; treat it as a hypothesis to test against the metric records,
+    not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:DEF-003
+  summary: 'RUN 1 HYPOTHESIS [sense ambiguity] DEF-003 (confirmed): Dense near-synonym families in the
+    folk vocabulary have no audited definitions to separate them. Sampled evidence: Smart declared as
+    a distinct term | Intelligence declared as a distinct term | Genius declared as a distinct term |
+    Brilliance declared as a distinct term. This is a note, not a measurement. Run 1 read the alignment
+    layer from files that did not parse; treat it as a hypothesis to test against the metric records,
+    not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:NAME-003
+  summary: 'RUN 1 HYPOTHESIS [naming as commitment] NAME-003 (confirmed): Artefact names encode process
+    history or a transformation the artefacts do not exhibit. Sampled evidence: folk.owl carries 5828
+    triples and 378 classes | folk_aligned.ttl carries the identical 5828 triples and 378 classes despite
+    the differentiating name | artefact name encodes a negation and a revision marker | The directory
+    name MFRC_1k_graphs encodes a cardinality of one thousand graphs while exactly one file from tha.
+    This is a note, not a measurement. Run 1 read the alignment layer from files that did not parse; treat
+    it as a hypothesis to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:MAPPING-001
+  summary: 'RUN 1 HYPOTHESIS [external mapping] MAPPING-001 (confirmed): The corpus''s entire external
+    alignment layer contributes zero triples to the loadable graph. Sampled evidence: triples_sum for
+    thats-all-folks is 44548, exactly equal to the three parsing files (357_GRAPH.ttl 162 + folk.o | 127
+    of 130 files in thats-all-folks fail to parse | The unparsed content is alignment content: folk_BadHealth.ttl''s
+    failing line links to <https://w3id.org/frames | folk_Knowledge.ttl''s failing line links to <http://dbpedia.org/resource/Knowledge>
+    under a section header ''# D. This is a note, not a measurement. Run 1 read the alignment layer from
+    files that did not parse; treat it as a hypothesis to test against the metric records, not as established
+    fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:MAPPING-002
+  summary: 'RUN 1 HYPOTHESIS [external mapping] MAPPING-002 (confirmed): DBpedia alignment targets include
+    works of fiction and strictly broader concepts. Sampled evidence: folk_Education.ttl aligns the Education
+    value to <http://dbpedia.org/resource/An_Education>, a film title rath | folk_Helping.ttl aligns Helping
+    to <http://dbpedia.org/resource/The_Help>, a work title rather than the act of | folk_Belief.ttl aligns
+    Belief to <http://dbpedia.org/resource/Religion>, a narrower and categorially different | folk_Financial_stability.ttl
+    aligns Financial stability to <http://dbpedia.org/resource/Wealth>. This is a note, not a measurement.
+    Run 1 read the alignment layer from files that did not parse; treat it as a hypothesis to test against
+    the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:IRI-002
+  summary: 'RUN 1 HYPOTHESIS [IRI ownership] IRI-002 (confirmed): Wiktionary HTML page URLs used as mapping
+    objects, with uncontrolled language-edition drift. Sampled evidence: folk_Amusement.ttl targets <http://fr.wiktionary.org/wiki/amusement>
+    rather than the English edition | folk_Fitness.ttl targets <http://fr.wiktionary.org/wiki/fitness>
+    | folk_Fun.ttl targets <http://fr.wiktionary.org/wiki/fun> | folk_Excellence.ttl uses capitalised
+    <http://en.wiktionary.org/wiki/Excellence> while folk_Accuracy.ttl uses l. This is a note, not a measurement.
+    Run 1 read the alignment layer from files that did not parse; treat it as a hypothesis to test against
+    the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'
+- ref: run1:VALIDATION-001
+  summary: 'RUN 1 HYPOTHESIS [validation scope] VALIDATION-001 (confirmed): Zero SHACL violations is largely
+    an artifact of 127 files being invisible to the validator. Sampled evidence: valuenet-core-shapes
+    reports 0 SHACL violations | valuenet-moral-epistemics-shapes reports 0 violations and 1 warning |
+    127 of 130 ThatsAllFolks files do not parse and so yield no triples to validate | Only 3 ThatsAllFolks
+    files parse, and they account for the whole module''s triple count. RECONCILED since: conclusion-upheld-cause-refuted.
+    The most useful reconciliation result, because the finding''s prediction was testable and failed.
+    It claimed zero SHACL violations was "largely an artifact of 127 files being invisible to the validator".
+    All 127 are now visible and contribute 44,934 triples, and shacl_violations i This is a note, not
+    a measurement. Run 1 read the alignment layer from files that did not parse; treat it as a hypothesis
+    to test against the metric records, not as established fact.'
+  timestamp: '2026-08-23T17:01:00+00:00'

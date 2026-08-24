@@ -262,9 +262,40 @@ sibling classes under a shared parent with nothing said about how they relate.
 question about storage, not about what the ontology claims, and mixing the two
 would let a cheap mechanical finding crowd out the expensive conceptual ones.
 
-### Run 3 — cross-layer
+### Run 3 — commitments that exist outside the axioms
 
-The relationship between the two layers: `valuenet-mappings` coverage, whether the BFO layer's `skos:broadMatch` claims are defensible, whether the trigger corpus reaches the BFO dispositions, what the DUL layer has that the BFO layer dropped. The MFT violations gap was one instance of this; there are probably others.
+*Rescoped from "cross-layer", which the reconciliation of Run 1 made too
+narrow.* The question is now: **what does this corpus already commit to in its
+naming, its file layout, its mapping targets and its documentation, without
+ever saying so where a machine could check?**
+
+Scoped to the three areas Run 2 did not reach, plus one it reached and
+mis-framed:
+
+* **Sense ambiguity.** Near-synonym families with nothing separating them,
+  classes glossed against the proper-name sense of a word, vocabulary split
+  across language editions. 2,794 classes carry no definition text of any kind.
+* **IRI ownership.** Which namespace mints a term and who may define it. 378
+  class IRIs are declared across group boundaries; the corpus asserts about
+  43,616 resources in namespaces it does not control.
+* **External mapping quality.** Measurable for the first time: 38,710
+  `vcvf:triggers` statements across 12 hosts, under a predicate with no domain,
+  no range and no definition.
+* **Which of these belong in SHACL** — not as a coverage exercise. Reconciling
+  VALIDATION-001 showed that repairing 127 files moved SHACL violations from 0
+  to 0, because the shapes load 6 of 165 files and target classes the folk
+  corpus never instantiates. The question is subject, not reach.
+
+**Run 1's findings enter as `note` records, not metrics.** MAREP treats a note
+as exactly as trustworthy as whoever wrote it, which is the correct standing:
+Run 1 read the alignment layer from files that did not parse and undercounted
+badly. `LANG-001` says three terms take a French gloss; the loadable graph
+holds 889 French Wiktionary triggers. `MAPPING-002` reads
+`<dbpedia:An_Education> vcvf:triggers folk:Education` as aligning a value to a
+film, but the triple runs the other way and claims the page is a lexical
+trigger — a different and far more defensible statement. The reconciliation
+dispositions travel with each note so no agent builds on a finding already
+refuted.
 
 ---
 

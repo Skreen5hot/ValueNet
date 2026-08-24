@@ -350,6 +350,10 @@ def collect_ontology(
     metrics += onto.shacl_metrics(repo)
     from . import competency
     metrics += competency.competency_metrics(repo)
+    from . import commitments
+    metrics += commitments.mapping_metrics(repo, facts)
+    metrics += commitments.iri_ownership_metrics(repo, facts)
+    metrics += commitments.lexical_metrics(repo, facts)
     if reasoner:
         metrics += onto.reasoner_metrics(repo)
 

@@ -161,3 +161,34 @@ def test_the_verdict_never_travels_alone():
                  "reasoner_imports_unresolved"):
         assert name in src, f"{name} is no longer emitted alongside the verdict"
     assert "_verdict_caveat" in src
+
+
+# ======================================================================
+# the zero case is vacuous, not merely weak
+# ======================================================================
+
+def test_zero_contradiction_axioms_is_called_vacuous():
+    """Four of seven groups are in this position, covering 143,717 triples.
+
+    A graph with no disjointness, cardinality, functionality or complement
+    cannot be made inconsistent by any reasoner. "consistent, 0 unsatisfiable"
+    over it restates the input. Phrasing that as "only 0 axioms could have
+    produced a failure" is true but reads as a quantitative caveat on a real
+    result, and it is not one.
+    """
+    caveat = onto._verdict_caveat(individuals=0, contradiction=0, unresolved=set())
+    assert caveat.startswith("VACUOUS")
+    assert "guaranteed before the reasoner ran" in caveat
+
+
+def test_the_vacuous_notice_leads():
+    """It has to come first: a detail string can be truncated by a reader."""
+    caveat = onto._verdict_caveat(individuals=0, contradiction=0,
+                                  unresolved={"http://example.org/nowhere"})
+    assert caveat.index("VACUOUS") == 0
+
+
+def test_a_few_axioms_is_weak_but_not_vacuous():
+    caveat = onto._verdict_caveat(individuals=0, contradiction=2, unresolved=set())
+    assert "VACUOUS" not in caveat
+    assert "only 2 axioms" in caveat

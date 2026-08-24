@@ -245,6 +245,50 @@ def group_metrics(facts: list[FileFacts]) -> list[Metric]:
     return out
 
 
+def duplication_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
+    """How much of each group's bulk is the same triple stated again.
+
+    Every count in `group_metrics` is a sum over files, which is honest about
+    what it does but says nothing about how much distinct content a group
+    holds. The gap is not small: `mf-triggers` sums to 24,684 triples and
+    merges to 12,364, and `thats-all-folks` sums to 83,497 and merges to
+    44,934. Just under half of each is restatement.
+
+    That matters beyond tidiness, because a corpus-size figure is exactly the
+    sort of number a finding leans on. An agent has already read two equal
+    triple counts as evidence that `folk.owl` and `folk_aligned.ttl` were the
+    same file, when they are not isomorphic. Emitting the merged count next to
+    the summed one removes the inference rather than arguing with it.
+
+    Listed in MAREP_VALUENET_PLAN §2 as one of three checks still missing.
+    """
+    import rdflib
+
+    out: list[Metric] = []
+    by_group: dict[str, list[FileFacts]] = {}
+    for f in facts:
+        if f.parses:
+            by_group.setdefault(f.group, []).append(f)
+
+    for group, fs in sorted(by_group.items()):
+        merged = rdflib.Graph()
+        for f in fs:
+            try:
+                merged.parse(str(repo / f.rel), format=f.parsed_as)
+            except Exception:
+                continue
+        summed = sum(f.triples for f in fs)
+        distinct = len(merged)
+        out.append(Metric("triples_distinct_in_group", group, distinct,
+                          detail=f"{summed:,} summed over {len(fs)} files"))
+        if summed:
+            out.append(Metric("duplicate_triple_ratio", group,
+                              round((summed - distinct) / summed, 4),
+                              detail=f"{summed - distinct:,} of {summed:,} triples "
+                                     "are the same statement made in another file"))
+    return out
+
+
 def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     """Checks specific to the BFO-aligned suite, where a namespace is known."""
     import rdflib
@@ -632,12 +676,26 @@ def reasoner_metrics(repo: Path, scope: str = "bfo-layer") -> list[Metric]:
 
 
 def _verdict_caveat(individuals: int, contradiction: int, unresolved: set) -> str:
-    """State what a passing run did not check. Empty when it checked plenty."""
+    """State what a passing run did not check. Empty when it checked plenty.
+
+    The zero case is called vacuous rather than weak, and deliberately leads.
+    A graph with no disjointness, no cardinality, no functionality and no
+    complement cannot be made inconsistent by any reasoner, so "consistent, 0
+    unsatisfiable" over it is a restatement of the input, not a result. Four of
+    this repository's seven groups are in that position, covering 143,717 of
+    its triples: mf-triggers, moral-molecules, thats-all-folks and vale2024 are
+    flat taxonomies, and every second HermiT spent on them bought nothing.
+    Saying "only 0 axioms could have produced a failure" is true but reads as a
+    quantitative caveat on a real finding; it is not one.
+    """
     parts = []
+    if contradiction == 0:
+        parts.append("VACUOUS: no axiom in scope can produce a contradiction, "
+                     "so this verdict was guaranteed before the reasoner ran")
+    elif contradiction < 50:
+        parts.append(f"only {contradiction} axioms could have produced a failure")
     if individuals == 0:
         parts.append("no individuals in scope, so no ABox was checked")
-    if contradiction < 50:
-        parts.append(f"only {contradiction} axioms could have produced a failure")
     if unresolved:
         parts.append(f"{len(unresolved)} import(s) name an ontology no file "
                      "in scope provides, so those axioms were absent")

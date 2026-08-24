@@ -342,6 +342,7 @@ def collect_ontology(
     } for f in facts]
 
     metrics = list(onto.group_metrics(facts))
+    metrics += onto.duplication_metrics(repo, facts)
     metrics += onto.suite_metrics(repo, facts)
     metrics += onto.rooting_metrics(repo, facts)
     metrics += onto.shacl_metrics(repo)

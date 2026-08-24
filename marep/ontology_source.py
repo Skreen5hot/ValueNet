@@ -729,6 +729,11 @@ def shacl_metrics(repo: Path) -> list[Metric]:
 
     data = rdflib.Graph()
     loaded = 0
+    # The trigger shapes target predicates, not classes, so their data graph is
+    # the trigger corpus rather than the BFO layer. Loading ThatsAllFolks here
+    # is what takes shacl_focus_nodes from 14 to the tens of thousands: three
+    # of seven groups declare no individuals at all, and a class-targeted shape
+    # could never have reached them.
     for n in ("valuenet-core", "valuenet-schwartz-values", "valuenet-moral-foundations",
               "valuenet-folk", "valuenet-moral-epistemics", "valuenet-moral-epistemics-scenario"):
         p = repo / "BFO" / f"{n}.ttl"

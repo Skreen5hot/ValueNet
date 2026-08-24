@@ -1,0 +1,130 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix vcvf:  <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#> .
+@prefix folk:  <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#> .
+@prefix vn:    <https://fandaws.com/ontology/valuenet/triggers-shapes#> .
+
+# =====================================================================
+# SHACL for vcvf:triggers
+#
+# These shapes exist because OWL cannot do this job here, and the reason is
+# specific rather than general. vcvf:triggers declares rdfs:range vcvf:Value.
+# A range in OWL *entails*: an object of the wrong kind is inferred to be a
+# Value rather than reported as an error. Every defect repaired in this round
+# would have been silently absorbed by that inference —
+#
+#   folk:Repayment    102 triggers, declared nowhere, a whole-file mis-target
+#   folk:Strenght     122 triggers, a misspelling of a declared value
+#   folk:Belief       480 triggers, a religion lexicon under a name nobody
+#                     declared, while the declared folk:Beliefs got none
+#
+# — each of them inferred into vcvf:Value membership on the strength of the
+# very statements that were wrong. SHACL reads the graph closed, so an object
+# nothing declares is a violation instead of a new entailment.
+#
+# Targeting is by PREDICATE, not by class. Three of the seven corpus groups
+# declare no individuals at all, and mf-triggers carries 12,338 trigger
+# statements behind zero classes and zero individuals, so a class-targeted
+# shape binds nothing there. sh:targetSubjectsOf and sh:targetObjectsOf reach
+# every trigger statement in the corpus regardless of what its group declares.
+# =====================================================================
+
+vn: a owl:Ontology ;
+    rdfs:label "SHACL constraints for vcvf:triggers"@en ;
+    rdfs:comment """Enforces the direction convention and the declaration
+requirement that OWL's range axiom cannot, because a range entails rather than
+validates."""@en .
+
+
+# ---------------------------------------------------------------------
+# 1. Direction. The external resource is the subject; the value is the
+#    object. 18,668 statements in ThatsAllFolks follow this and zero break
+#    it, and mf-triggers agrees, so the convention is total in the data and
+#    enforced by nothing.
+#
+#    Stated as: whatever appears as an OBJECT of vcvf:triggers must be a
+#    value, i.e. must live in a ValueNet value namespace. A film page or a
+#    Wiktionary entry in object position would reverse the claim from "this
+#    page evokes the value" to "this value is that page".
+# ---------------------------------------------------------------------
+
+vn:TriggerObjectIsAValueShape
+    a sh:NodeShape ;
+    sh:targetObjectsOf vcvf:triggers ;
+    sh:nodeKind sh:IRI ;
+    sh:message "The object of vcvf:triggers must be a ValueNet value. An external resource here reverses the relation: it would claim the value IS that resource rather than that the resource evokes the value." ;
+    # Character classes rather than backslash escapes. A Turtle literal eats
+    # one level of backslash before the regex engine sees it, and the first
+    # version of this line shipped `\\.` — which matches a literal backslash,
+    # not a dot — and reported all 147 perfectly good value IRIs as
+    # violations. `[.]` cannot be got wrong that way.
+    sh:pattern "^(http://www[.]ontologydesignpatterns[.]org/ont/values/|https://w3id[.]org/spice/SON/)" ;
+    sh:severity sh:Violation .
+
+
+# ---------------------------------------------------------------------
+# 2. Declaration. Every trigger object must be explicitly typed. This is the
+#    one that catches typos and mis-targets, and it is the whole reason the
+#    OWL range is not enough: `folk:Strenght` was a Value by entailment for
+#    as long as it received a trigger statement.
+#
+#    sh:or rather than a single class, because the corpus types values three
+#    ways: folk:FolkValue for the folk layer, mft:MFT_Value and
+#    mft:BHV_Value for the Haidt and Schwartz layers, and the SON namespace
+#    for a handful more. Requiring owl:NamedIndividual alone would pass a
+#    class-only declaration, and requiring folk:FolkValue alone would reject
+#    the 22 non-folk objects that are perfectly well declared.
+# ---------------------------------------------------------------------
+
+vn:TriggerObjectIsDeclaredShape
+    a sh:NodeShape ;
+    sh:targetObjectsOf vcvf:triggers ;
+    # The message sits on the property shape, not the node shape. SHACL
+    # reports the message nearest the failing constraint, so a node-level
+    # message here was replaced by pyshacl's default, "Less than 1 values on
+    # folk:Strenght->rdf:type" — accurate, and no help to whoever has to
+    # decide whether that is a typo or a missing declaration.
+    sh:property [
+        sh:path rdf:type ;
+        sh:minCount 1 ;
+        sh:message "This trigger object carries no rdf:type. OWL's rdfs:range would silently infer it to be a vcvf:Value; a misspelt or mis-targeted IRI must be reported instead. Declare it, or correct the statement pointing at it." ;
+        sh:severity sh:Violation ;
+    ] .
+
+
+# ---------------------------------------------------------------------
+# 3. Subject. Deliberately permissive: the trigger sources are heterogeneous
+#    by design across 12 hosts — Wiktionary, DBpedia, BabelNet, YAGO, UMBEL,
+#    PreMOn, WordNet, Framester — and no narrow constraint belongs here. What
+#    is checked is only that a subject is a nameable resource, so a literal
+#    or a blank node in subject position is caught.
+# ---------------------------------------------------------------------
+
+vn:TriggerSubjectIsAResourceShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf vcvf:triggers ;
+    sh:nodeKind sh:IRI ;
+    sh:message "The subject of vcvf:triggers must be an IRI. Trigger sources are deliberately heterogeneous, but a blank node or literal cannot be cited as evidence for a value." ;
+    sh:severity sh:Violation .
+
+
+# ---------------------------------------------------------------------
+# 4. A value should not trigger itself, and one value should not trigger
+#    another. Both would collapse the evocation relation into something
+#    closer to subsumption, which vcvf:triggers explicitly does not assert.
+#    Reported as a warning: the corpus has no instances today, and a future
+#    modelling choice might legitimately want value-to-value cues.
+# ---------------------------------------------------------------------
+
+vn:TriggerIsNotValueToValueShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf vcvf:triggers ;
+    sh:not [
+        sh:path rdf:type ;
+        sh:hasValue folk:FolkValue ;
+    ] ;
+    sh:message "A declared value appears as the SUBJECT of vcvf:triggers. The relation asserts evocation, not subsumption or equivalence, so a value cueing another value is probably a direction error." ;
+    sh:severity sh:Warning .

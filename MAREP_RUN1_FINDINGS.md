@@ -2,12 +2,14 @@
 
 Rendered from `RUN1_STATE.yaml` by `ValueNet_code/report_run.py`. The state file is the record; this is a view of it.
 
+**Two kinds of statement appear below and are never merged.** Finding titles, severities and evidence are exactly what the run concluded from the substrate it was given, reproduced unedited. Anything inside a `⚠ RECONCILIATION` block was established *after* the run, sometimes contradicting it, and is never folded back into the finding. The state file itself is not modified by reconciliation.
+
 - **phase** complete, **version** 155
 - **substrate** `sha256:77b0fdabc1068b456e1…`
 - **findings** 27 — 21 confirmed, 4 unresolved, 2 archived
 - **tokens declared** 407,000
 - **evidence** 220/220 verified against the substrate
-- **reconciled** against the tree at `d3b87ef` — 4 finding(s) superseded or resolved; the state file itself is unmodified
+- **reconciled** against the tree at `d3b87ef` — 5 finding(s) superseded or resolved; the state file itself is unmodified
 
 ## confirmed (21)
 
@@ -91,12 +93,16 @@ Rendered from `RUN1_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### NAMESPACE-001 — ThatsAllFolks fragment files are not self-contained RDF documents, and the missing bindings are not one prefix [clipped]
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **RESOLVED - fixed since this run**
 >
 > Fixed. Every one of the 130 ThatsAllFolks files now parses standalone as Turtle, and files_with_undeclared_prefixes for the scope is 0. The finding was correct and has been acted on.
 > - Each fragment carries its own six prefix declarations.
 > - The corpus went from 0 loadable triples to 38,949.
 > - tests/test_ontology_artifacts.py::test_every_fragment_is_self_contained and ::test_every_fragment_parses_standalone hold the invariant, so the defect cannot return silently.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *high · proposed by Interoperability*
  · confirmed by Interoperability, Corpus, Skeptic
@@ -120,12 +126,16 @@ Rendered from `RUN1_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### VALIDATION-001 — Zero SHACL violations is largely an artifact of 127 files being invisible to the validator
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **CAUSE REFUTED - the conclusion stands, the stated cause does not**
 >
 > The most useful reconciliation result, because the finding's prediction was testable and failed. It claimed zero SHACL violations was "largely an artifact of 127 files being invisible to the validator". All 127 are now visible and contribute 44,934 triples, and shacl_violations is still 0 on both shape sets. Fragment invisibility was not the cause. The conclusion survives - zero violations is still not a clean bill of health - but for a different and larger reason: the SHACL data graph loads 6 of 165 files and reaches 14 focus nodes, and the shapes target BFO-layer classes the folk corpus never instantiates. Repairing the fragments could not have changed the result. The finding said so itself. Its last evidence item reads "nothing in the substrate states which data graph was validated, so the attribution of the clean result to fragment invisibility is inference and not a measured causal link". The agent flagged its own causal claim as unsupported, and that flag was right.
 > - shacl_violations is 0 on both shape sets before and after the repair.
 > - shacl_files_validated:corpus is 6 of 165; shacl_focus_nodes:corpus is 14.
 > - Run 2's SHACL-001 states the same fact with the correct cause and is confirmed with 12 of 12 evidence items verified.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *high · proposed by Skeptic*
  · confirmed by Corpus, Skeptic
@@ -345,11 +355,15 @@ Rendered from `RUN1_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### PARSE-002 — The parse failures are not one missing prefix, and the reported errors are first-failure-only, so remediation [clipped]
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **SUPERSEDED - was right, no longer applies**
 >
 > Right, and now obsolete. The claim was that the failures were not one missing prefix and that the reported errors were first-failure-only, so remediation could not be costed from the error set. The diagnosis run confirmed exactly that: three files failed structurally rather than on a binding, one failed on folk: rather than vcvf:, and the per-file error showed only the first fault. All 130 now parse.
 > - folk_Consciousness.ttl, folk_Victory.ttl and folk_Understanding.ttl needed content repair, not a prefix binding, exactly as claimed.
 > - All three now parse (1,049, 399 and 79 triples).
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *medium · proposed by Skeptic*
  · confirmed by Interoperability, Corpus, Skeptic
@@ -374,6 +388,17 @@ Rendered from `RUN1_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
   <br/>`document:ThatsAllFolks/folk_Happyness.ttl` — verified
 
 ### SENSE-001 — Several value classes are glossed against the proper-name sense of their term rather than the value sense
+
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
+> **UPHELD - and extended by cases found since**
+>
+> Upheld, and four further cases observed since. The finding is that value classes are targeted at the capitalised Wiktionary entry - the proper-name sense - where the house convention is the lowercase common noun. Measured across all 127 fragments: nine target the capitalised form of their own value term. Run 1 named seven cases, five of which are in that nine (Grace, Faith, Excellence, Independence, Lively); the other two, Education and Helping, are the distinct work-title pattern (An_Education, The_Help) rather than a capitalised term. Newly observed and not named in Run 1: Knowledge, Religion, Rest and Victory. folk_Rest targets REST, which is an acronym rather than a proper noun but the same defect - a technical sense standing in for the value sense. One qualification that narrows the remedy: all nine also carry the lowercase entry. The capitalised IRI is an ADDITIONAL target, not a substituted one, so the fix is to drop a target rather than to correct one, and no trigger statement is lost by doing so. A separate count, deliberately kept apart: 44 of 127 fragments target some capitalised entry, but most are acronyms or proper nouns serving legitimately as trigger sources - LASER under Accuracy, DevOps under Development, SEAT under Comfort. Those are not SENSE-001 cases and folding them in would inflate the finding roughly fivefold.
+> - Nine fragments target the capitalised form of their own value term, measured over all 127.
+> - All nine also carry the lowercase form of the same word.
+> - folk:Religion is among them, from the fragment renamed during this round's trigger-target work.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *medium · proposed by Lexicographer*
  · confirmed by Lexicographer, Interoperability, Skeptic
@@ -525,11 +550,15 @@ Rendered from `RUN1_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### PARSE-001 — The unparseable 127 are one mechanical fix plus a four-file residual, not 127 separate repairs
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **SUPERSEDED - partly wrong, no longer applies**
 >
 > The structural claim was right in kind and wrong in magnitude, and the factual base is gone. It said the 127 were "one mechanical fix plus a four-file residual". The mechanical fix was real — a six-line prefix header, applied to all 127 — but the residual was 15 files needing content repair, not four. It stayed `unresolved` in Run 1, which was the correct outcome for a finding whose repair estimate the substrate could not support.
 > - 15 files needed a content repair beyond the header - 12 carrying export debris, 2 with a doubled IRI terminator, 1 with a stray quote.
 > - files_not_parsing:thats-all-folks is now 0, from 127.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *high · proposed by Corpus*
  · contested by Interoperability, Corpus, Skeptic

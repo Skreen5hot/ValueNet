@@ -106,3 +106,35 @@ findings:
       - shacl_files_validated:corpus is 6 of 165; shacl_focus_nodes:corpus is 14.
       - Run 2's SHACL-001 states the same fact with the correct cause and is
         confirmed with 12 of 12 evidence items verified.
+
+  - id: SENSE-001
+    was: confirmed
+    disposition: upheld-and-extended
+    summary: >-
+      Upheld, and four further cases observed since. The finding is that value
+      classes are targeted at the capitalised Wiktionary entry - the proper-name
+      sense - where the house convention is the lowercase common noun.
+      Measured across all 127 fragments: nine target the capitalised form of
+      their own value term. Run 1 named seven cases, five of which are in that
+      nine (Grace, Faith, Excellence, Independence, Lively); the other two,
+      Education and Helping, are the distinct work-title pattern
+      (An_Education, The_Help) rather than a capitalised term.
+      Newly observed and not named in Run 1: Knowledge, Religion, Rest and
+      Victory. folk_Rest targets REST, which is an acronym rather than a proper
+      noun but the same defect - a technical sense standing in for the value
+      sense.
+      One qualification that narrows the remedy: all nine also carry the
+      lowercase entry. The capitalised IRI is an ADDITIONAL target, not a
+      substituted one, so the fix is to drop a target rather than to correct
+      one, and no trigger statement is lost by doing so.
+      A separate count, deliberately kept apart: 44 of 127 fragments target
+      some capitalised entry, but most are acronyms or proper nouns serving
+      legitimately as trigger sources - LASER under Accuracy, DevOps under
+      Development, SEAT under Comfort. Those are not SENSE-001 cases and
+      folding them in would inflate the finding roughly fivefold.
+    evidence:
+      - Nine fragments target the capitalised form of their own value term,
+        measured over all 127.
+      - All nine also carry the lowercase form of the same word.
+      - folk:Religion is among them, from the fragment renamed during this
+        round's trigger-target work.

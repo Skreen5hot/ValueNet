@@ -2,6 +2,8 @@
 
 Rendered from `RUN2_STATE.yaml` by `ValueNet_code/report_run.py`. The state file is the record; this is a view of it.
 
+**Two kinds of statement appear below and are never merged.** Finding titles, severities and evidence are exactly what the run concluded from the substrate it was given, reproduced unedited. Anything inside a `⚠ RECONCILIATION` block was established *after* the run, sometimes contradicting it, and is never folded back into the finding. The state file itself is not modified by reconciliation.
+
 - **phase** complete, **version** 145
 - **substrate** `sha256:bb60e518f2861fda02c…`
 - **findings** 28 — 22 confirmed, 4 unresolved, 2 archived

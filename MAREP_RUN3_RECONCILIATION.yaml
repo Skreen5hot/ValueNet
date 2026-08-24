@@ -44,27 +44,37 @@ findings:
 
   - id: LANG-002
     was: unresolved
-    disposition: unresolved-rewrite
+    disposition: rewritten
     summary: >-
-      Correctly unresolved, and to be rewritten rather than archived. The
-      multilingual pattern is real and measured - 889 of 3,658 ThatsAllFolks
-      Wiktionary triggers are French, 147 of 624 at repository-root - and
-      nothing in the corpus records which lexicon governs a term. But the
-      proposition as written claims LANG-001 understates the pattern "by
-      roughly three orders of magnitude", and several agents rejected that
-      independently because it compares unlike quantities: LANG-001 counted
-      value *terms* taking a French gloss, and 889 counts *trigger statements*
-      with a French subject. Three terms and 889 statements are not the same
-      unit and their ratio is not a magnitude of understatement.
-      This is what unresolved should mean. There is something here; the current
-      proposition is not supportable. Rewrite against a like-for-like count -
-      how many distinct folk value classes have at least one French-subject
-      trigger - and resubmit.
-    evidence:
-      - ALIGN-005 already establishes the sharper and separately confirmed
-        point - French Wiktionary IRIs sit in subject position, so they are
-        trigger sources rather than glosses, which makes LANG-001 wrong about
-        the kind of thing they are and not only the count.
+      Rewritten on like-for-like units, and the result refutes LANG-001 rather
+      than understating it. The original proposition claimed LANG-001
+      understates the French pattern "by roughly three orders of magnitude",
+      comparing value terms against trigger statements - different units whose
+      ratio is not a magnitude of anything, which is why every voting agent
+      declined to confirm it.
+      Measured in one unit, value classes: 133 of the 147 value classes that
+      carry any trigger have at least one French Wiktionary trigger, 90 percent
+      of them, rising to 123 of 125 among folk values. And the number that
+      matters most: ZERO value classes have a French trigger without also
+      having an English one. Every one of the 133 is bilingual.
+      So French is not an exception applied to a few terms. It is a systematic
+      en+fr pairing applied to almost the whole vocabulary. LANG-001's framing -
+      "three value terms take their lexical gloss from a French dictionary
+      while the rest use English" - is wrong about the count, wrong about the
+      kind of thing (ALIGN-005: these are trigger sources, not glosses), and
+      wrong that the rest differ.
+    rewritten_as:
+      title: >-
+        The trigger layer is systematically bilingual: 133 of 147 value classes
+        carry both English and French Wiktionary triggers, and none carries
+        French alone
+      status: confirmable
+      consequence: >-
+        There is no lexicon cleanup to do here. The open question is only
+        whether the corpus should state that it is en+fr by design, since
+        nothing records it. Implementation plan section 3 is narrowed
+        accordingly, and SHACL-003's proposed lexicon-edition shape would flag
+        133 values - that is, it would flag the design rather than a defect.
 
   - id: SHACL-004
     was: unresolved

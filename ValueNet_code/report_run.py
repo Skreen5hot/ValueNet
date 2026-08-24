@@ -57,6 +57,10 @@ DISPOSITION_LABEL = {
         "UNRESOLVED, TO BE REWRITTEN - the subject is real, this proposition is not",
     "reformulate-as-fact-plus-action":
         "MIS-SHAPED - a recommendation in a finding's place; split into fact and action",
+    "premise-false-conclusion-survives":
+        "PREMISE FALSE - the conclusion stands, a supporting claim does not",
+    "rewritten": "REWRITTEN - the subject held, the proposition did not",
+    "upheld-and-extended": "UPHELD - and extended by cases found since",
 }
 
 
@@ -75,6 +79,13 @@ def render(state: dict, source: str, reconciliation: dict | None = None) -> str:
     add("")
     add(f"Rendered from `{source}` by `ValueNet_code/report_run.py`. "
         "The state file is the record; this is a view of it.")
+    add("")
+    add("**Two kinds of statement appear below and are never merged.** "
+        "Finding titles, severities and evidence are exactly what the run "
+        "concluded from the substrate it was given, reproduced unedited. "
+        "Anything inside a `⚠ RECONCILIATION` block was established *after* "
+        "the run, sometimes contradicting it, and is never folded back into "
+        "the finding. The state file itself is not modified by reconciliation.")
     add("")
     add(f"- **phase** {retro.get('phase')}, **version** {retro.get('version')}")
     add(f"- **substrate** `{retro.get('sprint_input_checksum', '')[:26]}…`")
@@ -110,11 +121,24 @@ def render(state: dict, source: str, reconciliation: dict | None = None) -> str:
             if r:
                 label = DISPOSITION_LABEL.get(r.get("disposition"),
                                               r.get("disposition", "").upper())
+                add(f"> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION")
+                add(">")
                 add(f"> **{label}**")
                 add(">")
                 add("> " + " ".join((r.get("summary") or "").split()))
                 for line in r.get("evidence") or []:
                     add("> - " + " ".join(str(line).split()))
+                rw = r.get("rewritten_as") or r.get("reformulated_as")
+                if rw:
+                    add(">")
+                    add(f"> **Restated as:** {' '.join(str(rw.get('title','')).split())}")
+                    for k in ("consequence", "then_action"):
+                        if rw.get(k):
+                            add(f"> **{k.replace('_', ' ').title()}:** "
+                                + " ".join(str(rw[k]).split()))
+                add("")
+                add("_Everything below this line is what the run itself "
+                    "concluded, unedited._")
                 add("")
             add(f"*{i.get('severity', '?')} · proposed by {proposer(i)}*")
             for key, label in (("confirmed_by", "confirmed by"),
@@ -125,7 +149,18 @@ def render(state: dict, source: str, reconciliation: dict | None = None) -> str:
             for e in i.get("evidence") or []:
                 src = e.get("source") or {}
                 ref = f"{src.get('type', '?')}:{src.get('ref', '?')}"
-                mark = "verified" if e.get("verified") else "UNVERIFIED"
+                # `verified` means the record supports the claim, not that the
+                # citation resolves. Where a run predates that rule, the
+                # grounding verdict is absent and the flag is reported as-is.
+                grounding = e.get("grounding")
+                if grounding:
+                    mark = {"supported": "verified (record supports the claim)",
+                            "unsupported": "UNSUPPORTED (figures do not match the record)",
+                            "resolves_only": "WEAK — citation resolves, claim unchecked",
+                            "unresolved": "UNRESOLVED (no such record)"}.get(
+                                grounding, grounding)
+                else:
+                    mark = "verified" if e.get("verified") else "UNVERIFIED"
                 add(f"- {e.get('claim', '')}")
                 add(f"  <br/>`{ref}` — {mark}")
             add("")

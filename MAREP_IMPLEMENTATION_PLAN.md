@@ -1,7 +1,17 @@
 # Implementation plan — decisions drawn from Runs 1–3
 
-**Status:** discovery closed. Three runs, 82 findings, 100% verified evidence.
-No Run 4 is planned.
+**Status:** remediation closed. Three runs, 82 findings. No Run 4 is planned,
+and no further forensic runs are intended — remaining vocabulary work belongs
+in the normal backlog.
+
+**Finish line, and where each part stands:** known structural defects repaired
+(§1, §4, §5 and the trigger-target work); semantic ambiguities affecting
+assertions decided (all nine undeclared trigger objects settled, untyped
+objects now zero); automated checks prevent recurrence (SHACL on
+`vcvf:triggers` with tests that prove it can fail; a staleness gate on the
+generated artefact); generated artefacts have one source of truth (§4); and
+assurance results state what they tested (§6, plus `verified` now meaning the
+record supports the claim).
 
 Run 3's actions phase waived every confirmed issue rather than attaching
 accepted actions, which reads plainly: **it diagnosed the corpus and did not
@@ -16,7 +26,7 @@ up encoded in a script instead of in the artefacts.
 
 ---
 
-## 1. Define `vcvf:triggers` — semantics and direction
+## 1. Define `vcvf:triggers` — **done**
 
 **Decision, not code.** The single most load-bearing relation in the corpus:
 57,578 statements resolving to 147 distinct objects.
@@ -55,7 +65,7 @@ Run 1 `MAPPING-002` (reconciled).
 
 ---
 
-## 2. Implement the direction shape, once §1 is settled
+## 2. The direction shape — **done**
 
 Depends on §1 and not before it: a shape enforcing a convention nobody has
 written down encodes the convention in the tooling, which is the failure this
@@ -70,26 +80,31 @@ holds, rather than reporting a mess.
 
 ---
 
-## 3. Decide the lexicon-edition policy, then implement or revise §3's shape
+## 3. Lexicon-edition policy — **narrowed to nothing, by measurement**
 
-**Decision, not code.** 889 of 3,658 `thats-all-folks` Wiktionary triggers are
-French; 147 of 624 at repository-root. Nothing records which lexicon governs a
-term, and a French source may be entirely correct for a term borrowed from
-French — Run 3's Skeptic said exactly that.
+**Closed, and the premise was wrong.** This section existed because Run 1's
+`LANG-001` reported that "three value terms take their lexical gloss from a
+French dictionary while the rest use English", which reads as an anomaly
+needing cleanup.
 
-Note the correction before acting: these are **trigger sources, not glosses**.
-The French IRIs sit in subject position, so the question is which lexicons may
-serve as trigger sources, not which dictionary defines a term. Run 1's
-`LANG-001` framed it the second way and was wrong about the kind of thing, not
-only the count.
+Measured in one unit — value classes rather than a mixture of terms and
+statements — **133 of the 147 value classes carrying any trigger have a French
+Wiktionary trigger**, 90 percent, rising to 123 of 125 among folk values. And
+**none has French without English**. Every one of the 133 is bilingual.
 
-`SHACL-003` is the only proposed shape that **fails against the corpus as it
-stands**, which is what makes it worth writing — and also why the policy has to
-come first. A shape written before the decision would mass-flag content that
-may be correct.
+French is therefore not an exception applied to a few terms; it is a systematic
+en+fr pairing applied to almost the whole vocabulary. `LANG-001` is wrong about
+the count, wrong about the kind of thing (`ALIGN-005`: these are trigger
+sources, not glosses), and wrong that the rest differ.
 
-*Supported by:* `SHACL-003`, `ALIGN-005`, `LANG-002` (unresolved, to be
-rewritten against a like-for-like count).
+There is no cleanup here. The only open question is whether the corpus should
+*record* that it is bilingual by design, since nothing currently does — a
+documentation item, not a defect. `SHACL-003`'s proposed lexicon-edition shape
+is not written: it would flag 133 values, which is to say it would flag the
+design.
+
+*Supported by:* `LANG-002` (rewritten), `ALIGN-005`, Run 1 `LANG-001`
+(refuted).
 
 ---
 
@@ -134,7 +149,7 @@ asserts about 43,616 resources in namespaces it does not.
 
 ---
 
-## 5. Retarget SHACL at predicates and the real ABox
+## 5. Retarget SHACL at predicates and the real ABox — **done**
 
 Three of seven groups declare **no individuals at all**, so class-targeted
 shapes cannot bind there in principle — `mf-triggers` carries 12,338 trigger

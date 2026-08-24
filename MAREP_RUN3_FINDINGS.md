@@ -2,6 +2,8 @@
 
 Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file is the record; this is a view of it.
 
+**Two kinds of statement appear below and are never merged.** Finding titles, severities and evidence are exactly what the run concluded from the substrate it was given, reproduced unedited. Anything inside a `⚠ RECONCILIATION` block was established *after* the run, sometimes contradicting it, and is never folded back into the finding. The state file itself is not modified by reconciliation.
+
 - **phase** complete, **version** 144
 - **substrate** `sha256:8bda30687a250a0aebc…`
 - **findings** 27 — 22 confirmed, 3 unresolved, 2 archived
@@ -13,11 +15,15 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### ALIGN-002 — One undefined predicate carries the trigger claims of three mutually independent value theories over overlappi [clipped]
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **PREMISE FALSE - the conclusion stands, a supporting claim does not**
 >
 > Rests on a false premise I supplied. The Run 3 Alignment brief said vcvf:triggers has no domain, no range and no definition. It declares rdfs:domain owl:Thing and rdfs:range vcvf:Value at ValueCore.ttl:97; only the definition was missing. The finding's own conclusion - that one undefined predicate carries the trigger claims of three groups - survives, because "undefined" is the true part. Its supporting sentences about domain and range do not.
 > - The predicate declares both, verified directly against the merged graph.
 > - The grounding gate marked the claim verified because the citation resolved. It now returns resolves_only for exactly this shape.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *high · proposed by Alignment*
  · confirmed by Lexicon, Alignment, Skeptic
@@ -186,11 +192,15 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### SHACL-002 — The vcvf:triggers direction convention is the one unstated commitment with tens of thousands of nodes able to violate it
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **PREMISE FALSE - the conclusion stands, a supporting claim does not**
 >
 > Same false premise, and the conclusion is strengthened rather than weakened by the correction. The finding says the direction convention is the one unstated commitment with tens of thousands of nodes able to violate it, and cites "no domain, no range" as the reason OWL cannot constrain direction. The real reason is better: the range is declared, and it entails rather than validates - an object of the wrong kind is inferred to be a Value instead of being rejected. OWL cannot catch a direction error here not because the predicate is unconstrained but because the constraint it has runs the wrong way for the job. Still a SHACL obligation, for a sharper reason.
 > - folk:BadHealth is entailed to be a vcvf:Value from a single trigger statement under RDFS closure, verified directly.
 > - 18,668 thats-all-folks trigger statements place the external resource in subject position and zero place one in object position.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *high · proposed by Validation*
  · confirmed by Alignment, Validation, Skeptic
@@ -401,11 +411,15 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### MAPPING-001 — Trigger statements are being read as external alignments; the measurements say they are not, and the predicate [clipped]
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **PREMISE FALSE - the conclusion stands, a supporting claim does not**
 >
 > The central claim - that trigger statements are being read as external alignments when the measurements say they are not - is unaffected and was independently corroborated by ALIGN-001 and ALIGN-005. Only its characterisation of the predicate as wholly unconstrained inherits the false premise.
 > - Direction is a total convention in the data with zero counterexamples.
 > - The predicate's declared range is what makes a misread trigger statement silently acceptable rather than detectably wrong.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *medium · proposed by Alignment*
  · confirmed by Alignment, Skeptic
@@ -543,10 +557,16 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### LANG-002 — LANG-001 understates the French-source pattern by roughly three orders of magnitude, and a systematic bilingua [clipped]
 
-> **UNRESOLVED, TO BE REWRITTEN - the subject is real, this proposition is not**
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
 >
-> Correctly unresolved, and to be rewritten rather than archived. The multilingual pattern is real and measured - 889 of 3,658 ThatsAllFolks Wiktionary triggers are French, 147 of 624 at repository-root - and nothing in the corpus records which lexicon governs a term. But the proposition as written claims LANG-001 understates the pattern "by roughly three orders of magnitude", and several agents rejected that independently because it compares unlike quantities: LANG-001 counted value *terms* taking a French gloss, and 889 counts *trigger statements* with a French subject. Three terms and 889 statements are not the same unit and their ratio is not a magnitude of understatement. This is what unresolved should mean. There is something here; the current proposition is not supportable. Rewrite against a like-for-like count - how many distinct folk value classes have at least one French-subject trigger - and resubmit.
-> - ALIGN-005 already establishes the sharper and separately confirmed point - French Wiktionary IRIs sit in subject position, so they are trigger sources rather than glosses, which makes LANG-001 wrong about the kind of thing they are and not only the count.
+> **REWRITTEN - the subject held, the proposition did not**
+>
+> Rewritten on like-for-like units, and the result refutes LANG-001 rather than understating it. The original proposition claimed LANG-001 understates the French pattern "by roughly three orders of magnitude", comparing value terms against trigger statements - different units whose ratio is not a magnitude of anything, which is why every voting agent declined to confirm it. Measured in one unit, value classes: 133 of the 147 value classes that carry any trigger have at least one French Wiktionary trigger, 90 percent of them, rising to 123 of 125 among folk values. And the number that matters most: ZERO value classes have a French trigger without also having an English one. Every one of the 133 is bilingual. So French is not an exception applied to a few terms. It is a systematic en+fr pairing applied to almost the whole vocabulary. LANG-001's framing - "three value terms take their lexical gloss from a French dictionary while the rest use English" - is wrong about the count, wrong about the kind of thing (ALIGN-005: these are trigger sources, not glosses), and wrong that the rest differ.
+>
+> **Restated as:** The trigger layer is systematically bilingual: 133 of 147 value classes carry both English and French Wiktionary triggers, and none carries French alone
+> **Consequence:** There is no lexicon cleanup to do here. The open question is only whether the corpus should state that it is en+fr by design, since nothing records it. Implementation plan section 3 is narrowed accordingly, and SHACL-003's proposed lexicon-edition shape would flag 133 values - that is, it would flag the design rather than a defect.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *medium · proposed by Skeptic*
  · contested by Lexicon, Identity, Alignment, Skeptic
@@ -578,12 +598,16 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### LEXICON-004 — 378 class names are declared in more than one module with no gloss in either to settle whether they name the s [clipped]
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **SUPERSEDED - a better finding covers this**
 >
 > Superseded by IRI-005, and the agents who objected were right. The finding read 378 cross-group class IRIs as 378 semantic naming collisions. Checked directly: all 378 are the same file pair, ThatsAllFolks/folk.ttl against folk_aligned.ttl, and 325 of them are that pair and nothing else - the remainder add a third file but always include both. There is one governance question here, not 378: which of two near-copies of a module is canonical. The two files hold 5,828 triples each and are not isomorphic, so it is a real question, and a single one.
 > - Group pairing is repository-root + thats-all-folks for all 378, with no other pair contributing any.
 > - 325 of 378 are exactly folk.ttl + folk_aligned.ttl.
 > - The instrument has been corrected. cross_group_file_pairings now ships beside the IRI count and reports 4, which is the number of ownership decisions actually pending.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *medium · proposed by Lexicon*
  · contested by Lexicon, Identity, Skeptic
@@ -615,12 +639,19 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### SHACL-004 — Do not write shapes for the vale2024, moral-molecules or mf-triggers class layers: no instance can violate them
 
+> ### ⚠ RECONCILIATION — NOT A RUN CONCLUSION
+>
 > **MIS-SHAPED - a recommendation in a finding's place; split into fact and action**
 >
 > Not a status problem but a lifecycle one, and it does not want a new status. The proposition is literally a recommendation - "do not write shapes for the vale2024, moral-molecules or mf-triggers class layers" - and agents cannot confirm a recommendation on evidence, so they abstained and it fell through to unresolved. Findings state what is true; actions state what should be done. The factual core is confirmable as it stands: class-targeted instance shapes over these three graphs have no focus nodes, because the groups declare no individuals. The recommendation belongs in the actions phase, which the protocol already has, rather than smuggled into a finding title.
 > - individuals_declared is 0 for vale2024, moral-molecules and mf-triggers.
 > - mf-triggers declares 0 classes and 0 individuals while carrying 12,338 vcvf:triggers statements, so the construct worth validating there is a predicate, not a class.
 > - SHACL-001, which states the predicate-retargeting fact rather than a recommendation, was confirmed with 7 of 7 evidence items verified.
+>
+> **Restated as:** Class-targeted instance shapes over the vale2024, moral-molecules and mf-triggers graphs bind zero focus nodes, because those groups declare no individuals
+> **Then Action:** Do not invest in class-targeted shapes for those three layers until they carry instances; retarget to predicates per SHACL-001.
+
+_Everything below this line is what the run itself concluded, unedited._
 
 *medium · proposed by Validation*
  · contested by Skeptic

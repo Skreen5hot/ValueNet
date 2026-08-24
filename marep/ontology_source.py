@@ -439,11 +439,20 @@ def shacl_metrics(repo: Path) -> list[Metric]:
         for prop in sg.objects(None, SH.targetSubjectsOf):
             focus += len({s for s in data.subjects(prop, None)})
 
+    in_repo = len(discover(repo))
     out.append(Metric("shacl_files_validated", "corpus", loaded,
-                      detail="files loaded into the SHACL data graph", tool="pyshacl"))
+                      detail=f"of {in_repo} ontology files in the repository; the "
+                             "data graph is the BFO layer plus the scenario, "
+                             "nothing else", tool="pyshacl"))
     out.append(Metric("shacl_focus_nodes", "corpus", focus,
                       detail="nodes the shapes actually targeted; zero violations over "
                              "zero focus nodes says nothing", tool="pyshacl"))
+
+    # The denominator travels with every verdict, not just in a record beside
+    # it. A finding cites one metric, and `shacl_violations: 0` on its own is
+    # the same over-readable shape as `reasoner_consistent: 1` was.
+    reach = (f"over {focus} focus node(s) in {loaded} of {in_repo} files"
+             + ("; nothing was checked" if not focus else ""))
 
     for shape_file in shapes:
         try:
@@ -452,7 +461,8 @@ def shacl_metrics(repo: Path) -> list[Metric]:
             results = list(rg.subjects(RDF.type, SH.ValidationResult))
             sev = [str(rg.value(r, SH.resultSeverity)).split("#")[-1] for r in results]
             out.append(Metric("shacl_violations", shape_file.stem,
-                              sum(1 for s in sev if s == "Violation"), tool="pyshacl"))
+                              sum(1 for s in sev if s == "Violation"),
+                              detail=reach, tool="pyshacl"))
             out.append(Metric("shacl_warnings", shape_file.stem,
                               sum(1 for s in sev if s == "Warning"), tool="pyshacl"))
         except Exception as exc:

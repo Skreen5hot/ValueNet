@@ -461,35 +461,140 @@ def shacl_metrics(repo: Path) -> list[Metric]:
     return out
 
 
-def reasoner_metrics(repo: Path) -> list[Metric]:
-    """HermiT consistency. Opt-in: needs a JRE and takes seconds, not milliseconds."""
+#: Axiom forms that can make a class unsatisfiable or a KB inconsistent. A
+#: reasoner run over a graph containing none of these cannot fail, so the count
+#: is reported next to the verdict: `reasoner_consistent: 1` is a claim about
+#: the ontology only in proportion to how much of this machinery was present.
+def _contradiction_axioms(graph) -> int:
+    from rdflib.namespace import OWL, RDF
+    n = 0
+    for p in (OWL.disjointWith, OWL.complementOf, OWL.disjointUnionOf,
+              OWL.propertyDisjointWith, OWL.maxCardinality,
+              OWL.maxQualifiedCardinality, OWL.cardinality,
+              OWL.qualifiedCardinality, OWL.differentFrom):
+        n += len(list(graph.triples((None, p, None))))
+    for c in (OWL.AllDisjointClasses, OWL.AllDisjointProperties, OWL.AllDifferent):
+        n += len(list(graph.subjects(RDF.type, c)))
+    for c in (OWL.FunctionalProperty, OWL.InverseFunctionalProperty,
+              OWL.IrreflexiveProperty, OWL.AsymmetricProperty):
+        n += len(list(graph.subjects(RDF.type, c)))
+    return n
+
+
+def _unresolved_imports(graph) -> set:
+    """Imports that nothing in the graph answers to, under either of its names.
+
+    A file answers to two IRIs: its ontology IRI and its `owl:versionIRI`. Both
+    have to count. `valuenet-core` imports BFO by *version* IRI
+    (`obo/bfo/2020/bfo-core.ttl`) while the vendored copy declares itself as
+    `obo/bfo.owl` and carries that version IRI. Matching on ontology IRI alone
+    reported BFO 2020 as missing, and the verdict then said upstream axioms
+    were absent while all 1,014 triples of them were loaded — a false gap, the
+    same failure this module was rewritten to stop making, reintroduced by the
+    rewrite meant to prevent it.
+    """
+    from rdflib.namespace import OWL, RDF
+    answers_to = {str(s) for s in graph.subjects(RDF.type, OWL.Ontology)}
+    answers_to |= {str(o) for _, _, o in graph.triples((None, OWL.versionIRI, None))}
+    requested = {str(o) for _, _, o in graph.triples((None, OWL.imports, None))}
+    return requested - answers_to
+
+
+def _individuals(graph) -> int:
+    """ABox size: subjects typed by something that is not an OWL/RDFS builtin."""
+    import rdflib
+    from rdflib.namespace import OWL, RDF, RDFS
+    builtin = {OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty,
+               OWL.AnnotationProperty, OWL.Ontology, OWL.Restriction,
+               OWL.AllDisjointClasses, OWL.AllDisjointProperties,
+               OWL.AllDifferent, OWL.NamedIndividual, OWL.FunctionalProperty,
+               OWL.InverseFunctionalProperty, OWL.TransitiveProperty,
+               OWL.SymmetricProperty, OWL.AsymmetricProperty,
+               OWL.ReflexiveProperty, OWL.IrreflexiveProperty,
+               RDFS.Class, RDFS.Datatype, RDF.Property}
+    return len({s for s, _, o in graph.triples((None, RDF.type, None))
+                if o not in builtin and isinstance(s, rdflib.URIRef)})
+
+
+def reasoner_metrics(repo: Path, scope: str = "bfo-layer") -> list[Metric]:
+    """HermiT consistency, reported together with the reach of the check.
+
+    Opt-in: needs a JRE and takes seconds, not milliseconds.
+
+    A bare `reasoner_consistent: 1` is the most over-readable number this
+    module produces. It was true of the BFO layer while that layer held no
+    individuals at all, declared 31 axioms capable of causing a contradiction
+    against 277 `subClassOf`, and had its `owl:imports` stripped before
+    loading — so BFO's and CCO's own axioms were absent and a class asserted to
+    be both a continuant and an occurrent would have passed. None of that was
+    visible in the metric, which is the same defect as the four false facts
+    this module was fixed for once already: an accurate number that invites a
+    conclusion it does not support.
+
+    So the verdict now travels with its denominators. `reasoner_individuals`,
+    `reasoner_contradiction_axioms`, and `reasoner_imports_unresolved` are
+    emitted as their own records, and the verdict's `detail` says plainly when
+    the check was one nothing could have failed.
+    """
     try:
         import owlready2  # noqa: F401
     except ImportError:
-        return [Metric("reasoner_available", "bfo-layer", 0,
+        return [Metric("reasoner_available", scope, 0,
                        detail="owlready2 not installed", tool="hermit")]
     import tempfile
 
     import rdflib
     from rdflib.namespace import OWL, RDF
 
+    if scope == "bfo-layer":
+        names = ["bfo-core", "valuenet-core", "valuenet-schwartz-values",
+                 "valuenet-moral-foundations", "valuenet-folk",
+                 "valuenet-moral-epistemics", "valuenet-mappings"]
+        paths = [repo / "BFO" / f"{n}.ttl" for n in names]
+        paths = [p for p in paths if p.exists()]
+    else:
+        paths = [repo / f.rel for f in
+                 (measure_file(p, repo) for p in discover(repo))
+                 if f.group == scope and f.parses]
+
     merged = rdflib.Graph()
-    names = ["bfo-core", "valuenet-core", "valuenet-schwartz-values",
-             "valuenet-moral-foundations", "valuenet-folk", "valuenet-moral-epistemics",
-             "valuenet-mappings"]
-    for n in names:
-        p = repo / "BFO" / f"{n}.ttl"
-        if p.exists():
-            try:
-                merged.parse(str(p))
-            except Exception:
-                return [Metric("reasoner_error", "bfo-layer", 1,
-                               detail=f"{n} did not parse", tool="hermit")]
+    loaded = 0
+    for p in paths:
+        try:
+            merged.parse(str(p))
+            loaded += 1
+        except Exception:
+            return [Metric("reasoner_error", scope, 1,
+                           detail=f"{p.name} did not parse", tool="hermit")]
+
+    if loaded == 0:
+        return [Metric("reasoner_available", scope, 0,
+                       detail="no parseable files in scope", tool="hermit")]
+
+    unresolved = _unresolved_imports(merged)
+    individuals = _individuals(merged)
+    contradiction = _contradiction_axioms(merged)
+
     for t in list(merged.triples((None, OWL.imports, None))):
         merged.remove(t)
     for s in list(merged.subjects(RDF.type, OWL.Ontology)):
         merged.remove((s, RDF.type, OWL.Ontology))
     merged.add((rdflib.URIRef("http://example.org/marep-check"), RDF.type, OWL.Ontology))
+
+    classes = len(set(merged.subjects(RDF.type, OWL.Class)))
+    reach = [
+        Metric("reasoner_files", scope, loaded, tool="hermit"),
+        Metric("reasoner_triples", scope, len(merged), tool="hermit"),
+        Metric("reasoner_individuals", scope, individuals, tool="hermit",
+               detail="" if individuals else
+                      "no ABox: this is a TBox satisfiability check only"),
+        Metric("reasoner_contradiction_axioms", scope, contradiction, tool="hermit",
+               detail="disjointness, complement, cardinality, functional and "
+                      "difference axioms: the only ways a run can fail"),
+        Metric("reasoner_imports_unresolved", scope, len(unresolved), tool="hermit",
+               detail=("none: every import is declared by a file in scope"
+                      if not unresolved else ", ".join(sorted(unresolved)[:3]))),
+    ]
 
     with tempfile.TemporaryDirectory() as td:
         path = Path(td) / "merged.owl"
@@ -500,13 +605,30 @@ def reasoner_metrics(repo: Path) -> list[Metric]:
             with onto:
                 sync_reasoner_hermit(infer_property_values=False, debug=0)
             unsat = list(default_world.inconsistent_classes())
-            return [
-                Metric("reasoner_consistent", "bfo-layer", 1, tool="hermit"),
-                Metric("unsatisfiable_classes", "bfo-layer", len(unsat),
-                       detail=", ".join(c.name for c in unsat[:5]), tool="hermit"),
+            return reach + [
+                Metric("reasoner_consistent", scope, 1, tool="hermit",
+                       detail=_verdict_caveat(individuals, contradiction, unresolved)),
+                Metric("unsatisfiable_classes", scope, len(unsat), tool="hermit",
+                       detail=(", ".join(c.name for c in unsat[:5]) if unsat
+                               else f"of {classes} classes; "
+                                    f"{contradiction} axioms could have made one fail")),
             ]
         except Exception as exc:
             name = type(exc).__name__
             consistent = 0 if "Inconsistent" in name else 1
-            return [Metric("reasoner_consistent", "bfo-layer", consistent,
-                           detail=f"{name}: {' '.join(str(exc).split())[:80]}", tool="hermit")]
+            return reach + [Metric("reasoner_consistent", scope, consistent,
+                                   detail=f"{name}: {' '.join(str(exc).split())[:80]}",
+                                   tool="hermit")]
+
+
+def _verdict_caveat(individuals: int, contradiction: int, unresolved: set) -> str:
+    """State what a passing run did not check. Empty when it checked plenty."""
+    parts = []
+    if individuals == 0:
+        parts.append("no individuals in scope, so no ABox was checked")
+    if contradiction < 50:
+        parts.append(f"only {contradiction} axioms could have produced a failure")
+    if unresolved:
+        parts.append(f"{len(unresolved)} import(s) name an ontology no file "
+                     "in scope provides, so those axioms were absent")
+    return "; ".join(parts)

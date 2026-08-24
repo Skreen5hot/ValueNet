@@ -19,8 +19,20 @@ up encoded in a script instead of in the artefacts.
 ## 1. Define `vcvf:triggers` — semantics and direction
 
 **Decision, not code.** The single most load-bearing relation in the corpus:
-38,710 statements, no domain, no range, no definition. Whatever it means is
-held in its authors' heads and in the shape of the data.
+57,578 statements resolving to 147 distinct objects.
+
+*Correction.* An earlier draft of this section said the predicate had no
+domain and no range. That was false. ValueCore 0.4 declares
+`rdfs:domain owl:Thing` and `rdfs:range vcvf:Value`; only the **definition** is
+missing. The error went into the Run 3 agent briefs and came back as
+"verified" evidence on three findings, which says something about the
+grounding gate worth recording: it checks that a citation resolves to a
+record, not that the prose around the citation is true.
+
+The consequence is not cosmetic. Because the range is already asserted, it
+already entails — under RDFS closure every trigger object becomes a
+`vcvf:Value` whether or not anyone declared it one. The nine untyped targets
+are Values today, by inference, with nobody having said so.
 
 The data already exhibits a total convention. Across `thats-all-folks`, 18,668
 trigger statements put the external resource in **subject** position and

@@ -1,0 +1,79 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix vcvf:  <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#> .
+@prefix vn:    <https://fandaws.com/ontology/valuenet/triggers-semantics#> .
+
+# =====================================================================
+# Semantics for vcvf:triggers
+#
+# vcvf:triggers is the most load-bearing relation in ValueNet: 57,578
+# statements resolving to 147 distinct objects. ValueCore 0.4 declares it as an
+# owl:ObjectProperty with rdfs:domain owl:Thing and rdfs:range vcvf:Value, and
+# says nothing about what it means. This module supplies the definition and
+# nothing else.
+#
+# It annotates a term it does not own. ValueCore is an upstream artefact at
+# version 0.4 and is not edited here; the same rule that keeps bfo-core.ttl
+# unpatched applies. An annotation asserted from a local module is additive
+# and can be dropped by anyone loading ValueCore alone.
+#
+# Checked rather than assumed: under RDFS closure this module derives no
+# ground triple about vcvf:triggers, about any ValueNet class, or about any
+# trigger object. What it does derive is housekeeping about the annotation
+# vocabulary itself -- that skos:definition is an rdf:Property, that the
+# literals are rdfs:Resource. That is unavoidable for any annotation and
+# touches no term in the corpus.
+#
+# Deliberately NOT here: rdfs:range. It is already asserted upstream, and it
+# already entails -- under RDFS closure a trigger object becomes a vcvf:Value
+# whether or not anyone declared it one. Nine trigger objects currently carry
+# no type at all and are Values solely by that inference. Until each has been
+# examined and declared, or corrected, adding to the range machinery would
+# deepen a commitment nobody has made. See vcvf-triggers-review.md.
+# =====================================================================
+
+vn:  a owl:Ontology ;
+     rdfs:label "Semantics for vcvf:triggers"@en ;
+     dct:description """Supplies the definition ValueCore 0.4 omits for
+vcvf:triggers. Annotation only: no logical axiom is added, and under RDFS
+closure it derives no ground triple about vcvf:triggers, any ValueNet class,
+or any trigger object."""@en ;
+     rdfs:comment "Annotates ValueCore without modifying it."@en .
+
+
+vcvf:triggers
+    skos:definition """A directional evocation relation.
+
+The SUBJECT is a resource that can serve as a semantic or lexical trigger or
+cue for the ValueNet concept denoted by the OBJECT. The subject evokes the
+object; the object does not evoke the subject.
+
+The relation asserts evocation and nothing more. In particular it does NOT
+assert identity, equivalence, synonymy, subclass or superclass relationship,
+or definitional authority. That <http://dbpedia.org/resource/An_Education>
+triggers folk:Education says that the page can cue the value Education in
+text; it does not say the value is the film, is defined by the film, or is a
+kind of film."""@en ;
+
+    skos:scopeNote """Subject position is deliberately heterogeneous. The
+corpus uses lexical senses, encyclopedic entities and web resources as trigger
+sources -- 12 distinct hosts including Wiktionary, DBpedia, BabelNet, YAGO,
+UMBEL, PreMOn and WordNet -- and no narrow OWL domain is imposed on it. The
+declared rdfs:domain owl:Thing reflects that and constrains nothing.
+
+Object position is near-closed by contrast: 147 distinct objects across three
+namespaces, all of them ValueNet value concepts."""@en ;
+
+    skos:editorialNote """Direction is a total convention in the data and is
+enforced by nothing. Across ThatsAllFolks, 18,668 trigger statements place the
+external resource in subject position and zero place one in object position;
+mf-triggers agrees. OWL cannot express the constraint, because the declared
+range makes any object a Value by entailment rather than rejecting a wrong
+one. It is a SHACL obligation."""@en ;
+
+    rdfs:comment """Reading a trigger statement as an alignment is a known
+misreading with consequences: it turns a defensible lexical-cue claim into an
+indefensible identity claim. Run 1's MAPPING-002 drew a defect from exactly
+that inversion and Run 3 archived the reading as settled."""@en .

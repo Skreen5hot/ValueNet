@@ -22,10 +22,17 @@ reading. Every check here reports a population and a distribution, so a Run 3
 finding argues from what the corpus contains instead of from a sample of what
 would not load.
 
-One commitment worth naming up front, because several checks circle it:
-`vcvf:triggers` carries 38,710 statements, no domain, no range and no
-definition. Whatever it means is held entirely in the heads of the people who
-wrote it and in the shape of the data.
+One commitment worth naming up front, because several checks circle it, and
+one correction that matters more than the checks.
+
+`vcvf:triggers` carries 38,710 statements and declares `rdfs:domain owl:Thing` and `rdfs:range vcvf:Value`, but no definition of any kind. The domain is vacuous by construction and the range already entails: under RDFS closure every trigger object becomes a `vcvf:Value` whether or not anyone declared it one. What the relation *means* is stated nowhere.
+
+An earlier version of this docstring said the predicate had no domain and no
+range. That was false, it went into the Run 3 agent briefs, and it came back
+as "verified" evidence on three findings -- the grounding gate checks that a
+citation resolves to a record, not that the prose around it is true. A false
+premise in a brief is laundered into a verified claim, which is worth knowing
+about the protocol.
 """
 
 from __future__ import annotations
@@ -110,8 +117,12 @@ def mapping_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
 
         top = ", ".join(f"{h} {n:,}" for h, n in subj_foreign.most_common(5))
         out.append(Metric("trigger_statements", group, len(triggers),
-                          detail=f"vcvf:triggers, which declares no domain, no "
-                                 f"range and no definition; subject hosts: {top}"))
+                          detail=f"vcvf:triggers, which declares rdfs:domain "
+                                 f"owl:Thing and rdfs:range vcvf:Value but no "
+                                 f"definition; the range already entails, so a "
+                                 f"trigger object is inferred to be a Value "
+                                 f"whether or not it was declared one; subject "
+                                 f"hosts: {top}"))
         out.append(Metric("trigger_source_hosts", group, len(subj_foreign),
                           detail=f"distinct hosts in SUBJECT position, i.e. the "
                                  f"external resource that triggers a value: "

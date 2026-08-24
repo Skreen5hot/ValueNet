@@ -233,9 +233,10 @@ CONSTRAINT_ROSTER: tuple[AgentRole, ...] = (
 #: Two facts shape the briefs. Run 1 reported on all three areas by reading
 #: files that did not parse, and undercounted: it says three terms take a
 #: French gloss where the loadable graph holds 889 French Wiktionary triggers.
-#: And `vcvf:triggers` carries 38,710 statements with no domain, no range and
-#: no definition, so the single most load-bearing relation in the corpus means
-#: whatever its authors intended and nothing a reader can recover.
+#: And `vcvf:triggers` carries 38,710 statements while declaring
+#: `rdfs:domain owl:Thing` and `rdfs:range vcvf:Value` but no definition. The
+#: brief given to Run 3 said it had no domain and no range, which was false and
+#: came back as verified evidence on three findings; corrected here.
 COMMITMENT_ROSTER: tuple[AgentRole, ...] = (
     AgentRole(
         "Lexicon", "meaning that rests on a name",
@@ -268,9 +269,10 @@ COMMITMENT_ROSTER: tuple[AgentRole, ...] = (
         "got it wrong. The corpus states <external> triggers <value>, so a "
         "film title in subject position claims the page evokes the value - a "
         "lexical-trigger claim, not an equivalence. Check what the mappings "
-        "commit to, whether the predicate can bear it given it has no domain, "
-        "range or definition, and whether different hosts are being used for "
-        "different purposes under one relation.",
+        "commit to, whether the predicate can bear it given that its declared "
+        "range already entails Value membership for every object while its "
+        "meaning is defined nowhere, and whether different hosts are being "
+        "used for different purposes under one relation.",
         ("metric", "document", "note"),
     ),
     AgentRole(

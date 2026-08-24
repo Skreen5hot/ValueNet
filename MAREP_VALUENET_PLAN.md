@@ -103,7 +103,7 @@ Every one of these is deterministic, and every one has been run by hand during t
 
 It closes the same circularity the git ingest closed. Without it, an agent claiming "the folk module is ungrounded" is making an assertion; with it, the claim resolves to `MET-0043: classes_reaching_bfo_root, scope=valuenet-folk, value=136/136`. The grounding gate then does real work instead of blocking everything.
 
-**Actual:** ~390 lines plus 12 tests, no new dependencies. Competency questions and the `TestingFramework.md` queries are not yet emitted as metrics; duplicate-triple ratio is not either. Those are the three checks from the list above still missing, and each is a place a Run 1 finding could go unciteable.
+**Actual:** ~390 lines plus 12 tests, no new dependencies. All three checks that were missing are now built: duplicate-triple ratio (`duplication_metrics`), and the competency questions and `TestingFramework.md` queries (`marep/competency.py`, emitting `query_rows` and `queries_passing`). Building the last one found that `TestingFramework` Query 1 took 282 seconds over 2,610 triples, so it had never actually been run.
 
 ---
 

@@ -348,6 +348,8 @@ def collect_ontology(
     metrics += onto.constraint_metrics(repo, facts)
     metrics += onto.shape_coverage_metrics(repo, facts)
     metrics += onto.shacl_metrics(repo)
+    from . import competency
+    metrics += competency.competency_metrics(repo)
     if reasoner:
         metrics += onto.reasoner_metrics(repo)
 

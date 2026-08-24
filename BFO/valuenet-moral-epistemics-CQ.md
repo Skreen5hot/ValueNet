@@ -20,6 +20,8 @@ PREFIX vn-me:   <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#>
 The question the DUL version could not ask, because a value was a description satisfied by a situation rather than something an agent could both bear and act against. Answers cover both hypocrisy and honest moral conflict; distinguishing them is a matter for interpretation, not for the ontology.
 
 ```sparql
+# scope: BFO/
+# expect: rows
 SELECT ?agent ?act ?value WHERE {
   ?act obo:BFO_0000057 ?agent ;          # has participant
        vn-core:contravenes ?value .
@@ -41,6 +43,8 @@ SELECT ?agent ?act ?value WHERE {
 The explainability chain the BFOizing rationale promises, recovered end to end: action ← assessment ← evidence ← observation, with the text span that attests to it.
 
 ```sparql
+# scope: BFO/
+# expect: rows
 SELECT ?action ?assessment ?observation ?evidence ?textSpan WHERE {
   ?action a vn-me:ProtectiveAction ;
           vn-me:hasInformationalInput ?assessment ;
@@ -63,6 +67,8 @@ SELECT ?action ?assessment ?observation ?evidence ?textSpan WHERE {
 The operational form of the discernment / rash judgment distinction. `FILTER NOT EXISTS` is closed-world, which is why this is a query rather than an OWL entailment; see the open-world caveat on `vn-me:RashJudgmentAct` and the SHACL shapes in `valuenet-moral-epistemics-shapes.ttl`.
 
 ```sparql
+# scope: BFO/
+# expect: rows
 SELECT ?act ?agent ?ascription WHERE {
   ?act vn-me:hasInformationalOutput ?ascription ;
        obo:BFO_0000057 ?agent .
@@ -82,6 +88,8 @@ SELECT ?act ?agent ?ascription WHERE {
 A coverage check on annotated corpora: a value profile asserted but never evidenced in behaviour.
 
 ```sparql
+# scope: BFO/
+# expect: rows
 SELECT ?agent ?value WHERE {
   ?agent obo:BFO_0000196 ?value .
   ?value a/rdfs:subClassOf* vn-core:ValueRelatedRealizableEntity .
@@ -103,6 +111,8 @@ SELECT ?agent ?value WHERE {
 Moral trade-offs. This is the reason `vn-core:ValueViolationProcess` is deliberately not disjoint from `vn-core:ValueRealizationProcess`.
 
 ```sparql
+# scope: BFO/
+# expect: rows
 SELECT ?process ?realized ?contravened WHERE {
   ?process obo:BFO_0000055 ?realized ;
            vn-core:contravenes ?contravened .
@@ -123,6 +133,8 @@ Exercises `vn-core`, not this module, but the scenario is what demonstrates it. 
 Text span → FrameNet frame → Haidt value → BFO-aligned disposition.
 
 ```sparql
+# scope: BFO/ MFTriggers/
+# expect: rows
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 PREFIX vn-core:<https://fandaws.com/ontology/bfo/valuenet-core#>
 PREFIX vcvf:   <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#>

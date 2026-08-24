@@ -4841,31 +4841,31 @@
 
 
 # DBpedia Entities
-<http://en.wiktionary.org/wiki/assert> vcvf:triggers folk:Assertiveness .
-<http://fr.wiktionary.org/wiki/assert> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/assertability> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/assertable> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/asserter> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/counterassert> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/overassert> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/reassert> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/unassert> vcvf:triggers folk:Assertiveness .
+<http://en.wiktionary.org/wiki/assert> vcvf:triggers folk:Assertion .
+<http://fr.wiktionary.org/wiki/assert> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/assertability> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/assertable> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/asserter> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/counterassert> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/overassert> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/reassert> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/unassert> vcvf:triggers folk:Assertion .
 
 # ConceptNet concepts
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assert> vcvf:triggers folk:Assertiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assert> vcvf:triggers folk:Assertion .
 # causes	[]
 # derivedFrom
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertability> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertable> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserter> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/counterassert> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/overassert> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/reassert> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/unassert> vcvf:triggers folk:Assertiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertability> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertable> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserter> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/counterassert> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/overassert> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/reassert> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/unassert> vcvf:triggers folk:Assertion .
 # formsOf
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserted/v> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserting/v> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserts/v> vcvf:triggers folk:Assertiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserted/v> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserting/v> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/asserts/v> vcvf:triggers folk:Assertion .
 # hasSubEvent	[]
 # usedFor	[]
 
@@ -4876,30 +4876,30 @@
 
 
 # DBpedia Entities
-<http://en.wiktionary.org/wiki/assertive> vcvf:triggers folk:Assertiveness .
-<http://fr.wiktionary.org/wiki/assertive> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/assertively> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertiveness .
-<http://fr.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/hyperassertive> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/nonassertive> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/overassertive> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/self-assertive> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/unassertive> vcvf:triggers folk:Assertiveness .
-<http://en.wiktionary.org/wiki/underassertive> vcvf:triggers folk:Assertiveness .
+<http://en.wiktionary.org/wiki/assertive> vcvf:triggers folk:Assertion .
+<http://fr.wiktionary.org/wiki/assertive> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/assertively> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertion .
+<http://fr.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/hyperassertive> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/nonassertive> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/overassertive> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/self-assertive> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/unassertive> vcvf:triggers folk:Assertion .
+<http://en.wiktionary.org/wiki/underassertive> vcvf:triggers folk:Assertion .
 
 # ConceptNet concepts
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertive> vcvf:triggers folk:Assertiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertive> vcvf:triggers folk:Assertion .
 # causes	[]
 # derivedFrom
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertively> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertiveness> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/hyperassertive> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/nonassertive> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/overassertive> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/self_assertive> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/unassertive> vcvf:triggers folk:Assertiveness .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/underassertive> vcvf:triggers folk:Assertiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertively> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertiveness> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/hyperassertive> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/nonassertive> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/overassertive> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/self_assertive> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/unassertive> vcvf:triggers folk:Assertion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/underassertive> vcvf:triggers folk:Assertion .
 # formsOf	[]
 # hasSubEvent	[]
 # usedFor	[]
@@ -4911,15 +4911,15 @@
 
 
 # DBpedia Entities
-<http://en.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertiveness .
-<http://fr.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertiveness .
+<http://en.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertion .
+<http://fr.wiktionary.org/wiki/assertiveness> vcvf:triggers folk:Assertion .
 # Framester frames
 # ConceptNet concepts
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertiveness> vcvf:triggers folk:Assertiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertiveness> vcvf:triggers folk:Assertion .
 # causes	[]
 # derivedFrom	[]
 # formsOf
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertivenesses/n> vcvf:triggers folk:Assertiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/assertivenesses/n> vcvf:triggers folk:Assertion .
 # hasSubEvent	[]
 # usedFor	[]
 
@@ -38873,31 +38873,31 @@
 
 
 # DBpedia Entities
-<http://en.wiktionary.org/wiki/inclusive> vcvf:triggers folk:Inclusion .
-<http://fr.wiktionary.org/wiki/inclusive> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/inclusively> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/inclusiveness> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/inclusivism> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/inclusivist> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/inclusivity> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/noninclusive> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/overinclusive> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/underinclusive> vcvf:triggers folk:Inclusion .
-<http://en.wiktionary.org/wiki/uninclusive> vcvf:triggers folk:Inclusion .
+<http://en.wiktionary.org/wiki/inclusive> vcvf:triggers folk:Inclusiveness .
+<http://fr.wiktionary.org/wiki/inclusive> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/inclusively> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/inclusiveness> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/inclusivism> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/inclusivist> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/inclusivity> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/noninclusive> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/overinclusive> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/underinclusive> vcvf:triggers folk:Inclusiveness .
+<http://en.wiktionary.org/wiki/uninclusive> vcvf:triggers folk:Inclusiveness .
 
 # ConceptNet concepts
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusive> vcvf:triggers folk:Inclusion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusive> vcvf:triggers folk:Inclusiveness .
 # causes	[]
 # derivedFrom
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusively> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusiveness> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusivism> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusivist> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusivity> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/noninclusive> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/overinclusive> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/underinclusive> vcvf:triggers folk:Inclusion .
-<https://w3id.org/framester/conceptnet/5.7.0/c/en/uninclusive> vcvf:triggers folk:Inclusion .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusively> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusiveness> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusivism> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusivist> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/inclusivity> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/noninclusive> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/overinclusive> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/underinclusive> vcvf:triggers folk:Inclusiveness .
+<https://w3id.org/framester/conceptnet/5.7.0/c/en/uninclusive> vcvf:triggers folk:Inclusiveness .
 # formsOf	[]
 # hasSubEvent	[]
 # usedFor	[]
@@ -56068,7 +56068,7 @@
 ### QUOKKA Folk Values triggers
 
 
-## folk:Will
+## folk:Willingness
 
 
 # willing lu

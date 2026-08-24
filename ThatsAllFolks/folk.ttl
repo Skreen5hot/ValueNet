@@ -4954,3 +4954,40 @@ folk:Involvement a folk:FolkValue,
             owl:someValuesFrom [ a owl:Class ;
                     owl:oneOf ( folk:Involvement ) ] ] ;
     prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the lexicon of ThatsAllFolks/folk_Involvement.ttl" .
+
+folk:BadHealth a folk:FolkValue,
+        owl:Class,
+        owl:NamedIndividual,
+        mft:NegativeValue ;
+    rdfs:label "bad health" ;
+    rdfs:comment "The negative value situation of being in poor health. Evoked by the FrameNet MedicalConditions frame and the ailment, illness and injury vocabulary aligned to it. Distinct from folk:Health, which is the corresponding positive value." ;
+    rdfs:subClassOf vcvf:NegativeValueSituation ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty dul:satisfies ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:oneOf ( folk:BadHealth ) ] ] ;
+    prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the lexicon of ThatsAllFolks/folk_BadHealth.ttl" .
+
+folk:Intuitive a folk:FolkValue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "intuitive" ;
+    rdfs:comment "Valuing intuitive understanding: grasping something directly rather than by explicit reasoning. Evoked by the intuitive lexicon and its variants, and by the FrameNet Grasp frame." ;
+    rdfs:subClassOf vcvf:ValueSituation ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty dul:satisfies ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:oneOf ( folk:Intuitive ) ] ] ;
+    prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the lexicon of ThatsAllFolks/folk_Intuitive.ttl" .
+
+folk:Willingness a folk:FolkValue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "willingness" ;
+    rdfs:comment "Valuing readiness to act or consent when asked. Evoked by the willing lexicon: willing, unwilling, willingly, overwilling, well-willing. Distinct from folk:Will, which sits under folk:Strength and reads as willpower rather than readiness." ;
+    rdfs:subClassOf vcvf:ValueSituation ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty dul:satisfies ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:oneOf ( folk:Willingness ) ] ] ;
+    prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the lexicon of ThatsAllFolks/folk_Willingness.ttl" .

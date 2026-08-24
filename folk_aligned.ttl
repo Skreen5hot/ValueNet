@@ -8386,3 +8386,36 @@ folk:Involvement rdf:type owl:Class ;
                                                      ]
                                 ] ;
             rdfs:subClassOf vcvf:ValueSituation .
+
+###  http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#BadHealth
+folk:BadHealth rdf:type owl:Class ;
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty dul:satisfies ;
+                                  owl:someValuesFrom [ rdf:type owl:Class ;
+                                                       owl:oneOf ( folk:BadHealth
+                                                                 )
+                                                     ]
+                                ] ;
+            rdfs:subClassOf vcvf:NegativeValueSituation .
+
+###  http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Intuitive
+folk:Intuitive rdf:type owl:Class ;
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty dul:satisfies ;
+                                  owl:someValuesFrom [ rdf:type owl:Class ;
+                                                       owl:oneOf ( folk:Intuitive
+                                                                 )
+                                                     ]
+                                ] ;
+            rdfs:subClassOf vcvf:ValueSituation .
+
+###  http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Willingness
+folk:Willingness rdf:type owl:Class ;
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty dul:satisfies ;
+                                  owl:someValuesFrom [ rdf:type owl:Class ;
+                                                       owl:oneOf ( folk:Willingness
+                                                                 )
+                                                     ]
+                                ] ;
+            rdfs:subClassOf vcvf:ValueSituation .

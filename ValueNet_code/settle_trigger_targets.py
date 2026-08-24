@@ -55,6 +55,11 @@ import os
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+#: Writes ONLY to the authored source. folk_aligned.ttl is generated from it by
+#: ValueNet_code/generate_folk_aligned.py, and writing there by hand would be
+#: overwritten on the next run and fail the staleness test in CI. Run the
+#: generator after this script.
+
 FULL = """
 folk:{name} a folk:FolkValue,
         owl:Class,
@@ -145,8 +150,7 @@ def main(argv=None) -> int:
     print("DECLARE")
     for v in DECLARE:
         print(f"  folk:{v['name']} -> {v['parent']}")
-        for rel, template in (("ThatsAllFolks/folk.ttl", FULL),
-                              ("folk_aligned.ttl", ALIGNED)):
+        for rel, template in (("ThatsAllFolks/folk.ttl", FULL),):
             text = read(rel)
             if f"folk:{v['name']} " in text:
                 print(f"      already declared in {rel}")

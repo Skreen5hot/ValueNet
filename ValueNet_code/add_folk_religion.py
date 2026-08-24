@@ -39,6 +39,11 @@ import os
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+#: Writes ONLY to the authored source. folk_aligned.ttl is generated from it by
+#: ValueNet_code/generate_folk_aligned.py, and writing there by hand would be
+#: overwritten on the next run and fail the staleness test in CI. Run the
+#: generator after this script.
+
 #: Matches the shape of folk:Faith, its sibling under folk:Beliefs.
 #:
 #: `rdfs:comment` describes what the value covers and says where that reading
@@ -116,7 +121,6 @@ def main(argv=None) -> int:
 
     print("declaring folk:Religion under folk:Beliefs")
     declare("ThatsAllFolks/folk.ttl", FULL, args.check)
-    declare("folk_aligned.ttl", ALIGNED, args.check)
 
     print("\nretargeting folk:Belief -> folk:Religion")
     total = 0

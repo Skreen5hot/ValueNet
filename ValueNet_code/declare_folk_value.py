@@ -89,8 +89,11 @@ folk:{name} rdf:type owl:Class ;
 #: statements and in blank-node identity — and differ in serialization style
 #: rather than in what they say. Which is canonical is open under
 #: implementation plan §4.
-TARGETS = [("ThatsAllFolks/folk.ttl", FULL_TEMPLATE),
-           ("folk_aligned.ttl", ALIGNED_TEMPLATE)]
+#: Writes ONLY to the authored source. folk_aligned.ttl is generated from it by
+#: ValueNet_code/generate_folk_aligned.py, and writing there by hand would be
+#: overwritten on the next run and fail the staleness test in CI. Run the
+#: generator after this script.
+TARGETS = [("ThatsAllFolks/folk.ttl", FULL_TEMPLATE)]
 
 
 def main(argv=None) -> int:

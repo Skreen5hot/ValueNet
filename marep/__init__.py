@@ -53,6 +53,7 @@ from .adjudicator import (
     TieBreak,
 )
 from .agents import (
+    CONSTRAINT_ROSTER,
     ONTOLOGY_ROSTER,
     ActionProposal,
     Agent,
@@ -85,6 +86,7 @@ __all__ = [
     "Agent",
     "AgentBackend",
     "AgentRole",
+    "CONSTRAINT_ROSTER",
     "ONTOLOGY_ROSTER",
     "build_roster",
     "ScriptedAgentBackend",

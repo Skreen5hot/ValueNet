@@ -135,6 +135,90 @@ ONTOLOGY_ROSTER: tuple[AgentRole, ...] = (
 )
 
 
+#: Run 2's roster. A different question from Run 1's, and so a different
+#: division of labour.
+#:
+#: Run 1 asked whether the corpus was sound and found it largely was, then the
+#: reasoner survey found that four of seven groups could not have been found
+#: otherwise: 143,717 triples with no disjointness, cardinality, functionality
+#: or complement anywhere in them. A corpus that cannot be found inconsistent
+#: is not thereby correct. It is unconstrained.
+#:
+#: So these roles are cut by *where a constraint belongs* rather than by
+#: subject matter, because that is the judgement being asked for. The
+#: Formalist and the Validator will often want the same rule and disagree
+#: about which language it belongs in, and that disagreement is the point:
+#: OWL's open-world reading makes most data-quality rules silently vacuous as
+#: axioms, and the corpus has no way to record that distinction today.
+#:
+#: The Restraint role exists because "leave this open" is a real answer and an
+#: unpopular one. Without an agent whose standing is measured by defending
+#: absences, a roster asked to find missing constraints will find missing
+#: constraints, and folk value vocabularies are meant to overlap.
+CONSTRAINT_ROSTER: tuple[AgentRole, ...] = (
+    AgentRole(
+        "Formalist", "constraints that belong in OWL",
+        "Propose axioms whose job is to license entailment or expose a "
+        "contradiction: disjointness between siblings that genuinely cannot "
+        "overlap, domain and range where the property is not polymorphic, "
+        "inverses, functionality, equivalences that would let a reasoner "
+        "derive a classification nobody stated. For each, say what a reasoner "
+        "could newly derive or detect if it were added. If the answer is "
+        "'nothing, but it documents intent', it is not your finding - it "
+        "belongs to the Validator or to Restraint. Cite the metric showing "
+        "the axiom is absent.",
+        ("metric", "document"),
+    ),
+    AgentRole(
+        "Validator", "constraints that belong in SHACL",
+        "Propose shapes for rules that should make a dataset invalid without "
+        "making the ontology inconsistent: required fields, cardinality on "
+        "annotation data, datatype conformance, value patterns, a trigger "
+        "statement that must carry a source. Remember why these are not OWL: "
+        "under an open-world reading a missing value is unknown rather than "
+        "wrong, so most of these are silently vacuous as axioms. The corpus "
+        "offers 14 focus nodes across 6 of 165 files, so say which populated "
+        "classes your shapes would newly reach and how many instances that is.",
+        ("metric", "document"),
+    ),
+    AgentRole(
+        "Restraint", "what should stay unconstrained, and why",
+        "Argue the negative case, and understand that it is a finding rather "
+        "than an objection. Folk value vocabularies are built to overlap: "
+        "Kindness and Generosity share instances, and declaring them disjoint "
+        "would encode a claim the domain does not make. Look for proposals "
+        "that would make the corpus assert more than its authors know, that "
+        "would break a legitimate use, or that impose a closed reading on an "
+        "open vocabulary. Where an absence looks deliberate, say what evidence "
+        "makes it look deliberate. Contest proposals that would harm the "
+        "corpus if adopted.",
+        ("metric", "document"),
+    ),
+    AgentRole(
+        "Grounding", "what the constraints would attach to",
+        "You cover the ground the other three stand on. 2,269 classes reach no "
+        "upper ontology at all; vale2024 declares 1,840 object properties with "
+        "no domain, range or characteristic on any of them; thats-all-folks "
+        "uses 21 predicates the corpus never declares. Ask which of these are "
+        "prerequisites: a domain axiom on an undeclared property is not a "
+        "constraint, it is a declaration. Say what must exist before any of "
+        "the other three roles' proposals can be stated at all.",
+        ("metric", "document"),
+    ),
+    AgentRole(
+        "Skeptic", "whether the others have earned their conclusions",
+        "You are not a fifth topic. Read what the others proposed and ask "
+        "whether each finding is supported by its evidence or merely restates "
+        "a metric. Watch for the specific failure this corpus invites: a count "
+        "of absences read as a count of defects. 'Sibling sets without "
+        "disjointness: 49 of 49' is not 49 missing axioms unless someone "
+        "argues it is. Contest anything that outruns its evidence. Contesting "
+        "is your real power: one contest forces adjudication.",
+        ("metric", "document"),
+    ),
+)
+
+
 # ----------------------------------------------------------------------
 # backend protocol
 # ----------------------------------------------------------------------

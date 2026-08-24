@@ -51,7 +51,10 @@ def client_from(args, repo: Path):
             print(f"\n{kp} does not look like an API key ({len(raw)} chars).", file=sys.stderr)
             return None, 2
         import anthropic
-        print(f"CREDENTIALS key file {kp.name} ({len(raw)} chars)")
+        # The key file's name and length are not diagnostic, and a run
+        # report is an artefact that gets committed and shared. Confirm
+        # that credentials resolved; say nothing about which.
+        print("CREDENTIALS resolved from a key file")
         return anthropic.Anthropic(api_key=raw), 0
     if os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"):
         print("CREDENTIALS resolved from the environment")

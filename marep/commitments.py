@@ -193,13 +193,25 @@ def iri_ownership_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
                       detail=f"of {len(sites)}; mostly parameter variants of one "
                              f"ontology within a single group, which is not "
                              f"contested ownership - see the cross-group count"))
+    # The IRI count alone is still over-readable, which Run 3's IRI-005 caught:
+    # all 378 cross-group IRIs are the same file pair, ThatsAllFolks/folk.ttl
+    # against folk_aligned.ttl, 325 of them that pair and nothing else. That is
+    # one governance question -- which of two near-copies of a module is
+    # canonical -- and not 378 naming collisions. So the number of distinct
+    # file pairings ships beside the IRI count, because it is the one that says
+    # how many decisions are actually pending.
+    pairings = collections.Counter(tuple(sorted(v)) for v in cross.values())
+    top = "; ".join(f"{' + '.join(Path(x).name for x in pair)} ({n})"
+                    for pair, n in pairings.most_common(3))
     out.append(Metric("class_iris_declared_across_groups", "corpus", len(cross),
-                      detail=f"of {len(multi)} multi-file IRIs; declared in files "
-                             f"belonging to different groups, where which module "
-                             f"owns the term is a live question: "
-                             + (", ".join(sorted(
-                                 i.split("#")[-1].split("/")[-1] for i in cross)[:5])
-                                if cross else "none")))
+                      detail=f"of {len(multi)} multi-file IRIs. Read this with "
+                             f"cross_group_file_pairings: a large IRI count over "
+                             f"few pairings is one duplicated module, not many "
+                             f"collisions. Top: {top or 'none'}"))
+    out.append(Metric("cross_group_file_pairings", "corpus", len(pairings),
+                      detail=f"distinct sets of files sharing a class IRI across "
+                             f"groups; this is the number of ownership decisions "
+                             f"pending, not {len(cross)}"))
 
     out.append(Metric("namespaces_minting_classes", "corpus", len(minted),
                       detail=", ".join(f"{h} {n}" for h, n in minted.most_common(6))))

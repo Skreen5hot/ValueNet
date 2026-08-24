@@ -7,6 +7,7 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 - **findings** 27 — 22 confirmed, 3 unresolved, 2 archived
 - **tokens declared** 425,000
 - **evidence** 228/228 verified against the substrate
+- **reconciled** against the tree at `42e8126` — 3 finding(s) superseded or resolved; the state file itself is unmodified
 
 ## confirmed (22)
 
@@ -524,6 +525,11 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### LANG-002 — LANG-001 understates the French-source pattern by roughly three orders of magnitude, and a systematic bilingua [clipped]
 
+> **UNRESOLVED, TO BE REWRITTEN - the subject is real, this proposition is not**
+>
+> Correctly unresolved, and to be rewritten rather than archived. The multilingual pattern is real and measured - 889 of 3,658 ThatsAllFolks Wiktionary triggers are French, 147 of 624 at repository-root - and nothing in the corpus records which lexicon governs a term. But the proposition as written claims LANG-001 understates the pattern "by roughly three orders of magnitude", and several agents rejected that independently because it compares unlike quantities: LANG-001 counted value *terms* taking a French gloss, and 889 counts *trigger statements* with a French subject. Three terms and 889 statements are not the same unit and their ratio is not a magnitude of understatement. This is what unresolved should mean. There is something here; the current proposition is not supportable. Rewrite against a like-for-like count - how many distinct folk value classes have at least one French-subject trigger - and resubmit.
+> - ALIGN-005 already establishes the sharper and separately confirmed point - French Wiktionary IRIs sit in subject position, so they are trigger sources rather than glosses, which makes LANG-001 wrong about the kind of thing they are and not only the count.
+
 *medium · proposed by Skeptic*
  · contested by Lexicon, Identity, Alignment, Skeptic
 
@@ -554,6 +560,13 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
 
 ### LEXICON-004 — 378 class names are declared in more than one module with no gloss in either to settle whether they name the s [clipped]
 
+> **SUPERSEDED - a better finding covers this**
+>
+> Superseded by IRI-005, and the agents who objected were right. The finding read 378 cross-group class IRIs as 378 semantic naming collisions. Checked directly: all 378 are the same file pair, ThatsAllFolks/folk.ttl against folk_aligned.ttl, and 325 of them are that pair and nothing else - the remainder add a third file but always include both. There is one governance question here, not 378: which of two near-copies of a module is canonical. The two files hold 5,828 triples each and are not isomorphic, so it is a real question, and a single one.
+> - Group pairing is repository-root + thats-all-folks for all 378, with no other pair contributing any.
+> - 325 of 378 are exactly folk.ttl + folk_aligned.ttl.
+> - The instrument has been corrected. cross_group_file_pairings now ships beside the IRI count and reports 4, which is the number of ownership decisions actually pending.
+
 *medium · proposed by Lexicon*
  · contested by Lexicon, Identity, Skeptic
 
@@ -583,6 +596,13 @@ Rendered from `RUN3_STATE.yaml` by `ValueNet_code/report_run.py`. The state file
   <br/>`document:folk_aligned.ttl` — verified
 
 ### SHACL-004 — Do not write shapes for the vale2024, moral-molecules or mf-triggers class layers: no instance can violate them
+
+> **MIS-SHAPED - a recommendation in a finding's place; split into fact and action**
+>
+> Not a status problem but a lifecycle one, and it does not want a new status. The proposition is literally a recommendation - "do not write shapes for the vale2024, moral-molecules or mf-triggers class layers" - and agents cannot confirm a recommendation on evidence, so they abstained and it fell through to unresolved. Findings state what is true; actions state what should be done. The factual core is confirmable as it stands: class-targeted instance shapes over these three graphs have no focus nodes, because the groups declare no individuals. The recommendation belongs in the actions phase, which the protocol already has, rather than smuggled into a finding title.
+> - individuals_declared is 0 for vale2024, moral-molecules and mf-triggers.
+> - mf-triggers declares 0 classes and 0 individuals while carrying 12,338 vcvf:triggers statements, so the construct worth validating there is a predicate, not a class.
+> - SHACL-001, which states the predicate-retargeting fact rather than a recommendation, was confirmed with 7 of 7 evidence items verified.
 
 *medium · proposed by Validation*
  · contested by Skeptic

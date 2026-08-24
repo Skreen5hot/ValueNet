@@ -50,6 +50,11 @@ DISPOSITION_LABEL = {
     "superseded-partly-wrong": "SUPERSEDED - partly wrong, no longer applies",
     "conclusion-upheld-cause-refuted":
         "CAUSE REFUTED - the conclusion stands, the stated cause does not",
+    "superseded": "SUPERSEDED - a better finding covers this",
+    "unresolved-rewrite":
+        "UNRESOLVED, TO BE REWRITTEN - the subject is real, this proposition is not",
+    "reformulate-as-fact-plus-action":
+        "MIS-SHAPED - a recommendation in a finding's place; split into fact and action",
 }
 
 

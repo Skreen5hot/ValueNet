@@ -161,7 +161,7 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         import anthropic
         client = anthropic.Anthropic(api_key=raw)
-        print(f"\nCREDENTIALS key file {kp.name} ({len(raw)} chars)")
+        print("\nCREDENTIALS resolved from a key file")
     elif not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
         print("\nNo credentials. Pass --key-file PATH, or set ANTHROPIC_API_KEY and restart "
               "the parent process. --dry-run exercises everything else.", file=sys.stderr)

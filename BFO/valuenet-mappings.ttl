@@ -1,27 +1,27 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix dc: <http://purl.org/dc/terms/> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
 
 <https://fandaws.com/ontology/bfo/valuenet-mappings.owl>
   a owl:Ontology ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> ;
   dc:title "ValueNet Mappings"@en ;
-  dc:description "Provides SKOS mappings from the BFO-aligned ValueNet back to the original ValueNet and related value ontologies."@en .
+  dc:description "Provides annotation-only historical correspondences from BFO-aligned ValueNet entities to entities in the original ValueNet and related value ontologies."@en .
 
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Care> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Fairness>, <http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl#Fairness> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Loyalty> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Authority> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Sanctity> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Liberty> .
-<https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity> skos:broadMatch <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#Value> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Care> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Fairness>, <http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl#Fairness> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Loyalty> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Authority> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Sanctity> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Liberty> .
+<https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity> vn-core:historicallyCorrespondsTo <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#Value> .
 ### Violations. The original mft.ttl models these as subclasses of
 ### mft:Violation, a kind of Value; the BFO refactor models them as processes,
-### so the mapping is broadMatch rather than exactMatch.
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#HarmProcess> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Harm> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CheatingProcess> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Cheating> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#BetrayalProcess> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Betrayal> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SubversionProcess> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Subversion> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#DegradationProcess> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Degradation> .
-<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#OppressionProcess> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Oppression> .
-<https://fandaws.com/ontology/bfo/valuenet-core#ValueViolationProcess> skos:broadMatch <https://w3id.org/spice/SON/HaidtValues#Violation> .
+### so these are historical annotations rather than logical class mappings.
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#HarmProcess> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Harm> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CheatingProcess> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Cheating> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#BetrayalProcess> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Betrayal> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SubversionProcess> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Subversion> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#DegradationProcess> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Degradation> .
+<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#OppressionProcess> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Oppression> .
+<https://fandaws.com/ontology/bfo/valuenet-core#ValueViolationProcess> vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#Violation> .

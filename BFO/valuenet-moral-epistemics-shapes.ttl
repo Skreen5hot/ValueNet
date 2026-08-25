@@ -5,6 +5,7 @@
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
 @prefix vn-me: <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
 @prefix me-shapes: <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes#> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl>
@@ -40,25 +41,66 @@ me-shapes:UnwarrantedCulpabilityAscriptionShape
     sh:message "This CulpabilityAscriptionICE records no evidential warrant. The act that produced it meets the criterion for vn-me:RashJudgmentAct."@en ;
   ] .
 
-### 3. An act cannot be a discernment if its output is an unwarranted culpability ascription.
-me-shapes:DiscernmentNotRashShape
+### 3. Every moral-assessment act has a distinct assessment output.
+me-shapes:MoralAssessmentOutputShape
   a sh:NodeShape ;
-  sh:targetClass vn-me:MoralDiscernmentAct ;
+  sh:targetClass vn-me:MoralAssessmentAct ;
+  sh:property [
+    sh:path vn-me:hasInformationalOutput ;
+    sh:minCount 1 ;
+    sh:class vn-me:MoralAssessmentICE ;
+    sh:severity sh:Violation ;
+    sh:message "A MoralAssessmentAct must produce at least one MoralAssessmentICE. The act and its information-content output are distinct entities."@en ;
+  ] .
+
+### 4. An observation record says which behavior it describes.
+me-shapes:BehavioralObservationAboutnessShape
+  a sh:NodeShape ;
+  sh:targetClass vn-me:BehavioralObservationICE ;
+  sh:property [
+    sh:path cco:ont00001982 ;
+    sh:minCount 1 ;
+    sh:class vn-me:AgentBehaviorProcess ;
+    sh:severity sh:Violation ;
+    sh:message "A BehavioralObservationICE must describe at least one AgentBehaviorProcess using CCO describes (ont00001982)."@en ;
+  ] .
+
+### 5. A culpability ascription identifies the agent it describes but does
+###    not assert that the agent actually bears a culpability role.
+me-shapes:CulpabilityAscriptionTargetShape
+  a sh:NodeShape ;
+  sh:targetClass vn-me:CulpabilityAscriptionICE ;
+  sh:property [
+    sh:path cco:ont00001982 ;
+    sh:minCount 1 ;
+    sh:class cco:ont00001017 ;
+    sh:severity sh:Violation ;
+    sh:message "A CulpabilityAscriptionICE must describe at least one CCO Agent. Do not replace this with an asserted MoralCulpabilityRole unless that status is independently warranted."@en ;
+  ] .
+
+### 6. Rash judgment is an absence-based annotation criterion. OWL states the
+###    positive output type; SHACL requires at least one such output to have
+###    no recorded warrant.
+me-shapes:RashJudgmentUnwarrantedOutputShape
+  a sh:NodeShape ;
+  sh:targetClass vn-me:RashJudgmentAct ;
   sh:sparql [
     sh:severity sh:Violation ;
-    sh:message "This act is typed as a MoralDiscernmentAct but produces a culpability ascription with no recorded warrant, which satisfies the criterion for RashJudgmentAct. The two classes are disjoint."@en ;
+    sh:message "A RashJudgmentAct must produce at least one CulpabilityAscriptionICE with no recorded isWarrantedBy value."@en ;
     sh:prefixes <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl> ;
     sh:select """
-      SELECT $this ?value
+      SELECT $this
       WHERE {
-        $this vn-me:hasInformationalOutput ?value .
-        ?value a vn-me:CulpabilityAscriptionICE .
-        FILTER NOT EXISTS { ?value vn-me:isWarrantedBy ?evidence }
+        FILTER NOT EXISTS {
+          $this vn-me:hasInformationalOutput ?ascription .
+          ?ascription a vn-me:CulpabilityAscriptionICE .
+          FILTER NOT EXISTS { ?ascription vn-me:isWarrantedBy ?evidence }
+        }
       }
     """ ;
   ] .
 
-### 4. Protective action must be grounded in a prior discernment.
+### 7. Protective action must be grounded in a prior discernment.
 me-shapes:ProtectiveActionGroundingShape
   a sh:NodeShape ;
   sh:targetClass vn-me:ProtectiveAction ;
@@ -70,7 +112,7 @@ me-shapes:ProtectiveActionGroundingShape
     sh:message "A ProtectiveAction must be preceded by (obo:BFO_0000062) at least one MoralDiscernmentAct. Protective action taken without a recorded assessment has no auditable grounding."@en ;
   ] .
 
-### 5. A value violation must say what it contravenes.
+### 8. A value violation must say what it contravenes.
 me-shapes:ViolationTargetShape
   a sh:NodeShape ;
   sh:targetClass vn-core:ValueViolationProcess ;
@@ -89,4 +131,7 @@ me-shapes:ViolationTargetShape
   ] , [
     sh:prefix "vn-core" ;
     sh:namespace "https://fandaws.com/ontology/bfo/valuenet-core#"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
+  ] , [
+    sh:prefix "cco" ;
+    sh:namespace "https://www.commoncoreontologies.org/"^^<http://www.w3.org/2001/XMLSchema#anyURI> ;
   ] .

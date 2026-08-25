@@ -2,13 +2,14 @@
 
 Competency questions for `valuenet-moral-epistemics.ttl`, in the style of the BHV and MFT competency questions listed in the repository README. CQ6 exercises the `vn-core` annotation layer.
 
-All six are satisfied by `valuenet-moral-epistemics-scenario.ttl`, a fictional scenario in which two agents witness the same conduct: one observes, discerns and acts; the other judges rashly. The results below were produced by running each query over the merged graph of `valuenet-core`, `valuenet-schwartz-values`, `valuenet-folk`, `valuenet-moral-foundations`, `valuenet-mappings`, `valuenet-moral-epistemics` and the scenario (1,394 triples). CQ6 additionally loads two MFTriggers files.
+All six are satisfied by `valuenet-moral-epistemics-scenario.ttl`, a fictional scenario in which two agents witness the same conduct: one observes, discerns and acts; the other judges rashly. The results below were produced by running each query over the merged graph of `valuenet-core`, `valuenet-schwartz-values`, `valuenet-folk`, `valuenet-moral-foundations`, `valuenet-mappings`, `valuenet-moral-epistemics` and the scenario (1,604 triples on 2026-08-25). CQ6 additionally loads two MFTriggers files.
 
 Shared prefixes for every query:
 
 ```sparql
 PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX obo:     <http://purl.obolibrary.org/obo/>
+PREFIX cco:     <https://www.commoncoreontologies.org/>
 PREFIX vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#>
 PREFIX vn-me:   <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#>
 ```
@@ -45,20 +46,26 @@ The explainability chain the BFOizing rationale promises, recovered end to end: 
 ```sparql
 # scope: BFO/
 # expect: rows
-SELECT ?action ?assessment ?observation ?evidence ?textSpan WHERE {
+SELECT ?action ?assessment ?observation ?evidence ?conduct ?textSpan WHERE {
   ?action a vn-me:ProtectiveAction ;
           vn-me:hasInformationalInput ?assessment ;
           obo:BFO_0000062 ?discernment .          # preceded by
-  ?assessment vn-me:isWarrantedBy ?evidence .
+  ?assessment vn-me:isWarrantedBy ?evidence ;
+              cco:ont00001982 ?conduct .       # describes
+  ?evidence cco:ont00001982 ?conduct .         # describes the same conduct
   ?discernment obo:BFO_0000062 ?observation .
   ?observation vn-me:hasInformationalOutput ?evidence .
-  OPTIONAL { ?textSpan vn-core:isEvidenceFor ?action }
+  OPTIONAL {
+    ?annotation a vn-core:ValueEvidenceAnnotation ;
+                vn-core:hasEvidenceSource ?textSpan ;
+                vn-core:isEvidenceFor ?action .
+  }
 }
 ```
 
-| action | assessment | observation | evidence | textSpan |
-|---|---|---|---|---|
-| protectiveActionByA | assessmentByA | observationByA | obsRecordA | textSpan1 |
+| action | assessment | observation | evidence | conduct | textSpan |
+|---|---|---|---|---|---|
+| protectiveActionByA | assessmentByA | observationByA | obsRecordA | conductOfC | textSpan1 |
 
 ---
 
@@ -69,17 +76,18 @@ The operational form of the discernment / rash judgment distinction. `FILTER NOT
 ```sparql
 # scope: BFO/
 # expect: rows
-SELECT ?act ?agent ?ascription WHERE {
+SELECT ?act ?agent ?ascription ?describedAgent WHERE {
   ?act vn-me:hasInformationalOutput ?ascription ;
        obo:BFO_0000057 ?agent .
-  ?ascription a vn-me:CulpabilityAscriptionICE .
+  ?ascription a vn-me:CulpabilityAscriptionICE ;
+               cco:ont00001982 ?describedAgent .
   FILTER NOT EXISTS { ?ascription vn-me:isWarrantedBy ?e }
 }
 ```
 
-| act | agent | ascription |
-|---|---|---|
-| rashJudgmentByB | agentB | verdictByB |
+| act | agent | ascription | describedAgent |
+|---|---|---|---|
+| rashJudgmentByB | agentB | verdictByB | agentC |
 
 ---
 
@@ -135,7 +143,6 @@ Text span → FrameNet frame → Haidt value → BFO-aligned disposition.
 ```sparql
 # scope: BFO/ MFTriggers/
 # expect: rows
-PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 PREFIX vn-core:<https://fandaws.com/ontology/bfo/valuenet-core#>
 PREFIX vcvf:   <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#>
 
@@ -144,23 +151,27 @@ SELECT DISTINCT ?span ?text ?frame ?haidtValue ?disposition WHERE {
         vn-core:hasTextValue ?text ;
         vn-core:evokesFrame ?frame .
   ?frame vcvf:triggers ?haidtValue .
-  OPTIONAL { ?disposition skos:broadMatch ?haidtValue }
+  OPTIONAL { ?disposition vn-core:historicallyCorrespondsTo ?haidtValue }
 }
 ```
 
-Run over the suite, the scenario, and `MFTriggers/care_frame.ttl` + `MFTriggers/harm_frame.ttl` (11,559 triples):
+Run over the suite, the scenario, and `MFTriggers/care_frame.ttl` + `MFTriggers/harm_frame.ttl` (11,769 triples on 2026-08-25):
 
 | text | frame | haidtValue | disposition |
 |---|---|---|---|
 | "kept an eye on him and made sure he was never alone with the kids" | framenet:Protecting | haidt:Care | vn-mf:CareDisposition |
 
-A single prefix binding suffices. It did not previously: `vcvf` was bound to two rival namespaces across `MFTriggers/`, and this query needed a `UNION` to reach the whole corpus. All 12,338 trigger statements now use the namespace ValueCore itself declares.
+A single `vcvf` prefix binding suffices. It did not previously: `vcvf` was bound to two rival namespaces across `MFTriggers/`, and this query needed a `UNION` to reach the whole corpus. All 12,338 trigger statements now use the namespace ValueCore itself declares. The final hop uses an OWL annotation property, not canonical SKOS, so the query does not depend on treating `CareDisposition` or `haidt:Care` as individuals.
 
 ---
 
 ## Notes on running these
 
 * Queries are over asserted triples only. `vn-core:ValueViolationProcess` is a defined class (`owl:equivalentClass`), so an OWL reasoner will additionally classify `:protectiveActionByA` and `:rashJudgmentByB` under it from their `contravenes` axioms; the queries above do not depend on that inference.
+* Assessment acts and their outputs are distinct: `MoralAssessmentAct` is an occurrent, while `MoralAssessmentICE` is descriptive information content. CCO `describes` (`cco:ont00001982`) connects an output to the agent or conduct assessed.
+* `RashJudgmentAct` and `MoralDiscernmentAct` are not disjoint. A larger assessment process may produce both a warranted safety assessment and an unwarranted culpability ascription. The unwarranted-output criterion is enforced by SHACL because absence of a recorded warrant is closed-world.
+* A `CulpabilityAscriptionICE` describing an Agent does not entail that the Agent bears a `MoralCulpabilityRole`; assert such a role independently only when the normative status is warranted.
 * `obo:BFO_0000057` is *has participant* (process → continuant), not its inverse. `obo:BFO_0000196` is *bearer of* (continuant → realizable entity). `obo:BFO_0000062` is *preceded by*.
 * Value dispositions and roles appear as **individuals** (`:justiceOfB a folk:JusticeDisposition`), not as classes in object position. See the instance-level note in `annotationGuide.md`.
 * Agents are typed as `cco:ont00001017` (CCO `Agent`), which `valuenet-core` adopts by IRI. Core asserts that every `ValueRelatedRealizableEntity` inheres in some `Agent`, so CQ1 and CQ4 are asking about agents by construction.
+* The scenario keeps the transcript's information-bearing carrier, exact textual representation, text spans, selectors, and evidence annotations as distinct individuals. Offsets are zero-based Unicode code-point indexes into the exact representation string and are end-exclusive.

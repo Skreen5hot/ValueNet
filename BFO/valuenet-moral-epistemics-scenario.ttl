@@ -48,6 +48,7 @@
   vn-me:hasInformationalOutput :obsRecordA .
 
 :obsRecordA a vn-me:BehavioralObservationICE ;
+  cco:ont00001982 :conductOfC ;
   rdfs:label "Record of what Agent A saw Agent C do"@en .
 
 :householdRule a vn-me:MoralNormICE ;
@@ -58,6 +59,7 @@
 #################################################################
 
 :assessmentByA a vn-me:SafetyAssessmentICE ;
+  cco:ont00001982 :conductOfC ;
   vn-me:isWarrantedBy :obsRecordA ;
   rdfs:label "Agent A's assessment of the risk Agent C's conduct poses"@en .
 
@@ -89,6 +91,7 @@
 #################################################################
 
 :verdictByB a vn-me:CulpabilityAscriptionICE ;
+  cco:ont00001982 :agentC ;
   rdfs:label "Agent B's conclusion that Agent C is malicious and beyond redemption"@en .
 
 :rashJudgmentByB a vn-me:RashJudgmentAct ;
@@ -100,23 +103,47 @@
 #    Linguistic grounding
 #################################################################
 
-:transcript1 a obo:BFO_0000031 ;
-  rdfs:label "Transcript of a family interview"@en .
+# The carrier is a distinct independent continuant. The exact textual
+# representation, its spans, selectors, and evidence annotations are ICEs.
+:transcriptCarrier1 a cco:ont00000253 ;
+  obo:BFO_0000101 :transcriptRepresentation1 ;
+  rdfs:label "Digital carrier of family interview transcript version 1"@en .
+
+:transcriptRepresentation1 a vn-core:TextualRepresentation ;
+  vn-core:hasTextValue "kept an eye on him and made sure he was never alone with the kids. you could just tell he had bad intentions" ;
+  rdfs:label "Exact family interview transcript representation, version 1"@en .
 
 # evokesFrame reaches the existing MFTriggers data:
 # framenet:Protecting  vcvf:triggers  haidt:Care , and
-# vn-mf:CareDisposition  skos:broadMatch  haidt:Care  (valuenet-mappings).
+# vn-mf:CareDisposition  vn-core:historicallyCorrespondsTo  haidt:Care
+# (valuenet-mappings; annotation-only).
 :textSpan1 a vn-core:TextSpan ;
   vn-core:hasTextValue "kept an eye on him and made sure he was never alone with the kids" ;
-  vn-core:isTextSpanOf :transcript1 ;
-  vn-core:hasStartOffset "204"^^xsd:nonNegativeInteger ;
-  vn-core:hasEndOffset   "268"^^xsd:nonNegativeInteger ;
-  vn-core:evokesFrame <https://w3id.org/framester/framenet/abox/frame/Protecting> ;
+  vn-core:isTextSpanOf :transcriptRepresentation1 ;
+  vn-core:evokesFrame <https://w3id.org/framester/framenet/abox/frame/Protecting> .
+
+:textSpanSelector1 a vn-core:TextSpanSelector ;
+  vn-core:hasSourceRepresentation :transcriptRepresentation1 ;
+  vn-core:selectsTextSpan :textSpan1 ;
+  vn-core:hasStartOffset "0"^^xsd:nonNegativeInteger ;
+  vn-core:hasEndOffset   "65"^^xsd:nonNegativeInteger .
+
+:evidenceAnnotation1 a vn-core:ValueEvidenceAnnotation ;
+  vn-core:hasEvidenceSource :textSpan1 ;
+  vn-core:hasSelector :textSpanSelector1 ;
   vn-core:isEvidenceFor :protectiveActionByA .
 
 :textSpan2 a vn-core:TextSpan ;
   vn-core:hasTextValue "you could just tell he had bad intentions" ;
-  vn-core:isTextSpanOf :transcript1 ;
-  vn-core:hasStartOffset "331"^^xsd:nonNegativeInteger ;
-  vn-core:hasEndOffset   "372"^^xsd:nonNegativeInteger ;
+  vn-core:isTextSpanOf :transcriptRepresentation1 .
+
+:textSpanSelector2 a vn-core:TextSpanSelector ;
+  vn-core:hasSourceRepresentation :transcriptRepresentation1 ;
+  vn-core:selectsTextSpan :textSpan2 ;
+  vn-core:hasStartOffset "67"^^xsd:nonNegativeInteger ;
+  vn-core:hasEndOffset   "108"^^xsd:nonNegativeInteger .
+
+:evidenceAnnotation2 a vn-core:ValueEvidenceAnnotation ;
+  vn-core:hasEvidenceSource :textSpan2 ;
+  vn-core:hasSelector :textSpanSelector2 ;
   vn-core:isEvidenceFor :rashJudgmentByB .

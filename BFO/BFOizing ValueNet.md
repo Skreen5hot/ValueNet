@@ -16,7 +16,7 @@ Our refactoring was a complete conceptual and structural re-engineering, guided 
 *   `valuenet-core.ttl`: Imports BFO and defines the top-level classes (`ValueDisposition`, `ValueRole`, `ValueRealizationProcess`).
 *   `valuenet-moral-foundations.ttl`: Models Haidt's Moral Foundations as specific subclasses of `MoralValueDisposition`.
 *   `valuenet-schwartz-values.ttl`: Models Schwartz's Basic Human Values as subclasses of `PersonalValueDisposition`.
-*   `valuenet-mappings.ttl`: Provides `skos:broadMatch` mappings to the original ValueNet IRIs, ensuring backward compatibility and traceability.
+*   `valuenet-mappings.ttl`: Provides annotation-only `vn-core:historicallyCorrespondsTo` links to original ValueNet IRIs, preserving traceability without treating OWL classes or properties as SKOS concept individuals.
 
 **Semantic and Axiomatic Rewrite:** All axioms were rewritten to reflect the realist commitment.
 *   The descriptive `dul:satisfies` relation was replaced with BFO's `bfo:realizes`. A `ValueDisposition` is not satisfied by a situation; it is **realized in** a `vn-core:ValueRealizationProcess` (a subclass of `bfo:process`).

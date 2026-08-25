@@ -2,6 +2,8 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics.owl>
   a owl:Ontology ;
@@ -10,26 +12,8 @@
   dc:title "ValueNet Moral Epistemics Module"@en ;
   dc:description "An ontology of the cognitive acts by which agents assess one another morally: behavioural observation, prudent discernment, rash judgment, and the protective action that discernment can ground."@en ;
   rdfs:label "ValueNet Moral Epistemics"@en ;
-  rdfs:comment "Scope note. This module models the structure of moral assessment, not its correctness. The distinction it draws between discernment and rash judgment turns on evidential warrant alone: an assessment is rash when it ascribes interior culpability to an agent without being warranted by observational evidence. That criterion is deliberately tradition-neutral and is asserted in the class axioms. The theological reading of the same distinction (Catechism of the Catholic Church 2477-2478, on rash judgment as an offence against the reputation of persons) motivated the module and is recorded in the definitions as provenance, but is not itself asserted as ontology. Following the suite's practice of keeping Schwartz, Haidt, Curry and folk psychology in separate modules, any further tradition-specific commitments belong in a module of their own, linked by skos mappings."@en ;
+  rdfs:comment "Scope note. This module models the structure of moral assessment, not its correctness. The distinction it draws between discernment and rash judgment turns on evidential warrant alone: an assessment is rash when it ascribes interior culpability to an agent without being warranted by observational evidence. That criterion is deliberately tradition-neutral and is asserted in the class axioms. The theological reading of the same distinction (Catechism of the Catholic Church 2477-2478, on rash judgment as an offence against the reputation of persons) motivated the module and is recorded in the definitions as provenance, but is not itself asserted as ontology. Following the suite's practice of keeping Schwartz, Haidt, Curry and folk psychology in separate modules, any further tradition-specific commitments belong in a module of their own, linked by the annotation-only mapping vocabulary declared in valuenet-core."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics> .
-
-#################################################################
-#    Imported relations (MIREOT stubs)
-#
-#    RO's has input / has output are declared here rather than by
-#    importing ro.owl, which is ~1.2M triples and pulls in transitive
-#    imports this module does not otherwise need.
-#################################################################
-
-<http://purl.obolibrary.org/obo/RO_0002233>
-  a owl:ObjectProperty ;
-  rdfs:label "has input"@en ;
-  rdfs:isDefinedBy <http://purl.obolibrary.org/obo/ro.owl> .
-
-<http://purl.obolibrary.org/obo/RO_0002234>
-  a owl:ObjectProperty ;
-  rdfs:label "has output"@en ;
-  rdfs:isDefinedBy <http://purl.obolibrary.org/obo/ro.owl> .
 
 #################################################################
 #    Object properties
@@ -37,30 +21,31 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput>
   a owl:ObjectProperty ;
-  rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0002233> ;
+  rdfs:subPropertyOf cco:ont00001921 ;
   rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
-  rdfs:range <http://purl.obolibrary.org/obo/BFO_0000031> ;
+  rdfs:range cco:ont00000958 ;
   rdfs:label "has informational input"@en ;
-  skos:definition "A relation between a process and a generically dependent continuant that is available to that process at its start and on which the process operates."@en ;
-  rdfs:comment "Specialises RO:has input to informational rather than material inputs. RO's textual definition of has input speaks of material entities; the OWL property carries no range assertion, and the practice of using it with information content entities is established (compare OBI:has specified input). The narrower domain and range are asserted here so that the tension is visible rather than implicit."@en ;
+  skos:definition "A relation between a process and an information content entity that is available to that process at its start and on which the process operates."@en ;
+  rdfs:comment "Specializes CCO ERO has input (ont00001921) to information-content inputs. The CCO parent is a subproperty of BFO has participant and explicitly permits generically dependent continuants in its range."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#hasInformationalInput> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput>
   a owl:ObjectProperty ;
-  rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0002234> ;
+  rdfs:subPropertyOf cco:ont00001986 ;
   rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
-  rdfs:range <http://purl.obolibrary.org/obo/BFO_0000031> ;
+  rdfs:range cco:ont00000958 ;
   rdfs:label "has informational output"@en ;
-  skos:definition "A relation between a process and a generically dependent continuant that comes to exist, or comes to be borne by some new bearer, as a result of that process."@en ;
+  skos:definition "A relation between a process and an information content entity that comes to exist, or comes to be borne by some new bearer, as a result of that process."@en ;
+  rdfs:comment "Specializes CCO ERO has output (ont00001986) to information-content outputs. The CCO parent is a subproperty of BFO has participant and explicitly permits generically dependent continuants in its range."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#hasInformationalOutput> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#isWarrantedBy>
   a owl:ObjectProperty ;
-  rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000031> ;
+  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE> ;
   rdfs:range <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE> ;
   rdfs:label "is warranted by"@en ;
-  skos:definition "A relation between an information content entity that makes a claim and an information content entity recording the evidence that supports the claim."@en ;
-  rdfs:comment "Warrant is modelled as a relation between two information content entities rather than as a quality of the claim, because a BFO quality inheres in an independent continuant and an information content entity is a generically dependent continuant."@en ;
+  skos:definition "A relation from a moral assessment information content entity to an observational evidence information content entity whose recorded content supports that assessment."@en ;
+  rdfs:comment "Warrant is modeled as a relation between information content entities rather than as a quality of an assessment. A BFO quality inheres in an independent continuant, whereas an information content entity is a generically dependent continuant. Missing warrant is evaluated by the closed-world SHACL profile."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#isWarrantedBy> .
 
 #################################################################
@@ -70,8 +55,8 @@
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
-  skos:broadMatch <https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition> ;
-  skos:relatedMatch <https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> ;
+  vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> ;
   skos:definition "A moral value disposition to apply right reason to particular practical judgments, inclining its bearer to assess a situation in proportion to the evidence actually available and to act on that assessment."@en ;
   rdfs:label "Prudence Disposition"@en ;
   skos:altLabel "Prudence"@en ;
@@ -88,66 +73,105 @@
   rdfs:comment "Externally grounded, and so a role rather than a disposition: it is conferred by the relationship, and an agent can bear it without any corresponding inclination. The disposition that typically accompanies it is mft:CareDisposition."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ProtectorRole> .
 
-<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#InteriorMoralState>
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole>
   a owl:Class ;
-  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000020> ;
-  skos:definition "A specifically dependent continuant inhering in an agent that constitutes that agent's moral condition with respect to some act, such as the agent's intention, consent, or culpability."@en ;
-  rdfs:label "Interior Moral State"@en ;
-  rdfs:comment "Nothing in BFO makes an interior state a defective object of cognition; a specifically dependent continuant is a perfectly good entity whether or not anyone can observe it. What distinguishes rash judgment from discernment is therefore not the kind of entity it is about, but whether its output is warranted by evidence. This class exists so that interior states can be asserted at instance level where they are actually known, and is not referenced existentially by any act class in this module."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#InteriorMoralState> .
+  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000023> ,
+    [ a owl:Restriction ;
+      owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000197> ;
+      owl:someValuesFrom cco:ont00001017
+    ] ;
+  skos:definition "A role that inheres in an agent because a norm-governed moral appraisal treats that agent as accountable for some conduct, and that can be realized in processes of censure, correction, restitution, forgiveness, or sanction."@en ;
+  rdfs:label "Moral Culpability Role"@en ;
+  rdfs:comment "An externally grounded normative status, not an intention, consent act, mental state, or information content entity. A culpability ascription does not entail that its target actually bears this role."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralCulpabilityRole> .
 
 #################################################################
 #    Information content entities
 #
-#    Subclassed directly from bfo:generically dependent continuant,
-#    since the suite does not import CCO or IAO. CCO alignment is
-#    recorded with skos:closeMatch.
+#    The reviewed Phase 5 mappings reuse CCO Descriptive and
+#    Prescriptive Information Content Entity as formal parents where
+#    every instance satisfies the CCO differentia.
 #################################################################
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE>
   a owl:Class ;
-  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ;
-  skos:closeMatch <https://www.commoncoreontologies.org/ont00000853> ;
-  skos:definition "A generically dependent continuant that records what was perceptually available to some agent, and that can serve as the evidential basis of a subsequent claim."@en ;
+  rdfs:subClassOf cco:ont00000853 ;
+  skos:definition "A descriptive information content entity that records what was perceptually available to some agent, and that can serve as the evidential basis of a subsequent claim."@en ;
   rdfs:label "Observational Evidence ICE"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ObservationalEvidenceICE> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE> ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE> ,
+    [ a owl:Restriction ;
+      owl:onProperty cco:ont00001982 ;
+      owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess>
+    ] ;
   skos:definition "Observational evidence that records the behaviour of an agent as perceived by another agent."@en ;
   rdfs:label "Behavioral Observation ICE"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#BehavioralObservationICE> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralNormICE>
   a owl:Class ;
-  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ;
-  skos:closeMatch <https://www.commoncoreontologies.org/ont00000965> ;
-  skos:definition "A generically dependent continuant that prescribes how agents ought to act, and against which observed behaviour can be assessed."@en ;
+  rdfs:subClassOf cco:ont00000965 ;
+  skos:definition "A prescriptive information content entity that prescribes how agents ought to act, and against which observed behaviour can be assessed."@en ;
   rdfs:label "Moral Norm ICE"@en ;
   skos:example "A rule of a moral code, a professional code of conduct, a household rule."@en ;
-  rdfs:comment "Aligned to CCO Prescriptive Information Content Entity (ont00000965), which carries 'Directive ICE' as an altLabel; CCO 2.0 renamed the class."@en ;
+  rdfs:comment "A reviewed subclass of CCO Prescriptive Information Content Entity (ont00000965), which carries 'Directive ICE' as an alternative label; no equivalence is asserted because CCO also includes non-moral prescriptions."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralNormICE> .
+
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE>
+  a owl:Class ;
+  rdfs:subClassOf cco:ont00000853 ;
+  skos:definition "A descriptive information content entity that records an evaluative claim about an agent or the agent's conduct under a moral norm."@en ;
+  rdfs:label "Moral Assessment ICE"@en ;
+  rdfs:comment "The output of a moral-assessment act. Its existence is distinct from the act that produced it, the entity it describes, and whether its claim is warranted or true."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralAssessmentICE> .
+
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#WarrantedMoralAssessmentICE>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE> ;
+  owl:equivalentClass [
+    a owl:Class ;
+    owl:intersectionOf (
+      <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE>
+      [ a owl:Restriction ;
+        owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#isWarrantedBy> ;
+        owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE>
+      ]
+    )
+  ] ;
+  skos:definition "A moral assessment information content entity that is warranted by some observational evidence information content entity."@en ;
+  rdfs:label "Warranted Moral Assessment ICE"@en ;
+  rdfs:comment "A positive open-world classification: an asserted warrant is sufficient for classification. Failure to record a warrant does not entail membership in a complementary class and is checked by SHACL where required."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#WarrantedMoralAssessmentICE> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE>
   a owl:Class ;
-  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ,
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#WarrantedMoralAssessmentICE> ,
     [ a owl:Restriction ;
       owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#isWarrantedBy> ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE>
+    ] ,
+    [ a owl:Restriction ;
+      owl:onProperty cco:ont00001982 ;
+      owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess>
     ] ;
-  skos:closeMatch <https://www.commoncoreontologies.org/ont00000853> ;
-  skos:definition "A generically dependent continuant that describes the risk an agent's observed conduct poses to some other agent, and that is warranted by observation of that conduct."@en ;
+  skos:definition "A descriptive information content entity that describes the risk an agent's observed conduct poses to some other agent, and that is warranted by observation of that conduct."@en ;
   rdfs:label "Safety Assessment ICE"@en ;
   rdfs:comment "The warrant restriction is what makes this the output of discernment rather than of rash judgment. An assessment of risk that is not warranted by observation is not an instance of this class."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#SafetyAssessmentICE> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#CulpabilityAscriptionICE>
   a owl:Class ;
-  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ;
-  skos:definition "A generically dependent continuant that ascribes to an agent an interior moral state, such as guilt, bad intention, or definitive moral standing, as opposed to describing that agent's observable conduct."@en ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE> ,
+    [ a owl:Restriction ;
+      owl:onProperty cco:ont00001982 ;
+      owl:someValuesFrom cco:ont00001017
+    ] ;
+  skos:definition "A moral assessment information content entity that describes an agent as bearing moral culpability or another accountability-grounding moral status."@en ;
   rdfs:label "Culpability Ascription ICE"@en ;
-  rdfs:comment "Deliberately primitive: no 'is about some InteriorMoralState' restriction is asserted. Such a restriction would existentially commit the ontology to the interior state the ascription purports to be about, which is exactly the commitment a false or unwarranted ascription must not carry. Aboutness may be asserted at instance level where the interior state is independently known."@en ;
+  rdfs:comment "The class requires only that the ascription describe an Agent. It does not existentially require a MoralCulpabilityRole: doing so would create a culpability status even for a false or unwarranted ascription. A true ascription may be accompanied by an independently asserted role individual borne by the described agent."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#CulpabilityAscriptionICE> .
 
 #################################################################
@@ -164,19 +188,36 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ActOfBehavioralObservation>
   a owl:Class ;
-  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> ,
+  rdfs:subClassOf cco:ont00000037 ,
     [ a owl:Restriction ;
       owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE>
     ] ;
-  skos:definition "A process in which an agent perceives the behaviour of another agent and thereby produces a record of what was perceived."@en ;
+  skos:definition "An act of observation in which an agent acquires information through perception of another agent's behavior and produces a descriptive record of what was perceived."@en ;
   rdfs:label "Act of Behavioral Observation"@en ;
-  rdfs:comment "The observed AgentBehaviorProcess is not related to this act by has input: RO's has input requires its object to participate in the process, and one occurrent cannot participate in another. The two are linked at instance level by the observation act's output being about the behaviour."@en ;
+  rdfs:comment "A reviewed subclass of CCO Act of Observation (ont00000037). The observed AgentBehaviorProcess is not related to this act by has input: CCO has input is a subproperty of has participant and its range excludes processes. The output record instead describes the observed behavior through CCO describes (ont00001982)."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ActOfBehavioralObservation> .
+
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct>
+  a owl:Class ;
+  rdfs:subClassOf cco:ont00000636 ,
+    [ a owl:Restriction ;
+      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> ;
+      owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE>
+    ] ,
+    [ a owl:Restriction ;
+      owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000057> ;
+      owl:someValuesFrom cco:ont00001017
+    ] ;
+  skos:definition "An act of appraisal in which an agent evaluates another agent or that agent's conduct under an actual or purported moral standard and produces a moral assessment information content entity."@en ;
+  rdfs:label "Moral Assessment Act"@en ;
+  rdfs:comment "Common occurrent parent of prudent discernment and rash judgment. The act is distinct from its information-content output and from the agent or conduct that output describes."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralAssessmentAct> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#ValueRealizationProcess> ,
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> ,
+    <https://fandaws.com/ontology/bfo/valuenet-core#ValueRealizationProcess> ,
     [ a owl:Restriction ;
       owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition>
@@ -197,31 +238,19 @@
       owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000062> ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ActOfBehavioralObservation>
     ] ;
-  skos:closeMatch <https://www.commoncoreontologies.org/ont00000636> ;
-  skos:definition "A value realization process in which an agent assesses another agent's observed behaviour against a moral norm and produces an assessment of the risk that behaviour poses, thereby realizing a prudence disposition."@en ;
+  skos:definition "An act of appraisal and value realization process in which an agent assesses another agent's observed behaviour against a moral norm and produces an assessment of the risk that behaviour poses, thereby realizing a prudence disposition."@en ;
   rdfs:label "Moral Discernment Act"@en ;
   skos:altLabel "Prudent Assessment"@en ;
-  rdfs:comment "Aligned to CCO Act of Appraisal (ont00000636). The suite does not import CCO, so the alignment is a mapping rather than a parent."@en ;
+  rdfs:comment "A narrower MoralAssessmentAct whose output is a warranted safety assessment and whose process realizes a prudence disposition. No equivalence is asserted because other moral-assessment acts may be warranted without having this risk-assessment structure."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralDiscernmentAct> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#RashJudgmentAct>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#ValueViolationProcess> ,
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> ,
+    <https://fandaws.com/ontology/bfo/valuenet-core#ValueViolationProcess> ,
     [ a owl:Restriction ;
       owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> ;
-      owl:someValuesFrom [
-        a owl:Class ;
-        owl:intersectionOf (
-          <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#CulpabilityAscriptionICE>
-          [ a owl:Class ;
-            owl:complementOf [
-              a owl:Restriction ;
-              owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#isWarrantedBy> ;
-              owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE>
-            ]
-          ]
-        )
-      ]
+      owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#CulpabilityAscriptionICE>
     ] ,
     [ a owl:Restriction ;
       owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-core#contravenes> ;
@@ -235,15 +264,23 @@
       owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-core#contravenes> ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition>
     ] ;
-  owl:disjointWith <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct> ;
-  skos:relatedMatch <https://w3id.org/spice/SON/HaidtValues#Cheating>, <https://w3id.org/spice/SON/HaidtValues#Harm> ;
-  skos:definition "A value violation process in which an agent produces an ascription of interior moral culpability to another agent that is not warranted by observational evidence."@en ;
+  vn-core:hasRelatedConceptualMatch <https://w3id.org/spice/SON/HaidtValues#Cheating>, <https://w3id.org/spice/SON/HaidtValues#Harm> ;
+  skos:definition "A moral assessment act and value violation process in which an agent produces an ascription of moral culpability to another agent that is not warranted by observational evidence."@en ;
   rdfs:label "Rash Judgment Act"@en ;
   skos:altLabel "Rash Judgment"@en ;
-  rdfs:comment "The defect is located in the warrant relation, not in the object of the judgment. Assessing an interior state is not by itself an error; asserting one without evidence is. This is why the class is defined by a negated warrant on its output rather than by an input drawn from the other agent's interior."@en ,
-    "Open-world caveat: the owl:complementOf restriction supports assertion but not inference. Under the open-world assumption a reasoner will never conclude that an act is a rash judgment merely because no warrant has been recorded for its output. The closed-world check belongs in SHACL; see valuenet-moral-epistemics-shapes.ttl."@en ,
+  rdfs:comment "The defect is located in the warrant relation on the act's culpability-ascription output, not in a supposed interior-state entity. OWL asserts the positive output type; the annotation profile uses SHACL to require that a recorded RashJudgmentAct have at least one culpability-ascription output with no recorded warrant."@en ,
+    "RashJudgmentAct is not disjoint with MoralDiscernmentAct. One larger or temporally extended moral-assessment act can produce both a warranted safety assessment and an unwarranted culpability ascription; class disjointness would incorrectly make that mixed process inconsistent."@en ,
     "Motivating source: Catechism of the Catholic Church 2477-2478, on rash judgment as an offence against the reputation of persons. Recorded as provenance; the axioms above assert only the evidential criterion."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#RashJudgmentAct> .
+
+<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MixedMoralAssessmentAct>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct> ,
+    <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#RashJudgmentAct> ;
+  skos:definition "A moral assessment act that satisfies the discernment pattern while also producing an unwarranted culpability ascription that satisfies the rash-judgment annotation criterion."@en ;
+  rdfs:label "Mixed Moral Assessment Act"@en ;
+  rdfs:comment "This named overlap class makes the rejected disjointness testable: it must remain satisfiable. It represents a larger or temporally extended act with both warranted and unwarranted assessment outputs."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MixedMoralAssessmentAct> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ProtectiveAction>
   a owl:Class ;
@@ -264,7 +301,7 @@
       owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000062> ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct>
     ] ;
-  skos:relatedMatch <https://w3id.org/spice/SON/HaidtValues#Care> ;
+  vn-core:hasRelatedConceptualMatch <https://w3id.org/spice/SON/HaidtValues#Care> ;
   skos:definition "A value realization process in which an agent bearing a protector role acts on a safety assessment in order to reduce the risk of harm to a dependent agent, thereby realizing that role together with a care disposition."@en ;
   rdfs:label "Protective Action"@en ;
   rdfs:comment "The dependence on prior discernment is asserted with bfo:preceded by rather than left implicit in the shared assessment, so that the causal chain from behaviour through observation and discernment to action is queryable end to end."@en ;
@@ -273,8 +310,7 @@
 #################################################################
 #    Agent participation
 #
-#    Every act modelled here is performed by an agent, and the
-#    interior state a rash judgment ascribes is an agent's state.
+#    Every act modeled here is performed by an agent.
 #    PrudenceDisposition and ProtectorRole need no axiom of their
 #    own: they inherit "inheres in some Agent" from
 #    vn-core:ValueRelatedRealizableEntity.
@@ -290,22 +326,7 @@
     owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000057> ;
     owl:someValuesFrom <https://www.commoncoreontologies.org/ont00001017> ] .
 
-<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct>
-  rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000057> ;
-    owl:someValuesFrom <https://www.commoncoreontologies.org/ont00001017> ] .
-
-<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#RashJudgmentAct>
-  rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000057> ;
-    owl:someValuesFrom <https://www.commoncoreontologies.org/ont00001017> ] .
-
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ProtectiveAction>
   rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000057> ;
-    owl:someValuesFrom <https://www.commoncoreontologies.org/ont00001017> ] .
-
-<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#InteriorMoralState>
-  rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000197> ;
     owl:someValuesFrom <https://www.commoncoreontologies.org/ont00001017> ] .

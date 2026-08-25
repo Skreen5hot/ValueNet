@@ -5,7 +5,7 @@ hand or not at all. Both are load-bearing. The competency questions are the
 stated case that `valuenet-moral-epistemics` does what it was built for, and
 the `TestingFramework.md` queries are the stated case that the BFO layer has no
 double-disjoint parentage, no missing metadata and no redundant
-`skos:broadMatch`. Nothing checked either claim, so breaking the scenario file
+the broader conceptual mapping annotation. Nothing checked either claim, so breaking the scenario file
 would have silently retired six of them and no test would have noticed.
 
 Two properties are asserted here beyond "the queries run".

@@ -8,7 +8,7 @@ The primary goal is to create a comprehensive, BFO-aligned ontology of human val
 
 *   **Rigorous:** Adhering strictly to the realist principles of BFO and the established `valuenet-core` model (e.g., the Disposition vs. Role distinction).
 *   **Comprehensive:** Covering the breadth of common value terms found in everyday language and popular psychology.
-*   **Organized:** Intelligently structuring the "messiness" of language by using a combination of `rdfs:subClassOf` for formal hierarchy and `skos` for conceptual mapping, avoiding a flat, unmanageable list of terms.
+*   **Organized:** Intelligently structuring the "messiness" of language by using `rdfs:subClassOf` for reviewed formal hierarchy and the annotation-only ValueNet mapping vocabulary for conceptual correspondence, avoiding a flat, unmanageable list of terms.
 *   **Maintainable:** Developed in a modular, iterative fashion that allows for review, refinement, and future expansion.
 
 ## 2. Core Strategy: Thematic Iteration
@@ -22,7 +22,7 @@ A "bulk import" of hundreds of value terms would be unreliable and lead to an in
     *   A `ValueRole` (an external expectation).
     *   A synonym or specific type of an existing disposition/role.
     *   Something else entirely (e.g., a goal, a virtue, a capability) that should be modeled differently or excluded.
-4.  **Integrate & Document:** Approved classes will be added to `valuenet-folk.ttl` with clear, OBO-style definitions and appropriate axioms (`rdfs:subClassOf`, `skos:broadMatch`) linking them to the core and Schwartz modules.
+4.  **Integrate & Document:** Approved classes will be added to `valuenet-folk.ttl` with clear, OBO-style definitions and either reviewed `rdfs:subClassOf` axioms or annotation-only `vn-core:hasBroaderConceptualMatch` links to the core and Schwartz modules.
 
 ## 3. Execution Plan & Progress Tracker
 
@@ -172,7 +172,7 @@ Run over the whole `BFO/` suite after Phases 5 and 6. Reproduce with `rdflib` an
 | Classes without `skos:definition` | 0 |
 | Entities declared under `w3id.org/valuenet` | 0 |
 | `TestingFramework.md` Query 1, disjoint parentage | 0 hits |
-| `TestingFramework.md` Query 3, redundant `skos:broadMatch` | 0 hits |
+| `TestingFramework.md` Query 3, redundant broader conceptual mapping | 0 hits |
 | SHACL `valuenet-core-shapes.ttl` over the scenario | 0 results |
 | SHACL `valuenet-moral-epistemics-shapes.ttl` over the scenario | 1 result, the intended rash-judgment warning |
 | SHACL agent shape, negative control (a rock bearing a value) | fires as expected |

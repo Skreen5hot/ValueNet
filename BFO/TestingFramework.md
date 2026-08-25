@@ -81,25 +81,25 @@ WHERE {
 
 ---
 
-### Query 3: Redundant `skos:broadMatch` Check
+### Query 3: Redundant Broader Conceptual Mapping Check
 
-**Purpose:** To find classes where a `skos:broadMatch` is used for the same parent as a formal `rdfs:subClassOf` axiom. The `subClassOf` relationship is stronger and makes the `broadMatch` redundant and potentially confusing.
+**Purpose:** To find classes where the annotation-only `vn-core:hasBroaderConceptualMatch` points to the same parent as a formal `rdfs:subClassOf` axiom. The logical inclusion makes the conceptual annotation redundant and potentially confusing.
 
 ```sparql
 # scope: BFO/
 # expect: no-rows
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#>
 
 SELECT ?class ?redundant_parent
 WHERE {
     ?class rdfs:subClassOf ?redundant_parent .
-    ?class skos:broadMatch ?redundant_parent .
+    ?class vn-core:hasBroaderConceptualMatch ?redundant_parent .
 }
 ```
 
 ## Part 3: Manual Review and Coverage Analysis
 
 1.  **Definition Review (Task 3.2):** Manually review the definitions for all classes within each cluster to ensure they are sufficiently distinct and avoid ambiguity. For example, check that the definitions for `EqualityDisposition` and `EquityDisposition` clearly articulate the difference.
-2.  **Axiom Review (Task 3.3):** Manually review the use of `rdfs:subClassOf` versus `skos:broadMatch`. As the ontology has grown, some initial decisions might need refinement. For example, is `folk:KindnessDisposition` truly a *subclass* of `vn-schwartz:BenevolenceDisposition`, or is it so close in meaning that a simple `skos:exactMatch` would be better?
+2.  **Axiom Review (Task 3.3):** Manually review the use of `rdfs:subClassOf` versus `vn-core:hasBroaderConceptualMatch`. Promote a mapping only when every instance of the source universal is an instance of the target universal. Do not infer equivalence from lexical closeness.
 3.  **Coverage Analysis:** Compare the set of all modeled classes in `valuenet-folk.ttl` against the `Primary Value Concepts` list in `Phase1_NormalizedTerms.md`. Identify any high-priority concepts that were missed during the modeling sprints and schedule them for a future iteration.

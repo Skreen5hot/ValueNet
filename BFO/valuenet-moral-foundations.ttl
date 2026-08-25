@@ -75,7 +75,7 @@
   a owl:AnnotationProperty ;
   rdfs:label "dyadic opposite of"@en ;
   skos:definition "Links a moral foundation to the violation that contravenes it, and vice versa, as documentation of the dyadic structure of Moral Foundations Theory."@en ;
-  skos:closeMatch <https://w3id.org/spice/SON/HaidtValues#opposedTo> ;
+  <https://fandaws.com/ontology/bfo/valuenet-core#historicallyCorrespondsTo> <https://w3id.org/spice/SON/HaidtValues#opposedTo> ;
   rdfs:comment "An annotation property, not an object property. Its arguments are classes, and relating two classes with an object property is OWL 2 punning; the logical content of the dyad is carried by the contravenes restriction on each violation class."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-foundations#dyadicOppositeOf> .
 

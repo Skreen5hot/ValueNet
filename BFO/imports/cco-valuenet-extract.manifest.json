@@ -1,0 +1,46 @@
+{
+  "closure_policy": {
+    "annotations": true,
+    "declarations": true,
+    "import_declarations": "omit-documented",
+    "logical_axioms": true,
+    "referenced_entities": "recursive"
+  },
+  "extract_id": "cco-valuenet-v2.2-2026-08-25-phase6",
+  "extract_sha256": "70add8bd654ede359575e1fdd3e1beac7b39fc09775d3c8474f8272e8896b421",
+  "generated_by": {
+    "script": "BFO/remediation/generate_cco_extract.py",
+    "version": "4"
+  },
+  "license": {
+    "attribution_required": true,
+    "spdx": "BSD-3-Clause",
+    "url": "https://github.com/CommonCoreOntology/CommonCoreOntologies/blob/v2.2/LICENSE"
+  },
+  "modifications": [
+    "Selected complete root-entity descriptions from the CCO 2.2 merged release.",
+    "Expanded the roots with the Phase 5 CCO superclass alignments for moral epistemics.",
+    "Expanded the roots with CCO Act of Observation for the Phase 6 behavioral-observation alignment.",
+    "Included inverse-property descriptions and recursive named CCO logical dependencies.",
+    "Included recursive blank-node OWL expression closure and referenced entity declarations.",
+    "Omitted upstream owl:imports; ValueNet supplies its pinned BFO core separately.",
+    "Canonicalized blank nodes and serialized as Turtle."
+  ],
+  "retrieved_on": "2026-08-24",
+  "root_terms": [
+    "https://www.commoncoreontologies.org/ont00000037",
+    "https://www.commoncoreontologies.org/ont00000253",
+    "https://www.commoncoreontologies.org/ont00000636",
+    "https://www.commoncoreontologies.org/ont00000853",
+    "https://www.commoncoreontologies.org/ont00000958",
+    "https://www.commoncoreontologies.org/ont00000965",
+    "https://www.commoncoreontologies.org/ont00001017",
+    "https://www.commoncoreontologies.org/ont00001921",
+    "https://www.commoncoreontologies.org/ont00001986"
+  ],
+  "source_artifact_url": "https://raw.githubusercontent.com/CommonCoreOntology/CommonCoreOntologies/v2.2/src/cco-merged/CommonCoreOntologiesMerged.ttl",
+  "source_commit": "0bc7d33e1bc09fd4693366119ab4e03cb0340042",
+  "source_project": "CCO",
+  "source_release": "v2.2",
+  "source_sha256": "f6d1f7008fb0589baa7ab898f9b236f87b04cab3c4c98fa4b367268ea0cc22d4"
+}

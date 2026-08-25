@@ -72,7 +72,8 @@ Here is how we would represent this sentence as RDF triples using the new framew
 # 5. Optionally record the frame the span evokes. This is the bridge to the
 #    existing MFTriggers data: the frame is the subject of vcvf:triggers
 #    statements whose objects are Haidt values, which the BFO-aligned
-#    dispositions reach by skos:broadMatch in valuenet-mappings.
+#    dispositions reach by the annotation-only
+#    vn-core:historicallyCorrespondsTo in valuenet-mappings.
 :textSpan1 vn-core:evokesFrame <https://w3id.org/framester/framenet/abox/frame/Reveal_secret> .
 ```
 

@@ -1,0 +1,287 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <https://www.commoncoreontologies.org/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dcterms:created a owl:AnnotationProperty .
+
+dcterms:license a owl:AnnotationProperty .
+
+dcterms:source a owl:AnnotationProperty .
+
+skos:altLabel a owl:AnnotationProperty .
+
+skos:definition a owl:AnnotationProperty .
+
+skos:example a owl:AnnotationProperty .
+
+skos:scopeNote a owl:AnnotationProperty .
+
+<https://fandaws.com/ontology/imports/cco-valuenet-extract> a owl:Ontology ;
+    dcterms:created "2026-08-25"^^xsd:date ;
+    dcterms:license <https://github.com/CommonCoreOntology/CommonCoreOntologies/blob/v2.2/LICENSE> ;
+    dcterms:source <https://github.com/CommonCoreOntology/CommonCoreOntologies/releases/tag/v2.2> ;
+    owl:versionIRI <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6> ;
+    owl:versionInfo "CCO 2.2 ValueNet extract, Phase 6 revision 2026-08-25"@en .
+
+ns1:ont00000037 a owl:Class ;
+    rdfs:label "Act of Observation"@en ;
+    rdfs:subClassOf ns1:ont00000228 ;
+    skos:definition "A Planned Act of acquiring information from a source via the use of one or more senses."@en ;
+    ns1:ont00001754 "https://en.wikipedia.org/w/index.php?title=Observation&oldid=1062502087"^^xsd:anyURI ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
+
+ns1:ont00000253 a owl:Class ;
+    rdfs:label "Information Bearing Entity"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000030> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000030> [ a owl:Restriction ;
+                        owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000101> ;
+                        owl:someValuesFrom ns1:ont00000958 ] ) ] ;
+    skos:altLabel "IBE"@en,
+        "Information Carrying Entity"@en ;
+    skos:definition "An Object upon which an Information Content Entity generically depends."@en ;
+    skos:scopeNote "This class continues to use the word ‘bearing’ in its rdfslabel because of potential confusion with the acronym ‘ICE’, which is widely used for information content entity."@en ;
+    ns1:ont00001754 "http://purl.obolibrary.org/obo/IAO_0000178"^^xsd:anyURI ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+ns1:ont00000636 a owl:Class ;
+    rdfs:label "Act of Appraisal"@en ;
+    rdfs:subClassOf ns1:ont00000345 ;
+    skos:definition "An Act of Measuring that involves evaluating, assessing, estimating, or judging the nature, value, importance, condition, or quality of something or someone."@en ;
+    skos:example "a food critic rating the quality of a restaurant's ambiance, service, and food",
+        "a mechanic assessing whether a damaged vehicle is repairable",
+        "an insurance agent appraising the financial value of a building" ;
+    skos:scopeNote "In the context of an Act of Appraisal, the terms 'value', 'condition', and 'quality' do not have the same meanings as their counterparts that are defined in the Common Core Ontologies. For example, a knife may be appraised to be of high quality if it is sharp and sturdy or to be of inferior quality if it is dull or fragile."@en,
+        "Note that, while most if not all Acts of Appraisal involve some estimating and many Acts of Estimation involve some appraising (i.e. these classes are not disjoint), neither class subsumes the other. For example, some Acts of Appraisal (e.g. a tax assessor appraising the value of a building) impart a normative element to the measured value while others (e.g. a gustatory appraisal that fresh green beans taste better than canned green beans) involve complete information. Furthermore, many Acts of Estimation (e.g. estimating the height of a tree) are concerned solely with determining a numerical value (as opposed to the nature, value, importance, condition, or quality)."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
+
+ns1:ont00001017 a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000040> [ a owl:Restriction ;
+                        owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000196> ;
+                        owl:someValuesFrom ns1:ont00001379 ] ) ] ;
+    skos:definition "A Material Entity that bears an Agent Capability."@en ;
+    ns1:ont00001754 "Schlosser, Markus, \"Agency\", The Stanford Encyclopedia of Philosophy (Winter 2019 Edition), Edward N. Zalta (ed.), available at: https://plato.stanford.edu/archives/win2019/entries/agency/"@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/AgentOntology"^^xsd:anyURI .
+
+ns1:ont00001754 a owl:AnnotationProperty .
+
+ns1:ont00001760 a owl:AnnotationProperty .
+
+ns1:ont00001816 a owl:ObjectProperty ;
+    rdfs:label "is output of"@en ;
+    rdfs:domain [ a owl:Class ;
+            owl:unionOf ( <http://purl.obolibrary.org/obo/BFO_0000020> <http://purl.obolibrary.org/obo/BFO_0000031> [ a owl:Class ;
+                        owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000004> [ a owl:Class ;
+                                    owl:complementOf <http://purl.obolibrary.org/obo/BFO_0000006> ] ) ] ) ] ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000056> ;
+    owl:inverseOf ns1:ont00001986 ;
+    skos:definition "x is output of y =Def x participates in y, x is an Independent Continuant (but not a Spatial Region), y is a Process, and the presence of x at the end of y is a necessary condition for the completion of y."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/ExtendedRelationOntology"^^xsd:anyURI .
+
+ns1:ont00001841 a owl:ObjectProperty ;
+    rdfs:label "is input of"@en ;
+    rdfs:domain [ a owl:Class ;
+            owl:unionOf ( <http://purl.obolibrary.org/obo/BFO_0000020> <http://purl.obolibrary.org/obo/BFO_0000031> [ a owl:Class ;
+                        owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000004> [ a owl:Class ;
+                                    owl:complementOf <http://purl.obolibrary.org/obo/BFO_0000006> ] ) ] ) ] ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000056> ;
+    owl:inverseOf ns1:ont00001921 ;
+    skos:definition "x is input of y =Def x participates in y, x is an Independent Continuant (but not a Spatial Region), y is a Process, and the presence of x at the beginning of y is a necessary condition for the start of y."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/ExtendedRelationOntology"^^xsd:anyURI .
+
+ns1:ont00001917 a owl:ObjectProperty ;
+    rdfs:label "described by"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:range ns1:ont00000853 ;
+    rdfs:subPropertyOf ns1:ont00001801 ;
+    owl:inverseOf ns1:ont00001982 ;
+    skos:definition "x described by y =Def y describes x."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+ns1:ont00001920 a owl:ObjectProperty ;
+    rdfs:label "prescribed by"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:range ns1:ont00000965 ;
+    rdfs:subPropertyOf ns1:ont00001801 ;
+    owl:inverseOf ns1:ont00001942 ;
+    skos:definition "x prescribed by y =Def y prescribes x."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+<http://purl.obolibrary.org/obo/BFO_0000016> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000017> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000023> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000055> a owl:ObjectProperty .
+
+<http://purl.obolibrary.org/obo/BFO_0000059> a owl:ObjectProperty .
+
+<http://purl.obolibrary.org/obo/BFO_0000101> a owl:ObjectProperty .
+
+<http://purl.obolibrary.org/obo/BFO_0000196> a owl:ObjectProperty .
+
+ns1:ont00000345 a owl:Class ;
+    rdfs:label "Act of Measuring"@en ;
+    rdfs:subClassOf ns1:ont00000228 ;
+    skos:definition "A Planned Act that involves determining the extent, dimensions, quanity, or quality of an Entity relative to some standard."@en ;
+    skos:example "putting an object on a scale to measure its weight in kilograms",
+        "rating Hollywood movies on a 1 to 5 star scale",
+        "using a tape measure to determine the height and width of a doorway in inches" ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
+
+ns1:ont00001379 a owl:Class ;
+    rdfs:label "Agent Capability"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000017> ;
+    skos:definition "A Realizable Entity that inheres in a Material Entity in virtue of that Material Entity's capacity to realize it in some Planned Act."@en ;
+    ns1:ont00001754 "Schlosser, Markus, \"Agency\", The Stanford Encyclopedia of Philosophy (Winter 2019 Edition), Edward N. Zalta (ed.), available at: https://plato.stanford.edu/archives/win2019/entries/agency/"@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/AgentOntology"^^xsd:anyURI .
+
+ns1:ont00001921 a owl:ObjectProperty ;
+    rdfs:label "has input"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    rdfs:range [ a owl:Class ;
+            owl:unionOf ( <http://purl.obolibrary.org/obo/BFO_0000020> <http://purl.obolibrary.org/obo/BFO_0000031> [ a owl:Class ;
+                        owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000004> [ a owl:Class ;
+                                    owl:complementOf <http://purl.obolibrary.org/obo/BFO_0000006> ] ) ] ) ] ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000057> ;
+    skos:definition "x has input y =Def y is input of x."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/ExtendedRelationOntology"^^xsd:anyURI .
+
+ns1:ont00001986 a owl:ObjectProperty ;
+    rdfs:label "has output"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    rdfs:range [ a owl:Class ;
+            owl:unionOf ( <http://purl.obolibrary.org/obo/BFO_0000020> <http://purl.obolibrary.org/obo/BFO_0000031> [ a owl:Class ;
+                        owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000004> [ a owl:Class ;
+                                    owl:complementOf <http://purl.obolibrary.org/obo/BFO_0000006> ] ) ] ) ] ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000057> ;
+    skos:definition "x has output y =Def y is output of x."@en ;
+    ns1:ont00001754 "https://en.wikipedia.org/w/index.php?title=IPO_model&oldid=1024398398"^^xsd:anyURI ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/ExtendedRelationOntology"^^xsd:anyURI .
+
+<http://purl.obolibrary.org/obo/BFO_0000030> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000040> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000056> a owl:ObjectProperty .
+
+<http://purl.obolibrary.org/obo/BFO_0000057> a owl:ObjectProperty .
+
+ns1:ont00000005 a owl:Class ;
+    rdfs:label "Act"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    skos:definition "A Process in which at least one Agent plays a causative role."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
+
+ns1:ont00000228 a owl:Class ;
+    rdfs:label "Planned Act"@en ;
+    rdfs:subClassOf ns1:ont00000005 ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:ont00000005 [ a owl:Restriction ;
+                        owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ;
+                        owl:someValuesFrom [ a owl:Class ;
+                                owl:intersectionOf ( [ a owl:Class ;
+                                            owl:unionOf ( <http://purl.obolibrary.org/obo/BFO_0000016> <http://purl.obolibrary.org/obo/BFO_0000023> ) ] [ a owl:Restriction ;
+                                            owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000059> ;
+                                            owl:someValuesFrom ns1:ont00000965 ] ) ] ] ) ] ;
+    skos:altLabel "Intentional Act"@en ;
+    skos:definition "An Act in which at least one Agent plays a causative role and which is prescribed by some Directive Information Content Entity held by at least one of the Agents."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
+
+ns1:ont00000853 a owl:Class ;
+    rdfs:label "Descriptive Information Content Entity"@en ;
+    rdfs:subClassOf ns1:ont00000958 ;
+    owl:disjointWith ns1:ont00000965 ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:ont00000958 [ a owl:Restriction ;
+                        owl:onProperty ns1:ont00001982 ;
+                        owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000001> ] ) ] ;
+    skos:altLabel "Descriptive ICE"@en ;
+    skos:definition "An Information Content Entity that describes some Entity."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+ns1:ont00001801 a owl:ObjectProperty ;
+    rdfs:label "is subject of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:range ns1:ont00000958 ;
+    owl:inverseOf ns1:ont00001808 ;
+    skos:definition "x is subject of y =Def y is about x."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+ns1:ont00001942 a owl:ObjectProperty ;
+    rdfs:label "prescribes"@en ;
+    rdfs:domain ns1:ont00000965 ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:subPropertyOf ns1:ont00001808 ;
+    skos:definition "x prescribes y iff x is an instance of Information Content Entity and y is an instance of Entity, such that x serves as a rule or guide for y if y an Occurrent, or x serves as a model for y if y is a Continuant."@en ;
+    skos:example "A blueprint prescribes some artifact or facility by being a model for it.",
+        "A professional code of conduct prescribes some realizations of a profession (role) by giving rules for how the bearer should act in those realizations.",
+        "An operations plan prescribes an operation by enumerating the tasks that need to be performed in order to achieve the objectives of the operation." ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+ns1:ont00001982 a owl:ObjectProperty ;
+    rdfs:label "describes"@en ;
+    rdfs:domain ns1:ont00000853 ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:subPropertyOf ns1:ont00001808 ;
+    skos:definition "x describes y iff x is an instance of Descriptive Information Content Entity, and y is an instance of Entity, such that x is_about the characteristics that identify y."@en ;
+    skos:example "the content of a newspaper article describes some current event",
+        "the content of a visitor's log describes some facility visit",
+        "the content of an accident report describes some accident" ;
+    skos:scopeNote "It is possible that this relation should be a functional property, that is for all x, y, z if x describes y and x describes z then y = z. For example, if a financial report x describes the quarterly results of a company y and that same financial report describes the quarterly results of a company z, then it should be inferred that companies y and z are the same. We refrained from classifying the relation as a functional property on the concern that descriptions are multifaceted and so consequently it may be that the same report would contain descriptions of multiple entities."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+<http://purl.obolibrary.org/obo/BFO_0000004> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000006> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000020> a owl:Class .
+
+ns1:ont00000965 a owl:Class ;
+    rdfs:label "Prescriptive Information Content Entity"@en ;
+    rdfs:subClassOf ns1:ont00000958 ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:ont00000958 [ a owl:Restriction ;
+                        owl:onProperty ns1:ont00001942 ;
+                        owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000001> ] ) ] ;
+    skos:altLabel "Directive ICE"@en ;
+    skos:definition "An Information Content Entity that prescribes some Entity."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+ns1:ont00001808 a owl:ObjectProperty ;
+    rdfs:label "is about"@en ;
+    rdfs:domain ns1:ont00000958 ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    skos:definition "x is_about y is a primitive relationship between an instance of Information Content Entity x and an instance of Entity y."@en ;
+    ns1:ont00001754 "http://purl.obolibrary.org/obo/IAO_0000136" ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+<http://purl.obolibrary.org/obo/BFO_0000015> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000031> a owl:Class .
+
+ns1:ont00000958 a owl:Class ;
+    rdfs:label "Information Content Entity"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( <http://purl.obolibrary.org/obo/BFO_0000031> [ a owl:Restriction ;
+                        owl:onProperty ns1:ont00001808 ;
+                        owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000001> ] ) ] ;
+    skos:altLabel "ICE"@en ;
+    skos:definition "A Generically Dependent Continuant that generically depends on some Information Bearing Entity and stands in relation of aboutness to some Entity."@en ;
+    skos:scopeNote "Information Content Entity is here intended to be a class of Entities whose instances are the informational content of Information Bearing Entities. For example, three instances of information bearers -- such as a bar chart, color-coded map, and a written report -- each of which lists the GDP of Countries for the year 2010 are each different carriers of the same information content. It is this content that is generically dependent upon its carrier. This treatment of Informational Content Entity (cf. the Information Artifact Ontology) leads to a principle of subtyping based upon the relationship that ICE's have with the Entity they are about rather than characteristics such as format, language, measurement scale, or media. The latter are treated here as being Qualities of bearers."@en ;
+    ns1:ont00001754 "http://purl.obolibrary.org/obo/IAO_0000030" ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+<http://purl.obolibrary.org/obo/BFO_0000001> a owl:Class .
+

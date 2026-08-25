@@ -176,6 +176,28 @@ NAME_PREFIXES: list[tuple[str, str]] = [
 ]
 
 
+#: Migration waves. Steps 7 through 11 each move exactly one, and the waves must
+#: partition the MOVE rows: no row omitted, no row in two waves. Derived from
+#: the destination rather than stored by hand, so a new destination cannot
+#: silently land outside every wave.
+WAVE_RULES: list[tuple[tuple[str, ...], str]] = [
+    (("ontology/bfo/", "tools/bfo/", "docs/bfo/"), "bfo"),
+    (("docs/marep/", "tools/marep/", "examples/marep/"), "marep"),
+    (("tools/original-valuenet/",), "original-valuenet"),
+    (("docs/architecture/",), "architecture"),
+    (("tests/",), "tests"),
+]
+
+
+def wave_of(destination: str) -> str | None:
+    if destination in ("RETAIN", "UNASSIGNED"):
+        return None
+    for prefixes, name in WAVE_RULES:
+        if destination.startswith(prefixes):
+            return name
+    return "UNASSIGNED-WAVE"
+
+
 def destination(path: str, origin: str) -> str:
     if origin == "upstream-valuenet":
         return "RETAIN"
@@ -257,16 +279,26 @@ def main(argv=None) -> int:
             "path": path, "origin": origin, "maintenance": maintenance,
             "generated_from": GENERATED.get(path),
             "destination": destination(path, origin),
+            "wave": wave_of(destination(path, origin)),
         })
 
     unassigned = [r["path"] for r in rows if r["destination"] == "UNASSIGNED"]
     problems = validate(rows)
+    # The waves must partition the moves. A destination outside every wave
+    # would be moved by no step, which the plan forbids.
+    problems += [f"{r['path']}: destination {r['destination']} belongs to no "
+                 f"migration wave" for r in rows if r["wave"] == "UNASSIGNED-WAVE"]
     moves = sum(1 for r in rows if r["destination"] not in ("RETAIN", "UNASSIGNED"))
 
     print(f"  {len(rows)} tracked files")
     print(f"    {sum(1 for r in rows if r['destination'] == 'RETAIN'):>4}  RETAIN")
     print(f"    {moves:>4}  MOVE")
     print(f"    {len(unassigned):>4}  UNASSIGNED")
+    waves = {}
+    for r in rows:
+        if r["wave"] and r["wave"] != "UNASSIGNED-WAVE":
+            waves[r["wave"]] = waves.get(r["wave"], 0) + 1
+    print("  waves: " + ", ".join(f"{k} {v}" for k, v in sorted(waves.items())))
 
     if unassigned:
         print("\n  UNASSIGNED — refusing to write:")

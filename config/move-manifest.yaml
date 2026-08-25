@@ -4,1603 +4,1924 @@ components:
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: BFO/BFO_ALIGNMENT_REMEDIATION_PLAN.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/BFO_ALIGNMENT_REMEDIATION_PLAN.md
+  wave: bfo
 - path: BFO/BFOizing ValueNet.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/BFOizing ValueNet.md
+  wave: bfo
 - path: BFO/Phase1_NormalizedTerms.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/Phase1_NormalizedTerms.md
+  wave: bfo
 - path: BFO/Phase1_RawTerms.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/Phase1_RawTerms.md
+  wave: bfo
 - path: BFO/Phase4_LinguisticGrounding.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/Phase4_LinguisticGrounding.md
+  wave: bfo
 - path: BFO/RefactorPlan.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/RefactorPlan.md
+  wave: bfo
 - path: BFO/TestingFramework.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/TestingFramework.md
+  wave: bfo
 - path: BFO/annotationGuide.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/annotationGuide.md
+  wave: bfo
 - path: BFO/bfo-core.ttl
   origin: external-bfo
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/vendor/bfo/bfo-core.ttl
+  wave: bfo
 - path: BFO/imports/cco-valuenet-extract.manifest.json
   origin: external-cco
   maintenance: generated
   generated_from: tool:generate-cco-extract
   destination: ontology/bfo/vendor/cco/cco-valuenet-extract.manifest.json
+  wave: bfo
 - path: BFO/imports/cco-valuenet-extract.ttl
   origin: external-cco
   maintenance: generated
   generated_from: tool:generate-cco-extract
   destination: ontology/bfo/vendor/cco/cco-valuenet-extract.ttl
+  wave: bfo
 - path: BFO/remediation/BASELINE_2026-08-24.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/BASELINE_2026-08-24.md
+  wave: bfo
 - path: BFO/remediation/DECISION_RECORDS.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/DECISION_RECORDS.md
+  wave: bfo
 - path: BFO/remediation/EXTERNAL_TERM_INVENTORY.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/EXTERNAL_TERM_INVENTORY.md
+  wave: bfo
 - path: BFO/remediation/PHASE1_EXIT_REVIEW.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE1_EXIT_REVIEW.md
+  wave: bfo
 - path: BFO/remediation/PHASE2_DESIGN.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE2_DESIGN.md
+  wave: bfo
 - path: BFO/remediation/PHASE2_EXIT_REVIEW.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE2_EXIT_REVIEW.md
+  wave: bfo
 - path: BFO/remediation/PHASE3_DESIGN.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE3_DESIGN.md
+  wave: bfo
 - path: BFO/remediation/PHASE3_EXIT_REVIEW.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE3_EXIT_REVIEW.md
+  wave: bfo
 - path: BFO/remediation/PHASE4_DEFINITION_AUDIT.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE4_DEFINITION_AUDIT.md
+  wave: bfo
 - path: BFO/remediation/PHASE4_EXIT_REVIEW.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE4_EXIT_REVIEW.md
+  wave: bfo
 - path: BFO/remediation/PHASE5_EXIT_REVIEW.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE5_EXIT_REVIEW.md
+  wave: bfo
 - path: BFO/remediation/PHASE5_MAPPING_AUDIT.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE5_MAPPING_AUDIT.md
+  wave: bfo
 - path: BFO/remediation/PHASE6_CATEGORY_AUDIT.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE6_CATEGORY_AUDIT.md
+  wave: bfo
 - path: BFO/remediation/PHASE6_EXIT_REVIEW.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/PHASE6_EXIT_REVIEW.md
+  wave: bfo
 - path: BFO/remediation/SOURCE_SELECTION.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/remediation/SOURCE_SELECTION.md
+  wave: bfo
 - path: BFO/remediation/check_bfo_consistency.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/bfo/check_bfo_consistency.py
+  wave: bfo
 - path: BFO/remediation/extract-manifest.schema.json
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/bfo/extract-manifest.schema.json
+  wave: bfo
 - path: BFO/remediation/generate_cco_extract.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/bfo/generate_cco_extract.py
+  wave: bfo
 - path: BFO/valuenet-core-shapes.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/shapes/valuenet-core-shapes.ttl
+  wave: bfo
 - path: BFO/valuenet-core.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/core/valuenet-core.ttl
+  wave: bfo
 - path: BFO/valuenet-folk.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/core/valuenet-folk.ttl
+  wave: bfo
 - path: BFO/valuenet-mappings.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/core/valuenet-mappings.ttl
+  wave: bfo
 - path: BFO/valuenet-moral-epistemics-CQ.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md
+  wave: bfo
 - path: BFO/valuenet-moral-epistemics-scenario.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl
+  wave: bfo
 - path: BFO/valuenet-moral-epistemics-shapes.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl
+  wave: bfo
 - path: BFO/valuenet-moral-epistemics.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl
+  wave: bfo
 - path: BFO/valuenet-moral-foundations.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl
+  wave: bfo
 - path: BFO/valuenet-schwartz-values.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/core/valuenet-schwartz-values.ttl
+  wave: bfo
 - path: BFO/vcvf-triggers-review.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/bfo/guides/vcvf-triggers-review.md
+  wave: bfo
 - path: BFO/vcvf-triggers-semantics.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl
+  wave: bfo
 - path: BFO/vcvf-triggers-shapes.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: ontology/bfo/shapes/vcvf-triggers-shapes.ttl
+  wave: bfo
 - path: MAREP_IMPLEMENTATION_PLAN.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/plans/MAREP_IMPLEMENTATION_PLAN.md
+  wave: marep
 - path: MAREP_RUN1_FINDINGS.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/runs/MAREP_RUN1_FINDINGS.md
+  wave: marep
 - path: MAREP_RUN1_RECONCILIATION.yaml
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/runs/MAREP_RUN1_RECONCILIATION.yaml
+  wave: marep
 - path: MAREP_RUN2_FINDINGS.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/runs/MAREP_RUN2_FINDINGS.md
+  wave: marep
 - path: MAREP_RUN3_FINDINGS.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/runs/MAREP_RUN3_FINDINGS.md
+  wave: marep
 - path: MAREP_RUN3_HYPOTHESES.yaml
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/runs/MAREP_RUN3_HYPOTHESES.yaml
+  wave: marep
 - path: MAREP_RUN3_RECONCILIATION.yaml
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/runs/MAREP_RUN3_RECONCILIATION.yaml
+  wave: marep
 - path: MAREP_VALUENET_PLAN.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/plans/MAREP_VALUENET_PLAN.md
+  wave: marep
 - path: MAREP_v2.1.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/specifications/MAREP_v2.1.md
+  wave: marep
 - path: MAREP_v2.2.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/marep/specifications/MAREP_v2.2.md
+  wave: marep
 - path: MFTriggers/ClosureHaidtValueFrames.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/README.md
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/authority_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/betrayal_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/care_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/cheating_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/degradation_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/haidt_fairness_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/harm_frame.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/liberty_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/loyalty_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/oppression_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/sanctity_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MFTriggers/subversion_frame.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: MoralMolecules/curry_no_combinations_updated.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: README.md
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: REPO_REORGANIZATION_PLAN.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: docs/architecture/REPO_REORGANIZATION_PLAN.md
+  wave: architecture
 - path: ThatsAllFolks/MFRC_1k_ESWC.zip
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/README.md
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/URLs.txt
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/eswc_thin_folk.png
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Accomplishment.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Accuracy.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Adventure.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Alertness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Amusement.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Analysis.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Anticipation.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Approachability.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Assertion.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Association.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Authenticity.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_BadHealth.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Beauty.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Brilliance.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Capable.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Certainty.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Challenge.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Clarity.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Collaboration.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Comfort.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Community.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Competition.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Compliance.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Composure.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Concentration.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Congruence.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Consciousness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Consent.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Consideration.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Control.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Courage.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Decision_making.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Development.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Distinctiveness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Doing_good.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Dutiful.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Earning_trust.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Economy.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Education.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Effectiveness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Efficiency.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Empowerment.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Endurance.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Evolution.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Excellence.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Experience.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Faith.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Family.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Famous.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Feasibility.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Ferocious.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Financial_stability.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Fitness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Friendship.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Fun.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Genius.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Giving.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Grace.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Greatness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Happyness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Helping.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Honor.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Humor.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Impartial.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Improvement.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Improvisation.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Inclusiveness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Independence.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Inner_peace.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Intelligence.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Intensity.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Intuitive.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Involvement.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Irreverent.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Isolation.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Knowledge.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Leadership.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Learning.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_LifeIsMeaningless.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Lively.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Logic.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Longevity.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Management.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Maturity.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Meaning.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Morality.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Novelty.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Objectivity.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Optimism.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_OtherPeopleCannotBeTrusted.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Partnership.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Patriotism.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Performance.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Perseverance.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Philanthropy.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Potential.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Preparedness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Presence.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Prosperity.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Punctuality.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Quality.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Receptiveness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Recognition.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Relaxation.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Religion.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Resilience.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Respect.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Responsiveness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Rest.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Rigor.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Risk.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Satisfaction.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Silence.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Smart.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Solitude.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Strength.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Structure.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Surprise.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Sustainability.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Understanding.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Versatility.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Victory.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Vision.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Welcoming.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Willingness.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Workmanship.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_Zeal.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/folk_github.png
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/quokka_folk.png
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ThatsAllFolks/taf.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ValueCore.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ValueNet_code/add_folk_religion.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/add_folk_religion.py
+  wave: original-valuenet
 - path: ValueNet_code/build_move_manifest.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/marep/build_move_manifest.py
+  wave: marep
 - path: ValueNet_code/declare_folk_value.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/declare_folk_value.py
+  wave: original-valuenet
 - path: ValueNet_code/diagnose_folk_fragments.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/diagnose_folk_fragments.py
+  wave: original-valuenet
 - path: ValueNet_code/generate_folk_aligned.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/generate_folk_aligned.py
+  wave: original-valuenet
 - path: ValueNet_code/is_v_emo_overlaps.py
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ValueNet_code/repair_folk_fragments.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/repair_folk_fragments.py
+  wave: original-valuenet
 - path: ValueNet_code/report_run.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/marep/report_run.py
+  wave: marep
 - path: ValueNet_code/retarget_bad_trigger_objects.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/retarget_bad_trigger_objects.py
+  wave: original-valuenet
 - path: ValueNet_code/settle_trigger_targets.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/settle_trigger_targets.py
+  wave: original-valuenet
 - path: ValueNet_import_schema_def.png
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: ValueNet_stats.txt
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: bhv.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: bhvtriggers.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: config/move-manifest.yaml
   origin: fork
   maintenance: generated
   generated_from: tool:build-move-manifest
   destination: RETAIN
+  wave: null
 - path: config/path-sensitive-inventory.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: examples/adjudicated.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/adjudicated.py
+  wave: marep
 - path: examples/full_retrospective.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/full_retrospective.py
+  wave: marep
 - path: examples/live_adjudication.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/live_adjudication.py
+  wave: marep
 - path: examples/real_sprint.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/real_sprint.py
+  wave: marep
 - path: examples/run1_audit.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/run1_audit.py
+  wave: marep
 - path: examples/run2_constraints.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/run2_constraints.py
+  wave: marep
 - path: examples/run3_commitments.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/run3_commitments.py
+  wave: marep
 - path: examples/walkthrough.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: examples/marep/walkthrough.py
+  wave: marep
 - path: folk_aligned.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: tool:generate-folk-aligned
   destination: RETAIN
+  wave: null
 - path: marep/README.md
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/__init__.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/__main__.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/adjudicator.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/agents.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/anthropic_agents.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/anthropic_backend.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/authz.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/checks.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/cli.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/commitments.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/competency.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/errors.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/ingest.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/ontology_source.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/phases.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/runtime.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/schemas/retro_state.schema.json
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/schemas/sprint_input.schema.json
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/state.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/substrate.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/tokens.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/transitions.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: marep/validate.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: mft.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: pytest.ini
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: slavery_valuenet_example.png
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: tests/conftest.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/conftest.py
+  wave: tests
 - path: tests/test_adjudicator.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/test_adjudicator.py
+  wave: tests
 - path: tests/test_agents.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/test_agents.py
+  wave: tests
 - path: tests/test_bfo_alignment_remediation.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/bfo/test_bfo_alignment_remediation.py
+  wave: tests
 - path: tests/test_bfo_cco_extract.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/bfo/test_bfo_cco_extract.py
+  wave: tests
 - path: tests/test_bfo_core_definitions.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/bfo/test_bfo_core_definitions.py
+  wave: tests
 - path: tests/test_bfo_external_closure.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/bfo/test_bfo_external_closure.py
+  wave: tests
 - path: tests/test_bfo_mapping_semantics.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/bfo/test_bfo_mapping_semantics.py
+  wave: tests
 - path: tests/test_bfo_moral_epistemics_categories.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/bfo/test_bfo_moral_epistemics_categories.py
+  wave: tests
 - path: tests/test_commitments.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/ontology/test_commitments.py
+  wave: tests
 - path: tests/test_competency_questions.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/integration/test_competency_questions.py
+  wave: tests
 - path: tests/test_constraint_metrics.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/ontology/test_constraint_metrics.py
+  wave: tests
 - path: tests/test_duplication_metrics.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/ontology/test_duplication_metrics.py
+  wave: tests
 - path: tests/test_folk_generation.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/original-valuenet/test_folk_generation.py
+  wave: tests
 - path: tests/test_grounding_strength.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/test_grounding_strength.py
+  wave: tests
 - path: tests/test_ingest.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/test_ingest.py
+  wave: tests
 - path: tests/test_ontology_artifacts.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/original-valuenet/test_ontology_artifacts.py
+  wave: tests
 - path: tests/test_ontology_source.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/ontology/test_ontology_source.py
+  wave: tests
 - path: tests/test_reasoner_scope.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/ontology/test_reasoner_scope.py
+  wave: tests
 - path: tests/test_resume.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/test_resume.py
+  wave: tests
 - path: tests/test_runtime.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/test_runtime.py
+  wave: tests
 - path: tests/test_trigger_shapes.py
   origin: fork
   maintenance: unchanged
   generated_from: null
   destination: tests/original-valuenet/test_trigger_shapes.py
+  wave: tests
 - path: vale2024/.DS_Store
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/Achievement.png
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/Benevolence.png
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/.DS_Store
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp1/baseline_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp1/baseline_sandra.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp1/baseline_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp1/sandra_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp1/sandra_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp2/.DS_Store
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp2/baseline_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp2/baseline_sandra.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp2/baseline_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp2/sandra_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp2/sandra_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp3/.DS_Store
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp3/baseline_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp3/baseline_sandra.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp3/baseline_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp3/sandra_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp3/sandra_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp4/baseline_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp4/baseline_sandra.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp4/baseline_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp4/sandra_llm.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/experiments/exp4/sandra_tfidf.csv
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/ontologies/.DS_Store
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/ontologies/ontology-llm-roles2-free.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/ontologies/ontology-llm-roles2.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/ontologies/ontology-specialised.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/ontologies/ontology.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/ontologies/ontology_threshold50.ttl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/synthetic-dataset/achievement_1k.jsonl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/synthetic-dataset/benevolence_1k.jsonl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/synthetic-dataset/conformity_1k.jsonl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/synthetic-dataset/power_1k.jsonl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/synthetic-dataset/security_1k.jsonl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/synthetic-dataset/tradition_1k.jsonl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: vale2024/synthetic-dataset/universalism_1k.jsonl
   origin: upstream-valuenet
   maintenance: unchanged
   generated_from: null
   destination: RETAIN
+  wave: null
 - path: wvs.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+  wave: null

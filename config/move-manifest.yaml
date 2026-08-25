@@ -1557,8 +1557,8 @@ components:
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: tests/conftest.py
-  wave: tests
+  destination: RETAIN
+  wave: null
 - path: tests/test_adjudicator.py
   origin: fork
   maintenance: unchanged

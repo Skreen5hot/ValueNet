@@ -185,17 +185,28 @@ WAVE_RULES: list[tuple[tuple[str, ...], str]] = [
     (("docs/marep/", "tools/marep/", "examples/marep/"), "marep"),
     (("tools/original-valuenet/",), "original-valuenet"),
     (("docs/architecture/",), "architecture"),
-    (("tests/",), "tests"),
+    # The four approved test destinations, not a bare "tests/" prefix. The
+    # broad form admitted any subgroup somebody invented later, which is the
+    # opposite of a partition the plan can rely on.
+    (("tests/marep/", "tests/bfo/", "tests/original-valuenet/",
+      "tests/integration/"), "tests"),
 ]
 
 
 def wave_of(destination: str) -> str | None:
+    """Exactly one wave, or a named failure.
+
+    Returning the first match could not detect a destination covered by two
+    rules, so an overlap introduced later would be silently resolved by rule
+    order rather than reported.
+    """
     if destination in ("RETAIN", "UNASSIGNED"):
         return None
-    for prefixes, name in WAVE_RULES:
-        if destination.startswith(prefixes):
-            return name
-    return "UNASSIGNED-WAVE"
+    hits = [name for prefixes, name in WAVE_RULES
+            if destination.startswith(prefixes)]
+    if len(hits) == 1:
+        return hits[0]
+    return "MULTIPLE-WAVES" if hits else "UNASSIGNED-WAVE"
 
 
 def destination(path: str, origin: str) -> str:
@@ -208,7 +219,11 @@ def destination(path: str, origin: str) -> str:
     if path.startswith("tests/"):
         name = posixpath.basename(path)
         if name == "conftest.py":
-            return "tests/conftest.py"
+            # RETAIN, not a same-path move. Returning its unchanged path made
+            # it a MOVE row in the tests wave, which breaks the transition
+            # validator: that rule requires exactly one of source or
+            # destination to be tracked, and here they are the same file.
+            return "RETAIN"
         group = TEST_GROUPS.get(name)
         return f"tests/{group}/{name}" if group else "UNASSIGNED"
     if path.startswith("marep/"):
@@ -240,6 +255,9 @@ def validate(rows: list[dict]) -> list[str]:
             problems.append(f"{p}: extension changed ({d})")
         elif base != posixpath.basename(p):
             problems.append(f"{p}: undeclared rename to {base}")
+        if d == p:
+            problems.append(f"{p}: destination equals source; a same-path row "
+                            f"is not a move and must be RETAIN")
         if posixpath.isabs(d) or ".." in d.split("/"):
             problems.append(f"{p}: unsafe destination ({d})")
         if d in seen:
@@ -288,6 +306,9 @@ def main(argv=None) -> int:
     # would be moved by no step, which the plan forbids.
     problems += [f"{r['path']}: destination {r['destination']} belongs to no "
                  f"migration wave" for r in rows if r["wave"] == "UNASSIGNED-WAVE"]
+    problems += [f"{r['path']}: destination {r['destination']} matches more "
+                 f"than one migration wave" for r in rows
+                 if r["wave"] == "MULTIPLE-WAVES"]
     moves = sum(1 for r in rows if r["destination"] not in ("RETAIN", "UNASSIGNED"))
 
     print(f"  {len(rows)} tracked files")

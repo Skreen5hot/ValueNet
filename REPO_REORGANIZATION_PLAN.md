@@ -1,12 +1,36 @@
 # Repository reorganization — plan for approval
 
-**Status:** revision 4, proposed. Nothing has moved. No semantic ontology change
-is in scope.
+**Status:** revision 5, final sign-off candidate; conferral correction
+incorporated. Nothing has moved. No semantic ontology change is in scope.
 
-Revision 3 was **conceptually approved** but not ready to execute: the manifest
-builder committed alongside it had four execution defects. All four are fixed
-and verified here. Every factual correction in both reviews was independently
-checked against the repository before adoption.
+Revision 4 corrected the manifest builder and closed the known mapping defects.
+Revision 5 closes the remaining execution-control gaps: it distinguishes the
+current planning snapshot from the frozen pre-move baseline, defines the
+manifest's lifecycle, makes validation transition-aware, and replaces the stale
+fixed test-count invariant with a two-baseline rule. Every factual correction in
+the prior reviews was independently checked against the repository before
+adoption.
+
+---
+
+## Decision summary
+
+This is a **hybrid physical reorganization**:
+
+- Original ValueNet material whose origin is `upstream-valuenet` stays at its
+  upstream-compatible path, including locally repaired ontologies and unchanged
+  documentation assets.
+- Fork-authored Original ValueNet repair and generation utilities move to
+  `tools/original-valuenet/`; this does not move their upstream-derived inputs.
+- Fork-authored BFO ValueNet, moral-extension, shape, vendor, tool and
+  remediation artifacts move under `ontology/bfo/`, `tools/bfo/` and
+  `docs/bfo/`.
+- The MAREP implementation remains under `marep/`; its documents, tools and
+  examples move under `docs/marep/`, `tools/marep/` and `examples/marep/`.
+- Tests move into BFO, MAREP, Original ValueNet and integration ownership
+  groups only after shared support and repository paths are normalized.
+
+The reorganization changes layout and path metadata, not ontology meaning.
 
 ---
 
@@ -28,7 +52,47 @@ numbers with no stated definition, and revision 2 put one into a plan as an
 
 ---
 
-## What changed in revision 4
+## What changed in revision 5
+
+Five controls are now explicit and are approval conditions rather than implied
+implementation details:
+
+1. **320 / 228 / 92 is the current builder snapshot, not the final move
+   invariant.** One of those 92 rows is the no-op
+   `tests/conftest.py → tests/conftest.py`; step 2 reclassifies it as `RETAIN`
+   and adds a validator rule forbidding identical source and destination paths.
+   Preparatory commits then add the layout contract, baseline and contract
+   tests, so the working manifest is regenerated after each preparatory commit
+   through step 6.
+2. **The manifest is frozen exactly once.** After step 6 passes, the generated
+   manifest and machine-readable baseline are committed and that commit is
+   tagged `reorg-pre-move-v1`; the gate logs the tag's resolved full commit id.
+   They are inputs to the move steps and are not reclassified from the partially
+   moved tree.
+3. **Validation understands partial migration.** For every frozen `MOVE` entry,
+   exactly one of source or destination must be tracked; for every `RETAIN`
+   entry, the original path must remain tracked. Every tracked file must be
+   represented, and destinations must remain unique and safe.
+4. **Test counts use two baselines.** The independently verified original suite
+   remains 539 collected / 534 selected / 5 deselected. After support
+   normalization, contract-test additions and the `test_ontology_source.py`
+   split, step 6 freezes a new pre-move collection count and normalized test-id
+   set. Every physical move must preserve that frozen set.
+5. **No stale final file count is asserted early.** The target tree records the
+   manifest as generated and frozen after step 6; its final count is whatever
+   the clean pre-move tracked tree contains at that gate.
+
+These controls resolve the final review findings without changing the hybrid
+layout decision or the move classification.
+
+**Sign-off correction:** `tests/` remains a non-package. Step 5 adds only
+`tests/_support.py` and imports it as `from _support import …`. It does not add
+`tests/__init__.py`, because doing so changes collection semantics and makes the
+existing top-level `conftest` imports fail before their replacement.
+
+---
+
+## Revision 4 foundation retained
 
 ### A generated manifest replaces the hand-written destination list
 
@@ -42,7 +106,11 @@ Coverage: **320 tracked files, 0 unassigned, 0 malformed.**
 | disposition | files |
 |---|---:|
 | RETAIN — upstream-derived, path-sensitive config, `marep/` | 228 |
-| MOVE | 92 |
+| destination rows currently reported as MOVE | 92 |
+
+One of the 92 is `tests/conftest.py → tests/conftest.py`. Revision 5's step-2
+validator treats that as a malformed no-op and reclassifies it as `RETAIN`
+before assigning waves.
 
 Revision 3 reported 318 and 0 unassigned. Both were wrong: it read
 `git ls-tree HEAD`, which misses staged additions, so the builder omitted
@@ -72,6 +140,10 @@ separate rule sets.
 | `tests/original-valuenet/` | 3 |
 | `tests/integration/` | 1 |
 | `tests/conftest.py` | 1 |
+
+That table is the 22-module planning snapshot. Before the freeze, the
+ontology-source split and three contract modules replace it with a larger exact
+mapping; the builder must reject any new test without a declared destination.
 
 ### Two-axis provenance
 
@@ -112,13 +184,13 @@ stay. They are indexed from the new documentation rather than relocated.
 
 ### Semantic baseline: digests, not counts
 
-Counts cannot distinguish two graphs of equal size. The baseline records
+Counts cannot distinguish two graphs of equal size. The step 3 baseline records
 canonical RDF digests via `rdflib.compare.to_canonical_graph` over sorted
 N-Triples, with each metric's definition and the command that produced it.
 
 The load-bearing case: `ThatsAllFolks/folk.ttl` and `folk_aligned.ttl` have
 **identical canonical digests** while their byte hashes differ. The full digest,
-stored in the machine-readable baseline rather than abbreviated, is
+to be stored in the machine-readable baseline rather than abbreviated, is
 `850e9340b81ecd324b0935abe5b0ff2913e1db8b7f963b712900068e57277289`. `folk_aligned.ttl`'s byte hash is
 `047db3158bbf58b2e7848fe5bdea5eb34f5252b177a1ee9c01608514a2b5b525` and **must
 change** when the generator moves, because the file header embeds the
@@ -180,7 +252,8 @@ ontology/
       cco/                  cco-valuenet-extract + manifest
 
 docs/
-  architecture/             this plan, layout contract, provenance index
+  architecture/             this plan, layout/provenance index and execution
+                            guidance
   original-valuenet/        index of the retained legacy corpus (assets stay put)
   bfo/
     guides/                 annotationGuide, Phase4_LinguisticGrounding,
@@ -208,18 +281,22 @@ tests/
                             grounding_strength
     ontology/               commitments, constraint_metrics,
                             duplication_metrics, reasoner_scope,
-                            ontology_source (unit half)
+                            ontology_source_unit
   original-valuenet/        ontology_artifacts, folk_generation, trigger_shapes
   bfo/                      alignment_remediation, cco_extract,
                             core_definitions, external_closure,
                             mapping_semantics, moral_epistemics_categories
-  integration/              competency_questions, ontology_source (live half)
+  integration/              competency_questions,
+                            ontology_source_integration,
+                            repository_layout_contract,
+                            reorganization_manifest, semantic_baseline
   _support.py               importable constants and helpers
   conftest.py               fixtures only
 
 config/
   repository-layout.yaml    the layout contract
-  move-manifest.yaml        generated; 318 files, 0 unassigned
+  reorganization-baseline.json
+  move-manifest.yaml        generated; frozen after the step 6 pre-move gate
 ```
 
 **Retained at current paths:** `ThatsAllFolks/`, `MFTriggers/`,
@@ -241,6 +318,92 @@ centralizing means editing 20 files under a broken tree.
 
 ---
 
+## Manifest and baseline lifecycle
+
+The manifest has three deliberately different states. Treating them as one was
+the source of the stale completeness claim.
+
+### 1. Planning snapshot — current
+
+The checked-in manifest describes the repository as it exists for approval:
+**320 tracked, 228 `RETAIN`, 92 destination rows, 0 unassigned**. It proves that
+every current file has a disposition. It is not yet the input to `git mv`:
+`tests/conftest.py` is a same-path destination and must become `RETAIN`, leaving
+91 actual moves before preparatory files alter the counts.
+
+### 2. Working pre-move manifest — steps 1 through 6
+
+The builder is rerun after every preparatory commit. New layout, baseline,
+support and contract-test files must be given explicit dispositions in the same
+commit that introduces them. A catch-all test destination is forbidden. Every
+run must exit zero before the next preparatory step begins.
+
+Each actual `MOVE` row also gains exactly one explicit migration wave. The
+assignment is stored in the row; execution never infers it from the path.
+
+| wave | permitted destination prefixes |
+|---|---|
+| `bfo` | `ontology/bfo/`, `docs/bfo/`, `tools/bfo/` |
+| `marep` | `docs/marep/`, `tools/marep/`, `examples/marep/` |
+| `original-valuenet` | `tools/original-valuenet/` |
+| `architecture` | `docs/architecture/` |
+| `tests` | `tests/marep/`, `tests/bfo/`, `tests/original-valuenet/`, `tests/integration/` |
+
+This makes the examples assignment unambiguous: `examples/ → examples/marep/`
+is the MAREP wave. The step-2 gate reports each wave's count and mechanically
+asserts that their sum equals the number of non-no-op `MOVE` rows, with no row
+omitted or assigned twice. A source equal to its destination is malformed and
+must be `RETAIN`, not assigned a wave.
+
+Applied read-only to the current manifest, those prefix constraints partition
+all 91 actual moves with 0 unmatched: **BFO 42, MAREP 20, Original ValueNet 7,
+architecture 1, tests 21**. These are planning counts only; step 2 stores the
+assignments explicitly, and step 6 freezes the counts after preparatory files
+have been added.
+
+### 3. Frozen pre-move manifest — after step 6
+
+With a clean worktree, generate and commit:
+
+- `config/move-manifest.yaml`, containing every tracked source, its exact
+  destination or `RETAIN`, provenance axes, generator and migration wave;
+- `config/reorganization-baseline.json`, containing the semantic fingerprints,
+  test baselines, tool versions and commands needed to reproduce them; and
+- `config/repository-layout.yaml`, containing logical component identifiers and
+  resolved paths.
+
+Tag that commit `reorg-pre-move-v1`. The baseline records that stable ref; the
+CI/reviewer execution record logs the full commit id to which it resolves before
+the first move without adding another tracked file. This avoids the
+self-reference problem of trying to write a commit's own not-yet-known id into
+that commit.
+
+From step 7 onward, the frozen manifest is **read, never regenerated or
+reclassified**. Regeneration against a half-moved tree would turn completed
+destinations into new sources and destroy the audit trail.
+
+### Transition-state validation
+
+After each move commit, validation is against the frozen manifest:
+
+- for every `MOVE` row, exactly one of its source or destination is tracked;
+- for every `RETAIN` row, its original path is tracked and no destination is
+  permitted;
+- every tracked file is represented exactly once;
+- no two rows resolve to the same destination;
+- no path is absolute, contains `..`, has an empty basename, changes extension,
+  equals its source, or performs an undeclared rename; and
+- completed rows are in the current or an earlier migration wave; pending rows
+  are in a later wave.
+
+The validator must remain callable after its own move from `ValueNet_code/` to
+`tools/marep/`. A forced unassigned row, collision, missing source, duplicate
+source-and-destination pair, identical source and destination, and failed Git
+command are negative contract tests; each must return non-zero without replacing
+the frozen manifest.
+
+---
+
 ## Migration sequence
 
 Separate commits throughout. **No semantic ontology edit is combined with a
@@ -248,22 +411,63 @@ relocation.**
 
 1. **Inventory** every tracked file and every path-sensitive configuration file,
    probing `.github/workflows`, `pyproject.toml`, `tox.ini`, `setup.cfg` rather
-   than assuming none appears later.
-2. **Two-axis provenance and the complete move manifest.** Gate: 0 unassigned.
-3. **Layout schema, resolver, logical component identifiers, machine-readable
-   semantic baseline.** Nothing moves.
+   than assuming none appears later. Regenerate the working manifest.
+2. **Two-axis provenance and working manifest.** Recheck all rename descent,
+   give every current file an exact disposition, and assign every move to one
+   migration wave. Reclassify the same-path `tests/conftest.py` row as `RETAIN`.
+   Gate: 0 unassigned, 0 malformed or no-op moves, per-wave counts reported, and
+   wave partition complete.
+3. **Layout contract, resolver and baseline machinery.** Add
+   `config/repository-layout.yaml`, the transition-state validator, logical
+   component identifiers, reproducible semantic-fingerprint generation, and
+   the human-readable architecture/provenance and Original ValueNet indexes
+   named in the target tree. The layout contract includes a structured
+   `path_allowances` list; every entry has an id, matched string or pattern,
+   category, justification, owner, and either `permanent: true` or a
+   `remove_after_wave`. Every new tracked document is created before the freeze
+   and explicitly classified. Nothing moves. Regenerate the working manifest.
 4. **Adopt the resolver** in examples, query scopes, generators, tools, MAREP
-   loaders and tests.
-5. **Normalize test support** — `tests/_support.py` for importable constants and
-   helpers, fixtures staying in `conftest.py`, all **six** `from conftest import`
-   statements replaced across five modules (`test_runtime.py` has a second at
-   line 50), `parents[1]` roots replaced by the resolver.
-6. **Contract tests** for configured paths, ignore rules, provenance
-   classification, move coverage, and semantic fingerprints.
-7. **Move BFO** artifacts with their path metadata, atomically.
-8. **Move MAREP** documents, tools and the corrected examples.
-9. **Reorganize tests** by actual ownership, with an explicit integration group.
-10. **Update documentation links**, then run the full verification gate.
+   loaders and tests. Add `examples/**/_run/` while retaining
+   `examples/_run/`; verify both old and new run locations are ignored.
+   Regenerate the working manifest.
+5. **Normalize test support and split mixed ownership.** Add only
+   `tests/_support.py`; do not add `tests/__init__.py`. Import constants and
+   helpers as `from _support import …`, using the same rootdir insertion that
+   currently makes top-level `conftest` importable, while keeping fixtures only
+   in `conftest.py`. Replace all **six** `from conftest import` statements across
+   five modules (`test_runtime.py` has a second at line 50), and replace
+   `parents[1]` roots with the resolver. Give `_support.py` an explicit retained
+   disposition. Split `test_ontology_source.py` into the uniquely named
+   `test_ontology_source_unit.py` and `test_ontology_source_integration.py`
+   before the manifest is frozen, and add exact mappings for both. Regenerate
+   the working manifest.
+6. **Contract tests and freeze.** Add the uniquely named
+   `test_repository_layout_contract.py`, `test_reorganization_manifest.py` and
+   `test_semantic_baseline.py` for configured paths, ignore rules, provenance
+   classification, move and wave coverage, transition states, fail-closed
+   manifest writes, stable test identities and semantic fingerprints. Give each
+   an exact integration destination. Populate the structured path allowlist and
+   test that every exception matches an intentional occurrence, every occurrence
+   is covered, overlapping entries fail, justifications are non-empty, and an
+   allowance fails after its removal wave. Regenerate the manifest, capture the
+   new pre-move test baseline, pass the full gate, commit the three configuration
+   artifacts, tag the commit `reorg-pre-move-v1`, and record its resolved commit
+   id. This is the last generation of the manifest.
+7. **Move the BFO wave** — ontology modules, vendor extracts, BFO tools and BFO
+   documentation — with their path metadata and links in one atomic commit.
+8. **Move the MAREP wave** — specifications, plans, run records, MAREP tools and
+   corrected examples — with their path metadata and links atomically.
+9. **Move the Original ValueNet wave** — fork-authored repair and generation
+   tools only. No upstream-origin file moves.
+10. **Move the architecture wave** — this plan and the architecture documents —
+    with their links updated atomically.
+11. **Move the tests wave** to the frozen exact destinations. This is relocation
+    only: the split and support refactor were completed before the freeze.
+12. **Final integration and documentation pass.** Run the allowance-lifecycle
+    check: every temporary entry whose removal wave has completed must be gone;
+    every remaining permanent entry must still match an occurrence and retain
+    its justification and owner. Check all links and run the full verification
+    gate.
 
 The gate runs after **every** move commit, not only at the end.
 
@@ -277,7 +481,11 @@ stayed green. The reasoner was simply checking less.
 A move that changes *what gets loaded* looks exactly like a move that changed
 nothing.
 
-### The gate
+### Approval snapshot
+
+The semantic values below remain invariants throughout preparation and moves.
+Their definitions and reproduction commands are stored in the machine-readable
+baseline rather than inferred from labels.
 
 | invariant | value | definition |
 |---|---|---|
@@ -287,17 +495,69 @@ nothing.
 | per-file class declarations | 5,402 | sum over files; double-counts by design |
 | `vcvf:triggers` statements | 57,578 | merged corpus |
 | distinct trigger objects | 147 | objects of `vcvf:triggers` |
-| BFO-layer classes | 306 | HermiT scope, including `BFO/imports/` |
+| BFO-layer classes | 306 | HermiT scope, including the configured CCO extract |
 | BFO-layer imports unresolved | 0 | `_unresolved_imports` |
-| canonical digest, folk pair | `850e9340…57277289` | identical for source and generated; full value in the baseline |
-| tests collected | 539 | 534 selected, 5 deselected |
-| manifest coverage | 320 / 0 unassigned | `build_move_manifest.py` exits 0 |
+| canonical digest, folk pair | `850e9340b81ecd324b0935abe5b0ff2913e1db8b7f963b712900068e57277289` | source and generated graphs are identical |
 
-Plus, after every move commit: every ontology file parses standalone; offline
-imports resolve; generators deterministic; CCO extract reproducible to its
-SHA-256; all nine competency and sanity queries pass; both HermiT scopes
-consistent with 0 unsatisfiable; trigger SHACL conforms; no stale path outside
-the manifest.
+The following are **current planning evidence**, not numbers to copy blindly
+into the move gate:
+
+| planning measure | current value | treatment before moves |
+|---|---:|---|
+| tests | 539 collected; 534 selected (532 passed, 2 skipped); 5 deselected | preserve coverage through preparation, then replace with the step 6 frozen baseline |
+| manifest | 320 tracked; 228 retain; 92 destination rows, including 1 same-path no-op; 0 unassigned | reclassify the no-op, regenerate through step 6, then freeze the resulting count |
+
+### Frozen test identity
+
+Step 6 stores the complete collected node-id list and its SHA-256. For comparison
+across directory moves, the canonical id is the test module's basename plus the
+remainder of its pytest node id, including class, function and parameter id. The
+pre-freeze split gives the two ontology-source modules unique basenames. The
+collector rejects canonical-id collisions. After the freeze, both the collected
+count and canonical-id set are exact invariants; pass count alone is
+insufficient.
+
+### Gate after every move commit
+
+Every move wave must satisfy all of the following before the next begins:
+
+- transition-state manifest validation passes against `reorg-pre-move-v1`;
+- frozen tracked-file coverage and frozen test count/id set are unchanged;
+- every ontology file parses standalone and the semantic table above matches;
+- offline imports resolve and both HermiT scopes are consistent with 0
+  unsatisfiable classes;
+- generators are deterministic, the CCO extract reproduces to its SHA-256, all
+  nine competency and sanity queries pass, and trigger SHACL conforms;
+- `git check-ignore` protects both migration-era example run paths, an example
+  run leaves no untracked artefact, and no stale path exists outside the
+  structured allowlist;
+- the allowance-lifecycle check rejects unmatched, overlapping, unjustified or
+  expired entries for the completed wave; and
+- documentation links touched by the wave resolve, with the full link check
+  passing at the final gate.
+
+---
+
+## Execution control and rollback
+
+Every migration wave starts from a clean worktree and is one reviewable commit.
+`git mv` preserves history; path-reference and compatibility updates required by
+that wave travel in the same commit. RDF comments or headers may change only
+where path metadata requires it; canonical graph fingerprints must not.
+
+A failed gate stops execution. No later wave begins while a failure is open.
+The team either fixes the same wave and reruns the gate or reverts that whole
+wave with a normal revert commit. It does not rewrite published history.
+
+Adding or deleting a tracked file after the freeze is not an ordinary move. It
+requires pausing execution, documenting the reason, amending and refreezing the
+manifest under a new tag, and obtaining renewed approval. An upstream fetch may
+inform review but must not change the provenance base during an active run.
+
+Immediate stop conditions are: an unresolved or multiply assigned manifest
+row; a changed canonical test-id set; a semantic fingerprint mismatch; a newly
+unresolved import; a reasoner scope reduction; a failed query or SHACL gate; an
+unignored generated run artefact; or an unapproved hardcoded path.
 
 ---
 
@@ -311,12 +571,41 @@ it for tidiness.
 
 **The manifest becomes a second hardcoded layout.** Mitigated by the step 6
 contract test that no module outside the resolver hardcodes a corpus path. That
-test needs a documented allowlist: the manifest builder itself, generated-file
-headers that embed their generator's path, and intentional compatibility
-strings.
+test uses the structured allowance list for the manifest builder itself,
+generated-file headers that embed their generator's path, and intentional
+compatibility strings. Zero-match, overlapping, unjustified and expired entries
+fail, so the allowlist cannot silently become a stale-path archive.
 
 **Documentation link rot.** Roughly 30 cross-references between markdown
-documents. Step 10 owns the update; a link check belongs in the gate.
+documents. Each wave owns links it touches; step 12 owns the repository-wide
+check.
+
+---
+
+## Sign-off decision
+
+Approval of revision 5 means the reviewers accept:
+
+1. the hybrid rule: every `upstream-valuenet` path remains where upstream keeps
+   it, while fork-authored BFO, MAREP, tooling, test and architecture material
+   moves to the target structure;
+2. the two-axis provenance model and the known-descent assertions for the two
+   renames Git cannot infer;
+3. the current 320-file manifest as complete **planning evidence**, with the
+   final move manifest intentionally regenerated and frozen only after all
+   preparatory files exist;
+4. the original 539-test result as the review baseline, with the step 6 frozen
+   count and canonical-id set becoming the relocation invariant;
+5. the five atomic migration waves and the per-wave semantic, reasoner, query,
+   SHACL, generator, path, ignore, link and test gates; and
+6. the stop-and-refreeze rule for any post-freeze tracked-path addition,
+   deletion or relocation outside the approved source-to-destination rows.
+
+No physical move is authorized until steps 1–6 are complete, the working tree
+is clean, the manifest has 0 unassigned and 0 malformed or same-path rows, every
+actual move belongs to exactly one wave, the full verification gate passes, and
+`reorg-pre-move-v1` resolves to the reviewed freeze commit. Meeting those
+conditions is the execution sign-off gate; failure of any one blocks step 7.
 
 ---
 

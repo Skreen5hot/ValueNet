@@ -93,7 +93,9 @@ KNOWN_UPSTREAM_DESCENT = {
 #: .py/.ttl sweep, which is why .gitignore was missed twice.
 RETAINED_CONFIG = {".gitignore", "pytest.ini", "README.md",
                    "pyproject.toml", "tox.ini", "setup.cfg",
-                   "config/move-manifest.yaml", "config/repository-layout.yaml"}
+                   "config/move-manifest.yaml", "config/repository-layout.yaml",
+                   "config/reorganization-baseline.json",
+                   "config/path-sensitive-inventory.md"}
 RETAINED_CONFIG_DIRS = (".github/",)
 
 #: Exact source -> destination. Explicit beats clever: the family-prefix

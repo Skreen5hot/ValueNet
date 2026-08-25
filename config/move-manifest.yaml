@@ -1109,6 +1109,11 @@ components:
   maintenance: generated
   generated_from: tool:build-move-manifest
   destination: RETAIN
+- path: config/path-sensitive-inventory.md
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: RETAIN
 - path: examples/adjudicated.py
   origin: fork
   maintenance: unchanged

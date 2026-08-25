@@ -885,6 +885,13 @@ def reasoner_metrics(repo: Path, scope: str = "bfo-layer") -> list[Metric]:
                  "valuenet-moral-foundations", "valuenet-folk",
                  "valuenet-moral-epistemics", "valuenet-mappings"]
         paths = [repo / "BFO" / f"{n}.ttl" for n in names]
+        # Everything the layer imports and supplies locally, not just the
+        # modules. The hardcoded list above missed the pinned CCO extract when
+        # the alignment remediation added it, so HermiT was checking a layer
+        # whose imported Agent, Act of Appraisal and Act of Observation axioms
+        # were absent — and reporting the import unresolved while the file sat
+        # in the tree. A hardcoded list ages badly; the glob does not.
+        paths += sorted((repo / "BFO" / "imports").glob("*.ttl"))
         paths = [p for p in paths if p.exists()]
     else:
         paths = [repo / f.rel for f in

@@ -1,0 +1,87 @@
+{
+  "tool_version": 1,
+  "captured_at_commit": "7d44e30b7ff85bcffc3c64d35816413310ad92d0",
+  "reproduce": "python ValueNet_code/build_semantic_baseline.py",
+  "corpus": {
+    "files_discovered": {
+      "value": 168,
+      "definition": "ontology_source.discover over the repository"
+    },
+    "files_parsing": {
+      "value": 168,
+      "definition": "measure_file(...).parses is True"
+    },
+    "distinct_triples": {
+      "value": 104763,
+      "definition": "len of the merged graph over all parsing files"
+    },
+    "named_classes": {
+      "value": 2889,
+      "definition": "owl:Class subjects that are rdflib.URIRef; blank-node restrictions excluded. Counting them gave 3,703 against a true 2,889."
+    },
+    "class_declarations_summed": {
+      "value": 5402,
+      "definition": "sum of per-file class counts; double-counts a class declared in two files, by design"
+    },
+    "trigger_statements": {
+      "value": 57578,
+      "definition": "vcvf:triggers statements in the merged graph"
+    },
+    "distinct_trigger_objects": {
+      "value": 147,
+      "definition": "distinct objects of vcvf:triggers"
+    }
+  },
+  "reasoner": {
+    "bfo_layer_classes": {
+      "value": 306,
+      "definition": "named classes in the HermiT scope, including the configured CCO extract"
+    },
+    "bfo_layer_files": {
+      "value": 8,
+      "definition": "files loaded into the HermiT scope"
+    },
+    "bfo_layer_imports_unresolved": {
+      "value": 0,
+      "definition": "imports naming an ontology no loaded file provides"
+    },
+    "bfo_layer_consistent": {
+      "value": 1,
+      "definition": "HermiT consistency over the BFO layer"
+    },
+    "bfo_layer_unsatisfiable": {
+      "value": 0,
+      "definition": "unsatisfiable named classes"
+    }
+  },
+  "artifacts": {
+    "folk_source": {
+      "path": "ThatsAllFolks/folk.ttl",
+      "canonical_sha256": "850e9340b81ecd324b0935abe5b0ff2913e1db8b7f963b712900068e57277289",
+      "canonical_is_invariant": true,
+      "byte_sha256": "e3e4489eb373191c544b02d11c8e09eed6c5ff8b0b4177563e74a5ba21c3f53c",
+      "byte_is_invariant": true
+    },
+    "folk_aligned": {
+      "path": "folk_aligned.ttl",
+      "canonical_sha256": "850e9340b81ecd324b0935abe5b0ff2913e1db8b7f963b712900068e57277289",
+      "canonical_is_invariant": true,
+      "byte_sha256": "047db3158bbf58b2e7848fe5bdea5eb34f5252b177a1ee9c01608514a2b5b525",
+      "byte_is_invariant": false,
+      "byte_transition_note": "The generated header embeds the generator's path, so this changes when the generator moves in wave 9. The canonical digest must not."
+    },
+    "cco_extract": {
+      "path": "BFO/imports/cco-valuenet-extract.ttl",
+      "canonical_sha256": "b3261ad21fc82c4005744cb754c3418476a79515d0f51b50769112ae36f046fc",
+      "canonical_is_invariant": true,
+      "byte_sha256": "70add8bd654ede359575e1fdd3e1beac7b39fc09775d3c8474f8272e8896b421",
+      "byte_is_invariant": true
+    }
+  },
+  "tests": {
+    "collected": 539,
+    "canonical_id_sha256": "fb5e9255b1a7327c5739b8fa8640a94765705d301304c5535f287c910b5d3b3f",
+    "canonical_id_collisions": [],
+    "definition": "pytest --collect-only -q -m 'slow or not slow'; each id reduced to basename plus node path so directory moves do not perturb it"
+  }
+}

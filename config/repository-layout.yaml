@@ -1,0 +1,148 @@
+# Repository layout contract.
+#
+# One declaration per component, addressed by a logical id. Everything that
+# needs a path asks this file for it, so a move is a change here rather than an
+# edit across twenty modules.
+#
+# `path` is where the component lives now. `moves_to` records where the
+# reorganization will put it, and is null for retained components. During the
+# migration the resolver returns whichever of the two currently exists, so a
+# half-moved tree resolves correctly and no consumer needs to know which wave
+# has run.
+#
+# Ids are stable across the move. That is the point: `# scope: component:...`
+# in an executable query document, or a group name in the MAREP corpus source,
+# survives relocation untouched.
+
+version: 1
+
+components:
+
+  # ---- Original ValueNet corpus. Retained at upstream-compatible paths. ----
+
+  - id: original-valuenet.folk-fragments
+    path: ThatsAllFolks
+    moves_to: null
+    role: corpus-group
+    corpus_group: thats-all-folks
+    description: >-
+      The 127 folk value trigger fragments, folk.ttl and taf.ttl. Upstream-
+      derived and locally repaired.
+
+  - id: original-valuenet.mf-triggers
+    path: MFTriggers
+    moves_to: null
+    role: corpus-group
+    corpus_group: mf-triggers
+
+  - id: original-valuenet.moral-molecules
+    path: MoralMolecules
+    moves_to: null
+    role: corpus-group
+    corpus_group: moral-molecules
+
+  - id: original-valuenet.vale2024
+    path: vale2024
+    moves_to: null
+    role: corpus-group
+    corpus_group: vale2024
+
+  - id: original-valuenet.folk-source
+    path: ThatsAllFolks/folk.ttl
+    moves_to: null
+    role: generator-source
+    description: The authored source for the generated alignment view.
+
+  - id: original-valuenet.folk-aligned
+    path: folk_aligned.ttl
+    moves_to: null
+    role: generated-artifact
+    generated_from: original-valuenet.folk-source
+    generator: tools.generate-folk-aligned
+
+  # ---- BFO-aligned ValueNet. Moves in wave 7. ----
+
+  - id: bfo.core
+    path: BFO
+    moves_to: ontology/bfo/core
+    role: corpus-group
+    corpus_group: bfo-layer
+    description: >-
+      Resolved as a directory today; after wave 7 the modules live under
+      ontology/bfo/core with extensions and shapes alongside.
+
+  - id: bfo.vendor-bfo
+    path: BFO/bfo-core.ttl
+    moves_to: ontology/bfo/vendor/bfo/bfo-core.ttl
+    role: vendored-ontology
+    corpus_group: bfo-vendored
+
+  - id: bfo.vendor-cco
+    path: BFO/imports
+    moves_to: ontology/bfo/vendor/cco
+    role: vendored-ontology
+    description: >-
+      The pinned CCO MIREOT extract. Must be in the reasoner scope: omitting it
+      silently dropped the BFO layer from 306 classes to 275.
+
+  - id: bfo.shapes
+    path: BFO
+    moves_to: ontology/bfo/shapes
+    role: shape-set
+    pattern: "*-shapes.ttl"
+
+  - id: bfo.scenario
+    path: BFO/valuenet-moral-epistemics-scenario.ttl
+    moves_to: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl
+    role: instance-data
+
+  # ---- Executable query documents. Addressed by id, never by path. ----
+
+  - id: bfo.query-suite.competency
+    path: BFO/valuenet-moral-epistemics-CQ.md
+    moves_to: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md
+    role: executable-queries
+    expect: rows
+
+  - id: bfo.query-suite.sanity
+    path: BFO/TestingFramework.md
+    moves_to: docs/bfo/guides/TestingFramework.md
+    role: executable-queries
+    expect: no-rows
+
+  # ---- MAREP. Implementation retained; documents and examples move. ----
+
+  - id: marep.implementation
+    path: marep
+    moves_to: null
+    role: python-package
+
+  - id: marep.examples
+    path: examples
+    moves_to: examples/marep
+    role: example-programs
+
+  - id: marep.run-artifacts
+    path: examples/_run
+    moves_to: examples/marep/_run
+    role: generated-run-state
+    description: >-
+      Never committed. .gitignore must cover both the old and new locations
+      during migration; the current directory holds 1,127,251 bytes.
+
+  # ---- Configuration. Retained. ----
+
+  - id: config.layout
+    path: config/repository-layout.yaml
+    moves_to: null
+    role: configuration
+
+  - id: config.move-manifest
+    path: config/move-manifest.yaml
+    moves_to: null
+    role: configuration
+
+  - id: config.semantic-baseline
+    path: config/reorganization-baseline.json
+    moves_to: null
+    role: configuration

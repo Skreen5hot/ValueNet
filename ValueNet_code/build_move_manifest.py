@@ -128,6 +128,8 @@ EXACT: dict[str, str] = {
         "tools/bfo/extract-manifest.schema.json",
     "ValueNet_code/report_run.py": "tools/marep/report_run.py",
     "ValueNet_code/build_move_manifest.py": "tools/marep/build_move_manifest.py",
+    "ValueNet_code/build_semantic_baseline.py":
+        "tools/marep/build_semantic_baseline.py",
     "REPO_REORGANIZATION_PLAN.md": "docs/architecture/REPO_REORGANIZATION_PLAN.md",
 }
 
@@ -213,6 +215,10 @@ def destination(path: str, origin: str) -> str:
     if origin == "upstream-valuenet":
         return "RETAIN"
     if path in RETAINED_CONFIG or path.startswith(RETAINED_CONFIG_DIRS):
+        return "RETAIN"
+    # A file authored directly at its target location has nowhere to go. The
+    # step 3 index documents are written into docs/ rather than moved there.
+    if path.startswith(("docs/", "ontology/", "tools/", "config/")):
         return "RETAIN"
     if path in EXACT:
         return EXACT[path]

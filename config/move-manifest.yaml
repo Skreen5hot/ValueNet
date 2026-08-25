@@ -1253,6 +1253,12 @@ components:
   generated_from: null
   destination: tools/marep/build_move_manifest.py
   wave: marep
+- path: ValueNet_code/build_semantic_baseline.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tools/marep/build_semantic_baseline.py
+  wave: marep
 - path: ValueNet_code/declare_folk_value.py
   origin: fork
   maintenance: unchanged
@@ -1332,6 +1338,30 @@ components:
   destination: RETAIN
   wave: null
 - path: config/path-sensitive-inventory.md
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: RETAIN
+  wave: null
+- path: config/reorganization-baseline.json
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: RETAIN
+  wave: null
+- path: config/repository-layout.yaml
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: RETAIN
+  wave: null
+- path: docs/architecture/PROVENANCE.md
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: RETAIN
+  wave: null
+- path: docs/original-valuenet/README.md
   origin: fork
   maintenance: unchanged
   generated_from: null
@@ -1470,6 +1500,12 @@ components:
   destination: RETAIN
   wave: null
 - path: marep/ingest.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: RETAIN
+  wave: null
+- path: marep/layout.py
   origin: fork
   maintenance: unchanged
   generated_from: null

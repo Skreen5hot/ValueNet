@@ -1,11 +1,12 @@
 # Repository reorganization — plan for approval
 
-**Status:** revision 3, proposed. Nothing has moved. No semantic ontology change
+**Status:** revision 4, proposed. Nothing has moved. No semantic ontology change
 is in scope.
 
-Revision 2 was **not approved**. Seven blockers were raised; all seven are
-accepted and addressed here. Every factual correction in the review was
-independently verified against the repository before being adopted.
+Revision 3 was **conceptually approved** but not ready to execute: the manifest
+builder committed alongside it had four execution defects. All four are fixed
+and verified here. Every factual correction in both reviews was independently
+checked against the repository before adoption.
 
 ---
 
@@ -27,23 +28,50 @@ numbers with no stated definition, and revision 2 put one into a plan as an
 
 ---
 
-## What changed in revision 3
+## What changed in revision 4
 
 ### A generated manifest replaces the hand-written destination list
 
 `ValueNet_code/build_move_manifest.py` derives `config/move-manifest.yaml` from
-`git ls-tree` and rename history. It **refuses to emit an incomplete manifest**,
-exiting non-zero while any file is `UNASSIGNED` — which is how the last two gaps
-were found after the first six were fixed. Hand-listing missed them; deriving
-closed them.
+`git ls-files` and rename history. It **refuses to emit an incomplete manifest**
+— it returns before writing while any file is `UNASSIGNED` or any destination is
+malformed. Hand-listing missed six files; deriving closed them.
 
-Coverage: **318 tracked files, 0 unassigned.**
+Coverage: **320 tracked files, 0 unassigned, 0 malformed.**
 
 | disposition | files |
 |---|---:|
-| RETAIN — upstream-derived, or path-sensitive config | 203 |
-| REORGANIZE-IN-PLACE — `tests/`, `marep/` | 46 |
-| MOVE | 69 |
+| RETAIN — upstream-derived, path-sensitive config, `marep/` | 228 |
+| MOVE | 92 |
+
+Revision 3 reported 318 and 0 unassigned. Both were wrong: it read
+`git ls-tree HEAD`, which misses staged additions, so the builder omitted
+**itself and its own output**. It now reads `git ls-files`.
+
+### Four builder defects, fixed
+
+| defect | fix |
+|---|---|
+| wrote the manifest **before** returning failure, so a rejected run could overwrite a good one | returns before writing; writes atomically via `os.replace` — verified by forcing an UNASSIGNED and confirming the 320-entry manifest survived |
+| prefix-stripping produced `…/moral-epistemics/.ttl` — hidden, extension-only names | explicit per-file mapping; a validator rejects empty basenames, changed extensions, undeclared renames, collisions, absolute paths and `..` |
+| every test got the placeholder `REORGANIZE-IN-PLACE`, so a misfiled test was undetectable | each of the 22 test modules has an exact destination |
+| git calls ignored exit status | `sh()` raises; `upstream/main` is verified to resolve before classification |
+
+The validator earned its place immediately: it caught the *same* basename bug in
+the MAREP rules that review found in the BFO ones — `MAREP_v2.1.md` was becoming
+`docs/marep/specifications/1.md`. Directory prefixes and name prefixes are now
+separate rule sets.
+
+### Test destinations, explicit
+
+| group | modules |
+|---|---:|
+| `tests/marep/` | 6 |
+| `tests/marep/ontology/` | 5 |
+| `tests/bfo/` | 6 |
+| `tests/original-valuenet/` | 3 |
+| `tests/integration/` | 1 |
+| `tests/conftest.py` | 1 |
 
 ### Two-axis provenance
 
@@ -89,8 +117,9 @@ canonical RDF digests via `rdflib.compare.to_canonical_graph` over sorted
 N-Triples, with each metric's definition and the command that produced it.
 
 The load-bearing case: `ThatsAllFolks/folk.ttl` and `folk_aligned.ttl` have
-**identical canonical digests** (`850e9340b81ecd32…`) while their byte hashes
-differ. `folk_aligned.ttl`'s byte hash is
+**identical canonical digests** while their byte hashes differ. The full digest,
+stored in the machine-readable baseline rather than abbreviated, is
+`850e9340b81ecd324b0935abe5b0ff2913e1db8b7f963b712900068e57277289`. `folk_aligned.ttl`'s byte hash is
 `047db3158bbf58b2e7848fe5bdea5eb34f5252b177a1ee9c01608514a2b5b525` and **must
 change** when the generator moves, because the file header embeds the
 generator's path. The canonical digest must not. That is the invariant; the byte
@@ -226,8 +255,9 @@ relocation.**
 4. **Adopt the resolver** in examples, query scopes, generators, tools, MAREP
    loaders and tests.
 5. **Normalize test support** — `tests/_support.py` for importable constants and
-   helpers, fixtures staying in `conftest.py`, all five direct `conftest`
-   imports replaced, `parents[1]` roots replaced by the resolver.
+   helpers, fixtures staying in `conftest.py`, all **six** `from conftest import`
+   statements replaced across five modules (`test_runtime.py` has a second at
+   line 50), `parents[1]` roots replaced by the resolver.
 6. **Contract tests** for configured paths, ignore rules, provenance
    classification, move coverage, and semantic fingerprints.
 7. **Move BFO** artifacts with their path metadata, atomically.
@@ -259,8 +289,9 @@ nothing.
 | distinct trigger objects | 147 | objects of `vcvf:triggers` |
 | BFO-layer classes | 306 | HermiT scope, including `BFO/imports/` |
 | BFO-layer imports unresolved | 0 | `_unresolved_imports` |
-| canonical digest, folk pair | `850e9340b81ecd32…` | identical for source and generated |
+| canonical digest, folk pair | `850e9340…57277289` | identical for source and generated; full value in the baseline |
 | tests collected | 539 | 534 selected, 5 deselected |
+| manifest coverage | 320 / 0 unassigned | `build_move_manifest.py` exits 0 |
 
 Plus, after every move commit: every ontology file parses standalone; offline
 imports resolve; generators deterministic; CCO extract reproducible to its
@@ -279,7 +310,10 @@ cleanly. The risk is real and unquantified, which is reason enough not to take
 it for tidiness.
 
 **The manifest becomes a second hardcoded layout.** Mitigated by the step 6
-contract test that no module outside the resolver hardcodes a corpus path.
+contract test that no module outside the resolver hardcodes a corpus path. That
+test needs a documented allowlist: the manifest builder itself, generated-file
+headers that embed their generator's path, and intentional compatibility
+strings.
 
 **Documentation link rot.** Roughly 30 cross-references between markdown
 documents. Step 10 owns the update; a link check belongs in the gate.

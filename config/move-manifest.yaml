@@ -158,12 +158,12 @@ components:
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/core/core.ttl
+  destination: ontology/bfo/core/valuenet-core.ttl
 - path: BFO/valuenet-folk.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/core/folk.ttl
+  destination: ontology/bfo/core/valuenet-folk.ttl
 - path: BFO/valuenet-mappings.ttl
   origin: fork
   maintenance: unchanged
@@ -173,32 +173,32 @@ components:
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/extensions/moral-epistemics/-CQ.md
+  destination: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md
 - path: BFO/valuenet-moral-epistemics-scenario.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/extensions/moral-epistemics/-scenario.ttl
+  destination: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl
 - path: BFO/valuenet-moral-epistemics-shapes.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/extensions/moral-epistemics/-shapes.ttl
+  destination: ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl
 - path: BFO/valuenet-moral-epistemics.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/extensions/moral-epistemics/.ttl
+  destination: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl
 - path: BFO/valuenet-moral-foundations.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/extensions/moral-foundations/.ttl
+  destination: ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl
 - path: BFO/valuenet-schwartz-values.ttl
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: ontology/bfo/core/schwartz-values.ttl
+  destination: ontology/bfo/core/valuenet-schwartz-values.ttl
 - path: BFO/vcvf-triggers-review.md
   origin: fork
   maintenance: unchanged
@@ -218,52 +218,52 @@ components:
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/plans/IMPLEMENTATION_PLAN.md
+  destination: docs/marep/plans/MAREP_IMPLEMENTATION_PLAN.md
 - path: MAREP_RUN1_FINDINGS.md
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/runs/1_FINDINGS.md
+  destination: docs/marep/runs/MAREP_RUN1_FINDINGS.md
 - path: MAREP_RUN1_RECONCILIATION.yaml
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/runs/1_RECONCILIATION.yaml
+  destination: docs/marep/runs/MAREP_RUN1_RECONCILIATION.yaml
 - path: MAREP_RUN2_FINDINGS.md
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/runs/2_FINDINGS.md
+  destination: docs/marep/runs/MAREP_RUN2_FINDINGS.md
 - path: MAREP_RUN3_FINDINGS.md
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/runs/3_FINDINGS.md
+  destination: docs/marep/runs/MAREP_RUN3_FINDINGS.md
 - path: MAREP_RUN3_HYPOTHESES.yaml
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/runs/3_HYPOTHESES.yaml
+  destination: docs/marep/runs/MAREP_RUN3_HYPOTHESES.yaml
 - path: MAREP_RUN3_RECONCILIATION.yaml
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/runs/3_RECONCILIATION.yaml
+  destination: docs/marep/runs/MAREP_RUN3_RECONCILIATION.yaml
 - path: MAREP_VALUENET_PLAN.md
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/plans/VALUENET_PLAN.md
+  destination: docs/marep/plans/MAREP_VALUENET_PLAN.md
 - path: MAREP_v2.1.md
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/specifications/1.md
+  destination: docs/marep/specifications/MAREP_v2.1.md
 - path: MAREP_v2.2.md
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/marep/specifications/2.md
+  destination: docs/marep/specifications/MAREP_v2.2.md
 - path: MFTriggers/ClosureHaidtValueFrames.ttl
   origin: upstream-valuenet
   maintenance: locally-modified
@@ -348,7 +348,7 @@ components:
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: docs/architecture/
+  destination: docs/architecture/REPO_REORGANIZATION_PLAN.md
 - path: ThatsAllFolks/MFRC_1k_ESWC.zip
   origin: upstream-valuenet
   maintenance: unchanged
@@ -1039,6 +1039,11 @@ components:
   maintenance: unchanged
   generated_from: null
   destination: tools/original-valuenet/add_folk_religion.py
+- path: ValueNet_code/build_move_manifest.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tools/marep/build_move_manifest.py
 - path: ValueNet_code/declare_folk_value.py
   origin: fork
   maintenance: unchanged
@@ -1099,6 +1104,11 @@ components:
   maintenance: locally-modified
   generated_from: null
   destination: RETAIN
+- path: config/move-manifest.yaml
+  origin: fork
+  maintenance: generated
+  generated_from: tool:build-move-manifest
+  destination: RETAIN
 - path: examples/adjudicated.py
   origin: fork
   maintenance: unchanged
@@ -1148,122 +1158,122 @@ components:
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/__init__.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/__main__.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/adjudicator.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/agents.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/anthropic_agents.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/anthropic_backend.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/authz.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/checks.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/cli.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/commitments.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/competency.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/errors.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/ingest.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/ontology_source.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/phases.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/runtime.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/schemas/retro_state.schema.json
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/schemas/sprint_input.schema.json
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/state.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/substrate.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/tokens.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/transitions.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: marep/validate.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: RETAIN
 - path: mft.ttl
   origin: upstream-valuenet
   maintenance: unchanged
@@ -1283,112 +1293,112 @@ components:
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/conftest.py
 - path: tests/test_adjudicator.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/test_adjudicator.py
 - path: tests/test_agents.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/test_agents.py
 - path: tests/test_bfo_alignment_remediation.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/bfo/test_bfo_alignment_remediation.py
 - path: tests/test_bfo_cco_extract.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/bfo/test_bfo_cco_extract.py
 - path: tests/test_bfo_core_definitions.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/bfo/test_bfo_core_definitions.py
 - path: tests/test_bfo_external_closure.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/bfo/test_bfo_external_closure.py
 - path: tests/test_bfo_mapping_semantics.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/bfo/test_bfo_mapping_semantics.py
 - path: tests/test_bfo_moral_epistemics_categories.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/bfo/test_bfo_moral_epistemics_categories.py
 - path: tests/test_commitments.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/ontology/test_commitments.py
 - path: tests/test_competency_questions.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/integration/test_competency_questions.py
 - path: tests/test_constraint_metrics.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/ontology/test_constraint_metrics.py
 - path: tests/test_duplication_metrics.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/ontology/test_duplication_metrics.py
 - path: tests/test_folk_generation.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/original-valuenet/test_folk_generation.py
 - path: tests/test_grounding_strength.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/test_grounding_strength.py
 - path: tests/test_ingest.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/test_ingest.py
 - path: tests/test_ontology_artifacts.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/original-valuenet/test_ontology_artifacts.py
 - path: tests/test_ontology_source.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/ontology/test_ontology_source.py
 - path: tests/test_reasoner_scope.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/ontology/test_reasoner_scope.py
 - path: tests/test_resume.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/test_resume.py
 - path: tests/test_runtime.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/marep/test_runtime.py
 - path: tests/test_trigger_shapes.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: REORGANIZE-IN-PLACE
+  destination: tests/original-valuenet/test_trigger_shapes.py
 - path: vale2024/.DS_Store
   origin: upstream-valuenet
   maintenance: unchanged

@@ -36,11 +36,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from marep import layout  # noqa: E402
 
 #: Bumped when the schema or any digest definition changes, so a baseline
-#: cannot be compared against one computed a different way. Version 2 replaced
-#: the merged-corpus canonical digest with a ground digest plus blank-node
-#: fingerprint, and replaced that fingerprint's predicate-frequency hash with
-#: flattened-triple and node-signature digests.
-TOOL_VERSION = 2
+#: cannot be compared against one computed a different way.
+#:
+#:   1  merged-corpus canonical digest
+#:   2  ground digest plus a flattened/node-signature blank-node fingerprint
+#:   3  that fingerprint replaced by connected-component canonicalization,
+#:      after the version-2 form was shown to collide on non-isomorphic graphs
+TOOL_VERSION = 3
 
 
 def canonical_digest(path: Path) -> str:
@@ -122,12 +124,15 @@ def corpus_measures(root: Path) -> dict:
         "merged_bnode_shape": {
             "value": _bnode_shape(g),
             "definition": "identity-invariant digest over the blank-node "
-                          "subgraph: flattened triples with blank nodes as a "
-                          "constant token, plus per-node degree and predicate "
-                          "signatures. Catches changed neighbours and changed "
-                          "topology; ignores relabelling. Full canonicalization "
-                          "of 104,763 triples measured at about 29 minutes, "
-                          "which no per-commit gate would survive.",
+                          "subgraph: blank nodes partitioned into connected "
+                          "components, every triple touching a component "
+                          "collected with its named and literal anchors, each "
+                          "component canonicalized independently, sorted "
+                          "component digests hashed. Complete rather than "
+                          "heuristic. Affordable because components are OWL "
+                          "restrictions of a few triples each; the whole "
+                          "corpus canonicalized at once measured about 29 "
+                          "minutes.",
         },
     }
 
@@ -234,6 +239,79 @@ def _bnode_shape(graph) -> dict:
         "component_digest_sha256": hashlib.sha256(
             "\n".join(sorted(digests)).encode()).hexdigest(),
     }
+
+
+def reasoner_measures(root: Path) -> dict:
+    from marep import ontology_source as onto
+    metrics = {m.check: m for m in onto.reasoner_metrics(root)}
+    return {
+        "bfo_layer_classes": {
+            "value": int(metrics["unsatisfiable_classes"].detail.split()[1].replace(",", ""))
+            if "of" in metrics["unsatisfiable_classes"].detail else None,
+            "definition": "named classes in the HermiT scope, including the "
+                          "configured CCO extract",
+        },
+        "bfo_layer_files": {
+            "value": int(metrics["reasoner_files"].value),
+            "definition": "files loaded into the HermiT scope",
+        },
+        "bfo_layer_imports_unresolved": {
+            "value": int(metrics["reasoner_imports_unresolved"].value),
+            "definition": "imports naming an ontology no loaded file provides",
+        },
+        "bfo_layer_consistent": {
+            "value": int(metrics["reasoner_consistent"].value),
+            "definition": "HermiT consistency over the BFO layer",
+        },
+        "bfo_layer_unsatisfiable": {
+            "value": int(metrics["unsatisfiable_classes"].value),
+            "definition": "unsatisfiable named classes",
+        },
+        # The scope is the thing that silently shrank once already. A digest
+        # over exactly what HermiT loads catches a scope change that leaves
+        # the class count intact.
+        "bfo_scope_canonical_sha256": {
+            "value": _scope_digest(),
+            "definition": "SHA-256 over sorted N-Triples of the canonicalized "
+                          "union of layout.reasoner_scope()",
+        },
+        "bfo_scope_files": {
+            "value": len(layout.reasoner_scope()),
+            "definition": "files the layout contract declares as the HermiT scope",
+        },
+    }
+
+
+def _scope_digest() -> str:
+    import rdflib
+    g = rdflib.Graph()
+    for p in layout.reasoner_scope():
+        g.parse(str(p))
+    return _graph_digest(g)
+
+
+def artifact_digests(root: Path) -> dict:
+    out = {}
+    pairs = [
+        ("folk_source", layout.path("original-valuenet.folk-source")),
+        ("folk_aligned", layout.path("original-valuenet.folk-aligned")),
+        ("cco_extract", layout.path("bfo.vendor-cco") / "cco-valuenet-extract.ttl"),
+    ]
+    for name, p in pairs:
+        entry = {
+            "path": layout.relative(p),
+            "canonical_sha256": canonical_digest(p),
+            "canonical_is_invariant": True,
+            "byte_sha256": byte_digest(p),
+            "byte_is_invariant": name != "folk_aligned",
+        }
+        if name == "folk_aligned":
+            entry["byte_transition_note"] = (
+                "The generated header embeds the generator's path, so this "
+                "changes when the generator moves in the original-valuenet "
+                "wave. The canonical digest must not.")
+        out[name] = entry
+    return out
 
 
 def test_baseline(root: Path) -> dict:

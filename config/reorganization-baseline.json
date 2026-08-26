@@ -1,6 +1,6 @@
 {
-  "tool_version": 2,
-  "captured_at_commit": "6e8d4bc3ada24ab5ea0c04bb9855ee287382e5e4",
+  "tool_version": 3,
+  "captured_at_commit": "8d2e394721264ab9d87e4a16d6c85475ae038324",
   "reproduce": "python ValueNet_code/build_semantic_baseline.py",
   "corpus": {
     "files_discovered": {
@@ -39,10 +39,11 @@
       "value": {
         "blank_nodes": 8365,
         "triples_touching": 30040,
-        "flattened_sha256": "d72e4c82771cb57f09bfe715f09a0cffc0e0036666d7999a8e080491e169fe44",
-        "node_signature_sha256": "7c7cced6804eb3d2aefb4e2aa87391e7a8ab499a39863a30193a79a52d6119d8"
+        "components": 6644,
+        "largest_component_nodes": 13,
+        "component_digest_sha256": "e15f2d99e8e06489b1709c6ae8e4ec8eadaa8840c2fb46bfc825a0d30f8a59af"
       },
-      "definition": "identity-invariant digest over the blank-node subgraph: flattened triples with blank nodes as a constant token, plus per-node degree and predicate signatures. Catches changed neighbours and changed topology; ignores relabelling. Full canonicalization of 104,763 triples measured at about 29 minutes, which no per-commit gate would survive."
+      "definition": "identity-invariant digest over the blank-node subgraph: blank nodes partitioned into connected components, every triple touching a component collected with its named and literal anchors, each component canonicalized independently, sorted component digests hashed. Complete rather than heuristic. Affordable because components are OWL restrictions of a few triples each; the whole corpus canonicalized at once measured about 29 minutes."
     }
   },
   "reasoner": {
@@ -89,7 +90,7 @@
       "canonical_is_invariant": true,
       "byte_sha256": "047db3158bbf58b2e7848fe5bdea5eb34f5252b177a1ee9c01608514a2b5b525",
       "byte_is_invariant": false,
-      "byte_transition_note": "The generated header embeds the generator's path, so this changes when the generator moves in wave 9. The canonical digest must not."
+      "byte_transition_note": "The generated header embeds the generator's path, so this changes when the generator moves in the original-valuenet wave. The canonical digest must not."
     },
     "cco_extract": {
       "path": "BFO/imports/cco-valuenet-extract.ttl",

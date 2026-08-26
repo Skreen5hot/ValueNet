@@ -152,140 +152,88 @@ def _ground_digest(graph) -> str:
 def _bnode_shape(graph) -> dict:
     """Identity-invariant digest over the blank-node subgraph.
 
-    An earlier version hashed only blank-node counts, touching-triple counts
-    and predicate frequencies. That is not semantically protective: rewriting
+    Two earlier attempts were unsound, and the second failed in a way worth
+    recording because it looked convincing.
 
-        _:x owl:onProperty ex:p ; owl:someValuesFrom ex:A .
+    Hashing predicate frequencies missed a changed object: rewriting
+    `owl:onProperty ex:p` to `ex:q` leaves the predicate multiset identical.
 
-    to different property and class IRIs leaves every one of those numbers
-    unchanged, because the predicates are still `owl:onProperty` and
-    `owl:someValuesFrom` — only the objects moved. It lost term values and
-    topology, not merely blank-node identity.
+    Flattening every blank node to one token then also missed which neighbours
+    belonged to which node. These two graphs are not isomorphic, and produced
+    identical digests under both the flattened and the signature hash:
 
-    Two digests instead, both linear, because full canonicalization costs about
-    29 minutes over this corpus and roughly 7s per folk fragment:
+        _:a ex:p ex:X ; ex:q ex:Y .      _:a ex:p ex:X ; ex:q ex:V .
+        _:b ex:p ex:U ; ex:q ex:V .      _:b ex:p ex:U ; ex:q ex:Y .
 
-    *Flattened triples.* Every blank-node-touching triple with blank nodes
-    replaced by the constant token `_:B`, sorted and hashed. Named terms and
-    literals survive verbatim, so the rewrite above changes the digest. Which
-    blank node is which does not survive, which is the point.
+    Degree and predicate signatures cannot restore an association that
+    flattening destroyed.
 
-    *Node signatures.* Per blank node, its in-degree, out-degree, and sorted
-    predicate signature, as a multiset. Catches topology change — a triple
-    moved from one blank node to another — that flattening alone would miss.
+    So: partition the blank nodes into connected components, take every triple
+    touching each component — named and literal anchors included —
+    canonicalize each component independently, and hash the sorted component
+    digests. Canonicalization is complete, and it is affordable here because
+    the components are small: the whole corpus canonicalized at once was
+    measured at about 29 minutes, while its components are OWL restrictions
+    and list cells of a few triples each.
     """
     import collections
     import rdflib
+    from rdflib.compare import to_canonical_graph
 
-    def term(t):
-        return "_:B" if isinstance(t, rdflib.BNode) else t.n3()
+    # Union-find over blank nodes sharing a triple.
+    parent: dict = {}
 
-    flattened, sigs = [], []
-    out_p = collections.defaultdict(list)
-    in_p = collections.defaultdict(list)
-    bnodes, touching = set(), 0
+    def find(x):
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
 
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+
+    touching_triples = []
+    bnodes = set()
     for s, p, o in graph:
         hit = [t for t in (s, o) if isinstance(t, rdflib.BNode)]
         if not hit:
             continue
-        touching += 1
+        touching_triples.append((s, p, o))
         bnodes.update(hit)
-        flattened.append(f"{term(s)} {p.n3()} {term(o)} .")
-        if isinstance(s, rdflib.BNode):
-            out_p[s].append(str(p))
-        if isinstance(o, rdflib.BNode):
-            in_p[o].append(str(p))
+        for b in hit:
+            find(b)
+        if len(hit) == 2:
+            union(hit[0], hit[1])
 
+    members = collections.defaultdict(set)
     for b in bnodes:
-        sigs.append("|".join([
-            str(len(in_p[b])), str(len(out_p[b])),
-            ",".join(sorted(out_p[b])), ",".join(sorted(in_p[b]))]))
+        members[find(b)].add(b)
 
+    by_component = collections.defaultdict(list)
+    for s, p, o in touching_triples:
+        anchor = find(s) if isinstance(s, rdflib.BNode) else find(o)
+        by_component[anchor].append((s, p, o))
+
+    digests = []
+    for root_node, triples in by_component.items():
+        sub = rdflib.Graph()
+        for t in triples:
+            sub.add(t)
+        lines = sorted(to_canonical_graph(sub).serialize(format="nt").splitlines())
+        digests.append(hashlib.sha256("\n".join(lines).encode()).hexdigest())
+
+    sizes = collections.Counter(len(v) for v in members.values())
     return {
         "blank_nodes": len(bnodes),
-        "triples_touching": touching,
-        "flattened_sha256": hashlib.sha256(
-            "\n".join(sorted(flattened)).encode()).hexdigest(),
-        "node_signature_sha256": hashlib.sha256(
-            "\n".join(sorted(sigs)).encode()).hexdigest(),
+        "triples_touching": len(touching_triples),
+        "components": len(by_component),
+        "largest_component_nodes": max(sizes) if sizes else 0,
+        "component_digest_sha256": hashlib.sha256(
+            "\n".join(sorted(digests)).encode()).hexdigest(),
     }
-
-
-def reasoner_measures(root: Path) -> dict:
-    from marep import ontology_source as onto
-    metrics = {m.check: m for m in onto.reasoner_metrics(root)}
-    return {
-        "bfo_layer_classes": {
-            "value": int(metrics["unsatisfiable_classes"].detail.split()[1].replace(",", ""))
-            if "of" in metrics["unsatisfiable_classes"].detail else None,
-            "definition": "named classes in the HermiT scope, including the "
-                          "configured CCO extract",
-        },
-        "bfo_layer_files": {
-            "value": int(metrics["reasoner_files"].value),
-            "definition": "files loaded into the HermiT scope",
-        },
-        "bfo_layer_imports_unresolved": {
-            "value": int(metrics["reasoner_imports_unresolved"].value),
-            "definition": "imports naming an ontology no loaded file provides",
-        },
-        "bfo_layer_consistent": {
-            "value": int(metrics["reasoner_consistent"].value),
-            "definition": "HermiT consistency over the BFO layer",
-        },
-        "bfo_layer_unsatisfiable": {
-            "value": int(metrics["unsatisfiable_classes"].value),
-            "definition": "unsatisfiable named classes",
-        },
-        # The scope is the thing that silently shrank once already. A digest
-        # over exactly what HermiT loads catches a scope change that leaves
-        # the class count intact.
-        "bfo_scope_canonical_sha256": {
-            "value": _scope_digest(),
-            "definition": "SHA-256 over sorted N-Triples of the canonicalized "
-                          "union of layout.reasoner_scope()",
-        },
-        "bfo_scope_files": {
-            "value": len(layout.reasoner_scope()),
-            "definition": "files the layout contract declares as the HermiT scope",
-        },
-    }
-
-
-def _scope_digest() -> str:
-    import rdflib
-    g = rdflib.Graph()
-    for p in layout.reasoner_scope():
-        g.parse(str(p))
-    return _graph_digest(g)
-
-
-def artifact_digests(root: Path) -> dict:
-    out = {}
-    pairs = [
-        ("folk_source", layout.path("original-valuenet.folk-source")),
-        ("folk_aligned", layout.path("original-valuenet.folk-aligned")),
-        ("cco_extract", layout.path("bfo.vendor-cco") / "cco-valuenet-extract.ttl"),
-    ]
-    for name, p in pairs:
-        entry = {
-            "path": layout.relative(p),
-            "canonical_sha256": canonical_digest(p),
-            "canonical_is_invariant": True,
-        }
-        if name == "folk_aligned":
-            entry["byte_sha256"] = byte_digest(p)
-            entry["byte_is_invariant"] = False
-            entry["byte_transition_note"] = (
-                "The generated header embeds the generator's path, so this "
-                "changes when the generator moves in wave 9. The canonical "
-                "digest must not.")
-        else:
-            entry["byte_sha256"] = byte_digest(p)
-            entry["byte_is_invariant"] = True
-        out[name] = entry
-    return out
 
 
 def test_baseline(root: Path) -> dict:

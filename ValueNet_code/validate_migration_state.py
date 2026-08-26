@@ -26,6 +26,12 @@ from marep import layout  # noqa: E402
 
 WAVE_ORDER = ["bfo", "marep", "original-valuenet", "architecture", "tests"]
 
+#: The one ref the frozen manifest may come from. `--frozen-ref` exists so the
+#: tag name is not hardcoded at call sites, not so a caller can choose a
+#: different manifest: passing HEAD would have validated the mutable working
+#: commit and defeated the freeze entirely.
+FREEZE_TAG = "reorg-pre-move-v1"
+
 
 def sh(*args: str) -> str:
     r = subprocess.run(args, capture_output=True, text=True,
@@ -111,8 +117,9 @@ def main(argv=None) -> int:
                     help="the most recent wave completed; omit before any move, "
                          "which asserts that no move has completed")
     ap.add_argument("--frozen-ref", default=None,
-                    help="git ref holding the frozen manifest, e.g. "
-                         "reorg-pre-move-v1. Required once the tag exists.")
+                    help="git ref for the frozen manifest. Must resolve to the "
+                         "same commit as " + FREEZE_TAG + "; any other ref is "
+                         "refused.")
     ap.add_argument("--manifest", default="config/move-manifest.yaml")
     args = ap.parse_args(argv)
 
@@ -122,14 +129,29 @@ def main(argv=None) -> int:
     # From step 7 the manifest is read, never regenerated. Reading the mutable
     # working copy would let an edit to the manifest make a broken tree look
     # valid, which is the failure this whole freeze exists to prevent.
+    frozen_exists = bool(sh("git", "tag", "-l", FREEZE_TAG).strip())
     ref = args.frozen_ref
-    if ref is None:
-        tags = sh("git", "tag", "-l", "reorg-pre-move-v1").strip()
-        if tags:
+
+    if ref is not None:
+        # Resolve both to commits and require equality. Accepting the ref as
+        # given would let --frozen-ref HEAD validate against whatever is
+        # currently checked out, which is exactly what the freeze prevents.
+        supplied = sh("git", "rev-parse", f"{ref}^{{commit}}").strip()
+        if not frozen_exists:
+            raise SystemExit(f"--frozen-ref given but {FREEZE_TAG} does not "
+                             f"exist yet; the manifest is not frozen.")
+        frozen = sh("git", "rev-parse", f"{FREEZE_TAG}^{{commit}}").strip()
+        if supplied != frozen:
             raise SystemExit(
-                "reorg-pre-move-v1 exists; pass --frozen-ref reorg-pre-move-v1 "
-                "so validation reads the frozen manifest rather than the "
-                "working copy.")
+                f"--frozen-ref {ref} resolves to {supplied[:12]}, but "
+                f"{FREEZE_TAG} is {frozen[:12]}. Only the frozen manifest may "
+                f"be validated against.")
+    elif frozen_exists:
+        raise SystemExit(
+            f"{FREEZE_TAG} exists; pass --frozen-ref {FREEZE_TAG} so validation "
+            f"reads the frozen manifest rather than the working copy.")
+
+    if ref is None:
         text = (root / args.manifest).read_text(encoding="utf-8")
         source = f"{args.manifest} (working copy; no freeze tag yet)"
     else:

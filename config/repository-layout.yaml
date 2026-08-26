@@ -255,61 +255,97 @@ components:
 
 # Path allowances: literal path occurrences that are correct as written.
 #
-# Each carries an id, what it matches, a category, a justification, an owner,
-# and a lifecycle: `permanent: true` or `remove_after_wave`. Without the
-# lifecycle fields the step 6 overlap, ownership and expiry checks have nothing
-# to check, and the allowlist becomes the place stale entries accumulate.
+# `file` is where the occurrence lives. `literal` is the path string that
+# appears there — one entry per occurrence, so a checker can prove zero-match,
+# complete coverage and non-overlap mechanically. The earlier version put the
+# containing file in `match`, which named neither the occurrence nor a pattern
+# and so could not support any of those checks.
+#
+# `owner` names a component id from this file, or `unowned` where no component
+# is responsible.
+#
+# Lifecycle: `permanent: true`, or `remove_after_wave` naming the wave after
+# which the allowance must be gone. Step 6 checks that every allowance matches
+# at least one real occurrence, every literal-path occurrence outside the
+# resolver is covered by exactly one allowance, and no expired allowance
+# survives its wave.
 
 path_allowances:
 
   - id: cco-manifest-generator-path
-    match: BFO/imports/cco-valuenet-extract.manifest.json
+    file: BFO/imports/cco-valuenet-extract.manifest.json
+    literal: BFO/remediation/generate_cco_extract.py
     field: generated_by.script
     category: generated-metadata
     owner: tool.generate-cco-extract
     justification: >-
       Asserts where the generator IS, so a stale value is false rather than
-      merely old. Regenerated in the BFO wave when the generator moves to
-      tools/bfo/.
+      merely old. Regenerated in the BFO wave when the generator moves.
     permanent: false
     remove_after_wave: bfo
 
-  - id: run1-reconciliation-historical-paths
-    match: MAREP_RUN1_RECONCILIATION.yaml
-    field: evidence source paths
+  - id: run1-reconciliation-state-path
+    file: MAREP_RUN1_RECONCILIATION.yaml
+    literal: examples/_run/RUN1_STATE.yaml
+    field: state
     category: historical-record
-    owner: docs.marep.runs
+    owner: unowned
     justification: >-
-      Records where files WERE when Run 1 observed them. Rewriting would
+      Records where the state file WAS when Run 1 observed it. Rewriting would
       falsify the audit trail the reconciliation model depends on.
     permanent: true
 
-  - id: run3-reconciliation-historical-paths
-    match: MAREP_RUN3_RECONCILIATION.yaml
-    field: evidence source paths
+  - id: run1-reconciliation-test-path
+    file: MAREP_RUN1_RECONCILIATION.yaml
+    literal: tests/test_ontology_artifacts.py
+    field: findings[].evidence
     category: historical-record
-    owner: docs.marep.runs
+    owner: unowned
+    justification: >-
+      Names the test that held the invariant at the time of writing. The test
+      moves in the tests wave; this sentence describes the past.
+    permanent: true
+
+  - id: run3-reconciliation-state-path
+    file: MAREP_RUN3_RECONCILIATION.yaml
+    literal: examples/_run/RUN3_STATE.yaml
+    field: state
+    category: historical-record
+    owner: unowned
     justification: as above, for Run 3
     permanent: true
 
-  - id: manifest-builder-destination-tables
-    match: ValueNet_code/build_move_manifest.py
+  - id: manifest-builder-exact-table
+    file: ValueNet_code/build_move_manifest.py
+    pattern: "\"(BFO|ValueNet_code|tests|marep|examples|docs|ontology|tools|config)/"
     field: EXACT, DIR_PREFIXES, NAME_PREFIXES, AUTHORED_AT_TARGET
     category: bootstrap
     owner: tool.build-move-manifest
     justification: >-
       The builder defines the mapping and cannot resolve paths through a
-      contract it is producing.
+      contract it is producing. A pattern rather than a literal, because the
+      table names every source and destination in the repository.
     permanent: true
 
-  - id: folk-aligned-generated-header
-    match: folk_aligned.ttl
-    field: GENERATED FILE header
+  - id: folk-aligned-generated-header-source
+    file: folk_aligned.ttl
+    literal: ThatsAllFolks/folk.ttl
+    field: GENERATED FILE header, Source
     category: generated-metadata
     owner: tool.generate-folk-aligned
     justification: >-
-      Names its source and generator so nobody edits it by hand. Regenerated
-      in the original-valuenet wave; its byte hash changes and its canonical
-      digest does not.
+      Names its source so nobody edits the generated file by hand. The source
+      is RETAIN, so this literal does not change.
+    permanent: true
+
+  - id: folk-aligned-generated-header-generator
+    file: folk_aligned.ttl
+    literal: ValueNet_code/generate_folk_aligned.py
+    field: GENERATED FILE header, Generator
+    category: generated-metadata
+    owner: tool.generate-folk-aligned
+    justification: >-
+      Names its generator. Regenerated in the original-valuenet wave; the byte
+      hash changes and the canonical digest does not.
     permanent: false
     remove_after_wave: original-valuenet

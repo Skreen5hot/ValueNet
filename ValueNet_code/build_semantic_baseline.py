@@ -104,7 +104,60 @@ def corpus_measures(root: Path) -> dict:
             "value": len({o for _, _, o in trig}),
             "definition": "distinct objects of vcvf:triggers",
         },
+        # The counts above cannot detect a semantic change that preserves
+        # them — a renamed class, a re-pointed subClassOf, a swapped literal.
+        # That is precisely the failure this baseline exists to catch, so the
+        # merged graph gets a canonical digest of its own.
+        "merged_ground_sha256": {
+            "value": _ground_digest(g),
+            "definition": "SHA-256 over sorted N-Triples of every triple with "
+                          "no blank node. Catches a renamed class, a re-pointed "
+                          "subClassOf, a swapped literal — changes the counts "
+                          "cannot see.",
+        },
+        "merged_bnode_shape": {
+            "value": _bnode_shape(g),
+            "definition": "blank-node count, triples touching one, and a digest "
+                          "over their predicate multiset. Full canonicalization "
+                          "of 104,763 triples measured at about 29 minutes, "
+                          "which no per-commit gate would survive; this catches "
+                          "structural change without depending on blank-node "
+                          "identity, which is semantically irrelevant anyway.",
+        },
     }
+
+
+def _graph_digest(graph) -> str:
+    """Full canonicalization. Affordable only for small graphs: 330 triples
+    take 0.12s and 5,910 take 23s, and the cost grows worse than linearly."""
+    from rdflib.compare import to_canonical_graph
+    lines = sorted(to_canonical_graph(graph).serialize(format="nt").splitlines())
+    return hashlib.sha256("\n".join(lines).encode()).hexdigest()
+
+
+def _ground_digest(graph) -> str:
+    import rdflib
+    lines = sorted(
+        f"{s.n3()} {p.n3()} {o.n3()} ."
+        for s, p, o in graph
+        if not any(isinstance(t, rdflib.BNode) for t in (s, p, o)))
+    return hashlib.sha256("\n".join(lines).encode()).hexdigest()
+
+
+def _bnode_shape(graph) -> dict:
+    import collections
+    import rdflib
+    bnodes, touching, preds = set(), 0, collections.Counter()
+    for s, p, o in graph:
+        hit = [t for t in (s, o) if isinstance(t, rdflib.BNode)]
+        if hit:
+            touching += 1
+            bnodes.update(hit)
+            preds[str(p)] += 1
+    digest = hashlib.sha256(
+        "\n".join(f"{k} {v}" for k, v in sorted(preds.items())).encode()).hexdigest()
+    return {"blank_nodes": len(bnodes), "triples_touching": touching,
+            "predicate_multiset_sha256": digest}
 
 
 def reasoner_measures(root: Path) -> dict:
@@ -133,7 +186,27 @@ def reasoner_measures(root: Path) -> dict:
             "value": int(metrics["unsatisfiable_classes"].value),
             "definition": "unsatisfiable named classes",
         },
+        # The scope is the thing that silently shrank once already. A digest
+        # over exactly what HermiT loads catches a scope change that leaves
+        # the class count intact.
+        "bfo_scope_canonical_sha256": {
+            "value": _scope_digest(),
+            "definition": "SHA-256 over sorted N-Triples of the canonicalized "
+                          "union of layout.reasoner_scope()",
+        },
+        "bfo_scope_files": {
+            "value": len(layout.reasoner_scope()),
+            "definition": "files the layout contract declares as the HermiT scope",
+        },
     }
+
+
+def _scope_digest() -> str:
+    import rdflib
+    g = rdflib.Graph()
+    for p in layout.reasoner_scope():
+        g.parse(str(p))
+    return _graph_digest(g)
 
 
 def artifact_digests(root: Path) -> dict:
@@ -174,6 +247,13 @@ def test_baseline(root: Path) -> dict:
         [sys.executable, "-m", "pytest", "--collect-only", "-q",
          "-m", "slow or not slow"],
         capture_output=True, text=True, cwd=str(root))
+    if r.returncode != 0:
+        # A collection error still prints the node ids gathered before it
+        # failed. Accepting that partial list would write a smaller baseline
+        # and call it the truth.
+        raise SystemExit("pytest collection failed; refusing to write a "
+                         "baseline from a partial list.\n"
+                         + r.stderr.strip()[:2000])
     ids = [ln.strip() for ln in r.stdout.splitlines()
            if "::" in ln and not ln.startswith(" ")]
     canonical = sorted(os.path.basename(i) for i in ids)
@@ -195,8 +275,12 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     root = layout.repository_root()
-    head = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
-                          text=True, cwd=str(root)).stdout.strip()
+    rev = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
+                         text=True, cwd=str(root))
+    if rev.returncode != 0:
+        raise SystemExit("git rev-parse HEAD failed; the baseline must record "
+                         "the commit it describes.\n" + rev.stderr.strip())
+    head = rev.stdout.strip()
 
     baseline = {
         "tool_version": TOOL_VERSION,

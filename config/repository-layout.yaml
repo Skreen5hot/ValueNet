@@ -58,24 +58,50 @@ components:
     moves_to: null
     role: generated-artifact
     generated_from: original-valuenet.folk-source
-    generator: tools.generate-folk-aligned
+    generator: tool.generate-folk-aligned
 
   # ---- BFO-aligned ValueNet. Moves in wave 7. ----
+  #
+  # Corpus grouping is prefix-based, not directory-based, and the two are not
+  # interchangeable. The hardcoded rule is "BFO/valuenet-" -> bfo-layer and
+  # "BFO/" -> bfo-vendored, so bfo-core.ttl, the CCO extract and the two
+  # vcvf-triggers files are vendored. Modelling bfo.core as the whole BFO
+  # directory moved three of those into bfo-layer the moment the contract was
+  # adopted, silently reclassifying files the reorganization is not supposed to
+  # touch.
+  #
+  # Each component therefore declares the prefixes that select the SAME logical
+  # files before and after the move. `group_prefixes` and `group_prefixes_after`
+  # must denote the same set.
 
   - id: bfo.core
     path: BFO
     moves_to: ontology/bfo/core
     role: corpus-group
     corpus_group: bfo-layer
+    group_prefixes: ["BFO/valuenet-"]
+    group_prefixes_after: ["ontology/bfo/core/", "ontology/bfo/extensions/"]
     description: >-
-      Resolved as a directory today; after wave 7 the modules live under
-      ontology/bfo/core with extensions and shapes alongside.
+      The ValueNet BFO modules. After wave 7 the moral-foundations and
+      moral-epistemics modules sit under extensions/, so both prefixes are
+      required for the group to denote the same files.
+
+  - id: bfo.vendored
+    path: BFO
+    moves_to: ontology/bfo/vendor
+    role: corpus-group
+    corpus_group: bfo-vendored
+    group_prefixes: ["BFO/"]
+    group_prefixes_after: ["ontology/bfo/vendor/", "ontology/bfo/shapes/"]
+    description: >-
+      Everything under BFO/ that is not a valuenet- module: vendored BFO and
+      CCO, the shapes, and the trigger-semantics annotation module. Lower
+      precedence than bfo.core, matching the hardcoded rule order.
 
   - id: bfo.vendor-bfo
     path: BFO/bfo-core.ttl
     moves_to: ontology/bfo/vendor/bfo/bfo-core.ttl
     role: vendored-ontology
-    corpus_group: bfo-vendored
 
   - id: bfo.vendor-cco
     path: BFO/imports
@@ -84,6 +110,32 @@ components:
     description: >-
       The pinned CCO MIREOT extract. Must be in the reasoner scope: omitting it
       silently dropped the BFO layer from 306 classes to 275.
+
+  - id: bfo.reasoner-scope
+    path: BFO
+    moves_to: ontology/bfo
+    role: reasoner-scope
+    members:
+      - BFO/bfo-core.ttl
+      - BFO/valuenet-core.ttl
+      - BFO/valuenet-schwartz-values.ttl
+      - BFO/valuenet-moral-foundations.ttl
+      - BFO/valuenet-folk.ttl
+      - BFO/valuenet-moral-epistemics.ttl
+      - BFO/valuenet-mappings.ttl
+    members_after:
+      - ontology/bfo/vendor/bfo/bfo-core.ttl
+      - ontology/bfo/core/valuenet-core.ttl
+      - ontology/bfo/core/valuenet-schwartz-values.ttl
+      - ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl
+      - ontology/bfo/core/valuenet-folk.ttl
+      - ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl
+      - ontology/bfo/core/valuenet-mappings.ttl
+    plus_directory: bfo.vendor-cco
+    description: >-
+      The exact HermiT scope, listed rather than globbed. The hardcoded list
+      omitted BFO/imports/ and the reasoner dropped from 306 classes to 275
+      while every test stayed green.
 
   - id: bfo.shapes
     path: BFO
@@ -146,3 +198,63 @@ components:
     path: config/reorganization-baseline.json
     moves_to: null
     role: configuration
+
+  # ---- Generators, so a generated artifact's `generator` field resolves. ----
+
+  - id: tool.generate-folk-aligned
+    path: ValueNet_code/generate_folk_aligned.py
+    moves_to: tools/original-valuenet/generate_folk_aligned.py
+    role: generator
+
+  - id: tool.generate-cco-extract
+    path: BFO/remediation/generate_cco_extract.py
+    moves_to: tools/bfo/generate_cco_extract.py
+    role: generator
+
+  - id: tool.build-move-manifest
+    path: ValueNet_code/build_move_manifest.py
+    moves_to: tools/marep/build_move_manifest.py
+    role: generator
+
+  - id: tool.build-semantic-baseline
+    path: ValueNet_code/build_semantic_baseline.py
+    moves_to: tools/marep/build_semantic_baseline.py
+    role: generator
+
+  # ---- Path allowances: occurrences that are correct as literal paths. ----
+
+path_allowances:
+  - path: BFO/imports/cco-valuenet-extract.manifest.json
+    field: generated_by.script
+    value: BFO/remediation/generate_cco_extract.py
+    disposition: regenerate
+    justification: >-
+      Asserts where the generator IS. A stale value is false, so the manifest
+      is regenerated in wave 7 when the generator moves to tools/bfo/.
+  - path: MAREP_RUN1_RECONCILIATION.yaml
+    field: evidence paths
+    value: examples/_run/RUN1_STATE.yaml, tests/test_ontology_artifacts.py
+    disposition: preserve
+    justification: >-
+      Records where files WERE when a run observed them. Rewriting would
+      falsify the audit trail the reconciliation model depends on.
+  - path: MAREP_RUN3_RECONCILIATION.yaml
+    field: evidence paths
+    value: examples/_run/RUN3_STATE.yaml
+    disposition: preserve
+    justification: historical record, as above
+  - path: ValueNet_code/build_move_manifest.py
+    field: EXACT, DIR_PREFIXES, NAME_PREFIXES
+    value: the destination tables
+    disposition: allow
+    justification: >-
+      The builder defines the mapping; it cannot resolve paths through a
+      contract it is producing.
+  - path: folk_aligned.ttl
+    field: generated header
+    value: ThatsAllFolks/folk.ttl, ValueNet_code/generate_folk_aligned.py
+    disposition: regenerate
+    justification: >-
+      The header names its source and generator so nobody edits it by hand.
+      Regenerated in wave 9; its byte hash changes and its canonical digest
+      does not.

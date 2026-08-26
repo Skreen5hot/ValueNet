@@ -4,18 +4,19 @@ The Original ValueNet corpus is **not relocated** by the repository
 reorganization. Its files stay at the paths `upstream/main` uses, so the fork
 remains mergeable. This index tells you where they are; it does not move them.
 
-`main` is 53 commits ahead of upstream and 0 behind.
-
 ---
 
 ## Why these paths do not move
 
-145 of these files are upstream-derived and locally repaired. Relocating them
-would raise conflict risk on every future merge from
-`StenDoipanni/ValueNet`, in exchange for a tidier tree. The reorganization takes
-the opposite trade: fork-authored material moves, upstream-derived material
-stays, and the boundary is recorded as data in `config/move-manifest.yaml`
-rather than implied by directory names.
+Most of these files are upstream-derived and locally repaired. Relocating them
+would raise conflict risk on every future merge from `StenDoipanni/ValueNet`, in
+exchange for a tidier tree. Current per-category counts live in
+`config/move-manifest.yaml`, which is generated; they are not copied here,
+because a hand-copied count goes stale on the next commit.
+
+The reorganization takes the opposite trade from tidiness: fork-authored
+material moves, upstream-derived material stays, and the boundary is recorded as
+data rather than implied by directory names.
 
 Naming a directory `upstream/` would have asserted a provenance that is no
 longer true of much of this content — `ThatsAllFolks/` was extensively repaired

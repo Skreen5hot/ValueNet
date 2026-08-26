@@ -58,6 +58,11 @@ class Component:
     generator: str | None = None
     pattern: str | None = None
     expect: str | None = None
+    group_prefixes: list | None = None
+    group_prefixes_after: list | None = None
+    members: list | None = None
+    members_after: list | None = None
+    plus_directory: str | None = None
     description: str = ""
 
     def resolve(self, root: Path | None = None) -> Path:
@@ -119,17 +124,58 @@ def components(role: str | None = None) -> list[Component]:
 def corpus_groups() -> dict[str, str]:
     """Path prefix -> group name, for the MAREP corpus source.
 
-    Replaces the hardcoded `GROUPS` tuple. Emitted with the longest prefix
-    first, because `BFO/valuenet-` must win over `BFO/`.
+    Prefix-based, not directory-based, because the hardcoded rule it replaces
+    is `BFO/valuenet-` -> bfo-layer and `BFO/` -> bfo-vendored. Deriving the
+    prefix from a component's directory reclassified the CCO extract and both
+    vcvf-triggers files out of bfo-vendored the moment the contract was
+    adopted — three files silently regrouped by a change meant to move nothing.
+
+    A component declares the prefixes selecting the same logical files before
+    and after the move, and both sets are emitted: during migration some files
+    sit at each, and a prefix matching nothing costs nothing.
     """
-    root = repository_root()
     out: dict[str, str] = {}
     for c in _load().values():
         if not c.corpus_group:
             continue
-        p = c.resolve(root)
-        out[p.relative_to(root).as_posix()] = c.corpus_group
+        befores = c.group_prefixes or [c.path.rstrip("/") + "/"]
+        afters = c.group_prefixes_after or ([c.moves_to.rstrip("/") + "/"]
+                                            if c.moves_to else [])
+        for prefix in list(befores) + list(afters):
+            out[prefix] = c.corpus_group
     return dict(sorted(out.items(), key=lambda kv: -len(kv[0])))
+
+
+def reasoner_scope() -> list[Path]:
+    """Exactly the files HermiT loads, listed rather than globbed.
+
+    The hardcoded list omitted `BFO/imports/` and the reasoner silently dropped
+    from 306 classes to 275 while every test stayed green.
+    """
+    root = repository_root()
+    c = component("bfo.reasoner-scope")
+    out: list[Path] = []
+    for before, after in zip(c.members or [], c.members_after or []):
+        for candidate in ((root / after), (root / before)):
+            if candidate.exists():
+                out.append(candidate)
+                break
+    if c.plus_directory:
+        d = component(c.plus_directory).resolve(root)
+        out.extend(sorted(d.glob("*.ttl")))
+    return out
+
+
+def path_allowances() -> list[dict]:
+    """Occurrences that are correct as literal paths, each with its reason.
+
+    Two dispositions that look alike and are not: `regenerate` means the value
+    asserts where something IS, so a stale value is false; `preserve` means it
+    records where something WAS, so rewriting it would falsify a record.
+    """
+    import yaml
+    doc = yaml.safe_load((repository_root() / CONTRACT).read_text(encoding="utf-8"))
+    return list(doc.get("path_allowances") or [])
 
 
 def query_documents() -> list[Component]:

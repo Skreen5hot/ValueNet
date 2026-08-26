@@ -1307,6 +1307,12 @@ components:
   generated_from: null
   destination: tools/original-valuenet/settle_trigger_targets.py
   wave: original-valuenet
+- path: ValueNet_code/validate_migration_state.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tools/marep/validate_migration_state.py
+  wave: marep
 - path: ValueNet_import_schema_def.png
   origin: upstream-valuenet
   maintenance: unchanged
@@ -1345,8 +1351,8 @@ components:
   wave: null
 - path: config/reorganization-baseline.json
   origin: fork
-  maintenance: unchanged
-  generated_from: null
+  maintenance: generated
+  generated_from: tool:build-semantic-baseline
   destination: RETAIN
   wave: null
 - path: config/repository-layout.yaml
@@ -1417,7 +1423,7 @@ components:
   wave: marep
 - path: folk_aligned.ttl
   origin: upstream-valuenet
-  maintenance: locally-modified
+  maintenance: generated
   generated_from: tool:generate-folk-aligned
   destination: RETAIN
   wave: null

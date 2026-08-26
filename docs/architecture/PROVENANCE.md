@@ -22,8 +22,27 @@ maintenance : unchanged | locally-modified | generated
 happened to it here*. A file can be upstream-derived and generated; external and
 unchanged; fork-authored and generated.
 
-| origin | maintenance | files | example |
-|---|---|---:|---|
+Current per-category counts live in `config/move-manifest.yaml` and are not
+copied here: a hand-written total went stale within one commit, claiming 321
+while the tree held 327. Run
+`python ValueNet_code/build_move_manifest.py` for the live figures.
+
+| origin | maintenance | typical member |
+|---|---|---|
+| `upstream-valuenet` | `locally-modified` | the repaired folk fragments |
+| `upstream-valuenet` | `unchanged` | `vale2024/`, the diagrams |
+| `upstream-valuenet` | `generated` | `folk_aligned.ttl` — upstream content, generated here |
+| `fork` | `unchanged` | `marep/`, the BFO modules, the tests |
+| `fork` | `generated` | `config/move-manifest.yaml`, the semantic baseline |
+| `external-cco` | `generated` | the pinned CCO MIREOT extract |
+| `external-bfo` | `unchanged` | `bfo-core.ttl` |
+
+`generated` overrides the origin-specific default. `folk_aligned.ttl` is
+upstream-derived content that is generated here; calling it `locally-modified`
+describes how it arrived rather than how it is maintained, and invites someone
+to edit it by hand.
+
+---|---|---:|---|
 | `upstream-valuenet` | `locally-modified` | 145 | the 124 repaired folk fragments |
 | `fork` | `unchanged` | 116 | `marep/`, the BFO modules, the tests |
 | `upstream-valuenet` | `unchanged` | 56 | `vale2024/`, the diagrams |
@@ -39,9 +58,11 @@ unchanged; fork-authored and generated.
 **Anything whose origin is `upstream-valuenet` stays at its current path**,
 whatever its maintenance state, documentation assets included.
 
-`main` is 53 commits ahead of `upstream/main` and 0 behind. Retaining those
-paths keeps the fork mergeable. Moving 145 locally-repaired upstream files would
-raise conflict risk on every future merge, for tidiness.
+`main` is ahead of `upstream/main` and not behind it, so retaining those paths
+keeps the fork mergeable. Moving the locally-repaired upstream files would raise
+conflict risk on every future merge, for tidiness. The exact divergence count
+changes with every commit and is deliberately not recorded here; run
+`git rev-list --count upstream/main..HEAD` for the current figure.
 
 That rule settles the cases that looked ambiguous:
 

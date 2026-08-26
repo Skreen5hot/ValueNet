@@ -1,6 +1,6 @@
 {
   "tool_version": 1,
-  "captured_at_commit": "7d44e30b7ff85bcffc3c64d35816413310ad92d0",
+  "captured_at_commit": "1972aac0560831998b82d0a8051003ce3125c28b",
   "reproduce": "python ValueNet_code/build_semantic_baseline.py",
   "corpus": {
     "files_discovered": {
@@ -30,6 +30,18 @@
     "distinct_trigger_objects": {
       "value": 147,
       "definition": "distinct objects of vcvf:triggers"
+    },
+    "merged_ground_sha256": {
+      "value": "49e3da64f90dce3c263604fd03a52a9fe603f023085054cc376c33d66f13b5cd",
+      "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
+    },
+    "merged_bnode_shape": {
+      "value": {
+        "blank_nodes": 8365,
+        "triples_touching": 30040,
+        "predicate_multiset_sha256": "f569f647de15f02c8368f00672aab54ac6fe9256e368bec3028224f968e11b76"
+      },
+      "definition": "blank-node count, triples touching one, and a digest over their predicate multiset. Full canonicalization of 104,763 triples measured at about 29 minutes, which no per-commit gate would survive; this catches structural change without depending on blank-node identity, which is semantically irrelevant anyway."
     }
   },
   "reasoner": {
@@ -52,6 +64,14 @@
     "bfo_layer_unsatisfiable": {
       "value": 0,
       "definition": "unsatisfiable named classes"
+    },
+    "bfo_scope_canonical_sha256": {
+      "value": "fe807a179ba08741f90efe8a42013ed826a321c96b339ba10a65cfe8c43cf13c",
+      "definition": "SHA-256 over sorted N-Triples of the canonicalized union of layout.reasoner_scope()"
+    },
+    "bfo_scope_files": {
+      "value": 8,
+      "definition": "files the layout contract declares as the HermiT scope"
     }
   },
   "artifacts": {

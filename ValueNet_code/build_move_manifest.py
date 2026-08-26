@@ -78,6 +78,7 @@ GENERATED = {
     "BFO/imports/cco-valuenet-extract.ttl": "tool:generate-cco-extract",
     "BFO/imports/cco-valuenet-extract.manifest.json": "tool:generate-cco-extract",
     "config/move-manifest.yaml": "tool:build-move-manifest",
+    "config/reorganization-baseline.json": "tool:build-semantic-baseline",
 }
 
 #: Upstream descent git cannot detect, asserted with its reason. Rename
@@ -97,6 +98,16 @@ RETAINED_CONFIG = {".gitignore", "pytest.ini", "README.md",
                    "config/reorganization-baseline.json",
                    "config/path-sensitive-inventory.md"}
 RETAINED_CONFIG_DIRS = (".github/",)
+
+#: Files authored directly at their final location, so they have nowhere to go.
+#: Listed explicitly rather than matched by a docs/ontology/tools/config prefix:
+#: a blanket rule would retain any future file under those trees and defeat the
+#: 0-unassigned gate, which is the manifest's whole purpose. A new authored file
+#: must be added here deliberately.
+AUTHORED_AT_TARGET = {
+    "docs/architecture/PROVENANCE.md",
+    "docs/original-valuenet/README.md",
+}
 
 #: Exact source -> destination. Explicit beats clever: the family-prefix
 #: approach silently ate basenames. Every entry preserves its filename unless a
@@ -130,6 +141,8 @@ EXACT: dict[str, str] = {
     "ValueNet_code/build_move_manifest.py": "tools/marep/build_move_manifest.py",
     "ValueNet_code/build_semantic_baseline.py":
         "tools/marep/build_semantic_baseline.py",
+    "ValueNet_code/validate_migration_state.py":
+        "tools/marep/validate_migration_state.py",
     "REPO_REORGANIZATION_PLAN.md": "docs/architecture/REPO_REORGANIZATION_PLAN.md",
 }
 
@@ -216,9 +229,7 @@ def destination(path: str, origin: str) -> str:
         return "RETAIN"
     if path in RETAINED_CONFIG or path.startswith(RETAINED_CONFIG_DIRS):
         return "RETAIN"
-    # A file authored directly at its target location has nowhere to go. The
-    # step 3 index documents are written into docs/ rather than moved there.
-    if path.startswith(("docs/", "ontology/", "tools/", "config/")):
+    if path in AUTHORED_AT_TARGET:
         return "RETAIN"
     if path in EXACT:
         return EXACT[path]
@@ -273,6 +284,15 @@ def validate(rows: list[dict]) -> list[str]:
 
 
 def classify(path: str, up: set[str]) -> tuple[str, str]:
+    """Origin and maintenance are orthogonal, so `generated` overrides both
+    origin-specific defaults. folk_aligned.ttl is upstream-derived content that
+    is generated; calling it locally-modified describes how it got here rather
+    than how it is maintained, and invites someone to edit it by hand."""
+    if path in GENERATED:
+        origin = ("upstream-valuenet" if path in up or _from_upstream(path, up)
+                  else "external-cco" if path.startswith("BFO/imports/")
+                  else "fork")
+        return origin, "generated"
     if path in up:
         changed = sh("git", "diff", "--stat", "upstream/main", "HEAD", "--", path)
         return "upstream-valuenet", ("locally-modified" if changed.strip() else "unchanged")

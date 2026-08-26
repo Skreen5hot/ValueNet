@@ -1,6 +1,6 @@
 {
-  "tool_version": 1,
-  "captured_at_commit": "1972aac0560831998b82d0a8051003ce3125c28b",
+  "tool_version": 2,
+  "captured_at_commit": "6e8d4bc3ada24ab5ea0c04bb9855ee287382e5e4",
   "reproduce": "python ValueNet_code/build_semantic_baseline.py",
   "corpus": {
     "files_discovered": {
@@ -39,9 +39,10 @@
       "value": {
         "blank_nodes": 8365,
         "triples_touching": 30040,
-        "predicate_multiset_sha256": "f569f647de15f02c8368f00672aab54ac6fe9256e368bec3028224f968e11b76"
+        "flattened_sha256": "d72e4c82771cb57f09bfe715f09a0cffc0e0036666d7999a8e080491e169fe44",
+        "node_signature_sha256": "7c7cced6804eb3d2aefb4e2aa87391e7a8ab499a39863a30193a79a52d6119d8"
       },
-      "definition": "blank-node count, triples touching one, and a digest over their predicate multiset. Full canonicalization of 104,763 triples measured at about 29 minutes, which no per-commit gate would survive; this catches structural change without depending on blank-node identity, which is semantically irrelevant anyway."
+      "definition": "identity-invariant digest over the blank-node subgraph: flattened triples with blank nodes as a constant token, plus per-node degree and predicate signatures. Catches changed neighbours and changed topology; ignores relabelling. Full canonicalization of 104,763 triples measured at about 29 minutes, which no per-commit gate would survive."
     }
   },
   "reasoner": {

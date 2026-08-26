@@ -136,7 +136,7 @@ def corpus_groups() -> dict[str, str]:
     """
     out: dict[str, str] = {}
     for c in _load().values():
-        if not c.corpus_group:
+        if not c.corpus_group or c.members:
             continue
         befores = c.group_prefixes or [c.path.rstrip("/") + "/"]
         afters = c.group_prefixes_after or ([c.moves_to.rstrip("/") + "/"]
@@ -144,6 +144,36 @@ def corpus_groups() -> dict[str, str]:
         for prefix in list(befores) + list(afters):
             out[prefix] = c.corpus_group
     return dict(sorted(out.items(), key=lambda kv: -len(kv[0])))
+
+
+def corpus_group_members() -> dict[str, str]:
+    """Exact path -> group, checked before any prefix.
+
+    The BFO groups cannot be expressed as destination prefixes. Membership
+    follows the FILENAME today — "BFO/valuenet-" is bfo-layer — while the
+    destinations sort by ROLE, so the two valuenet SHACL files land under
+    shapes/ beside the vendored vcvf-triggers-shapes.ttl. No prefix separates
+    them. The prefix version reported zero group changes against the unmoved
+    tree and silently reclassified three files the moment they moved.
+    """
+    out: dict[str, str] = {}
+    for c in _load().values():
+        if not (c.corpus_group and c.members):
+            continue
+        for p in list(c.members) + list(c.members_after or []):
+            out[p] = c.corpus_group
+    return out
+
+
+def group_for(rel_path: str) -> str:
+    """The corpus group of a repository-relative path, exact members first."""
+    members = corpus_group_members()
+    if rel_path in members:
+        return members[rel_path]
+    for prefix, group in corpus_groups().items():
+        if rel_path.startswith(prefix):
+            return group
+    return "repository-root"
 
 
 def reasoner_scope() -> list[Path]:

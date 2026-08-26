@@ -39,13 +39,26 @@ def tracked() -> set[str]:
     return {p for p in sh("git", "ls-files").split("\n") if p}
 
 
+def _norm(text: str) -> str:
+    """Line-ending agnostic comparison. This repository is CRLF in the working
+    tree and LF in the index, so a raw comparison always reports a difference."""
+    return text.replace("\r\n", "\n")
+
+
 def validate(rows: list[dict], files: set[str], current_wave: str | None) -> list[str]:
     problems: list[str] = []
     represented: set[str] = set()
     destinations: dict[str, str] = {}
 
+    # An unknown wave used to fall through to an empty completed list, which
+    # silently disabled ordering enforcement — the check most likely to be
+    # skipped by a typo was the one that reported nothing when skipped. The CLI
+    # now constrains the value, so reaching here with an unknown one is a bug.
+    if current_wave is not None and current_wave not in WAVE_ORDER:
+        raise ValueError(f"unknown wave {current_wave!r}; expected one of "
+                         + ", ".join(WAVE_ORDER))
     done = (WAVE_ORDER[:WAVE_ORDER.index(current_wave) + 1]
-            if current_wave in WAVE_ORDER else [])
+            if current_wave else [])
 
     for r in rows:
         src, dest, wave = r["path"], r["destination"], r.get("wave")
@@ -74,11 +87,14 @@ def validate(rows: list[dict], files: set[str], current_wave: str | None) -> lis
         destinations[dest] = src
 
         # Wave ordering: a completed move must belong to a wave already run.
-        if current_wave:
+        # With no wave given this still applies, and `done` is empty — so any
+        # completed move is a violation. Omitting --wave must mean zero moves
+        # completed, not "skip the check".
+        if True:
             if dest_here and wave not in done:
                 problems.append(
                     f"{src}: moved to {dest} but wave {wave!r} has not run "
-                    f"(current: {current_wave})")
+                    f"(current: {current_wave or 'none'})")
             if src_here and wave in done:
                 problems.append(
                     f"{src}: wave {wave!r} has run but the file is still at its "
@@ -91,16 +107,43 @@ def validate(rows: list[dict], files: set[str], current_wave: str | None) -> lis
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--wave", default=None,
-                    help="the most recent wave completed; omit before any move")
+    ap.add_argument("--wave", default=None, choices=WAVE_ORDER,
+                    help="the most recent wave completed; omit before any move, "
+                         "which asserts that no move has completed")
+    ap.add_argument("--frozen-ref", default=None,
+                    help="git ref holding the frozen manifest, e.g. "
+                         "reorg-pre-move-v1. Required once the tag exists.")
     ap.add_argument("--manifest", default="config/move-manifest.yaml")
     args = ap.parse_args(argv)
 
     import yaml
     root = layout.repository_root()
-    doc = yaml.safe_load((root / args.manifest).read_text(encoding="utf-8"))
+
+    # From step 7 the manifest is read, never regenerated. Reading the mutable
+    # working copy would let an edit to the manifest make a broken tree look
+    # valid, which is the failure this whole freeze exists to prevent.
+    ref = args.frozen_ref
+    if ref is None:
+        tags = sh("git", "tag", "-l", "reorg-pre-move-v1").strip()
+        if tags:
+            raise SystemExit(
+                "reorg-pre-move-v1 exists; pass --frozen-ref reorg-pre-move-v1 "
+                "so validation reads the frozen manifest rather than the "
+                "working copy.")
+        text = (root / args.manifest).read_text(encoding="utf-8")
+        source = f"{args.manifest} (working copy; no freeze tag yet)"
+    else:
+        text = sh("git", "show", f"{ref}:{args.manifest}")
+        working = (root / args.manifest).read_text(encoding="utf-8")
+        if _norm(working) != _norm(text):
+            print(f"  note: working manifest differs from {ref}; "
+                  f"validating against {ref}")
+        source = f"{args.manifest}@{ref}"
+
+    doc = yaml.safe_load(text)
     rows = doc["components"]
     files = tracked()
+    print(f"  manifest source: {source}")
 
     problems = validate(rows, files, args.wave)
     moves = [r for r in rows if r["destination"] != "RETAIN"]

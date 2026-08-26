@@ -35,7 +35,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from marep import layout  # noqa: E402
 
-TOOL_VERSION = 1
+#: Bumped when the schema or any digest definition changes, so a baseline
+#: cannot be compared against one computed a different way. Version 2 replaced
+#: the merged-corpus canonical digest with a ground digest plus blank-node
+#: fingerprint, and replaced that fingerprint's predicate-frequency hash with
+#: flattened-triple and node-signature digests.
+TOOL_VERSION = 2
 
 
 def canonical_digest(path: Path) -> str:
@@ -106,8 +111,7 @@ def corpus_measures(root: Path) -> dict:
         },
         # The counts above cannot detect a semantic change that preserves
         # them — a renamed class, a re-pointed subClassOf, a swapped literal.
-        # That is precisely the failure this baseline exists to catch, so the
-        # merged graph gets a canonical digest of its own.
+        # That is precisely the failure this baseline exists to catch.
         "merged_ground_sha256": {
             "value": _ground_digest(g),
             "definition": "SHA-256 over sorted N-Triples of every triple with "
@@ -117,12 +121,13 @@ def corpus_measures(root: Path) -> dict:
         },
         "merged_bnode_shape": {
             "value": _bnode_shape(g),
-            "definition": "blank-node count, triples touching one, and a digest "
-                          "over their predicate multiset. Full canonicalization "
+            "definition": "identity-invariant digest over the blank-node "
+                          "subgraph: flattened triples with blank nodes as a "
+                          "constant token, plus per-node degree and predicate "
+                          "signatures. Catches changed neighbours and changed "
+                          "topology; ignores relabelling. Full canonicalization "
                           "of 104,763 triples measured at about 29 minutes, "
-                          "which no per-commit gate would survive; this catches "
-                          "structural change without depending on blank-node "
-                          "identity, which is semantically irrelevant anyway.",
+                          "which no per-commit gate would survive.",
         },
     }
 
@@ -145,19 +150,66 @@ def _ground_digest(graph) -> str:
 
 
 def _bnode_shape(graph) -> dict:
+    """Identity-invariant digest over the blank-node subgraph.
+
+    An earlier version hashed only blank-node counts, touching-triple counts
+    and predicate frequencies. That is not semantically protective: rewriting
+
+        _:x owl:onProperty ex:p ; owl:someValuesFrom ex:A .
+
+    to different property and class IRIs leaves every one of those numbers
+    unchanged, because the predicates are still `owl:onProperty` and
+    `owl:someValuesFrom` — only the objects moved. It lost term values and
+    topology, not merely blank-node identity.
+
+    Two digests instead, both linear, because full canonicalization costs about
+    29 minutes over this corpus and roughly 7s per folk fragment:
+
+    *Flattened triples.* Every blank-node-touching triple with blank nodes
+    replaced by the constant token `_:B`, sorted and hashed. Named terms and
+    literals survive verbatim, so the rewrite above changes the digest. Which
+    blank node is which does not survive, which is the point.
+
+    *Node signatures.* Per blank node, its in-degree, out-degree, and sorted
+    predicate signature, as a multiset. Catches topology change — a triple
+    moved from one blank node to another — that flattening alone would miss.
+    """
     import collections
     import rdflib
-    bnodes, touching, preds = set(), 0, collections.Counter()
+
+    def term(t):
+        return "_:B" if isinstance(t, rdflib.BNode) else t.n3()
+
+    flattened, sigs = [], []
+    out_p = collections.defaultdict(list)
+    in_p = collections.defaultdict(list)
+    bnodes, touching = set(), 0
+
     for s, p, o in graph:
         hit = [t for t in (s, o) if isinstance(t, rdflib.BNode)]
-        if hit:
-            touching += 1
-            bnodes.update(hit)
-            preds[str(p)] += 1
-    digest = hashlib.sha256(
-        "\n".join(f"{k} {v}" for k, v in sorted(preds.items())).encode()).hexdigest()
-    return {"blank_nodes": len(bnodes), "triples_touching": touching,
-            "predicate_multiset_sha256": digest}
+        if not hit:
+            continue
+        touching += 1
+        bnodes.update(hit)
+        flattened.append(f"{term(s)} {p.n3()} {term(o)} .")
+        if isinstance(s, rdflib.BNode):
+            out_p[s].append(str(p))
+        if isinstance(o, rdflib.BNode):
+            in_p[o].append(str(p))
+
+    for b in bnodes:
+        sigs.append("|".join([
+            str(len(in_p[b])), str(len(out_p[b])),
+            ",".join(sorted(out_p[b])), ",".join(sorted(in_p[b]))]))
+
+    return {
+        "blank_nodes": len(bnodes),
+        "triples_touching": touching,
+        "flattened_sha256": hashlib.sha256(
+            "\n".join(sorted(flattened)).encode()).hexdigest(),
+        "node_signature_sha256": hashlib.sha256(
+            "\n".join(sorted(sigs)).encode()).hexdigest(),
+    }
 
 
 def reasoner_measures(root: Path) -> dict:

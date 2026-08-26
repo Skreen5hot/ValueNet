@@ -79,24 +79,54 @@ components:
     moves_to: ontology/bfo/core
     role: corpus-group
     corpus_group: bfo-layer
-    group_prefixes: ["BFO/valuenet-"]
-    group_prefixes_after: ["ontology/bfo/core/", "ontology/bfo/extensions/"]
+    members:
+      - BFO/valuenet-core.ttl
+      - BFO/valuenet-core-shapes.ttl
+      - BFO/valuenet-folk.ttl
+      - BFO/valuenet-mappings.ttl
+      - BFO/valuenet-schwartz-values.ttl
+      - BFO/valuenet-moral-foundations.ttl
+      - BFO/valuenet-moral-epistemics.ttl
+      - BFO/valuenet-moral-epistemics-scenario.ttl
+      - BFO/valuenet-moral-epistemics-shapes.ttl
+    members_after:
+      - ontology/bfo/core/valuenet-core.ttl
+      - ontology/bfo/shapes/valuenet-core-shapes.ttl
+      - ontology/bfo/core/valuenet-folk.ttl
+      - ontology/bfo/core/valuenet-mappings.ttl
+      - ontology/bfo/core/valuenet-schwartz-values.ttl
+      - ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl
+      - ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl
+      - ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl
+      - ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl
     description: >-
-      The ValueNet BFO modules. After wave 7 the moral-foundations and
-      moral-epistemics modules sit under extensions/, so both prefixes are
-      required for the group to denote the same files.
+      Exact membership, not prefixes. The live rule is "BFO/valuenet-" ->
+      bfo-layer, which is a property of the FILENAME; the destinations sort the
+      same files by ROLE, so the two SHACL files land under shapes/ beside
+      vcvf-triggers-shapes.ttl, which is vendored. No prefix over the
+      destination tree can separate them, and the prefix version silently
+      reclassified three files after the move while reporting zero changes
+      against the unmoved tree.
 
   - id: bfo.vendored
     path: BFO
     moves_to: ontology/bfo/vendor
     role: corpus-group
     corpus_group: bfo-vendored
-    group_prefixes: ["BFO/"]
-    group_prefixes_after: ["ontology/bfo/vendor/", "ontology/bfo/shapes/"]
+    members:
+      - BFO/bfo-core.ttl
+      - BFO/imports/cco-valuenet-extract.ttl
+      - BFO/vcvf-triggers-semantics.ttl
+      - BFO/vcvf-triggers-shapes.ttl
+    members_after:
+      - ontology/bfo/vendor/bfo/bfo-core.ttl
+      - ontology/bfo/vendor/cco/cco-valuenet-extract.ttl
+      - ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl
+      - ontology/bfo/shapes/vcvf-triggers-shapes.ttl
     description: >-
-      Everything under BFO/ that is not a valuenet- module: vendored BFO and
-      CCO, the shapes, and the trigger-semantics annotation module. Lower
-      precedence than bfo.core, matching the hardcoded rule order.
+      Everything under BFO/ that is not a valuenet- module. vcvf-triggers-
+      semantics moves under extensions/ and stays vendored; grouping follows
+      the file, not the directory it lands in.
 
   - id: bfo.vendor-bfo
     path: BFO/bfo-core.ttl
@@ -223,38 +253,63 @@ components:
 
   # ---- Path allowances: occurrences that are correct as literal paths. ----
 
+# Path allowances: literal path occurrences that are correct as written.
+#
+# Each carries an id, what it matches, a category, a justification, an owner,
+# and a lifecycle: `permanent: true` or `remove_after_wave`. Without the
+# lifecycle fields the step 6 overlap, ownership and expiry checks have nothing
+# to check, and the allowlist becomes the place stale entries accumulate.
+
 path_allowances:
-  - path: BFO/imports/cco-valuenet-extract.manifest.json
+
+  - id: cco-manifest-generator-path
+    match: BFO/imports/cco-valuenet-extract.manifest.json
     field: generated_by.script
-    value: BFO/remediation/generate_cco_extract.py
-    disposition: regenerate
+    category: generated-metadata
+    owner: tool.generate-cco-extract
     justification: >-
-      Asserts where the generator IS. A stale value is false, so the manifest
-      is regenerated in wave 7 when the generator moves to tools/bfo/.
-  - path: MAREP_RUN1_RECONCILIATION.yaml
-    field: evidence paths
-    value: examples/_run/RUN1_STATE.yaml, tests/test_ontology_artifacts.py
-    disposition: preserve
+      Asserts where the generator IS, so a stale value is false rather than
+      merely old. Regenerated in the BFO wave when the generator moves to
+      tools/bfo/.
+    permanent: false
+    remove_after_wave: bfo
+
+  - id: run1-reconciliation-historical-paths
+    match: MAREP_RUN1_RECONCILIATION.yaml
+    field: evidence source paths
+    category: historical-record
+    owner: docs.marep.runs
     justification: >-
-      Records where files WERE when a run observed them. Rewriting would
+      Records where files WERE when Run 1 observed them. Rewriting would
       falsify the audit trail the reconciliation model depends on.
-  - path: MAREP_RUN3_RECONCILIATION.yaml
-    field: evidence paths
-    value: examples/_run/RUN3_STATE.yaml
-    disposition: preserve
-    justification: historical record, as above
-  - path: ValueNet_code/build_move_manifest.py
-    field: EXACT, DIR_PREFIXES, NAME_PREFIXES
-    value: the destination tables
-    disposition: allow
+    permanent: true
+
+  - id: run3-reconciliation-historical-paths
+    match: MAREP_RUN3_RECONCILIATION.yaml
+    field: evidence source paths
+    category: historical-record
+    owner: docs.marep.runs
+    justification: as above, for Run 3
+    permanent: true
+
+  - id: manifest-builder-destination-tables
+    match: ValueNet_code/build_move_manifest.py
+    field: EXACT, DIR_PREFIXES, NAME_PREFIXES, AUTHORED_AT_TARGET
+    category: bootstrap
+    owner: tool.build-move-manifest
     justification: >-
-      The builder defines the mapping; it cannot resolve paths through a
+      The builder defines the mapping and cannot resolve paths through a
       contract it is producing.
-  - path: folk_aligned.ttl
-    field: generated header
-    value: ThatsAllFolks/folk.ttl, ValueNet_code/generate_folk_aligned.py
-    disposition: regenerate
+    permanent: true
+
+  - id: folk-aligned-generated-header
+    match: folk_aligned.ttl
+    field: GENERATED FILE header
+    category: generated-metadata
+    owner: tool.generate-folk-aligned
     justification: >-
-      The header names its source and generator so nobody edits it by hand.
-      Regenerated in wave 9; its byte hash changes and its canonical digest
-      does not.
+      Names its source and generator so nobody edits it by hand. Regenerated
+      in the original-valuenet wave; its byte hash changes and its canonical
+      digest does not.
+    permanent: false
+    remove_after_wave: original-valuenet

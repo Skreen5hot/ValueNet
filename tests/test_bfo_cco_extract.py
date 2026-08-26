@@ -16,12 +16,12 @@ from rdflib.namespace import OWL, RDF, RDFS
 # parents. This file moves one level deeper in the tests wave, at which
 # point parents[1] resolves to tests/ and every path below it is wrong
 # without raising anything.
-from marep.layout import repository_root  # noqa: E402
+from marep.layout import bfo_artifact, repository_root  # noqa: E402
 
 ROOT = repository_root()
-EXTRACT = ROOT / "BFO" / "imports" / "cco-valuenet-extract.ttl"
-MANIFEST = ROOT / "BFO" / "imports" / "cco-valuenet-extract.manifest.json"
-SCHEMA = ROOT / "BFO" / "remediation" / "extract-manifest.schema.json"
+EXTRACT = bfo_artifact("cco-valuenet-extract.ttl")
+MANIFEST = bfo_artifact("cco-valuenet-extract.manifest.json")
+SCHEMA = bfo_artifact("extract-manifest.schema.json")
 
 CCO_AGENT = URIRef("https://www.commoncoreontologies.org/ont00001017")
 CCO_AGENT_CAPABILITY = URIRef("https://www.commoncoreontologies.org/ont00001379")

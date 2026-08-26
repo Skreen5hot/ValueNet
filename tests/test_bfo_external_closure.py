@@ -12,10 +12,9 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 # parents. This file moves one level deeper in the tests wave, at which
 # point parents[1] resolves to tests/ and every path below it is wrong
 # without raising anything.
-from marep.layout import repository_root  # noqa: E402
+from marep.layout import bfo_artifact, repository_root  # noqa: E402
 
 ROOT = repository_root()
-BFO_DIR = ROOT / "BFO"
 CORE_ONTOLOGY = URIRef("https://fandaws.com/ontology/bfo/valuenet-core.owl")
 CCO_EXTRACT_ONTOLOGY = URIRef("https://fandaws.com/ontology/imports/cco-valuenet-extract")
 CCO_EXTRACT_VERSION = URIRef(
@@ -33,8 +32,8 @@ PROJECT_LOGICAL_FILES = (
 )
 
 AUTHORITATIVE_FILES = (
-    BFO_DIR / "bfo-core.ttl",
-    BFO_DIR / "imports" / "cco-valuenet-extract.ttl",
+    bfo_artifact("bfo-core.ttl"),
+    bfo_artifact("cco-valuenet-extract.ttl"),
 )
 
 VN_CORE = "https://fandaws.com/ontology/bfo/valuenet-core#"
@@ -109,7 +108,7 @@ def is_external(term):
 
 
 def classify_external_terms():
-    project = load_graph(BFO_DIR / name for name in PROJECT_LOGICAL_FILES)
+    project = load_graph(bfo_artifact(name) for name in PROJECT_LOGICAL_FILES)
     authoritative = load_graph(AUTHORITATIVE_FILES)
 
     logical = set()
@@ -155,7 +154,7 @@ def test_external_terms_are_classified_and_logical_dependencies_are_closed():
 
 
 def test_core_imports_the_pinned_cco_extract():
-    core = load_graph((BFO_DIR / "valuenet-core.ttl",))
-    extract = load_graph((BFO_DIR / "imports" / "cco-valuenet-extract.ttl",))
+    core = load_graph((bfo_artifact("valuenet-core.ttl"),))
+    extract = load_graph((bfo_artifact("cco-valuenet-extract.ttl"),))
     assert (CORE_ONTOLOGY, OWL.imports, CCO_EXTRACT_VERSION) in core
     assert (CCO_EXTRACT_ONTOLOGY, OWL.versionIRI, CCO_EXTRACT_VERSION) in extract

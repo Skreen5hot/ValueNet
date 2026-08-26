@@ -1259,6 +1259,12 @@ components:
   generated_from: null
   destination: tools/marep/build_semantic_baseline.py
   wave: marep
+- path: ValueNet_code/check_destination_state.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tools/marep/check_destination_state.py
+  wave: marep
 - path: ValueNet_code/declare_folk_value.py
   origin: fork
   maintenance: unchanged
@@ -1666,6 +1672,12 @@ components:
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/ontology/test_constraint_metrics.py
+  wave: tests
+- path: tests/test_destination_state.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tests/integration/test_destination_state.py
   wave: tests
 - path: tests/test_duplication_metrics.py
   origin: fork

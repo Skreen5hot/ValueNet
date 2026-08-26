@@ -31,10 +31,15 @@ pyshacl = pytest.importorskip("pyshacl")
 # parents. This file moves one level deeper in the tests wave, at which
 # point parents[1] resolves to tests/ and every path below it is wrong
 # without raising anything.
-from marep.layout import repository_root  # noqa: E402
+from marep.layout import bfo_artifact, repository_root  # noqa: E402
 
 REPO = repository_root()
-SHAPES = REPO / "BFO" / "vcvf-triggers-shapes.ttl"
+# By name through the contract. The comment above gets the root right and
+# this line then appended `BFO/` anyway -- the bfo wave moves this file to
+# ontology/bfo/shapes/, and every SHACL test here would have failed on a
+# missing shapes file. Getting the root from the contract is not the hard
+# part; the artifact is.
+SHAPES = bfo_artifact("vcvf-triggers-shapes.ttl")
 
 PREFIX = """
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .

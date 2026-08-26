@@ -23,6 +23,7 @@ the byte hash marked as an expected transition rather than a violation.
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import json
 import os
@@ -31,7 +32,10 @@ import sys
 import tempfile
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+_here = Path(__file__).resolve()
+_root = next(p for p in (_here, *_here.parents)
+             if (p / "config/repository-layout.yaml").is_file())
+sys.path.insert(0, str(_root))
 
 from marep import layout  # noqa: E402
 
@@ -42,7 +46,7 @@ from marep import layout  # noqa: E402
 #:   2  ground digest plus a flattened/node-signature blank-node fingerprint
 #:   3  that fingerprint replaced by connected-component canonicalization,
 #:      after the version-2 form was shown to collide on non-isomorphic graphs
-TOOL_VERSION = 3
+TOOL_VERSION = 4
 
 
 def canonical_digest(path: Path) -> str:
@@ -314,17 +318,17 @@ def artifact_digests(root: Path) -> dict:
     return out
 
 
-def test_baseline(root: Path) -> dict:
-    """Collected node ids, canonicalized so a directory move does not change them.
+def _collect(root: Path, marker: str | None) -> list[str]:
+    """Canonical node ids under a marker expression, or a named failure.
 
     The canonical id is the module basename plus the remainder of the pytest
     node id. A move from tests/ to tests/marep/ leaves it untouched; a renamed
     or lost test does not.
     """
-    r = subprocess.run(
-        [sys.executable, "-m", "pytest", "--collect-only", "-q",
-         "-m", "slow or not slow"],
-        capture_output=True, text=True, cwd=str(root))
+    cmd = [sys.executable, "-m", "pytest", "--collect-only", "-q"]
+    if marker is not None:
+        cmd += ["-m", marker]
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=str(root))
     if r.returncode != 0:
         # A collection error still prints the node ids gathered before it
         # failed. Accepting that partial list would write a smaller baseline
@@ -334,16 +338,47 @@ def test_baseline(root: Path) -> dict:
                          + r.stderr.strip()[:2000])
     ids = [ln.strip() for ln in r.stdout.splitlines()
            if "::" in ln and not ln.startswith(" ")]
-    canonical = sorted(os.path.basename(i) for i in ids)
-    collisions = [c for c in set(canonical) if canonical.count(c) > 1]
+    return sorted(os.path.basename(i) for i in ids)
+
+
+def test_baseline(root: Path) -> dict:
+    """Both totals, because either one alone can hold still while it lies.
+
+    Version 3 recorded only the count under `-m 'slow or not slow'` -- every
+    test, selected or not. That number cannot move when a test is silently
+    deselected, and one was: after the competency scopes became component ids
+    the literal `"BFO/"` in CHEAP_SCOPES matched nothing, eight tests left the
+    default run, and the collected total stayed 539 with a green suite.
+
+    So the split is recorded too. A test moving from selected to deselected
+    changes `default_selected` and its hash while `collected` holds steady,
+    which is exactly the shape of that regression.
+
+    The two counts are also easy to confuse: version 3's stored 539 happened
+    to equal the *selected* count at version 4, so a reader comparing the
+    wrong pair would have seen agreement where the suite had grown by ten.
+    """
+    every = _collect(root, "slow or not slow")
+    default = _collect(root, None)
+    collisions = [c for c in set(every) if every.count(c) > 1]
+    deselected = sorted((collections.Counter(every)
+                         - collections.Counter(default)).elements())
     return {
-        "collected": len(canonical),
+        "collected": len(every),
+        "default_selected": len(default),
+        "default_deselected": len(deselected),
         "canonical_id_sha256": hashlib.sha256(
-            "\n".join(canonical).encode()).hexdigest(),
+            "\n".join(every).encode()).hexdigest(),
+        "default_selected_sha256": hashlib.sha256(
+            "\n".join(default).encode()).hexdigest(),
+        "deselected_ids": deselected,
         "canonical_id_collisions": sorted(collisions),
-        "definition": "pytest --collect-only -q -m 'slow or not slow'; each id "
-                      "reduced to basename plus node path so directory moves "
-                      "do not perturb it",
+        "definition": "pytest --collect-only -q, run twice: once with "
+                      "-m 'slow or not slow' for `collected` and once with the "
+                      "configured default for `default_selected`. Each id is "
+                      "reduced to its basename plus node path so directory "
+                      "moves do not perturb it. Both are recorded because a "
+                      "silent deselection leaves `collected` unchanged.",
     }
 
 

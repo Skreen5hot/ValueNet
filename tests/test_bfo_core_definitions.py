@@ -14,11 +14,10 @@ from rdflib.namespace import OWL, RDF, RDFS, SKOS
 # parents. This file moves one level deeper in the tests wave, at which
 # point parents[1] resolves to tests/ and every path below it is wrong
 # without raising anything.
-from marep.layout import repository_root  # noqa: E402
+from marep.layout import bfo_artifact, repository_root  # noqa: E402
 
 ROOT = repository_root()
-BFO_DIR = ROOT / "BFO"
-CORE_FILE = BFO_DIR / "valuenet-core.ttl"
+CORE_FILE = bfo_artifact("valuenet-core.ttl")
 VN = "https://fandaws.com/ontology/bfo/valuenet-core#"
 FOLK = "https://fandaws.com/ontology/bfo/valuenet-folk#"
 BFO = "http://purl.obolibrary.org/obo/"
@@ -181,8 +180,8 @@ def test_one_leaf_from_each_folk_cluster_remains_a_valid_specialization():
     graph = Graph()
     for path in (
         CORE_FILE,
-        BFO_DIR / "valuenet-schwartz-values.ttl",
-        BFO_DIR / "valuenet-folk.ttl",
+        bfo_artifact("valuenet-schwartz-values.ttl"),
+        bfo_artifact("valuenet-folk.ttl"),
     ):
         graph.parse(path, format="turtle")
 
@@ -203,7 +202,7 @@ def test_one_leaf_from_each_folk_cluster_remains_a_valid_specialization():
 
 def test_folk_value_role_control_remains_a_role_specialization():
     graph = Graph()
-    for path in (CORE_FILE, BFO_DIR / "valuenet-folk.ttl"):
+    for path in (CORE_FILE, bfo_artifact("valuenet-folk.ttl")):
         graph.parse(path, format="turtle")
     role = URIRef(FOLK + "ProfessionalismRole")
     assert has_subclass_path(graph, role, project_class("ValueRelatedRealizableEntity"))
@@ -212,7 +211,7 @@ def test_folk_value_role_control_remains_a_role_specialization():
 
 def test_moral_foundation_leaf_remains_a_moral_disposition_specialization():
     graph = Graph()
-    for path in (CORE_FILE, BFO_DIR / "valuenet-moral-foundations.ttl"):
+    for path in (CORE_FILE, bfo_artifact("valuenet-moral-foundations.ttl")):
         graph.parse(path, format="turtle")
     care = URIRef(
         "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition"

@@ -1,6 +1,6 @@
 {
-  "tool_version": 3,
-  "captured_at_commit": "1b5d349d344fb5f5f2e08b74b8f8091ab3b1e3ed",
+  "tool_version": 4,
+  "captured_at_commit": "2b4f8f0322d92940b009fd3a55276f7384bfdc80",
   "reproduce": "python ValueNet_code/build_semantic_baseline.py",
   "corpus": {
     "files_discovered": {
@@ -101,9 +101,24 @@
     }
   },
   "tests": {
-    "collected": 539,
-    "canonical_id_sha256": "fb5e9255b1a7327c5739b8fa8640a94765705d301304c5535f287c910b5d3b3f",
+    "collected": 554,
+    "default_selected": 544,
+    "default_deselected": 10,
+    "canonical_id_sha256": "521ebc72ef3c6681fc900cd767b8138f64b6d795571e913b20ca0ed29588fb51",
+    "default_selected_sha256": "6341f06c87f3a7896f8e8b8e7bffac3f6f5103834e66214f1cf8d29540ad4cea",
+    "deselected_ids": [
+      "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[bfo]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[marep]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[original-valuenet]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[tests]",
+      "test_folk_generation.py::test_the_check_flag_reports_staleness",
+      "test_ontology_artifacts.py::test_every_ttl_in_the_repository_parses_standalone",
+      "test_ontology_artifacts.py::test_extensions_state_the_serialization",
+      "test_trigger_shapes.py::test_the_corpus_conforms"
+    ],
     "canonical_id_collisions": [],
-    "definition": "pytest --collect-only -q -m 'slow or not slow'; each id reduced to basename plus node path so directory moves do not perturb it"
+    "definition": "pytest --collect-only -q, run twice: once with -m 'slow or not slow' for `collected` and once with the configured default for `default_selected`. Each id is reduced to its basename plus node path so directory moves do not perturb it. Both are recorded because a silent deselection leaves `collected` unchanged."
   }
 }

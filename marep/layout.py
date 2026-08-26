@@ -32,7 +32,19 @@ CONTRACT = "config/repository-layout.yaml"
 
 
 class LayoutError(RuntimeError):
-    """The contract is missing, malformed, or asked for an unknown id."""
+    """The contract is malformed, or was asked for an unknown id.
+
+    Distinct from `LayoutMissing` on purpose. A consumer may reasonably fall
+    back to a hardcoded rule when there is no contract at all — a checkout of
+    one file, a vendored copy. It may not fall back because the contract is
+    broken: catching every exception turned malformed YAML, an unknown
+    component id, and a bug in this module into the same silent "use the legacy
+    path" outcome, which is how a resolver failure becomes invisible.
+    """
+
+
+class LayoutMissing(LayoutError):
+    """No contract exists above the starting point. The only fallback case."""
 
 
 @lru_cache(maxsize=1)
@@ -42,7 +54,7 @@ def repository_root(start: Path | None = None) -> Path:
     for candidate in (here, *here.parents):
         if (candidate / CONTRACT).is_file():
             return candidate
-    raise LayoutError(
+    raise LayoutMissing(
         f"no {CONTRACT} found above {here}. The layout contract locates the "
         "repository root; without it paths cannot be resolved.")
 
@@ -196,6 +208,92 @@ def reasoner_scope() -> list[Path]:
     return out
 
 
+def bfo_module(name: str, root: Path | None = None) -> Path | None:
+    """A BFO module by stem, wherever it currently lives.
+
+    `repo / "BFO" / f"{n}.ttl"` is correct today and empty after the BFO wave,
+    and an empty module list produces a metric of zero rather than an error —
+    the exact silent-shrink failure that took the reasoner from 306 classes to
+    275. The contract carries every module's before and after path, so this
+    finds it either side of the move.
+    """
+    real = repository_root()
+    if root is not None and Path(root).resolve() != real:
+        # A synthetic tree gets its own files. Resolving this repository's
+        # modules for a caller measuring a fixture reported 187 classes for a
+        # two-file tmp tree, and the reconciliation check caught it.
+        hits = sorted(Path(root).rglob(name + ".ttl"))
+        return hits[0] if hits else None
+    for group in ("bfo.core", "bfo.vendored"):
+        c = component(group)
+        for candidate in list(c.members_after or []) + list(c.members or []):
+            if Path(candidate).stem == name:
+                p = real / candidate
+                if p.exists():
+                    return p
+    return None
+
+
+def bfo_modules(*names: str, root: Path | None = None) -> list[Path]:
+    """Only those that exist, in the order asked for."""
+    return [p for p in (bfo_module(n, root) for n in names) if p is not None]
+
+
+def shape_files(root: Path | None = None) -> list[Path]:
+    """Every SHACL shape set, wherever it lives.
+
+    Globbing `BFO/*-shapes.ttl` finds three files today and none after the
+    wave, when they sit under ontology/bfo/shapes/.
+
+    `root` matters. A caller measuring a synthetic tree — a test fixture in a
+    tmp_path — must get that tree's shapes, not this repository's. Ignoring the
+    argument made two fixture tests read the real BFO shapes and report a
+    coverage number about the wrong corpus.
+    """
+    real = repository_root()
+    if root is not None and Path(root).resolve() != real:
+        return sorted(Path(root).rglob("*-shapes.ttl"))
+    root = real
+    found: list[Path] = []
+    for group in ("bfo.core", "bfo.vendored"):
+        c = component(group)
+        for candidate in list(c.members_after or []) + list(c.members or []):
+            p = root / candidate
+            if p.exists() and p.name.endswith("-shapes.ttl") and p not in found:
+                found.append(p)
+    tree = component("bfo.ontology-tree").resolve(root)
+    for p in sorted(tree.rglob("*-shapes.ttl")):
+        if p not in found:
+            found.append(p)
+    return sorted(set(found))
+
+
+def bfo_artifact(filename: str) -> Path:
+    """Any file under the BFO tree, by name, before or after the move.
+
+    Tests resolved the repository root correctly and then appended
+    `BFO/<name>`, which is right today and gone after the BFO wave. The root
+    was never the hard part; the artifact is.
+    """
+    root = repository_root()
+    for group in ("bfo.core", "bfo.vendored", "bfo.reasoner-scope"):
+        c = component(group)
+        for candidate in list(c.members_after or []) + list(c.members or []):
+            if Path(candidate).name == filename:
+                p = root / candidate
+                if p.exists():
+                    return p
+    tree = component("bfo.ontology-tree").resolve(root)
+    for p in tree.rglob(filename):
+        return p
+    for extra in ("docs/bfo/guides", "docs/bfo/remediation", "tools/bfo",
+                  "BFO/remediation"):
+        p = root / extra / filename
+        if p.exists():
+            return p
+    raise LayoutError(f"no BFO artifact named {filename!r} under {root}")
+
+
 def path_allowances() -> list[dict]:
     """Occurrences that are correct as literal paths, each with its reason.
 
@@ -228,6 +326,21 @@ def run_artifacts_dir() -> Path:
 def relative(p: Path | str) -> str:
     """A repository-relative POSIX path, for reporting and manifests."""
     return Path(p).resolve().relative_to(repository_root()).as_posix()
+
+
+#: The bootstrap every moving script needs, duplicated rather than imported.
+#: A script cannot import this module to discover the path that makes this
+#: module importable, so the four lines below are the one place the contract
+#: cannot be its own authority. Copy them verbatim:
+#:
+#:     _here = Path(__file__).resolve()
+#:     _root = next(p for p in (_here, *_here.parents)
+#:                  if (p / "config/repository-layout.yaml").is_file())
+#:     sys.path.insert(0, str(_root))
+#:
+#: Counting parents instead breaks the moment the script changes depth, and
+#: breaks silently: parents[1] from tools/marep/ is tools/, which exists.
+BOOTSTRAP_DOC = __doc__
 
 
 def clear_cache() -> None:

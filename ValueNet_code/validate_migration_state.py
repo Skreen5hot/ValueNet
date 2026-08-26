@@ -20,7 +20,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+_here = Path(__file__).resolve()
+_root = next(p for p in (_here, *_here.parents)
+             if (p / "config/repository-layout.yaml").is_file())
+sys.path.insert(0, str(_root))
 
 from marep import layout  # noqa: E402
 
@@ -96,15 +99,14 @@ def validate(rows: list[dict], files: set[str], current_wave: str | None) -> lis
         # With no wave given this still applies, and `done` is empty — so any
         # completed move is a violation. Omitting --wave must mean zero moves
         # completed, not "skip the check".
-        if True:
-            if dest_here and wave not in done:
-                problems.append(
-                    f"{src}: moved to {dest} but wave {wave!r} has not run "
-                    f"(current: {current_wave or 'none'})")
-            if src_here and wave in done:
-                problems.append(
-                    f"{src}: wave {wave!r} has run but the file is still at its "
-                    f"source path")
+        if dest_here and wave not in done:
+            problems.append(
+                f"{src}: moved to {dest} but wave {wave!r} has not run "
+                f"(current: {current_wave or 'none'})")
+        if src_here and wave in done:
+            problems.append(
+                f"{src}: wave {wave!r} has run but the file is still at its "
+                f"source path")
 
     for f in sorted(files - represented):
         problems.append(f"tracked but absent from the manifest: {f}")

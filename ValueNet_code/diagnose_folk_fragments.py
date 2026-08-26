@@ -21,6 +21,18 @@ import glob
 import os
 import sys
 
+# Root by upward search for the layout contract, not by counting
+# directories. This script moves under tools/, at which point two
+# dirname calls resolve to repo/tools -- a path that exists, so the
+# failure is silent.
+_here = os.path.abspath(__file__)
+HERE = _here
+while not os.path.isfile(os.path.join(HERE, "config", "repository-layout.yaml")):
+    _up = os.path.dirname(HERE)
+    if _up == HERE:
+        raise SystemExit("no config/repository-layout.yaml above " + _here)
+    HERE = _up
+
 try:
     import rdflib
 except ImportError:  # pragma: no cover
@@ -75,7 +87,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--verbose", action="store_true", help="name every affected file")
     ap.add_argument("--dir", default=os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ThatsAllFolks"))
+        HERE, "ThatsAllFolks"))
     args = ap.parse_args(argv)
 
     files = sorted(glob.glob(os.path.join(args.dir, "folk_*.ttl")))

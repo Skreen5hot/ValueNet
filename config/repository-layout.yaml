@@ -261,6 +261,17 @@ components:
     moves_to: tools/marep/build_semantic_baseline.py
     role: generator
 
+  - id: tool.check-destination-state
+    path: ValueNet_code/check_destination_state.py
+    moves_to: tools/marep/check_destination_state.py
+    role: checker
+    description: >-
+      Materialises the post-move tree in a temporary directory and asks
+      every consumer whether it still resolves. Declared here because its
+      own test loads it by path, and a literal ValueNet_code/ path in that
+      test would break on the marep wave -- the defect the checker exists
+      to catch, one level up.
+
   # ---- Path allowances: occurrences that are correct as literal paths. ----
 
 # Path allowances: literal path occurrences that are correct as written.

@@ -24,17 +24,22 @@ rdflib = pytest.importorskip("rdflib")
 # parents. This file moves one level deeper in the tests wave, at which
 # point parents[1] resolves to tests/ and every path below it is wrong
 # without raising anything.
-from marep.layout import repository_root  # noqa: E402
+from marep.layout import bfo_artifact, component, repository_root  # noqa: E402
 
 REPO = repository_root()
 SOURCE = REPO / "ThatsAllFolks" / "folk.ttl"
 TARGET = REPO / "folk_aligned.ttl"
-GENERATOR = REPO / "ValueNet_code" / "generate_folk_aligned.py"
+GENERATOR = Path(component("tool.generate-folk-aligned").resolve())
 
 
 def generated_text() -> str:
     """Regenerate in memory, without touching the working tree."""
-    sys.path.insert(0, str(REPO / "ValueNet_code"))
+    # The generator is already resolved through the contract above; this
+    # line used the literal ValueNet_code/ anyway, so after the
+    # original-valuenet wave the import found nothing and both the
+    # staleness and determinism checks failed on a missing module rather
+    # than on anything about the generated file.
+    sys.path.insert(0, str(GENERATOR.parent))
     import importlib
     mod = importlib.import_module("generate_folk_aligned")
     importlib.reload(mod)
@@ -62,7 +67,7 @@ def test_the_generated_file_is_not_stale():
     current = TARGET.read_text(encoding="utf-8").replace("\r\n", "\n")
     assert current == generated_text().replace("\r\n", "\n"), (
         "folk_aligned.ttl is stale. Run:\n"
-        "    python ValueNet_code/generate_folk_aligned.py")
+        "    python " + GENERATOR.relative_to(REPO).as_posix())
 
 
 def test_generation_is_deterministic():

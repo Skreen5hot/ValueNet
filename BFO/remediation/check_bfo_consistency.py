@@ -16,18 +16,33 @@ except ImportError as error:  # pragma: no cover - environment guidance
     raise SystemExit("owlready2 is required for the HermiT consistency check") from error
 
 
-ROOT = Path(__file__).resolve().parents[2]
-BFO_DIR = ROOT / "BFO"
+# Root by upward search for the layout contract, and each artifact by
+# name through it. `parents[2]` happens to stay correct from tools/bfo/
+# because that sits at the same depth as BFO/remediation/, but the
+# literal `ROOT / "BFO"` below it does not: the bfo wave turns BFO/ into
+# ontology/bfo/ and every path here would resolve to nothing.
+_here = Path(__file__).resolve()
+ROOT = next((d for d in _here.parents
+             if (d / "config" / "repository-layout.yaml").is_file()), None)
+if ROOT is None:  # pragma: no cover - a tree without the contract
+    raise SystemExit(f"no config/repository-layout.yaml above {_here}")
+sys.path.insert(0, str(ROOT))
 
-TBOX_FILES = (
-    BFO_DIR / "bfo-core.ttl",
-    BFO_DIR / "imports" / "cco-valuenet-extract.ttl",
-    BFO_DIR / "valuenet-core.ttl",
-    BFO_DIR / "valuenet-schwartz-values.ttl",
-    BFO_DIR / "valuenet-moral-foundations.ttl",
-    BFO_DIR / "valuenet-folk.ttl",
-    BFO_DIR / "valuenet-moral-epistemics.ttl",
-)
+from marep.layout import bfo_artifact  # noqa: E402
+
+#: The T-box HermiT loads. Deliberately NOT layout.reasoner_scope(): that
+#: set also carries valuenet-mappings.ttl, and which files enter the
+#: consistency check decides what "consistent" means here. Only the
+#: resolution changed; the membership is left as its author set it.
+TBOX_FILES = tuple(bfo_artifact(n) for n in (
+    "bfo-core.ttl",
+    "cco-valuenet-extract.ttl",
+    "valuenet-core.ttl",
+    "valuenet-schwartz-values.ttl",
+    "valuenet-moral-foundations.ttl",
+    "valuenet-folk.ttl",
+    "valuenet-moral-epistemics.ttl",
+))
 
 
 def parse_args() -> argparse.Namespace:
@@ -44,7 +59,7 @@ def main() -> None:
     args = parse_args()
     paths = list(TBOX_FILES)
     if args.include_scenario:
-        paths.append(BFO_DIR / "valuenet-moral-epistemics-scenario.ttl")
+        paths.append(bfo_artifact("valuenet-moral-epistemics-scenario.ttl"))
 
     graph = Graph()
     for path in paths:

@@ -17,16 +17,15 @@ from rdflib.namespace import OWL, RDF, RDFS, SKOS
 # parents. This file moves one level deeper in the tests wave, at which
 # point parents[1] resolves to tests/ and every path below it is wrong
 # without raising anything.
-from marep.layout import repository_root  # noqa: E402
+from marep.layout import bfo_artifact, repository_root  # noqa: E402
 
 ROOT = repository_root()
-BFO_DIR = ROOT / "BFO"
 
 ONTOLOGY_FILES = tuple(
-    BFO_DIR / name
+    bfo_artifact(name)
     for name in (
         "bfo-core.ttl",
-        "imports/cco-valuenet-extract.ttl",
+        "cco-valuenet-extract.ttl",
         "valuenet-core.ttl",
         "valuenet-schwartz-values.ttl",
         "valuenet-moral-foundations.ttl",

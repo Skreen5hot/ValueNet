@@ -44,7 +44,17 @@ import subprocess
 import sys
 import tempfile
 
-HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Root by upward search for the layout contract, not by counting
+# directories. This script moves under tools/, at which point two
+# dirname calls resolve to repo/tools -- a path that exists, so the
+# failure is silent.
+_here = os.path.abspath(__file__)
+HERE = _here
+while not os.path.isfile(os.path.join(HERE, "config", "repository-layout.yaml")):
+    _up = os.path.dirname(HERE)
+    if _up == HERE:
+        raise SystemExit("no config/repository-layout.yaml above " + _here)
+    HERE = _up
 
 
 def sh(*args: str) -> str:
@@ -143,6 +153,11 @@ EXACT: dict[str, str] = {
         "tools/marep/build_semantic_baseline.py",
     "ValueNet_code/validate_migration_state.py":
         "tools/marep/validate_migration_state.py",
+    # Migration machinery, not an original-ValueNet tool. Left to the
+    # ValueNet_code/ prefix rule it landed in tools/original-valuenet/,
+    # separated from the three tools it runs beside.
+    "ValueNet_code/check_destination_state.py":
+        "tools/marep/check_destination_state.py",
     "REPO_REORGANIZATION_PLAN.md": "docs/architecture/REPO_REORGANIZATION_PLAN.md",
 }
 
@@ -168,6 +183,8 @@ TEST_GROUPS: dict[str, str] = {
     "test_bfo_mapping_semantics.py": "bfo",
     "test_bfo_moral_epistemics_categories.py": "bfo",
     "test_competency_questions.py": "integration",
+    # Spans the layout contract, both corpora and every migration wave.
+    "test_destination_state.py": "integration",
 }
 
 #: DIRECTORY prefixes: the matched part is a path segment and is replaced.

@@ -31,7 +31,17 @@ import argparse
 import os
 import sys
 
-HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Root by upward search for the layout contract, not by counting
+# directories. This script moves under tools/, at which point two
+# dirname calls resolve to repo/tools -- a path that exists, so the
+# failure is silent.
+_here = os.path.abspath(__file__)
+HERE = _here
+while not os.path.isfile(os.path.join(HERE, "config", "repository-layout.yaml")):
+    _up = os.path.dirname(HERE)
+    if _up == HERE:
+        raise SystemExit("no config/repository-layout.yaml above " + _here)
+    HERE = _up
 
 #: (wrong IRI token, right IRI token, files to rewrite, file to rename or None)
 RETARGETS = [

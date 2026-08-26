@@ -72,10 +72,13 @@ def group_of(rel: str) -> str:
     tree separates a valuenet SHACL file from a vendored one.
     """
     rel = rel.replace("\\", "/")
+    from . import layout
     try:
-        from . import layout
         return layout.group_for(rel)
-    except Exception:
+    except layout.LayoutMissing:
+        # No contract at all — a vendored or partial checkout. Every other
+        # failure propagates: malformed YAML and unknown ids used to land here
+        # too, silently reverting to the legacy rule.
         for prefix, name in GROUPS:
             if rel.startswith(prefix):
                 return name
@@ -542,7 +545,8 @@ def shape_coverage_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     from rdflib.namespace import RDF
 
     SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
-    shape_files = sorted((repo / "BFO").glob("*-shapes.ttl")) if (repo / "BFO").exists() else []
+    from . import layout
+    shape_files = layout.shape_files(repo)
     targeted = set()
     for sf in shape_files:
         try:
@@ -590,10 +594,11 @@ def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     SCOPE = "bfo-suite-merged"
     out: list[Metric] = []
 
-    modules = [repo / "BFO" / f"{n}.ttl" for n in (
+    from . import layout
+    modules = layout.bfo_modules(
         "valuenet-core", "valuenet-schwartz-values", "valuenet-moral-foundations",
-        "valuenet-folk", "valuenet-moral-epistemics", "valuenet-mappings")]
-    modules = [m for m in modules if m.exists()]
+        "valuenet-folk", "valuenet-moral-epistemics", "valuenet-mappings",
+        root=repo)
     if not modules:
         return out
 
@@ -728,7 +733,8 @@ def rooting_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
 def shacl_metrics(repo: Path) -> list[Metric]:
     """SHACL results, or an honest record that the check could not run."""
     out: list[Metric] = []
-    shapes = sorted((repo / "BFO").glob("*-shapes.ttl")) if (repo / "BFO").exists() else []
+    from . import layout
+    shapes = layout.shape_files(repo)
     if not shapes:
         return out
     try:
@@ -747,15 +753,15 @@ def shacl_metrics(repo: Path) -> list[Metric]:
     # is what takes shacl_focus_nodes from 14 to the tens of thousands: three
     # of seven groups declare no individuals at all, and a class-targeted shape
     # could never have reached them.
-    for n in ("valuenet-core", "valuenet-schwartz-values", "valuenet-moral-foundations",
-              "valuenet-folk", "valuenet-moral-epistemics", "valuenet-moral-epistemics-scenario"):
-        p = repo / "BFO" / f"{n}.ttl"
-        if p.exists():
-            try:
-                data.parse(str(p))
-                loaded += 1
-            except Exception:
-                pass
+    for p in layout.bfo_modules(
+            "valuenet-core", "valuenet-schwartz-values", "valuenet-moral-foundations",
+            "valuenet-folk", "valuenet-moral-epistemics",
+            "valuenet-moral-epistemics-scenario", root=repo):
+        try:
+            data.parse(str(p))
+            loaded += 1
+        except Exception:
+            pass
     # What the shape check does not see. A live agent read `shacl_violations: 0`
     # and pointed out it is largely an artifact of 127 files never being
     # loadable: a file that cannot be parsed cannot violate a shape. Same
@@ -897,15 +903,13 @@ def reasoner_metrics(repo: Path, scope: str = "bfo-layer") -> list[Metric]:
         names = ["bfo-core", "valuenet-core", "valuenet-schwartz-values",
                  "valuenet-moral-foundations", "valuenet-folk",
                  "valuenet-moral-epistemics", "valuenet-mappings"]
-        paths = [repo / "BFO" / f"{n}.ttl" for n in names]
-        # Everything the layer imports and supplies locally, not just the
-        # modules. The hardcoded list above missed the pinned CCO extract when
-        # the alignment remediation added it, so HermiT was checking a layer
-        # whose imported Agent, Act of Appraisal and Act of Observation axioms
-        # were absent — and reporting the import unresolved while the file sat
-        # in the tree. A hardcoded list ages badly; the glob does not.
-        paths += sorted((repo / "BFO" / "imports").glob("*.ttl"))
-        paths = [p for p in paths if p.exists()]
+        # The contract carries this scope's exact membership on both sides of
+        # the move, including the pinned CCO extract. A literal BFO/ path is
+        # correct today and empty after the BFO wave, and an empty scope
+        # reports zero rather than failing — the silent shrink that took this
+        # very metric from 306 classes to 275.
+        from . import layout
+        paths = layout.reasoner_scope()
     else:
         paths = [repo / f.rel for f in
                  (measure_file(p, repo) for p in discover(repo))

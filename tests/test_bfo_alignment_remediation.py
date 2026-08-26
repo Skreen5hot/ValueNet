@@ -19,19 +19,18 @@ owlrl = pytest.importorskip("owlrl")
 # parents. This file moves one level deeper in the tests wave, at which
 # point parents[1] resolves to tests/ and every path below it is wrong
 # without raising anything.
-from marep.layout import repository_root  # noqa: E402
+from marep.layout import bfo_artifact, repository_root  # noqa: E402
 
 REPO = repository_root()
-BFO = REPO / "BFO"
-CORE = BFO / "valuenet-core.ttl"
-CORE_SHAPES = BFO / "valuenet-core-shapes.ttl"
-SCENARIO = BFO / "valuenet-moral-epistemics-scenario.ttl"
+CORE = bfo_artifact("valuenet-core.ttl")
+CORE_SHAPES = bfo_artifact("valuenet-core-shapes.ttl")
+SCENARIO = bfo_artifact("valuenet-moral-epistemics-scenario.ttl")
 SCENARIO_MODULES = (
     CORE,
-    BFO / "valuenet-schwartz-values.ttl",
-    BFO / "valuenet-moral-foundations.ttl",
-    BFO / "valuenet-folk.ttl",
-    BFO / "valuenet-moral-epistemics.ttl",
+    bfo_artifact("valuenet-schwartz-values.ttl"),
+    bfo_artifact("valuenet-moral-foundations.ttl"),
+    bfo_artifact("valuenet-folk.ttl"),
+    bfo_artifact("valuenet-moral-epistemics.ttl"),
     SCENARIO,
 )
 

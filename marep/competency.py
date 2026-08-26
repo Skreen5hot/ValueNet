@@ -179,11 +179,11 @@ _FALLBACK_QUERY_DOCS = ("BFO/valuenet-moral-epistemics-CQ.md",
 
 
 def query_docs() -> tuple[str, ...]:
+    from . import layout
     try:
-        from . import layout
         return tuple(layout.relative(c.resolve())
                      for c in layout.query_documents())
-    except Exception:
+    except layout.LayoutMissing:
         return _FALLBACK_QUERY_DOCS
 
 

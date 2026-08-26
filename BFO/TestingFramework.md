@@ -22,7 +22,7 @@ These SPARQL queries help identify potential modeling errors, inconsistencies, o
 **Purpose:** To find any folk value that has been incorrectly classified under two different high-level Schwartz values. Since the Schwartz values are intended to be distinct motivational types, a direct subclass relationship to two of them is a likely modeling error.
 
 ```sparql
-# scope: BFO/
+# scope: component:bfo.ontology-tree
 # expect: no-rows
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -61,7 +61,7 @@ WHERE {
 **Purpose:** To ensure every class in the folk ontology has a human-readable label and a definition, which is essential for usability and maintenance.
 
 ```sparql
-# scope: BFO/
+# scope: component:bfo.ontology-tree
 # expect: no-rows
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -86,7 +86,7 @@ WHERE {
 **Purpose:** To find classes where the annotation-only `vn-core:hasBroaderConceptualMatch` points to the same parent as a formal `rdfs:subClassOf` axiom. The logical inclusion makes the conceptual annotation redundant and potentially confusing.
 
 ```sparql
-# scope: BFO/
+# scope: component:bfo.ontology-tree
 # expect: no-rows
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#>

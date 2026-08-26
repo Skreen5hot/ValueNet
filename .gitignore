@@ -1,7 +1,11 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+# Both locations, deliberately. The old rule must survive until the examples
+# wave completes, and the new one must exist before it starts: a gap on either
+# side commits generated run state, which is currently 1,127,251 bytes.
 examples/_run/
+examples/**/_run/
 *.tmp
 
 # never commit a credential

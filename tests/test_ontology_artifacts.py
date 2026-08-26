@@ -28,7 +28,13 @@ import pytest
 
 rdflib = pytest.importorskip("rdflib")
 
-REPO = Path(__file__).resolve().parents[1]
+# The repository root comes from the layout contract, not from counting
+# parents. This file moves one level deeper in the tests wave, at which
+# point parents[1] resolves to tests/ and every path below it is wrong
+# without raising anything.
+from marep.layout import repository_root  # noqa: E402
+
+REPO = repository_root()
 SKIP_DIRS = {".git", "_run", "__pycache__", "node_modules"}
 
 #: The fragment corpus was 38,949 triples when the prefix headers were added.

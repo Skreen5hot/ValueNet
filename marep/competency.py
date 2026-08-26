@@ -117,7 +117,7 @@ def load_scope(repo: Path, scopes: tuple[str, ...]):
     g = rdflib.Graph()
     loaded = 0
     for scope in scopes:
-        target = repo / scope
+        target = _resolve_scope(repo, scope)
         paths = [target] if target.is_file() else sorted(target.rglob("*.ttl"))
         for p in paths:
             try:
@@ -127,6 +127,21 @@ def load_scope(repo: Path, scopes: tuple[str, ...]):
                 continue
     _SCOPE_CACHE[key] = (g, loaded)
     return g, loaded
+
+
+def _resolve_scope(repo: Path, scope: str) -> Path | None:
+    """A scope is a component id or a literal path.
+
+    Component ids survive relocation; literal paths do not. `# scope: BFO/`
+    would have left the competency queries loading nothing for the three
+    commits between the BFO move and the documentation pass, and a query that
+    loads nothing returns nothing, which reads as a failing ontology rather
+    than a broken path.
+    """
+    if scope.startswith("component:"):
+        from . import layout
+        return layout.component(scope[len("component:"):]).resolve(repo)
+    return repo / scope
 
 
 def run(repo: Path, query: Query) -> QueryResult:
@@ -157,7 +172,22 @@ def run_document(repo: Path, doc: Path) -> list[QueryResult]:
 
 
 #: Documents holding executable queries. A document not listed here is prose.
-QUERY_DOCS = ("BFO/valuenet-moral-epistemics-CQ.md", "BFO/TestingFramework.md")
+#: Resolved through the layout contract so the documents can move. The literal
+#: tuple is kept as a fallback only for a tree with no contract.
+_FALLBACK_QUERY_DOCS = ("BFO/valuenet-moral-epistemics-CQ.md",
+                        "BFO/TestingFramework.md")
+
+
+def query_docs() -> tuple[str, ...]:
+    try:
+        from . import layout
+        return tuple(layout.relative(c.resolve())
+                     for c in layout.query_documents())
+    except Exception:
+        return _FALLBACK_QUERY_DOCS
+
+
+QUERY_DOCS = query_docs()
 
 
 def competency_metrics(repo: Path, docs: tuple[str, ...] = QUERY_DOCS) -> list[Metric]:

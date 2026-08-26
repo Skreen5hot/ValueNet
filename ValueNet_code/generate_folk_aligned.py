@@ -46,9 +46,22 @@ try:
 except ImportError:  # pragma: no cover
     sys.exit("needs rdflib: pip install rdflib")
 
-HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SOURCE = os.path.join(HERE, "ThatsAllFolks", "folk.ttl")
-TARGET = os.path.join(HERE, "folk_aligned.ttl")
+# Root and paths come from the layout contract. Counting parents breaks when
+# this file moves to tools/original-valuenet/, one level deeper.
+_here = os.path.abspath(__file__)
+_root = _here
+while not os.path.isfile(os.path.join(_root, "config", "repository-layout.yaml")):
+    _parent = os.path.dirname(_root)
+    if _parent == _root:
+        raise SystemExit("no config/repository-layout.yaml above " + _here)
+    _root = _parent
+sys.path.insert(0, _root)
+
+from marep import layout  # noqa: E402
+
+HERE = layout.repository_root().as_posix()
+SOURCE = str(layout.path("original-valuenet.folk-source"))
+TARGET = str(layout.path("original-valuenet.folk-aligned"))
 
 HEADER = """# =====================================================================
 # GENERATED FILE - DO NOT EDIT BY HAND

@@ -12,7 +12,13 @@ from rdflib import BNode, Graph, URIRef
 from rdflib.namespace import OWL, RDF, RDFS
 
 
-ROOT = Path(__file__).resolve().parents[1]
+# The repository root comes from the layout contract, not from counting
+# parents. This file moves one level deeper in the tests wave, at which
+# point parents[1] resolves to tests/ and every path below it is wrong
+# without raising anything.
+from marep.layout import repository_root  # noqa: E402
+
+ROOT = repository_root()
 EXTRACT = ROOT / "BFO" / "imports" / "cco-valuenet-extract.ttl"
 MANIFEST = ROOT / "BFO" / "imports" / "cco-valuenet-extract.manifest.json"
 SCHEMA = ROOT / "BFO" / "remediation" / "extract-manifest.schema.json"

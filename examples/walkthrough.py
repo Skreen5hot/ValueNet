@@ -15,8 +15,16 @@ from pathlib import Path
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+# Repository root and run-artifact directory come from the layout
+# contract, not from counting parents. parents[1] silently becomes
+# examples/ once this file moves a level deeper -- a wrong root that
+# raises nothing and reads the wrong tree.
+_here = Path(__file__).resolve()
+_root = next(p for p in (_here, *_here.parents)
+             if (p / "config/repository-layout.yaml").is_file())
+sys.path.insert(0, str(_root))
 
+from marep import layout  # noqa: E402
 from marep import Runtime, Substrate, TokenBudget  # noqa: E402
 
 ROSTER = ["Developer", "QA", "Architect", "Skeptic"]
@@ -59,7 +67,7 @@ def ev(eid, claim, rtype, ref, agent):
 
 
 def main() -> int:
-    out = Path(__file__).parent / "_run"
+    out = layout.run_artifacts_dir()
     out.mkdir(exist_ok=True)
     sub_path = out / "SPRINT_INPUT.yaml"
     sub_path.write_text(yaml.safe_dump(SUBSTRATE, sort_keys=False), encoding="utf-8")

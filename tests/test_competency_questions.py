@@ -33,7 +33,13 @@ rdflib = pytest.importorskip("rdflib")
 
 from marep import competency  # noqa: E402
 
-REPO = Path(__file__).resolve().parents[1]
+# The repository root comes from the layout contract, not from counting
+# parents. This file moves one level deeper in the tests wave, at which
+# point parents[1] resolves to tests/ and every path below it is wrong
+# without raising anything.
+from marep.layout import repository_root  # noqa: E402
+
+REPO = repository_root()
 
 #: Every query in every listed document, collected at import so each becomes
 #: its own test case and a failure names the query rather than the document.
@@ -71,14 +77,17 @@ def test_every_query_declares_what_passing_means(query):
         f"{query.ref} has no usable '# expect:' declaration")
 
 
-#: Scopes cheap enough to execute on every test run. The BFO layer is ten
-#: files and 2,610 triples and queries over it finish in milliseconds; CQ6
-#: additionally loads `MFTriggers/`, which is 24,684 triples and turns a
-#: sub-second suite into a four-minute one. Marking all nine slow would have
-#: kept the whole battery out of the default run, which is most of the value:
-#: the failure worth catching is someone editing the scenario file and
-#: silently retiring six competency questions.
-CHEAP_SCOPES = frozenset({"BFO/"})
+#: Scopes cheap enough to execute on every test run, named by component id.
+#: The BFO tree is ten files and 2,610 triples and queries over it finish in
+#: milliseconds; CQ6 additionally loads MFTriggers, which is 24,684 triples and
+#: turns a sub-second suite into a four-minute one.
+#:
+#: This held the literal "BFO/" until the scopes became component ids, at which
+#: point nothing matched and all nine queries were marked slow — 8 tests
+#: silently left the default run while the collected total stayed 539. A
+#: deselection is invisible in a passing suite, which is why the frozen
+#: baseline records the selected/deselected split and not just the total.
+CHEAP_SCOPES = frozenset({"component:bfo.ontology-tree"})
 
 
 def _case(q):

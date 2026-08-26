@@ -13,7 +13,13 @@ from rdflib import BNode, Graph, Literal, Namespace, URIRef
 from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
 
-ROOT = Path(__file__).resolve().parents[1]
+# The repository root comes from the layout contract, not from counting
+# parents. This file moves one level deeper in the tests wave, at which
+# point parents[1] resolves to tests/ and every path below it is wrong
+# without raising anything.
+from marep.layout import repository_root  # noqa: E402
+
+ROOT = repository_root()
 BFO_DIR = ROOT / "BFO"
 
 ONTOLOGY_FILES = tuple(

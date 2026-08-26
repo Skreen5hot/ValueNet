@@ -15,7 +15,13 @@ rdflib = pytest.importorskip("rdflib")
 pyshacl = pytest.importorskip("pyshacl")
 owlrl = pytest.importorskip("owlrl")
 
-REPO = Path(__file__).resolve().parents[1]
+# The repository root comes from the layout contract, not from counting
+# parents. This file moves one level deeper in the tests wave, at which
+# point parents[1] resolves to tests/ and every path below it is wrong
+# without raising anything.
+from marep.layout import repository_root  # noqa: E402
+
+REPO = repository_root()
 BFO = REPO / "BFO"
 CORE = BFO / "valuenet-core.ttl"
 CORE_SHAPES = BFO / "valuenet-core-shapes.ttl"

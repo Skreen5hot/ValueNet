@@ -62,11 +62,24 @@ _BUILTIN = frozenset({"http", "https", "file", "urn", "mailto", "doi", "tag"})
 
 
 def group_of(rel: str) -> str:
+    """The corpus group of a repository-relative path.
+
+    Resolved through the layout contract, which knows both the pre-move and
+    post-move location of every group. GROUPS below is the fallback for a tree
+    with no contract, and is the literal rule the contract reproduces: exact
+    membership for the two BFO groups, because grouping follows the filename
+    while the destinations sort by role, and no prefix over the destination
+    tree separates a valuenet SHACL file from a vendored one.
+    """
     rel = rel.replace("\\", "/")
-    for prefix, name in GROUPS:
-        if rel.startswith(prefix):
-            return name
-    return "repository-root"
+    try:
+        from . import layout
+        return layout.group_for(rel)
+    except Exception:
+        for prefix, name in GROUPS:
+            if rel.startswith(prefix):
+                return name
+        return "repository-root"
 
 
 def sha256(path: Path) -> str:

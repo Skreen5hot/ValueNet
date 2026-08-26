@@ -17,8 +17,16 @@ import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+# Repository root and run-artifact directory come from the layout
+# contract, not from counting parents. parents[1] silently becomes
+# examples/ once this file moves a level deeper -- a wrong root that
+# raises nothing and reads the wrong tree.
+_here = Path(__file__).resolve()
+_root = next(p for p in (_here, *_here.parents)
+             if (p / "config/repository-layout.yaml").is_file())
+sys.path.insert(0, str(_root))
 
+from marep import layout  # noqa: E402
 from marep import Runtime, Substrate, ingest  # noqa: E402
 
 ROSTER = ["Developer", "QA", "Architect", "Skeptic"]
@@ -35,9 +43,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--sprint", default="valuenet-aug")
     args = ap.parse_args(argv)
 
-    out = Path(__file__).parent / "_run"
+    out = layout.run_artifacts_dir()
     out.mkdir(exist_ok=True)
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = layout.repository_root()
 
     # ---- 1. build the substrate from real history -----------------------
     print(f"\nINGEST  {repo_root.name}  {args.since} .. {args.until}")

@@ -167,6 +167,16 @@ components:
       omitted BFO/imports/ and the reasoner dropped from 306 classes to 275
       while every test stayed green.
 
+  - id: bfo.ontology-tree
+    path: BFO
+    moves_to: ontology/bfo
+    role: query-scope
+    description: >-
+      Every .ttl under the BFO tree, which is what "# scope: BFO/" selects
+      today. After the wave the same files sit under ontology/bfo across core/,
+      extensions/, shapes/ and vendor/, so the id denotes the same set on both
+      sides while the literal path does not.
+
   - id: bfo.shapes
     path: BFO
     moves_to: ontology/bfo/shapes

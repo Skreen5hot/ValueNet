@@ -480,3 +480,69 @@ def test_the_builder_writes_when_everything_classifies(tmp_path):
     assert r.returncode == 0, r.stdout + r.stderr
     assert (root / "out/manifest.yaml").read_bytes() != SENTINEL, (
         "the builder reported success without writing")
+
+
+# ======================================================================
+# the freeze query works where there is no git
+# ======================================================================
+
+
+def _tree_without_git(tmp_path):
+    """A tree the validator can import into, with no repository under it."""
+    import shutil
+
+    root = tmp_path / "nogit"
+    (root / "config").mkdir(parents=True)
+    (root / "probe").mkdir()
+    shutil.copy2(REPO / "config/repository-layout.yaml",
+                 root / "config/repository-layout.yaml")
+    shutil.copytree(REPO / "marep", root / "marep",
+                    ignore=shutil.ignore_patterns("__pycache__"))
+    # Copied to a neutral name. Writing the tool's real path into the
+    # probe below would put a literal that moves into this module and make
+    # the coverage check demand an allowance for a string used only to
+    # locate a temporary copy.
+    shutil.copy2(layout.component("tool.validate-migration-state").resolve(),
+                 root / "probe/validator_probe.py")
+    return root
+
+
+PROBE = (
+    "import importlib.util;"
+    "spec=importlib.util.spec_from_file_location("
+    "'v','probe/validator_probe.py');"
+    "m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);"
+    "print(m.in_git_work_tree(), m.frozen_exists(), "
+    "m.frozen_text('config/repository-layout.yaml')[1])"
+)
+
+
+def test_the_freeze_query_answers_no_where_there_is_no_git(tmp_path):
+    """A marker deselects tests; it does not stop a module being imported.
+
+    `frozen_exists()` runs at import in three repository-marked modules. In
+    a materialised copy there is no .git, `sh` failed loudly as it should on
+    the command line, and the exception took the entire collection down
+    before pytest could deselect anything -- so every wave reported "no
+    tests ran" and the gate failed for a reason that had nothing to do with
+    the move.
+
+    Outside a repository the honest answer is that no tag exists, and the
+    caller falls back to the working copy.
+    """
+    root = _tree_without_git(tmp_path)
+    r = subprocess.run([sys.executable, "-c", PROBE], cwd=str(root),
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr[-600:]
+    in_tree, frozen, source = r.stdout.split(None, 2)
+    assert in_tree == "False", r.stdout
+    assert frozen == "False", r.stdout
+    assert "working copy" in source, r.stdout
+
+
+def test_this_repository_is_a_work_tree_and_knows_it():
+    """The falsification: in_git_work_tree() returning False everywhere
+    would make the freeze silently optional."""
+    assert VALIDATOR.in_git_work_tree() is True
+    assert VALIDATOR.frozen_exists() is True, (
+        "the freeze tag is not visible from this repository")

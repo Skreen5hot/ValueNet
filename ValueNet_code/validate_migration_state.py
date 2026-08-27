@@ -147,7 +147,29 @@ def current_wave(rows: list[dict], files: set[str]) -> str | None:
     return done[-1] if done else None
 
 
+def in_git_work_tree() -> bool:
+    """Whether git can answer questions about this directory at all."""
+    r = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"],
+                       capture_output=True, text=True,
+                       cwd=str(layout.repository_root()))
+    return r.returncode == 0 and r.stdout.strip() == "true"
+
+
 def frozen_exists() -> bool:
+    """Whether the freeze tag exists. False where there is no git.
+
+    Not the same as swallowing a git failure. A materialised copy has no
+    .git at all, and 'does the tag exist here' has a correct answer there
+    -- no -- while `sh` fails loudly, which is right for the command line
+    and wrong for a query. The three repository-marked test modules call
+    this at import, and a marker deselects tests without preventing the
+    module from being imported, so the crash took the whole collection
+    down before anything could be deselected.
+
+    Any other git failure still raises: a broken repository must not read
+    as an unfrozen one."""
+    if not in_git_work_tree():
+        return False
     return bool(sh("git", "tag", "-l", FREEZE_TAG).strip())
 
 

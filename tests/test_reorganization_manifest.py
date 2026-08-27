@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import posixpath
 import subprocess
+import sys
 
 import pytest
 
@@ -36,8 +37,24 @@ from marep import layout  # noqa: E402
 pytestmark = pytest.mark.repository
 
 REPO = layout.repository_root()
-ROWS = yaml.safe_load(
-    (REPO / "config/move-manifest.yaml").read_text(encoding="utf-8"))["components"]
+
+
+def _validator():
+    import importlib.util
+    path = layout.component("tool.validate-migration-state").resolve()
+    spec = importlib.util.spec_from_file_location("validate_migration_state", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+VALIDATOR = _validator()
+
+#: From the freeze tag once it exists. The working copy is exactly what a
+#: check must not trust after the freeze: an edit to the manifest could make a
+#: broken tree look valid, which is what the tag is for.
+MANIFEST_TEXT, MANIFEST_SOURCE = VALIDATOR.frozen_text("config/move-manifest.yaml")
+ROWS = yaml.safe_load(MANIFEST_TEXT)["components"]
 
 WAVES = ["bfo", "marep", "original-valuenet", "architecture", "tests"]
 ORIGINS = {"upstream-valuenet", "fork", "external-cco", "external-bfo"}
@@ -268,18 +285,95 @@ def test_a_destination_in_no_wave_is_named_not_ignored():
 # ======================================================================
 
 
-def _validator():
-    import importlib.util
-    path = layout.component("tool.validate-migration-state").resolve()
-    spec = importlib.util.spec_from_file_location("validate_migration_state", path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
-
-
 def test_the_transition_state_is_valid_now():
-    v = _validator()
-    assert v.main([]) == 0
+    """Called the way the freeze requires, in whatever state the tree is in.
+
+    `main([])` was correct exactly until the tag existed, and then the
+    validator began refusing to read the mutable manifest -- so this test
+    failed in the state it is supposed to certify. It passed only because
+    the gate that certified the freeze ran before the tag was created, which
+    is the same defect as every other check in this repository that could
+    not have failed when it ran.
+
+    The wave is derived, not passed in. Asking the caller which wave has run
+    would make the assertion depend on the answer it is verifying.
+    """
+    argv = []
+    if VALIDATOR.frozen_exists():
+        argv = ["--frozen-ref", VALIDATOR.FREEZE_TAG]
+        wave = VALIDATOR.current_wave(ROWS, VALIDATOR.tracked())
+        if wave:
+            argv += ["--wave", wave]
+    assert VALIDATOR.main(argv) == 0, argv
+
+
+def test_the_manifest_being_checked_is_the_frozen_one():
+    """Once the tag exists, nothing here reads the working copy."""
+    if VALIDATOR.frozen_exists():
+        assert MANIFEST_SOURCE.endswith("@" + VALIDATOR.FREEZE_TAG), MANIFEST_SOURCE
+    else:
+        assert "working copy" in MANIFEST_SOURCE, MANIFEST_SOURCE
+
+
+def test_the_working_manifest_still_matches_the_frozen_one():
+    """They may differ only if somebody edited a file that is frozen.
+
+    The validator prints a note when they diverge; a note is not a gate, and
+    the manifest is not supposed to change again.
+    """
+    if not VALIDATOR.frozen_exists():
+        pytest.skip("nothing is frozen yet")
+    working = (REPO / "config/move-manifest.yaml").read_text(encoding="utf-8")
+    assert working.replace("\r\n", "\n") == MANIFEST_TEXT.replace("\r\n", "\n"), (
+        "the working manifest differs from the frozen one; the freeze says "
+        "this was the last generation")
+
+
+# ======================================================================
+# completed waves are read off the tree
+# ======================================================================
+
+
+SYNTH = [
+    {"path": "a/one.ttl", "destination": "x/one.ttl", "wave": "bfo"},
+    {"path": "a/two.ttl", "destination": "x/two.ttl", "wave": "bfo"},
+    {"path": "b/three.ttl", "destination": "y/three.ttl", "wave": "marep"},
+    {"path": "keep/four.ttl", "destination": "RETAIN", "wave": None},
+]
+
+
+def test_no_wave_is_complete_before_anything_moves():
+    files = {"a/one.ttl", "a/two.ttl", "b/three.ttl", "keep/four.ttl"}
+    assert VALIDATOR.completed_waves(SYNTH, files) == []
+    assert VALIDATOR.current_wave(SYNTH, files) is None
+
+
+def test_a_finished_wave_is_reported_complete():
+    """The falsification: without this, completed_waves could always be []."""
+    files = {"x/one.ttl", "x/two.ttl", "b/three.ttl", "keep/four.ttl"}
+    assert VALIDATOR.completed_waves(SYNTH, files) == ["bfo"]
+    assert VALIDATOR.current_wave(SYNTH, files) == "bfo"
+
+
+def test_a_half_finished_wave_is_not_complete():
+    """One file moved is not a wave, and must not read as one."""
+    files = {"x/one.ttl", "a/two.ttl", "b/three.ttl", "keep/four.ttl"}
+    assert VALIDATOR.completed_waves(SYNTH, files) == []
+
+
+def test_a_partial_wave_stops_the_run():
+    """A later wave cannot be complete while an earlier one is half done.
+
+    Reporting `marep` as finished with `bfo` outstanding would let the
+    lifecycle checks retire allowances for a move that has not happened.
+    """
+    files = {"x/one.ttl", "a/two.ttl", "y/three.ttl", "keep/four.ttl"}
+    assert VALIDATOR.completed_waves(SYNTH, files) == []
+
+
+def test_every_wave_complete_reports_every_wave():
+    files = {"x/one.ttl", "x/two.ttl", "y/three.ttl", "keep/four.ttl"}
+    assert VALIDATOR.completed_waves(SYNTH, files) == ["bfo", "marep"]
 
 
 def test_a_move_completed_before_its_wave_is_a_violation():
@@ -304,3 +398,85 @@ def test_a_file_at_both_paths_is_a_violation():
     problems = v.validate(rows, files={"src/a.ttl", "dst/a.ttl"},
                           current_wave="bfo")
     assert problems, "a file present at both paths was accepted"
+
+
+# ======================================================================
+# fail-closed generation, exercised rather than inspected
+# ======================================================================
+
+
+SENTINEL = b"# sentinel: this manifest must survive a refused run\n"
+
+
+def _tiny_repo(tmp_path):
+    """A git repository the builder can classify, plus one file it cannot."""
+    import shutil
+
+    root = tmp_path / "repo"
+    (root / "config").mkdir(parents=True)
+    (root / "out").mkdir()
+    shutil.copy2(REPO / "config/repository-layout.yaml",
+                 root / "config/repository-layout.yaml")
+    tool = layout.component("tool.build-move-manifest").resolve()
+    shutil.copy2(tool, root / "build_move_manifest.py")
+    (root / "out/manifest.yaml").write_bytes(SENTINEL)
+
+    def git(*args):
+        r = subprocess.run(["git", *args], cwd=str(root),
+                           capture_output=True, text=True)
+        assert r.returncode == 0, (args, r.stderr)
+        return r.stdout
+
+    git("init", "-q")
+    git("config", "user.email", "t@example.invalid")
+    git("config", "user.name", "t")
+    git("add", "-A")
+    git("commit", "-qm", "seed")
+    # Provenance is derived against upstream/main; without it the builder
+    # refuses for the wrong reason and this test would prove nothing.
+    #
+    # The ref points at the seed commit, before the unclassifiable file
+    # exists. Pointing it at a commit containing everything made every
+    # file upstream-origin, and upstream files are RETAIN -- so the run
+    # succeeded with 0 UNASSIGNED and the fixture proved nothing.
+    git("update-ref", "refs/remotes/upstream/main", "HEAD")
+    return root, git
+
+
+def _add_unclassifiable(root, git):
+    """A name no rule in the builder covers, added after the seed."""
+    (root / "unclassifiable.xyz").write_text("x", encoding="utf-8")
+    git("add", "-A")
+    git("commit", "-qm", "add unclassifiable")
+
+
+def test_the_builder_refuses_to_write_when_a_file_is_unassigned(tmp_path):
+    """Fail-closed, exercised end to end.
+
+    An earlier version of this builder wrote the manifest and then reported
+    the failure, so a refused run still replaced a good file. Asserting that
+    `validate()` returns problems does not catch that; only running it and
+    looking at the bytes does.
+    """
+    root, git = _tiny_repo(tmp_path)
+    _add_unclassifiable(root, git)
+    r = subprocess.run([sys.executable, "build_move_manifest.py",
+                        "-o", "out/manifest.yaml"],
+                       cwd=str(root), capture_output=True, text=True)
+    assert r.returncode != 0, (
+        "the builder exited 0 with an unclassified file:\n" + r.stdout)
+    assert "UNASSIGNED" in r.stdout, r.stdout
+    assert (root / "out/manifest.yaml").read_bytes() == SENTINEL, (
+        "a refused run replaced the existing manifest")
+
+
+def test_the_builder_writes_when_everything_classifies(tmp_path):
+    """The falsification: without it, a builder that always refused would
+    pass the test above."""
+    root, git = _tiny_repo(tmp_path)
+    r = subprocess.run([sys.executable, "build_move_manifest.py",
+                        "-o", "out/manifest.yaml"],
+                       cwd=str(root), capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert (root / "out/manifest.yaml").read_bytes() != SENTINEL, (
+        "the builder reported success without writing")

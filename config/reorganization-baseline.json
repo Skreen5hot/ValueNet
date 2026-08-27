@@ -1,6 +1,6 @@
 {
   "tool_version": 4,
-  "captured_at_commit": "01a40e4cec4e9e00f9c19270194b7b6f0abb2f51",
+  "captured_at_commit": "5c6125c442d7a86300f83491e65b3154cbbf8e0d",
   "reproduce": "python ValueNet_code/build_semantic_baseline.py",
   "corpus": {
     "files_discovered": {
@@ -101,11 +101,11 @@
     }
   },
   "tests": {
-    "collected": 799,
-    "default_selected": 786,
-    "default_deselected": 13,
-    "canonical_id_sha256": "e2c2ca71fe4a464f2c8d824eeda478f981dd31718279dc32b360853afa41232a",
-    "default_selected_sha256": "2fea4432a085556f96782062ccb1c9fec175910ed1d40c68d7f3466051a4d069",
+    "collected": 656,
+    "default_selected": 642,
+    "default_deselected": 14,
+    "canonical_id_sha256": "56767f2c5bf4d0095c0f722f338996298b69feca513108cf4ae09822a9b398c3",
+    "default_selected_sha256": "94b95c3abec118e8a34d785116d8629f6558ffb1c41250093b846c445d77843c",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",
@@ -116,6 +116,7 @@
       "test_folk_generation.py::test_the_check_flag_reports_staleness",
       "test_ontology_artifacts.py::test_every_ttl_in_the_repository_parses_standalone",
       "test_ontology_artifacts.py::test_extensions_state_the_serialization",
+      "test_semantic_baseline.py::test_the_canonical_digest_holds_for_every_artifact",
       "test_semantic_baseline.py::test_the_ground_digest_still_reproduces",
       "test_semantic_baseline.py::test_the_reasoner_scope_digest_still_reproduces",
       "test_semantic_baseline.py::test_the_test_baseline_still_reproduces",

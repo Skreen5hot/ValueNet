@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+from pathlib import Path
 
 import pytest
 
@@ -47,8 +48,22 @@ CONTRACT = yaml.safe_load(
 COMPONENTS = CONTRACT["components"]
 ALLOWANCES = CONTRACT["path_allowances"]
 
+def _validator():
+    import importlib.util
+    path = layout.component("tool.validate-migration-state").resolve()
+    spec = importlib.util.spec_from_file_location("validate_migration_state", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+VALIDATOR = _validator()
+
+#: The manifest is the frozen plan and comes from the tag. The contract is
+#: living state -- allowances are removed as their waves complete -- so it is
+#: read from the working tree, which is the thing being asserted about.
 MANIFEST = yaml.safe_load(
-    (REPO / "config/move-manifest.yaml").read_text(encoding="utf-8"))["components"]
+    VALIDATOR.frozen_text("config/move-manifest.yaml")[0])["components"]
 MOVING = {r["path"]: r for r in MANIFEST if r["destination"] != "RETAIN"}
 
 WAVES = ["bfo", "marep", "original-valuenet", "architecture", "tests"]
@@ -142,15 +157,38 @@ def test_declared_destinations_agree_with_the_manifest():
 # ======================================================================
 
 
+def ignored(rel: str) -> bool:
+    """What git actually does with the path, not what the file says."""
+    r = subprocess.run(["git", "check-ignore", "-q", "--no-index", rel],
+                       cwd=str(REPO), capture_output=True, text=True)
+    assert r.returncode in (0, 1), r.stderr
+    return r.returncode == 0
+
+
 def test_both_run_locations_are_ignored():
-    """A gap on either side commits generated run state.
+    """A gap on either side commits generated run state, 1,127,251 bytes of it.
 
     The old rule has to survive until the examples wave completes and the new
     one has to exist before it starts, so for a while both are correct.
+
+    Asserted by running `git check-ignore`. The earlier form searched
+    .gitignore for the two rule strings, which proves they were typed and not
+    that they match anything: a pattern in the wrong section, negated later in
+    the file, or shadowed by a rule above it reads exactly the same.
     """
-    text = (REPO / ".gitignore").read_text(encoding="utf-8")
-    for rule in ("examples/_run/", "examples/**/_run/"):
-        assert rule in text, f"{rule} is not ignored"
+    for rel in ("examples/_run/RUN1_STATE.yaml",
+                "examples/nested/_run/RUN1_STATE.yaml"):
+        assert ignored(rel), f"{rel} is not ignored by git"
+
+
+def test_the_ignore_check_can_say_no():
+    """The falsification. `git check-ignore` returning 0 for everything, or
+    the helper swallowing its exit code, would make the test above vacuous."""
+    # Both RETAIN. Naming a file that moves would put a literal path in
+    # this module and make the coverage check demand an allowance for a
+    # path used only to prove git says no.
+    assert not ignored("marep/layout.py")
+    assert not ignored("tests/conftest.py")
 
 
 def test_no_run_state_is_tracked():
@@ -163,32 +201,80 @@ def test_no_run_state_is_tracked():
 # ======================================================================
 
 
-@pytest.mark.parametrize("a", ALLOWANCES, ids=lambda a: a["id"])
-def test_each_allowance_is_well_formed(a):
-    assert a.get("file"), a
-    assert a.get("literal") or a.get("pattern"), "neither a literal nor a pattern"
-    assert not (a.get("literal") and a.get("pattern")), "both, so neither is decisive"
-    assert (a.get("justification") or "").strip(), "an unexplained exception"
-    assert a.get("category"), a
-    assert a.get("owner"), a
+#: Looped rather than parametrized, and the reason is the migration itself.
+#: One case per allowance meant four collected node ids per entry, so removing
+#: the eight BFO allowances -- which the bfo wave requires -- would delete 32
+#: node ids and break the frozen `799 collected / 786 selected` identity the
+#: baseline exists to hold. A test whose identity changes every time the plan
+#: proceeds cannot be the thing that proves the plan changed nothing.
 
 
-@pytest.mark.parametrize("a", ALLOWANCES, ids=lambda a: a["id"])
-def test_each_allowance_declares_a_lifecycle(a):
+def test_every_allowance_is_well_formed():
+    problems = []
+    for a in ALLOWANCES:
+        i = a.get("id", "<no id>")
+        if not a.get("file"):
+            problems.append(f"{i}: no file")
+        if not (a.get("literal") or a.get("pattern")):
+            problems.append(f"{i}: neither a literal nor a pattern")
+        if a.get("literal") and a.get("pattern"):
+            problems.append(f"{i}: both a literal and a pattern, so neither decides")
+        if not (a.get("justification") or "").strip():
+            problems.append(f"{i}: an unexplained exception")
+        if not a.get("category"):
+            problems.append(f"{i}: no category")
+        if not a.get("owner"):
+            problems.append(f"{i}: no owner")
+    assert not problems, problems
+
+
+def test_every_allowance_declares_a_lifecycle():
     """Permanent, or expiring after a named wave. Never both, never neither."""
-    perm, wave = a.get("permanent"), a.get("remove_after_wave")
-    assert perm is not None, "no 'permanent' field"
-    assert bool(perm) != bool(wave), (
-        "an allowance is permanent or it expires after a wave; "
-        f"got permanent={perm!r} remove_after_wave={wave!r}")
-    if wave:
-        assert wave in WAVES, f"{wave!r} is not a migration wave"
+    problems = []
+    for a in ALLOWANCES:
+        perm, wave = a.get("permanent"), a.get("remove_after_wave")
+        if perm is None:
+            problems.append(f"{a['id']}: no 'permanent' field")
+        elif bool(perm) == bool(wave):
+            problems.append(
+                f"{a['id']}: permanent={perm!r} remove_after_wave={wave!r}; "
+                "an allowance is one or the other")
+        if wave and wave not in WAVES:
+            problems.append(f"{a['id']}: {wave!r} is not a migration wave")
+        if wave and a.get("discharge") not in ("regenerate", "edit"):
+            problems.append(
+                f"{a['id']}: expires after {wave} but does not say whether it "
+                "is discharged by regenerating or by editing")
+    assert not problems, problems
 
 
-@pytest.mark.parametrize("a", ALLOWANCES, ids=lambda a: a["id"])
-def test_each_allowance_names_a_real_owner(a):
+def test_every_allowance_names_a_real_owner():
     ids = {c["id"] for c in COMPONENTS}
-    assert a["owner"] in ids or a["owner"] == "unowned", a["owner"]
+    bad = [f"{a['id']}: owner {a['owner']!r}" for a in ALLOWANCES
+           if a["owner"] not in ids and a["owner"] != "unowned"]
+    assert not bad, bad
+
+
+def test_every_allowance_matches_something():
+    """A zero-match allowance is an exception granted for nothing.
+
+    It also reads as coverage, which is the harm: the list looks complete
+    while an occurrence somewhere else has no entry at all.
+    """
+    problems = []
+    for a in ALLOWANCES:
+        path = REPO / a["file"]
+        if not path.exists():
+            problems.append(f"{a['id']}: {a['file']} does not exist")
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        needle = a.get("literal")
+        if needle and needle not in text:
+            problems.append(f"{a['id']}: {needle!r} does not occur in {a['file']}")
+        elif not needle and not re.search(a["pattern"], text):
+            problems.append(
+                f"{a['id']}: pattern {a['pattern']!r} matches nothing in {a['file']}")
+    assert not problems, problems
 
 
 def test_allowance_ids_are_unique():
@@ -200,24 +286,6 @@ def test_allowance_ids_are_unique():
 # ======================================================================
 # allowances: both directions of coverage
 # ======================================================================
-
-
-@pytest.mark.parametrize("a", ALLOWANCES, ids=lambda a: a["id"])
-def test_each_allowance_matches_something(a):
-    """A zero-match allowance is an exception granted for nothing.
-
-    It also reads as coverage, which is the harm: the list looks complete
-    while an occurrence somewhere else has no entry at all.
-    """
-    path = REPO / a["file"]
-    assert path.exists(), f"{a['file']} does not exist"
-    text = path.read_text(encoding="utf-8", errors="replace")
-    needle = a.get("literal")
-    if needle:
-        assert needle in text, f"{needle!r} does not occur in {a['file']}"
-    else:
-        assert re.search(a["pattern"], text), (
-            f"pattern {a['pattern']!r} matches nothing in {a['file']}")
 
 
 def test_every_occurrence_is_covered():
@@ -273,18 +341,55 @@ def expired(completed: list[str]) -> list[str]:
             if a.get("remove_after_wave") in completed]
 
 
-def test_nothing_has_expired_yet():
-    """No wave has run, so no allowance can be overdue."""
-    assert expired([]) == []
+def completed_waves() -> list[str]:
+    """Read off the repository, not assumed.
+
+    `expired([])` was the whole lifecycle check, and `[]` says "no wave has
+    run" whatever the tree looks like. It was true when written and would
+    have stayed green through every wave, letting a stale allowance in a
+    retained file survive indefinitely -- retained files do not move, so
+    nothing else would have noticed either.
+    """
+    return VALIDATOR.completed_waves(MANIFEST, VALIDATOR.tracked())
+
+
+def test_no_expired_allowance_survives_its_wave():
+    """The real gate. Empty today because no wave has run, and it says so."""
+    done = completed_waves()
+    overdue = expired(done)
+    assert not overdue, (
+        f"waves {done} have completed, so these allowances should have been "
+        f"removed with them: {overdue}")
+
+
+def test_the_lifecycle_check_knows_which_waves_have_run():
+    """Guards the failure where `done` is empty for the wrong reason.
+
+    If wave derivation broke, the check above would pass by measuring
+    nothing -- which is exactly how it passed before.
+    """
+    done = completed_waves()
+    moved = [r for r in MANIFEST
+             if r["destination"] != "RETAIN" and r["destination"] in set(VALIDATOR.tracked())]
+    if moved:
+        assert done, (
+            f"{len(moved)} file(s) are at their destinations but no wave is "
+            "reported complete; the lifecycle check is measuring nothing")
+    else:
+        assert done == [], done
 
 
 def test_an_allowance_expires_after_its_wave():
-    """The falsification: without this, `expired` could always return []."""
+    """The falsification, against a synthetic completed-wave list.
+
+    Without it `expired` could return [] for every input and every lifecycle
+    assertion above would pass.
+    """
     have_waves = {a.get("remove_after_wave") for a in ALLOWANCES} - {None}
-    assert have_waves, "no allowance declares a removal wave"
+    if not have_waves:
+        pytest.skip("every allowance is permanent; nothing can expire")
     for w in sorted(have_waves):
-        overdue = expired([w])
-        assert overdue, f"nothing expires after the {w} wave, which cannot be right"
+        assert expired([w]), f"nothing expires after the {w} wave"
 
 
 def test_every_temporary_allowance_names_a_wave_that_moves_its_referent():
@@ -304,3 +409,19 @@ def test_every_temporary_allowance_names_a_wave_that_moves_its_referent():
         if actual != w:
             wrong.append(f"{a['id']}: expires after {w}, but {lit} moves in {actual}")
     assert not wrong, wrong
+
+def test_no_test_here_is_parametrized_over_the_allowance_list():
+    """Node ids must not depend on how many exceptions exist.
+
+    Four parametrized tests produced four node ids per allowance, so the
+    eight removals the bfo wave requires would have deleted 32 ids and
+    broken the frozen identity set the baseline exists to hold. A check
+    whose identity changes whenever the plan advances cannot be the thing
+    that proves the plan changed nothing.
+    """
+    src = Path(__file__).read_text(encoding='utf-8')
+    # Built by concatenation so this line is not itself a match.
+    needle = "ALLOWANCES," + " ids="
+    assert needle not in src, (
+        "an allowance-parametrized test is back; loop inside one test "
+        "instead, so the collected identity survives the migration")

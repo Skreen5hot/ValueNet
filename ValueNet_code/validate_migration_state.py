@@ -113,6 +113,58 @@ def validate(rows: list[dict], files: set[str], current_wave: str | None) -> lis
     return problems
 
 
+
+def completed_waves(rows: list[dict], files: set[str]) -> list[str]:
+    """Which waves have actually run, read off the tree rather than asserted.
+
+    A wave is complete when every one of its rows sits at its destination and
+    none is still at its source. Taking the caller's word for it makes the
+    check depend on the answer it exists to verify, which is how a lifecycle
+    rule ends up green forever: `expired([])` says "nothing has run", and
+    nothing had, because nobody ever asked the repository.
+
+    The waves are ordered, so a partial wave ends the run. Continuing past one
+    would report a later wave as complete while an earlier one is half done --
+    a state the plan forbids and the validator would otherwise not see.
+    """
+    done: list[str] = []
+    for wave in WAVE_ORDER:
+        rows_here = [r for r in rows if r.get("wave") == wave]
+        if not rows_here:
+            continue
+        at_destination = sum(1 for r in rows_here if r["destination"] in files)
+        at_source = sum(1 for r in rows_here if r["path"] in files)
+        if at_destination == len(rows_here) and at_source == 0:
+            done.append(wave)
+        else:
+            break
+    return done
+
+
+def current_wave(rows: list[dict], files: set[str]) -> str | None:
+    """The most recent completed wave, or None before any move."""
+    done = completed_waves(rows, files)
+    return done[-1] if done else None
+
+
+def frozen_exists() -> bool:
+    return bool(sh("git", "tag", "-l", FREEZE_TAG).strip())
+
+
+def frozen_text(rel: str) -> tuple[str, str]:
+    """A tracked file as the freeze recorded it, and where that came from.
+
+    Before the tag there is nothing to read but the working copy. After it,
+    the working copy is exactly what a check must not trust: an edit to the
+    manifest or the baseline could make a broken tree look valid, which is
+    the whole reason the freeze exists.
+    """
+    if frozen_exists():
+        return sh("git", "show", f"{FREEZE_TAG}:{rel}"), f"{rel}@{FREEZE_TAG}"
+    root = layout.repository_root()
+    return (root / rel).read_text(encoding="utf-8"), f"{rel} (working copy)"
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--wave", default=None, choices=WAVE_ORDER,

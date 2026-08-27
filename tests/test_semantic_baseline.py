@@ -36,8 +36,42 @@ from marep import layout
 pytestmark = pytest.mark.repository
 
 REPO = layout.repository_root()
-BASELINE = json.loads(
-    (REPO / "config/reorganization-baseline.json").read_text(encoding="utf-8"))
+
+
+def _validator():
+    path = layout.component("tool.validate-migration-state").resolve()
+    spec = importlib.util.spec_from_file_location("validate_migration_state", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+VALIDATOR = _validator()
+
+#: From the freeze tag once it exists. Read from the working tree, a
+#: regenerated baseline would move the goalposts: every comparison below would
+#: be against numbers computed from the same tree it is checking, which can
+#: only ever agree.
+BASELINE_TEXT, BASELINE_SOURCE = VALIDATOR.frozen_text(
+    "config/reorganization-baseline.json")
+BASELINE = json.loads(BASELINE_TEXT)
+
+#: Where each recorded artifact lives, by component rather than by the path
+#: the baseline recorded. The CCO extract moves to ontology/bfo/vendor/cco/ in
+#: the bfo wave, so the frozen path stops resolving the moment the migration
+#: starts -- and a test that cannot survive the move it is checking is not a
+#: check on the move.
+ARTIFACT_COMPONENT = {
+    "folk_source": ("original-valuenet.folk-source", None),
+    "folk_aligned": ("original-valuenet.folk-aligned", None),
+    "cco_extract": ("bfo.vendor-cco", "cco-valuenet-extract.ttl"),
+}
+
+
+def artifact_path(name: str):
+    cid, child = ARTIFACT_COMPONENT[name]
+    base = layout.component(cid).resolve()
+    return base / child if child else base
 
 WAVES = ["bfo", "marep", "original-valuenet", "architecture", "tests"]
 
@@ -205,15 +239,62 @@ def test_the_test_baseline_still_reproduces():
 # ======================================================================
 
 
-@pytest.mark.parametrize("name", ["folk_source", "folk_aligned", "cco_extract"])
-def test_each_recorded_artifact_still_has_its_byte_digest(name):
-    """Cheap and exact: these three are single files."""
-    rec = BASELINE["artifacts"][name]
-    path = REPO / rec["path"]
-    assert path.exists(), rec["path"]
-    actual = hashlib.sha256(path.read_bytes()).hexdigest()
-    assert actual == rec["byte_sha256"], (
-        f"{rec['path']} has changed since the baseline was captured")
+def test_every_recorded_artifact_resolves():
+    """Through the contract, so the check survives the wave that moves it."""
+    for name in BASELINE["artifacts"]:
+        assert artifact_path(name).is_file(), name
+
+
+def test_bytes_are_compared_only_where_the_baseline_says_they_are_invariant():
+    """A byte digest and a canonical digest answer different questions.
+
+    folk_aligned.ttl is regenerated when its generator moves, so its bytes
+    change by design and the baseline records `byte_is_invariant: false`.
+    Comparing them anyway asserted that a documented transition must not
+    happen -- the test would have failed precisely when the migration
+    succeeded.
+    """
+    problems = []
+    for name, rec in BASELINE["artifacts"].items():
+        if not rec["byte_is_invariant"]:
+            continue
+        actual = hashlib.sha256(artifact_path(name).read_bytes()).hexdigest()
+        if actual != rec["byte_sha256"]:
+            problems.append(f"{name}: bytes changed but are recorded invariant")
+    assert not problems, problems
+
+
+def test_something_is_expected_to_change_its_bytes():
+    """Guards the reading where every artifact is byte-invariant and the
+    test above is vacuous."""
+    mutable = [n for n, r in BASELINE["artifacts"].items()
+               if not r["byte_is_invariant"]]
+    assert mutable == ["folk_aligned"], mutable
+
+
+@pytest.mark.slow
+def test_the_canonical_digest_holds_for_every_artifact():
+    """The invariant that has to survive the whole migration.
+
+    Canonical for all three, including the one whose bytes are expected to
+    move: what the plan promises is that nothing the ontology *means*
+    changes, and the canonical form is where that claim lives.
+    """
+    problems = []
+    for name, rec in BASELINE["artifacts"].items():
+        assert rec["canonical_is_invariant"] is True, name
+        actual = TOOL.canonical_digest(artifact_path(name))
+        if actual != rec["canonical_sha256"]:
+            problems.append(f"{name}: canonical RDF changed")
+    assert not problems, problems
+
+
+def test_the_baseline_being_checked_is_the_frozen_one():
+    """Once the tag exists, nothing here reads the working copy."""
+    if VALIDATOR.frozen_exists():
+        assert BASELINE_SOURCE.endswith("@" + VALIDATOR.FREEZE_TAG), BASELINE_SOURCE
+    else:
+        assert "working copy" in BASELINE_SOURCE, BASELINE_SOURCE
 
 
 def test_an_artifact_says_which_of_its_digests_survive_the_move():
@@ -299,17 +380,77 @@ def test_the_ground_digest_still_reproduces():
 # ======================================================================
 
 
-def test_a_partial_collection_is_refused_rather_than_recorded():
+SENTINEL = b'{"sentinel": "this baseline must survive a refused run"}\n'
+
+
+def _tool_tree(tmp_path):
+    """Enough of a repository for the tool to start, and no git.
+
+    `git rev-parse HEAD` is the first thing main() does, so a tree with no
+    repository fails there -- before the half hour of corpus canonicalization
+    that a later forced failure would have to sit through.
+    """
+    import shutil
+
+    root = tmp_path / "tree"
+    (root / "config").mkdir(parents=True)
+    (root / "tools").mkdir()
+    (root / "out").mkdir()
+    shutil.copy2(REPO / "config/repository-layout.yaml",
+                 root / "config/repository-layout.yaml")
+    shutil.copytree(REPO / "marep", root / "marep",
+                    ignore=shutil.ignore_patterns("__pycache__"))
+    shutil.copy2(layout.component("tool.build-semantic-baseline").resolve(),
+                 root / "tools/build_semantic_baseline.py")
+    (root / "out/baseline.json").write_bytes(SENTINEL)
+    return root
+
+
+def test_the_baseline_is_not_written_when_the_commit_cannot_be_read(tmp_path):
+    """Fail-closed, exercised rather than read.
+
+    A baseline that does not know which commit it describes cannot be
+    compared to anything later, so recording one would produce a file that
+    looks like evidence and is not. The earlier form of this test searched
+    the tool's source for the string "refusing to write a", which proves
+    somebody typed a message, not that anything refuses.
+    """
+    root = _tool_tree(tmp_path)
+    r = subprocess.run([sys.executable, "tools/build_semantic_baseline.py",
+                        "-o", "out/baseline.json"],
+                       cwd=str(root), capture_output=True, text=True)
+    assert r.returncode != 0, (
+        "the tool exited 0 with no git repository:\n" + r.stdout)
+    assert (root / "out/baseline.json").read_bytes() == SENTINEL, (
+        "a refused run replaced the existing baseline")
+
+
+def test_a_partial_collection_is_refused_rather_than_recorded(tmp_path):
     """A collection error still prints the ids gathered before it failed.
 
     Writing a baseline from that list would record a smaller suite and call
-    it the truth, which is the failure this whole file exists to prevent.
+    it the truth -- the exact shape of every other defect this file guards:
+    a number that survived, standing in for a measurement that did not.
     """
-    src = (layout.component("tool.build-semantic-baseline").resolve()
-           .read_text(encoding="utf-8"))
-    assert "refusing to write a" in src, (
-        "the tool no longer refuses to build a baseline from a partial "
-        "collection")
+    root = tmp_path / "broken"
+    root.mkdir()
+    (root / "test_fine.py").write_text("def test_ok():\n    assert True\n",
+                                       encoding="utf-8")
+    (root / "test_broken.py").write_text("def test_bad(:\n", encoding="utf-8")
+    with pytest.raises(SystemExit) as exc:
+        TOOL.test_baseline(root)
+    assert "refusing to write" in str(exc.value)
+
+
+def test_a_clean_collection_is_accepted(tmp_path):
+    """The falsification: a tool that refused every collection would pass
+    the test above."""
+    root = tmp_path / "clean"
+    root.mkdir()
+    (root / "test_fine.py").write_text(
+        "def test_ok():\n    assert True\n", encoding="utf-8")
+    result = TOOL.test_baseline(root)
+    assert result["collected"] >= 1, result
 
 
 def test_the_version_history_documents_every_version():

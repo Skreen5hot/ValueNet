@@ -36,27 +36,76 @@ sys.path.insert(0, str(_root))
 WAVE_ORDER = ["bfo", "marep", "original-valuenet", "architecture", "tests"]
 
 
-def materialise(rows: list[dict], through_wave: str | None, dest: Path) -> int:
-    """Copy the repository into `dest` with the given waves applied."""
+class MaterialiseError(RuntimeError):
+    """The working tree is not in any state the manifest describes."""
+
+
+def materialise(rows: list[dict], through_wave: str | None, dest: Path,
+                source_root: Path | None = None) -> int:
+    """Copy the repository into `dest` with the given waves applied.
+
+    Reads each row from whichever of its two paths actually holds the
+    file. The first version read only the source and skipped the row when
+    it was absent, which is fine on a pristine tree and useless on a real
+    one: after the BFO wave those 42 sources are gone, their destinations
+    exist, and the checker would have silently omitted all 42 and reported
+    the remaining 288 as a complete tree.
+
+    So exactly one of the two must exist. Both means an interrupted move
+    left a copy behind; neither means the file is lost. Either is a state
+    the manifest does not describe, and copying on regardless would
+    produce a verdict about a tree nobody has.
+    """
     import yaml  # noqa: F401  (import proves the environment before copying)
 
+    # A caller may hand us a tree other than this repository -- a fixture
+    # standing in for a half-run migration. Without that the partial-move
+    # path could only be tested by half-running a migration.
+    base = Path(source_root) if source_root is not None else _root
     done = (WAVE_ORDER[:WAVE_ORDER.index(through_wave) + 1]
             if through_wave else WAVE_ORDER)
     moved = 0
+    copied = 0
+    problems: list[str] = []
     for r in rows:
-        src = _root / r["path"]
-        if not src.exists():
-            continue
         target = r["destination"]
+        src = base / r["path"]
+        dst = (base / target) if target != "RETAIN" else None
+        src_here = src.is_file()
+        dst_here = bool(dst and dst.is_file())
+
+        if src_here and dst_here:
+            problems.append(
+                r["path"] + " exists at both its source and its "
+                "destination " + str(target) + "; an interrupted move "
+                "left a copy behind, and there is no way to tell which "
+                "of the two the repository means")
+            continue
+        if not src_here and not dst_here:
+            problems.append(
+                r["path"] + " exists at neither its source nor its "
+                "destination " + str(target))
+            continue
+        origin = src if src_here else dst
         if target != "RETAIN" and r.get("wave") in done:
             out = dest / target
             moved += 1
         else:
             out = dest / r["path"]
         out.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(src, out)
-    return moved
+        shutil.copy2(origin, out)
+        copied += 1
 
+    if problems:
+        raise MaterialiseError(
+            f"{len(problems)} row(s) are not in a state the manifest "
+            f"describes:" + chr(10) + chr(10).join("      " + x for x in problems[:20]))
+    if copied != len(rows):
+        raise MaterialiseError(
+            f"materialised {copied} of {len(rows)} manifest rows; a row that "
+            f"reaches the destination tree by no path is a file the check "
+            f"never looked at")
+    return moved
 
 #: Every tool, loaded from wherever it now lives, must still compute the
 #: repository root correctly. Added after three tools were found resolving
@@ -100,6 +149,24 @@ for d in ('tools', 'ValueNet_code'):
 assert not bad, bad
 '''
 
+#: Compared per file against the pre-move map, keyed by manifest identity.
+#: Aggregate counts were the earlier form and could not fail for a
+#: balanced swap: two files exchanging groups leaves every total intact.
+_GROUPING = '''import json, pathlib, yaml
+from marep import layout, ontology_source as onto
+root = layout.repository_root()
+rows = yaml.safe_load(
+    (root / 'config/move-manifest.yaml').read_text(encoding='utf-8'))['components']
+ident = identity_map(rows)
+got = {}
+for path in onto.discover(root):
+    rel = path.relative_to(root).as_posix()
+    got[ident.get(rel, rel)] = onto.measure_file(path, root).group
+want = json.loads('GROUPING_BASELINE')
+changed = grouping_delta(want, got)
+assert not changed, str(len(changed)) + ' file(s) changed group: ' + str(changed[:8])
+'''
+
 CONSUMERS = [
     ("layout resolves the BFO tree",
      "from marep import layout; "
@@ -114,18 +181,7 @@ CONSUMERS = [
      "from marep import layout; "
      "n=len(layout.bfo_modules('valuenet-core','valuenet-folk','valuenet-mappings')); "
      "assert n == 3, f'{n} modules, expected 3'"),
-    ("corpus grouping is unchanged",
-     # The whole map, not two groups of it. Asserting only bfo-layer and
-     # bfo-vendored let the other 155 files fall into any bucket at all and
-     # still printed OK -- the narrow assertion could not have failed for
-     # them. The baseline is measured on the real tree and injected, so this
-     # states the actual invariant: the move does not reclassify anything.
-     "from marep import layout, ontology_source as onto; "
-     "import collections, json; root=layout.repository_root(); "
-     "got=dict(collections.Counter(onto.measure_file(p,root).group "
-     "for p in onto.discover(root))); want=json.loads('GROUPING_BASELINE'); "
-     "assert got == want, "
-     "f'moved: {want} -> {got}'"),
+    ("corpus grouping is unchanged", _GROUPING),
     ("query documents resolve",
      "from marep import competency; d=competency.query_docs(); "
      "assert len(d) == 2, d"),
@@ -199,15 +255,22 @@ def tool_import_baseline() -> str:
 #: follow-up, so a check that materialises the wave without it is checking
 #: a state the plan never intends to be in.
 #:
-#: Mapped explicitly rather than inferred. `generate_cco_extract.py` takes
-#: four required arguments including a source digest, so it cannot be run
-#: bare; that entry is reported instead of silently skipped, because a
-#: regeneration nobody performs and nobody mentions is how the header in
-#: folk_aligned.ttl came to name a generator that had moved.
+#: Mapped explicitly rather than inferred. Rebuilding the CCO extract
+#: needs the pinned upstream release, which is not in this repository --
+#: but the obligation is not about the extract. Moving the script changes
+#: only where the manifest says the extract came from, so
+#: --refresh-provenance discharges it after checking the extract's digest
+#: still matches.
+#:
+#: An entry of None means nobody can discharge it here, and that is a
+#: failure, not a note. Printing it and returning success is how the
+#: header in folk_aligned.ttl came to name a generator that had moved:
+#: the obligation was recorded, reported, and never carried out.
 REGENERATORS = {
     "folk-aligned-generated-header-generator":
         ("tool.generate-folk-aligned", []),
-    "cco-manifest-generator-path": None,
+    "cco-manifest-generator-path":
+        ("tool.generate-cco-extract", ["--refresh-provenance"]),
 }
 
 
@@ -227,9 +290,10 @@ def regenerate(dest: Path, through_wave: str | None) -> list[str]:
     for a in owed_regenerations(through_wave):
         spec = REGENERATORS.get(a.get("id"), None)
         if spec is None:
-            unperformed.append(f"{a.get('id')}: {a.get('file')} must be "
-                               f"regenerated by hand after the "
-                               f"{a.get('remove_after_wave')} wave")
+            unperformed.append(
+                f"{a.get('id')}: {a.get('file')} must be brought up to "
+                f"date after the {a.get('remove_after_wave')} wave, and "
+                f"no automated way to do so is recorded")
             continue
         component_id, extra = spec
         tool = layout.component(component_id).resolve(dest)
@@ -244,22 +308,59 @@ def regenerate(dest: Path, through_wave: str | None) -> list[str]:
             unperformed.append(f"{a.get('id')}: regeneration failed")
     return unperformed
 
-def grouping_baseline() -> str:
-    """How the current tree groups its corpus, as JSON, for injection.
+#: Which files changed group, computed identically in this process and
+#: inside the materialised tree. Defined once as source so the check and
+#: its falsification test cannot drift apart.
+_DELTA_SRC = '''def grouping_delta(want, got):
+    out = []
+    for k in sorted(set(want) | set(got)):
+        a, b = want.get(k), got.get(k)
+        if a != b:
+            out.append(str(k) + ': ' + str(a) + ' -> ' + str(b))
+    return out
+'''
 
-    Measured rather than hardcoded so the assertion reads "the move changes
-    no file's group" instead of "the counts are these seven numbers", and so
-    it stays true when the corpus legitimately grows.
+exec(_DELTA_SRC, globals())
+
+
+#: Manifest identity for a path: the row's source path, whichever of its
+#: two locations the file currently occupies. Counting group totals could
+#: not see a file move between groups as long as another moved back, so
+#: the comparison is per file and the key has to survive the move.
+_IDENTITY_SRC = '''def identity_map(rows):
+    out = {}
+    for r in rows:
+        out[r['path']] = r['path']
+        if r['destination'] != 'RETAIN':
+            out[r['destination']] = r['path']
+    return out
+'''
+
+exec(_IDENTITY_SRC, globals())
+
+def grouping_baseline() -> str:
+    """Every ontology file's group, keyed by manifest identity, as JSON.
+
+    Measured rather than hardcoded, so the assertion reads "the move
+    reclassifies no file" and stays true when the corpus grows.
+
+    Per file, not per group. The first version compared
+    `Counter(group)`, which two files swapping groups leaves completely
+    unchanged -- a check that cannot see the thing it is named after.
     """
-    import collections
     import json
 
+    import yaml
     from marep import layout, ontology_source as onto
     root = layout.repository_root()
-    counts = collections.Counter(onto.measure_file(p, root).group
-                                 for p in onto.discover(root))
-    return json.dumps(dict(counts))
-
+    rows = yaml.safe_load(
+        (root / "config/move-manifest.yaml").read_text(encoding="utf-8"))["components"]
+    ident = identity_map(rows)
+    out = {}
+    for path in onto.discover(root):
+        rel = path.relative_to(root).as_posix()
+        out[ident.get(rel, rel)] = onto.measure_file(path, root).group
+    return json.dumps(out, sort_keys=True)
 
 def check_prefix_groups_are_stable(rows: list[dict]) -> list[str]:
     """Prefix-based corpus groups must not have moving members.
@@ -325,10 +426,13 @@ def main(argv=None) -> int:
         label = args.wave or "all waves"
         print(f"  materialised {label}: {moved} file(s) at their destinations")
 
-        # Executing a wave includes what the contract says it owes.
-        manual = regenerate(dest, args.wave)
-        for m in manual:
-            print(f"    note: {m}")
+        # Executing a wave includes what the contract says it owes. An
+        # obligation the wave has expired and nobody discharged leaves the
+        # tree in a state the contract calls invalid, so it fails the
+        # check rather than printing as a note beside a green verdict.
+        unperformed = regenerate(dest, args.wave)
+        for m in unperformed:
+            print(f"    FAIL {m}")
 
         # Through the contract, against the materialised tree. Two literal
         # candidates tried in order worked, but encoded the same move the
@@ -342,13 +446,15 @@ def main(argv=None) -> int:
             layout.component("tool.generate-folk-aligned").resolve(dest),
             dest).replace(os.sep, "/")
 
-        failures = list(structural)
+        failures = list(structural) + list(unperformed)
         for f in structural:
             print(f"    FAIL {f}")
         for name, snippet in CONSUMERS:
             code = (snippet.replace("TOOL_GENERATE_FOLK", gen)
                            .replace("GROUPING_BASELINE", baseline)
                            .replace("TOOL_IMPORT_BASELINE", tool_baseline))
+            if "identity_map(" in code:
+                code = _IDENTITY_SRC + _DELTA_SRC + code
             if "_load(" in code:
                 code = _LOAD_PRELUDE + code
             r = subprocess.run([sys.executable, "-c", code],

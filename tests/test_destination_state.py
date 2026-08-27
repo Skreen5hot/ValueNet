@@ -70,13 +70,18 @@ def test_the_prefix_guard_fires_when_a_prefix_grouped_file_moves():
 
 
 def test_the_grouping_baseline_covers_the_whole_corpus():
-    """The baseline must name every group, not a convenient subset."""
-    baseline = json.loads(CHECKER.grouping_baseline())
-    assert len(baseline) >= 7, f"only {len(baseline)} groups measured: {baseline}"
-    assert not [g for g, n in baseline.items() if n == 0], baseline
-    assert sum(baseline.values()) >= 160, (
-        f"the baseline covers {sum(baseline.values())} files; the corpus is larger")
+    """Every ontology file, and every group still represented.
 
+    The shape changed when the check moved from group totals to a
+    per-file map, but the property has not: a baseline naming a
+    convenient subset can only prove things about that subset.
+    """
+    baseline = json.loads(CHECKER.grouping_baseline())
+    assert len(baseline) >= 160, f"only {len(baseline)} files measured"
+    groups = set(baseline.values())
+    assert len(groups) >= 7, f"only {len(groups)} groups: {sorted(groups)}"
+    assert not [k for k, v in baseline.items() if not v], (
+        "a file with no group is a file the grouping rule did not reach")
 
 def test_every_consumer_snippet_has_its_placeholders_substituted():
     """A placeholder left in the code becomes a NameError the runner counts
@@ -183,3 +188,173 @@ def test_owed_regenerations_track_the_wave():
     late = {a.get('id') for a in CHECKER.owed_regenerations(None)}
     assert 'folk-aligned-generated-header-generator' in late
     assert 'cco-manifest-generator-path' in late
+
+
+# ======================================================================
+# materialising a tree that has already been partly moved
+# ======================================================================
+
+MOVED_ROW = {"path": "src/moved.ttl", "destination": "dst/moved.ttl",
+             "wave": "tests"}
+RETAINED_ROW = {"path": "keep/stays.ttl", "destination": "RETAIN",
+                "wave": None}
+
+
+def _tree(root: Path, *rel: str) -> Path:
+    for r in rel:
+        f = root / r
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text("# " + r + "\n", encoding="utf-8")
+    return root
+
+
+def test_a_completed_move_is_read_from_its_destination(tmp_path: Path):
+    """The blocking defect: after a real wave the source is gone.
+
+    The first version read only the manifest's source path and skipped the
+    row when it was absent. On a pristine tree that is invisible. After the
+    BFO wave it would have silently omitted all 42 moved files and called
+    the remaining 288 a complete tree.
+    """
+    src = _tree(tmp_path / "repo", "dst/moved.ttl", "keep/stays.ttl")
+    out = tmp_path / "out"
+    moved = CHECKER.materialise([MOVED_ROW, RETAINED_ROW], "tests", out,
+                                source_root=src)
+    assert moved == 1
+    assert (out / "dst/moved.ttl").is_file(), "the moved file was skipped"
+    assert (out / "keep/stays.ttl").is_file()
+
+
+def test_an_unrun_wave_places_a_moved_file_back_at_its_source(tmp_path: Path):
+    """Content comes from wherever it is; position comes from the wave."""
+    src = _tree(tmp_path / "repo", "dst/moved.ttl", "keep/stays.ttl")
+    out = tmp_path / "out"
+    moved = CHECKER.materialise([MOVED_ROW, RETAINED_ROW], "bfo", out,
+                                source_root=src)
+    assert moved == 0
+    assert (out / "src/moved.ttl").is_file()
+    assert not (out / "dst/moved.ttl").exists()
+
+
+def test_a_row_present_at_both_paths_is_refused(tmp_path: Path):
+    """An interrupted move left a copy; neither path is authoritative."""
+    src = _tree(tmp_path / "repo", "src/moved.ttl", "dst/moved.ttl",
+                "keep/stays.ttl")
+    with pytest.raises(CHECKER.MaterialiseError) as exc:
+        CHECKER.materialise([MOVED_ROW, RETAINED_ROW], "tests",
+                            tmp_path / "out", source_root=src)
+    assert "both" in str(exc.value)
+
+
+def test_a_row_present_at_neither_path_is_refused(tmp_path: Path):
+    """The count assertion: a row that reaches the tree by no path is a
+    file the check never looked at."""
+    src = _tree(tmp_path / "repo", "keep/stays.ttl")
+    with pytest.raises(CHECKER.MaterialiseError) as exc:
+        CHECKER.materialise([MOVED_ROW, RETAINED_ROW], "tests",
+                            tmp_path / "out", source_root=src)
+    assert "neither" in str(exc.value)
+
+
+def test_the_real_tree_materialises_every_manifest_row(tmp_path: Path):
+    """330 rows in, 330 files out, with nothing quietly dropped."""
+    out = tmp_path / "out"
+    CHECKER.materialise(ROWS, None, out)
+    written = sum(1 for f in out.rglob("*") if f.is_file())
+    assert written == len(ROWS), f"{written} files for {len(ROWS)} rows"
+
+
+# ======================================================================
+# grouping, per file rather than per group
+# ======================================================================
+
+
+def test_a_balanced_swap_changes_no_count_and_is_still_caught():
+    """The blocking defect: a Counter of group totals cannot see this.
+
+    Two files exchanging groups leaves every total identical, so the
+    aggregate comparison passes while two files have been reclassified.
+    """
+    import collections
+
+    want = {"a.ttl": "bfo-layer", "b.ttl": "thats-all-folks"}
+    got = {"a.ttl": "thats-all-folks", "b.ttl": "bfo-layer"}
+    assert (collections.Counter(want.values())
+            == collections.Counter(got.values())), (
+        "the premise of this test is that the counts agree")
+    changed = CHECKER.grouping_delta(want, got)
+    assert len(changed) == 2, changed
+
+
+def test_the_grouping_baseline_is_keyed_per_file():
+    baseline = json.loads(CHECKER.grouping_baseline())
+    assert len(baseline) >= 160, f"{len(baseline)} files measured"
+    assert all(isinstance(v, str) for v in baseline.values())
+    assert "BFO/bfo-core.ttl" in baseline, sorted(baseline)[:5]
+
+
+def test_identity_survives_the_move():
+    """A file keeps one key either side of the move, or the two maps
+    cannot be compared at all."""
+    ident = CHECKER.identity_map(ROWS)
+    moved = [r for r in ROWS if r["destination"] != "RETAIN"]
+    assert moved
+    for r in moved[:20]:
+        assert ident[r["path"]] == ident[r["destination"]] == r["path"]
+
+
+# ======================================================================
+# obligations a completed wave owes
+# ======================================================================
+
+
+def test_an_undischargeable_obligation_fails_rather_than_notes(tmp_path: Path,
+                                                               monkeypatch):
+    """The blocking defect: printed as a note beside a green verdict.
+
+    An expired obligation nobody discharged leaves the tree in a state the
+    contract itself calls invalid. Reporting success there is how the CCO
+    manifest kept naming a generator that had moved.
+    """
+    owed = CHECKER.owed_regenerations(None)
+    assert owed, "nothing is owed, so this proves nothing"
+    # Every obligation, not just the first: leaving the others live made
+    # this test resolve a generator under an empty tmp_path and fail on
+    # the resolver instead of on the property under test.
+    for a in owed:
+        monkeypatch.setitem(CHECKER.REGENERATORS, a["id"], None)
+    unperformed = CHECKER.regenerate(tmp_path, None)
+    assert unperformed, "an undischargeable obligation returned nothing"
+    assert owed[0]["id"] in unperformed[0]
+
+
+def test_the_cco_obligation_is_dischargeable():
+    """Not None. Rebuilding the extract needs the pinned upstream release,
+    but the obligation is only about provenance."""
+    spec = CHECKER.REGENERATORS["cco-manifest-generator-path"]
+    assert spec is not None, (
+        "the declared remedy was inert: regenerating re-emitted the same "
+        "stale path, so the obligation could never be discharged")
+    assert "--refresh-provenance" in spec[1]
+
+def test_the_real_tree_round_trips_through_a_partly_moved_state(tmp_path: Path):
+    """The scenario the checker exists for, on the actual manifest.
+
+    Stage one is this repository with the BFO wave applied: 42 sources
+    gone, 42 destinations present. Stage two materialises *from* that,
+    which is what the checker will have to do the morning after the wave
+    actually runs. Every row must still be found, from whichever of its
+    two paths now holds it."""
+    stage1 = tmp_path / 'after-bfo'
+    CHECKER.materialise(ROWS, 'bfo', stage1)
+    assert not (stage1 / 'BFO/valuenet-core.ttl').exists()
+    assert (stage1 / 'ontology/bfo/core/valuenet-core.ttl').is_file()
+
+    # Read back from the moved tree, at the same wave and at the last one.
+    for wave in ('bfo', None):
+        out = tmp_path / ('from-partial-' + str(wave))
+        CHECKER.materialise(ROWS, wave, out, source_root=stage1)
+        written = sum(1 for f in out.rglob('*') if f.is_file())
+        assert written == len(ROWS), (
+            f'{written} of {len(ROWS)} rows survived a read from a '
+            f'partly moved tree at wave {wave!r}')

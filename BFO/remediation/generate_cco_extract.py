@@ -15,6 +15,8 @@ import json
 from datetime import date
 from pathlib import Path
 
+import sys
+
 from rdflib import BNode, Graph, Literal, Namespace, URIRef
 from rdflib.compare import to_canonical_graph
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, XSD
@@ -37,6 +39,26 @@ SOURCE_ARTIFACT_URL = (
 )
 SOURCE_COMMIT = "0bc7d33e1bc09fd4693366119ab4e03cb0340042"
 SOURCE_RELEASE = "v2.2"
+# Root by upward search for the layout contract, so this script can ask
+# where it lives rather than asserting it. The manifest it writes records
+# its own path, and that value was written literally: after the bfo wave
+# it named BFO/remediation/, a directory that no longer exists, and
+# regenerating re-emitted the same stale string.
+_here = Path(__file__).resolve()
+_root = next((d for d in _here.parents
+             if (d / "config" / "repository-layout.yaml").is_file()), None)
+if _root is None:  # pragma: no cover - a tree without the contract
+    raise SystemExit(f"no config/repository-layout.yaml above {_here}")
+sys.path.insert(0, str(_root))
+
+from marep.layout import component, relative  # noqa: E402
+
+
+def script_path() -> str:
+    """This script's repository-relative path, from the contract."""
+    return relative(component("tool.generate-cco-extract").resolve())
+
+
 SCRIPT_VERSION = "4"
 
 ROOT_TERMS = (
@@ -216,7 +238,7 @@ def write_manifest(output: Path, manifest_path: Path, source_path: Path) -> None
             "import_declarations": "omit-documented",
         },
         "generated_by": {
-            "script": "BFO/remediation/generate_cco_extract.py",
+            "script": script_path(),
             "version": SCRIPT_VERSION,
         },
         "extract_sha256": sha256(output),
@@ -237,15 +259,71 @@ def write_manifest(output: Path, manifest_path: Path, source_path: Path) -> None
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", required=True, type=Path)
-    parser.add_argument("--expected-source-sha256", required=True)
-    parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--manifest", required=True, type=Path)
-    return parser.parse_args()
+    parser.add_argument(
+        "--refresh-provenance", action="store_true",
+        help="rewrite only the contract-derived fields of the existing "
+             "manifest, after verifying the extract it describes is "
+             "byte-identical. Rebuilding the extract needs the pinned "
+             "upstream CCO release, which is not in this repository; "
+             "moving this script does not change the extract, only where "
+             "the manifest says the extract came from")
+    parser.add_argument("--source", type=Path)
+    parser.add_argument("--expected-source-sha256")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--manifest", type=Path)
+    args = parser.parse_args()
+    if not args.refresh_provenance:
+        missing = [n for n in (
+            "source", "expected_source_sha256", "output", "manifest")
+            if getattr(args, n) is None]
+        if missing:
+            parser.error("required unless --refresh-provenance: "
+                         + ", ".join("--" + m.replace("_", "-")
+                                     for m in missing))
+    return args
+
+
+def refresh_provenance() -> None:
+    """Bring `generated_by.script` back in line with the contract.
+
+    The layout contract declares an allowance for this literal with
+    `remove_after_wave: bfo`, meaning it must be corrected once that wave
+    runs. Before this existed the only declared remedy was to regenerate,
+    which re-emitted the identical stale string -- an obligation that
+    could be recorded, reported and never discharged.
+
+    The extract's digest is checked first. Rewriting provenance onto an
+    extract this manifest no longer describes would produce a file that
+    is internally consistent and wrong."""
+    from marep.layout import bfo_artifact
+
+    manifest_path = bfo_artifact("cco-valuenet-extract.manifest.json")
+    extract_path = bfo_artifact("cco-valuenet-extract.ttl")
+    data = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    recorded, actual = data.get("extract_sha256"), sha256(extract_path)
+    if recorded != actual:
+        raise SystemExit(
+            f"refusing to refresh provenance: {extract_path.name} has "
+            f"digest {actual}, but the manifest describes {recorded}. "
+            f"Regenerate the extract instead.")
+
+    want = script_path()
+    have = data.get("generated_by", {}).get("script")
+    if have == want:
+        print(f"provenance already current: {want}")
+        return
+    data["generated_by"]["script"] = want
+    manifest_path.write_text(
+        json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(f"refreshed generated_by.script: {have} -> {want}")
 
 
 def main() -> None:
     args = parse_args()
+    if args.refresh_provenance:
+        refresh_provenance()
+        return
     actual_source_sha256 = sha256(args.source)
     if actual_source_sha256.lower() != args.expected_source_sha256.lower():
         raise SystemExit(

@@ -46,6 +46,8 @@ from marep import layout  # noqa: E402
 #:   2  ground digest plus a flattened/node-signature blank-node fingerprint
 #:   3  that fingerprint replaced by connected-component canonicalization,
 #:      after the version-2 form was shown to collide on non-isomorphic graphs
+#:   4  the test baseline records the default-run selection as well as the
+#:      all-markers total, after a silent deselection left the total intact
 TOOL_VERSION = 4
 
 
@@ -354,9 +356,11 @@ def test_baseline(root: Path) -> dict:
     changes `default_selected` and its hash while `collected` holds steady,
     which is exactly the shape of that regression.
 
-    The two counts are also easy to confuse: version 3's stored 539 happened
-    to equal the *selected* count at version 4, so a reader comparing the
-    wrong pair would have seen agreement where the suite had grown by ten.
+    The two counts are easy to confuse, and comparing the wrong pair reads
+    as agreement: version 3 stored a single `collected`, so a reader
+    checking it against version 4's `default_selected` is comparing an
+    all-markers total against a default-run selection. They are different
+    measurements and there is no reason for them to match.
     """
     every = _collect(root, "slow or not slow")
     default = _collect(root, None)

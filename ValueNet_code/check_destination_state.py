@@ -271,11 +271,14 @@ REGENERATORS = {
         ("tool.generate-folk-aligned", []),
     "cco-manifest-generator-path":
         ("tool.generate-cco-extract", ["--refresh-provenance"]),
+    # Same file, same generator: running it once discharges both, and
+    # regenerate() deduplicates by tool so it runs once.
+    "cross-ref-folk-aligned-ttl-to-bfo-vcvf-triggers-review-md":
+        ("tool.generate-folk-aligned", []),
 }
 
 
-def owed_regenerations(through_wave: str | None) -> list[dict]:
-    """Allowances whose `remove_after_wave` has run."""
+def _expired(through_wave: str | None) -> list[dict]:
     from marep import layout
     done = (WAVE_ORDER[:WAVE_ORDER.index(through_wave) + 1]
             if through_wave else WAVE_ORDER)
@@ -283,12 +286,41 @@ def owed_regenerations(through_wave: str | None) -> list[dict]:
             if a.get("remove_after_wave") in done]
 
 
+def owed_regenerations(through_wave: str | None) -> list[dict]:
+    """Expired allowances a program can discharge.
+
+    Only `discharge: regenerate`. The other kind is a source edit -- a usage
+    line in a docstring, a cross-reference in a comment -- which no program
+    rebuilds and which belongs to the move commit. Treating the two as one
+    obligation demanded an automated remedy for 28 that have none, leaving
+    only "fail forever" or "print a note beside a green verdict".
+    """
+    return [a for a in _expired(through_wave)
+            if a.get("discharge") == "regenerate"]
+
+
+def pending_edits(through_wave: str | None) -> list[dict]:
+    """Expired allowances whose remedy is an edit in the move commit.
+
+    Listed, not performed: this materialises a file move, and the plan's move
+    commits carry the link updates with them. What proves these were done is
+    the lifecycle check against the real tree after the wave -- the literal
+    has to be gone -- not anything observable in a copy.
+    """
+    return [a for a in _expired(through_wave)
+            if a.get("discharge") == "edit"]
+
+
 def regenerate(dest: Path, through_wave: str | None) -> list[str]:
     """Run what the wave owes. Returns what could not be run."""
     from marep import layout
     unperformed = []
+    ran: set = set()
     for a in owed_regenerations(through_wave):
         spec = REGENERATORS.get(a.get("id"), None)
+        key = None if spec is None else (spec[0], tuple(spec[1]))
+        if key is not None and key in ran:
+            continue
         if spec is None:
             unperformed.append(
                 f"{a.get('id')}: {a.get('file')} must be brought up to "
@@ -299,6 +331,7 @@ def regenerate(dest: Path, through_wave: str | None) -> list[str]:
         tool = layout.component(component_id).resolve(dest)
         r = subprocess.run([sys.executable, str(tool), *extra],
                            capture_output=True, text=True, cwd=str(dest))
+        ran.add(key)
         rel = os.path.relpath(tool, dest).replace(os.sep, '/')
         print(f"    regenerated {a.get('file')} via {rel}"
               if r.returncode == 0 else
@@ -433,6 +466,12 @@ def main(argv=None) -> int:
         unperformed = regenerate(dest, args.wave)
         for m in unperformed:
             print(f"    FAIL {m}")
+        edits = pending_edits(args.wave)
+        if edits:
+            waves = sorted({a["remove_after_wave"] for a in edits})
+            print(f"    {len(edits)} link edit(s) belong to the "
+                  f"{', '.join(waves)} move commit(s); the lifecycle check "
+                  f"against the real tree is what proves they were made")
 
         # Through the contract, against the materialised tree. Two literal
         # candidates tried in order worked, but encoded the same move the
@@ -472,7 +511,12 @@ def main(argv=None) -> int:
             # BFO/ path in test_trigger_shapes.py was found by reading,
             # because no consumer had ever looked at it.
             print("    running the suite inside the materialised tree ...")
-            r = subprocess.run([sys.executable, "-m", "pytest", "-q"],
+            # `not repository` as well as the configured `not slow`: a
+            # command-line -m replaces addopts rather than adding to it.
+            # The repository-marked modules assert what git tracks and
+            # where the manifest says it is, which a copy cannot answer.
+            r = subprocess.run([sys.executable, "-m", "pytest", "-q",
+                                "-m", "not slow and not repository"],
                                capture_output=True, text=True, cwd=str(dest))
             tail = [ln for ln in r.stdout.strip().splitlines() if ln.strip()]
             summary = tail[-1] if tail else "(no output)"

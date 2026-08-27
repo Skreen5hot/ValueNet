@@ -189,6 +189,12 @@ TEST_GROUPS: dict[str, str] = {
     "test_competency_questions.py": "integration",
     # Spans the layout contract, both corpora and every migration wave.
     "test_destination_state.py": "integration",
+    # The step 6 contract tests. Each asserts a property of the whole
+    # repository -- the layout contract, the generated manifest, the
+    # semantic baseline -- so none of them belongs to a subject group.
+    "test_repository_layout_contract.py": "integration",
+    "test_reorganization_manifest.py": "integration",
+    "test_semantic_baseline.py": "integration",
 }
 
 #: DIRECTORY prefixes: the matched part is a path segment and is replaced.

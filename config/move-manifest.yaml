@@ -1733,6 +1733,18 @@ components:
   generated_from: null
   destination: tests/marep/ontology/test_reasoner_scope.py
   wave: tests
+- path: tests/test_reorganization_manifest.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tests/integration/test_reorganization_manifest.py
+  wave: tests
+- path: tests/test_repository_layout_contract.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tests/integration/test_repository_layout_contract.py
+  wave: tests
 - path: tests/test_resume.py
   origin: fork
   maintenance: unchanged
@@ -1744,6 +1756,12 @@ components:
   maintenance: unchanged
   generated_from: null
   destination: tests/marep/test_runtime.py
+  wave: tests
+- path: tests/test_semantic_baseline.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tests/integration/test_semantic_baseline.py
   wave: tests
 - path: tests/test_trigger_shapes.py
   origin: fork

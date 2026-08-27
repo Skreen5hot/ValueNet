@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import pytest
 
-from conftest import ROSTER, upd
+from _support import ROSTER, upd
 from marep import Cause, Runtime
 from marep.agents import (
     ONTOLOGY_ROSTER,

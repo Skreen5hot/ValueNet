@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import pytest
 import yaml
-from conftest import SUBSTRATE_DOC
+from _support import SUBSTRATE_DOC
 
 from marep import Substrate
 

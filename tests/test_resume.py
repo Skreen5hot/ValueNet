@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pytest
 import yaml
-from conftest import ROSTER, SUBSTRATE_DOC
+from _support import ROSTER, SUBSTRATE_DOC
 
 from marep import Runtime, Substrate, state as st
 

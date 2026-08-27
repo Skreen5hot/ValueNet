@@ -172,7 +172,11 @@ TEST_GROUPS: dict[str, str] = {
     "test_constraint_metrics.py": "marep/ontology",
     "test_duplication_metrics.py": "marep/ontology",
     "test_reasoner_scope.py": "marep/ontology",
-    "test_ontology_source.py": "marep/ontology",
+    # Split before the freeze. The file mixed unit tests of
+    # ontology_source with tests of the whole ingest pipeline, which do
+    # not belong to the same group once tests/ is divided by subject.
+    "test_ontology_source_unit.py": "marep/ontology",
+    "test_ontology_source_integration.py": "integration",
     "test_ontology_artifacts.py": "original-valuenet",
     "test_folk_generation.py": "original-valuenet",
     "test_trigger_shapes.py": "original-valuenet",
@@ -252,8 +256,14 @@ def destination(path: str, origin: str) -> str:
         return EXACT[path]
     if path.startswith("tests/"):
         name = posixpath.basename(path)
-        if name == "conftest.py":
-            # RETAIN, not a same-path move. Returning its unchanged path made
+        if name in ("conftest.py", "_support.py"):
+            # RETAIN, not a same-path move. Both sit at the top of tests/
+            # and stay there: pytest finds conftest.py by directory, and
+            # _support.py is importable only because that directory is on
+            # sys.path. Moving either into a subgroup would break every
+            # module in the other subgroups.
+            #
+            # Returning the unchanged path made
             # it a MOVE row in the tests wave, which breaks the transition
             # validator: that rule requires exactly one of source or
             # destination to be tracked, and here they are the same file.

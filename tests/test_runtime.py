@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import ROSTER, issue, upd
+from _support import ROSTER, issue, upd
 from marep import Cause, Runtime, Substrate
 from marep import transitions
 from marep.errors import StateCorruption
@@ -47,7 +47,7 @@ def test_substrate_checksum_detects_tampering(substrate_path, substrate: Substra
 
 def test_substrate_rejects_duplicate_record_ids(tmp_path):
     import yaml
-    from conftest import SUBSTRATE_DOC
+    from _support import SUBSTRATE_DOC
     doc = {**SUBSTRATE_DOC, "records": SUBSTRATE_DOC["records"] + [SUBSTRATE_DOC["records"][0]]}
     p = tmp_path / "s.yaml"
     p.write_text(yaml.safe_dump(doc), encoding="utf-8")

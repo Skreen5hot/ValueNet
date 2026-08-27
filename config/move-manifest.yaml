@@ -1601,6 +1601,12 @@ components:
   generated_from: null
   destination: RETAIN
   wave: null
+- path: tests/_support.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: RETAIN
+  wave: null
 - path: tests/conftest.py
   origin: fork
   maintenance: unchanged
@@ -1709,11 +1715,17 @@ components:
   generated_from: null
   destination: tests/original-valuenet/test_ontology_artifacts.py
   wave: tests
-- path: tests/test_ontology_source.py
+- path: tests/test_ontology_source_integration.py
   origin: fork
   maintenance: unchanged
   generated_from: null
-  destination: tests/marep/ontology/test_ontology_source.py
+  destination: tests/integration/test_ontology_source_integration.py
+  wave: tests
+- path: tests/test_ontology_source_unit.py
+  origin: fork
+  maintenance: unchanged
+  generated_from: null
+  destination: tests/marep/ontology/test_ontology_source_unit.py
   wave: tests
 - path: tests/test_reasoner_scope.py
   origin: fork

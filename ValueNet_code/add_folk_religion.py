@@ -72,7 +72,7 @@ folk:Religion a folk:FolkValue,
             owl:onProperty dul:satisfies ;
             owl:someValuesFrom [ a owl:Class ;
                     owl:oneOf ( folk:Religion ) ] ] ;
-    prov:wasAttributedTo "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; derived from the religion lexicon of ThatsAllFolks/folk_Religion.ttl" ;
+    prov:wasAttributedTo "ValueNet modelling decision, docs/bfo/guides/vcvf-triggers-review.md ; derived from the religion lexicon of ThatsAllFolks/folk_Religion.ttl" ;
     fschema:subsumedUnder folk:Beliefs .
 """
 

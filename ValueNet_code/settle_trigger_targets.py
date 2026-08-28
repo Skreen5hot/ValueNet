@@ -97,7 +97,7 @@ folk:{name} rdf:type owl:Class ;
             rdfs:subClassOf {parent} .
 """
 
-ATTRIB = ("ValueNet modelling decision, BFO/vcvf-triggers-review.md ; "
+ATTRIB = ("ValueNet modelling decision, docs/bfo/guides/vcvf-triggers-review.md ; "
           "derived from the lexicon of ThatsAllFolks/{}")
 
 DECLARE = [

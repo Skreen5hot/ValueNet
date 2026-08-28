@@ -174,8 +174,8 @@ def run_document(repo: Path, doc: Path) -> list[QueryResult]:
 #: Documents holding executable queries. A document not listed here is prose.
 #: Resolved through the layout contract so the documents can move. The literal
 #: tuple is kept as a fallback only for a tree with no contract.
-_FALLBACK_QUERY_DOCS = ("BFO/valuenet-moral-epistemics-CQ.md",
-                        "BFO/TestingFramework.md")
+_FALLBACK_QUERY_DOCS = ("ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md",
+                        "docs/bfo/guides/TestingFramework.md")
 
 
 def query_docs() -> tuple[str, ...]:

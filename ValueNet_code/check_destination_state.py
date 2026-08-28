@@ -271,10 +271,10 @@ REGENERATORS = {
         ("tool.generate-folk-aligned", []),
     "cco-manifest-generator-path":
         ("tool.generate-cco-extract", ["--refresh-provenance"]),
-    # Same file, same generator: running it once discharges both, and
-    # regenerate() deduplicates by tool so it runs once.
-    "cross-ref-folk-aligned-ttl-to-bfo-vcvf-triggers-review-md":
-        ("tool.generate-folk-aligned", []),
+    # cross-ref-folk-aligned-...-review-md was here. It became a
+    # permanent historical record once its source literal turned out
+    # to be a prov:wasAttributedTo triple rather than a comment, so
+    # there is no longer a regeneration that discharges it.
 }
 
 

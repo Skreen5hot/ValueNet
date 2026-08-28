@@ -61,7 +61,7 @@ VALUES = [
         ),
         "parent": "vcvf:ValueSituation",
         "attributed": (
-            "ValueNet modelling decision, BFO/vcvf-triggers-review.md ; "
+            "ValueNet modelling decision, docs/bfo/guides/vcvf-triggers-review.md ; "
             "derived from the lexicon of ThatsAllFolks/folk_Involvement.ttl"
         ),
     },

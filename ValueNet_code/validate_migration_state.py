@@ -148,11 +148,46 @@ def current_wave(rows: list[dict], files: set[str]) -> str | None:
 
 
 def in_git_work_tree() -> bool:
-    """Whether git can answer questions about this directory at all."""
+    """Whether a readable repository governs the layout contract's root.
+
+    False only when the repository marker is absent. A `.git` that exists
+    and cannot be read is a broken repository, not an unfrozen one, and
+    raises.
+
+    The previous version returned False for every non-zero exit -- a
+    permissions failure, a corrupt gitdir pointer, a half-finished clone --
+    so any of them silently retired the freeze and `frozen_text` fell back
+    to the mutable working copy, which is precisely what the freeze exists
+    to prevent. The docstring beneath it claimed other failures propagated.
+    The prose was the intent and the code was the behaviour, and only the
+    behaviour runs.
+
+    The contract's directory is the repository root by construction, so
+    `root/.git` is the marker to ask about; no upward search, because a
+    contract root with no marker of its own is not a repository whatever
+    sits above it.
+    """
+    root = layout.repository_root()
+    marker = root / ".git"
+    if not marker.exists():
+        return False
+
     r = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"],
-                       capture_output=True, text=True,
-                       cwd=str(layout.repository_root()))
-    return r.returncode == 0 and r.stdout.strip() == "true"
+                       capture_output=True, text=True, cwd=str(root))
+    if r.returncode != 0:
+        raise SystemExit(
+            f"{marker} exists but git cannot read this repository, so whether "
+            f"anything is frozen cannot be determined. Refusing to treat a "
+            f"broken repository as an unfrozen one.\n"
+            + (r.stderr.strip() or f"git exited {r.returncode}"))
+
+    answer = r.stdout.strip()
+    if answer != "true":
+        raise SystemExit(
+            f"git rev-parse --is-inside-work-tree returned {answer!r} with a "
+            f"{marker} present. That is neither a work tree nor a failure, "
+            f"and guessing which would decide whether the freeze applies.")
+    return True
 
 
 def frozen_exists() -> bool:
@@ -166,8 +201,8 @@ def frozen_exists() -> bool:
     module from being imported, so the crash took the whole collection
     down before anything could be deselected.
 
-    Any other git failure still raises: a broken repository must not read
-    as an unfrozen one."""
+    Any other git failure raises, and now actually does: `in_git_work_tree`
+    swallowed every non-zero exit while this sentence claimed otherwise."""
     if not in_git_work_tree():
         return False
     return bool(sh("git", "tag", "-l", FREEZE_TAG).strip())

@@ -75,15 +75,78 @@ def tracked() -> list[str]:
 # ======================================================================
 
 
-def test_every_tracked_file_has_exactly_one_row():
-    files = tracked()
-    paths = [r["path"] for r in ROWS]
-    missing = sorted(set(files) - set(paths))
-    extra = sorted(set(paths) - set(files))
-    dupes = sorted({p for p in paths if paths.count(p) > 1})
-    assert not missing, f"tracked but unclassified: {missing[:10]}"
-    assert not extra, f"in the manifest but not tracked: {extra[:10]}"
+def test_every_frozen_row_is_present_at_exactly_one_of_its_paths():
+    """The validator's XOR rule, applied to coverage.
+
+    Comparing tracked files against source paths alone was correct exactly
+    while nothing had moved. After the bfo wave those 42 files sit at their
+    destinations, and this reported 42 missing and 42 extra while the
+    transition validator -- reading the same frozen manifest and applying
+    the same rule -- reported none. A coverage check that contradicts the
+    validator on a state the plan requires is not a second opinion, it is a
+    false alarm that would have to be ignored five times.
+
+    A RETAIN row has one legal location. A MOVE row has two, and exactly
+    one of them must hold the file: neither means it is lost, both mean an
+    interrupted move left a copy and no path is authoritative.
+    """
+    files = set(tracked())
+    problems: list[str] = []
+    represented: set[str] = set()
+    seen: list[str] = []
+
+    for r in ROWS:
+        src, dst = r["path"], r["destination"]
+        seen.append(src)
+        candidates = [src] if dst == "RETAIN" else [src, dst]
+        here = [c for c in candidates if c in files]
+        if len(here) == 1:
+            represented.add(here[0])
+        elif not here:
+            problems.append(
+                f"{src}: present at neither its source nor {dst}")
+        else:
+            problems.append(
+                f"{src}: present at both its source and {dst}; an "
+                f"interrupted move left a copy behind")
+
+    extra = sorted(files - represented)
+    dupes = sorted({p for p in seen if seen.count(p) > 1})
+    assert not problems, problems[:10]
+    assert not extra, f"tracked but in no manifest row: {extra[:10]}"
     assert not dupes, f"classified twice: {dupes}"
+
+
+def test_coverage_and_the_validator_agree_about_a_completed_wave():
+    """The falsification, and the reason the rewrite was needed.
+
+    Run the same two checks over a synthetic tree with the bfo wave applied.
+    The old coverage rule called that state 42-missing-and-42-extra while
+    the validator called it valid; they must now agree, because they are
+    checking the same property from the same manifest.
+    """
+    moved = {r["destination"] if r.get("wave") == "bfo" and
+             r["destination"] != "RETAIN" else r["path"] for r in ROWS}
+
+    assert VALIDATOR.completed_waves(ROWS, moved) == ["bfo"], (
+        "the synthetic tree does not represent a completed bfo wave")
+    assert VALIDATOR.validate(ROWS, moved, "bfo") == [], (
+        "the validator rejects a correctly completed wave")
+
+    problems = []
+    represented = set()
+    for r in ROWS:
+        candidates = ([r["path"]] if r["destination"] == "RETAIN"
+                      else [r["path"], r["destination"]])
+        here = [c for c in candidates if c in moved]
+        if len(here) != 1:
+            problems.append(r["path"])
+        else:
+            represented.add(here[0])
+    assert not problems, (
+        f"{len(problems)} row(s) rejected on a state the validator accepts: "
+        f"{problems[:6]}")
+    assert not (moved - represented)
 
 
 def test_nothing_is_unassigned():
@@ -538,6 +601,47 @@ def test_the_freeze_query_answers_no_where_there_is_no_git(tmp_path):
     assert in_tree == "False", r.stdout
     assert frozen == "False", r.stdout
     assert "working copy" in source, r.stdout
+
+
+def test_a_corrupt_repository_raises_rather_than_reading_as_unfrozen(tmp_path):
+    """The falsification for the failure mode the first fix had.
+
+    `in_git_work_tree` returned False for every non-zero exit, so a
+    repository git could not read was indistinguishable from no repository
+    at all: `frozen_exists()` answered no and `frozen_text()` quietly
+    returned the mutable working manifest -- the one thing the freeze
+    exists to stop anybody trusting.
+
+    Both cases exit 128, and their messages differ only in wording, so the
+    discriminator cannot be the message. It is whether the marker is there:
+    a `.git` pointing at a directory that does not exist is a broken
+    repository, and the only honest answer is to refuse.
+    """
+    root = _tree_without_git(tmp_path)
+    (root / ".git").write_text("gitdir: /nonexistent/definitely/not/here" + chr(10),
+                               encoding="utf-8")
+    r = subprocess.run([sys.executable, "-c", PROBE], cwd=str(root),
+                       capture_output=True, text=True)
+    assert r.returncode != 0, (
+        "a corrupt repository was accepted:" + chr(10) + r.stdout)
+    combined = r.stdout + r.stderr
+    assert "cannot read this repository" in combined, combined[-600:]
+    assert "False" not in r.stdout, (
+        "the probe answered rather than refusing: " + r.stdout)
+
+
+def test_an_absent_marker_and_a_broken_one_are_told_apart(tmp_path):
+    """Both git invocations exit 128. Only one of them means 'not frozen'."""
+    clean = _tree_without_git(tmp_path / "a")
+    broken = _tree_without_git(tmp_path / "b")
+    (broken / ".git").write_text("gitdir: /nonexistent" + chr(10), encoding="utf-8")
+
+    rc_clean = subprocess.run([sys.executable, "-c", PROBE], cwd=str(clean),
+                              capture_output=True, text=True)
+    rc_broken = subprocess.run([sys.executable, "-c", PROBE], cwd=str(broken),
+                               capture_output=True, text=True)
+    assert rc_clean.returncode == 0 and "False False" in rc_clean.stdout
+    assert rc_broken.returncode != 0
 
 
 def test_this_repository_is_a_work_tree_and_knows_it():

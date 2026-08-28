@@ -204,9 +204,14 @@ def test_no_run_state_is_tracked():
 #: Looped rather than parametrized, and the reason is the migration itself.
 #: One case per allowance meant four collected node ids per entry, so removing
 #: the eight BFO allowances -- which the bfo wave requires -- would delete 32
-#: node ids and break the frozen `799 collected / 786 selected` identity the
-#: baseline exists to hold. A test whose identity changes every time the plan
-#: proceeds cannot be the thing that proves the plan changed nothing.
+#: node ids and break the frozen identity set the baseline exists to hold.
+#: A test whose identity changes every time the plan proceeds cannot be the
+#: thing that proves the plan changed nothing.
+#:
+#: The counts are deliberately not quoted here. An earlier version named
+#: them and was already stale by the next capture, which is the same
+#: failure in miniature: a number copied into prose stops tracking what it
+#: was copied from. The baseline holds the numbers; this holds the reason.
 
 
 def test_every_allowance_is_well_formed():

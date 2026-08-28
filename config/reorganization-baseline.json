@@ -1,6 +1,6 @@
 {
   "tool_version": 4,
-  "captured_at_commit": "3ec6c5349b85c6f6eeffac82b1e13fb8ebc021c7",
+  "captured_at_commit": "61efb204f4331e03dc63ba277e4a5f8f7ec93d68",
   "reproduce": "python ValueNet_code/build_semantic_baseline.py",
   "corpus": {
     "files_discovered": {
@@ -101,11 +101,11 @@
     }
   },
   "tests": {
-    "collected": 658,
-    "default_selected": 644,
+    "collected": 661,
+    "default_selected": 647,
     "default_deselected": 14,
-    "canonical_id_sha256": "f3a48a03975d159987f0176f6026ecd55577222be1d85d50c02c340accc27bb7",
-    "default_selected_sha256": "a285c3ef69b9c0107af1c83efede85db829b2c6bf00aff567fa1ac1aa806d8e7",
+    "canonical_id_sha256": "eb434f8a9538e48c4128b1e3417744b748734c474358138e2d31f743fc5194bc",
+    "default_selected_sha256": "fe7c690681bd3c9f3d6a974876aef6ab0a9d7ad6c321364d7135ec75c4e3beba",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

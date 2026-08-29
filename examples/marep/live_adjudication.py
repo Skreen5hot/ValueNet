@@ -29,7 +29,7 @@ The last one matters most. It is a true statement about this repository that
 cannot be confirmed, because confirmation requires evidence and no evidence
 exists. That is the distinction the whole architecture is built on.
 
-Run: python examples/live_adjudication.py --key-file PATH [--dry-run]
+Run: python examples/marep/live_adjudication.py --key-file PATH [--dry-run]
 """
 
 from __future__ import annotations

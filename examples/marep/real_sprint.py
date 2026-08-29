@@ -8,7 +8,7 @@ Every verified claim below resolves to a commit that is actually in this
 repository. The one unverifiable claim is accepted and recorded, then refused
 confirmation, which is the whole point of MAREP v2.2 §8.3.1.
 
-Run: python examples/real_sprint.py [--since ISO] [--until ISO]
+Run: python examples/marep/real_sprint.py [--since ISO] [--until ISO]
 """
 
 from __future__ import annotations

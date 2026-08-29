@@ -11,7 +11,7 @@ records which agent wrote each version but not which issue that version
 created, and reconstructing the mapping by position would break the first time
 an update carried two issues.
 
-    python ValueNet_code/report_run.py examples/_run/RUN2_STATE.yaml -o REPORT.md
+    python tools/marep/report_run.py examples/_run/RUN2_STATE.yaml -o REPORT.md
 """
 
 from __future__ import annotations
@@ -77,7 +77,7 @@ def render(state: dict, source: str, reconciliation: dict | None = None) -> str:
 
     add(f"# {retro.get('sprint', 'MAREP run')} — findings")
     add("")
-    add(f"Rendered from `{source}` by `ValueNet_code/report_run.py`. "
+    add(f"Rendered from `{source}` by `tools/marep/report_run.py`. "
         "The state file is the record; this is a view of it.")
     add("")
     add("**Two kinds of statement appear below and are never merged.** "

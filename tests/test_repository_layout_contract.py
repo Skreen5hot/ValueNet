@@ -85,21 +85,54 @@ def tracked() -> list[str]:
     return [p for p in out.stdout.splitlines() if p]
 
 
+#: Any current path back to the frozen source path that names it. An
+#: allowance is attached to a file, and the file moves; without a stable
+#: identity the allowance stops matching the moment its own wave runs.
+IDENTITY = {}
+for _r in MANIFEST:
+    IDENTITY[_r["path"]] = _r["path"]
+    if _r["destination"] != "RETAIN":
+        IDENTITY[_r["destination"]] = _r["path"]
+
+
+def identity_of(rel: str) -> str:
+    return IDENTITY.get(rel, rel)
+
+
+def allowance_file(a: dict):
+    """Where an allowance's file is now, or None if it is nowhere.
+
+    Tried in frozen order: the source first, then the destination. A
+    permanent allowance on a file that has moved is still live -- what it
+    covers is the literal, not the location of the file holding it.
+    """
+    for cand in (a["file"], next((r["destination"] for r in MANIFEST
+                                  if r["path"] == a["file"]
+                                  and r["destination"] != "RETAIN"), None)):
+        if cand and (REPO / cand).is_file():
+            return REPO / cand
+    return None
+
+
 def occurrences(suffixes=IN_SCOPE) -> set[tuple[str, str]]:
-    """Every (file, moving-path) pair, for files of the given kinds."""
+    """Every (file, moving-path) pair, for files of the given kinds.
+
+    Keyed by the file's frozen identity, so an occurrence does not change
+    name when the file holding it is relocated.
+    """
     found = set()
     for f in tracked():
-        if f in EXEMPT or not f.endswith(suffixes):
+        if identity_of(f) in EXEMPT or not f.endswith(suffixes):
             continue
         text = (REPO / f).read_text(encoding="utf-8", errors="replace")
         for m in MOVING:
             if m in text:
-                found.add((f, m))
+                found.add((identity_of(f), m))
     return found
 
 
 def covered_by(a: dict, f: str, m: str, text: str) -> bool:
-    if a["file"] != f:
+    if a["file"] != identity_of(f):
         return False
     if a.get("literal"):
         return a["literal"] == m
@@ -268,9 +301,10 @@ def test_every_allowance_matches_something():
     """
     problems = []
     for a in ALLOWANCES:
-        path = REPO / a["file"]
-        if not path.exists():
-            problems.append(f"{a['id']}: {a['file']} does not exist")
+        path = allowance_file(a)
+        if path is None:
+            problems.append(
+                f"{a['id']}: {a['file']} is at neither of its frozen paths")
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         needle = a.get("literal")
@@ -297,7 +331,10 @@ def test_every_occurrence_is_covered():
     """The other direction, and the one that actually catches breakage."""
     uncovered = []
     for f, m in sorted(occurrences()):
-        text = (REPO / f).read_text(encoding="utf-8", errors="replace")
+        holder = allowance_file({"file": f})
+        if holder is None:
+            continue
+        text = holder.read_text(encoding="utf-8", errors="replace")
         if not any(covered_by(a, f, m, text) for a in ALLOWANCES):
             uncovered.append(f"{f} names {m} ({MOVING[m]['wave']} wave) "
                              f"with no allowance")
@@ -314,7 +351,10 @@ def test_no_two_allowances_cover_the_same_occurrence():
     """
     overlaps = []
     for f, m in sorted(occurrences()):
-        text = (REPO / f).read_text(encoding="utf-8", errors="replace")
+        holder = allowance_file({"file": f})
+        if holder is None:
+            continue
+        text = holder.read_text(encoding="utf-8", errors="replace")
         hits = [a["id"] for a in ALLOWANCES if covered_by(a, f, m, text)]
         if len(hits) > 1:
             overlaps.append(f"{f} / {m} is covered by {hits}")

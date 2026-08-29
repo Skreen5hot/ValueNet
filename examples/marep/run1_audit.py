@@ -8,7 +8,7 @@ Five agents, a real Adjudicator, all six phases, real API calls. Every finding
 must cite a substrate record or be recorded unverified and refused
 confirmation.
 
-Run: python examples/run1_audit.py --key-file PATH [--dry-run]
+Run: python examples/marep/run1_audit.py --key-file PATH [--dry-run]
 """
 
 from __future__ import annotations

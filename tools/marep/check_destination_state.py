@@ -15,7 +15,7 @@ it can still find what it needs.
 
 It moves nothing in the real repository. It copies.
 
-    python ValueNet_code/check_destination_state.py [--wave bfo]
+    python tools/marep/check_destination_state.py [--wave bfo]
 """
 
 from __future__ import annotations

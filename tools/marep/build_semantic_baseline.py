@@ -17,7 +17,7 @@ One measure is deliberately not an invariant. `folk_aligned.ttl`'s byte hash
 the generator's path. Its canonical RDF digest must not. Both are recorded, with
 the byte hash marked as an expected transition rather than a violation.
 
-    python ValueNet_code/build_semantic_baseline.py [-o config/reorganization-baseline.json]
+    python tools/marep/build_semantic_baseline.py [-o config/reorganization-baseline.json]
 """
 
 from __future__ import annotations
@@ -402,7 +402,7 @@ def main(argv=None) -> int:
     baseline = {
         "tool_version": TOOL_VERSION,
         "captured_at_commit": head,
-        "reproduce": "python ValueNet_code/build_semantic_baseline.py",
+        "reproduce": "python tools/marep/build_semantic_baseline.py",
         "corpus": corpus_measures(root),
         "reasoner": reasoner_measures(root),
         "artifacts": artifact_digests(root),

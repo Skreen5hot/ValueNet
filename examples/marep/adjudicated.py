@@ -4,7 +4,7 @@ MAREP v2.2 §4.1.2 claims the Adjudicator holds no privileged write path. That
 claim is only worth anything if a badly-behaved Adjudicator is demonstrably
 refused, so this script scripts one and shows what happens.
 
-Run: python examples/adjudicated.py
+Run: python examples/marep/adjudicated.py
 """
 
 from __future__ import annotations

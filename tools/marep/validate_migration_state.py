@@ -10,7 +10,7 @@ and destination is tracked — before its wave the source, after it the
 destination, never both and never neither. Both means a copy rather than a
 move; neither means the file was lost.
 
-    python ValueNet_code/validate_migration_state.py [--wave bfo]
+    python tools/marep/validate_migration_state.py [--wave bfo]
 """
 
 from __future__ import annotations

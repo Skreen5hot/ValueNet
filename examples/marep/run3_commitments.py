@@ -1,21 +1,24 @@
-"""Run 2 of MAREP_VALUENET_PLAN: what the corpus should assert and does not.
+"""Run 3 of MAREP_VALUENET_PLAN: commitments that exist outside the axioms.
 
-Rescoped from a BFO-layer calibration pass. The reasoner survey supplied that
-calibration more cheaply: all seven groups are consistent with zero
-unsatisfiable classes, and for four of them the result was guaranteed before
-HermiT started, because 143,717 of the corpus's triples contain no
-disjointness, cardinality, functionality or complement at all.
+Run 2 asked what the corpus should assert. Run 3 asks the wider question: what
+does it already commit to in its naming, its file layout, its mapping targets
+and its documentation, without ever saying so where a machine could check.
 
-A corpus that cannot be found inconsistent is not thereby correct. It is
-unconstrained. So this run asks what the corpus treats as true without ever
-saying so, and sorts each candidate into OWL, SHACL, or intentionally
-unconstrained. The third is a real answer: folk value vocabularies are built to
-overlap, and the roster carries an agent whose job is to defend absences.
+Scoped to the three areas Run 2 did not reach - sense ambiguity, IRI ownership,
+external mapping quality - plus the question of which of those commitments
+belong in SHACL. That last is not a coverage exercise: reconciling
+VALIDATION-001 showed that repairing 127 files moved SHACL violations from 0 to
+0, because the shapes load 6 of 165 files and target classes the folk corpus
+never instantiates.
 
-Scope is the whole corpus, unlike Run 1. The question is cross-cutting and the
-instruments now cover every group.
+Run 1's findings in these areas enter as `note` records, not metrics. MAREP
+treats a note as exactly as trustworthy as whoever wrote it, which is the right
+standing for them: Run 1 read the alignment layer from files that did not
+parse, and undercounted badly. They are hypotheses to test, and the
+reconciliation dispositions travel with them so no agent builds on a finding
+already refuted.
 
-Run: python examples/run2_constraints.py --key-file PATH [--dry-run]
+Run: python examples/marep/run3_commitments.py --key-file PATH [--dry-run] [--resume]
 """
 
 from __future__ import annotations
@@ -36,18 +39,19 @@ sys.path.insert(0, str(_root))
 
 from marep import layout  # noqa: E402
 from marep import Adjudicator, Runtime, Substrate, build_roster, ingest  # noqa: E402
-from marep.agents import CONSTRAINT_ROSTER  # noqa: E402
+from marep.agents import COMMITMENT_ROSTER  # noqa: E402
 
-#: The checks a constraint finding can cite. Printed before the run so that a
+#: The checks a commitment finding can cite. Printed before the run so that a
 #: substrate missing them is visible before any tokens are spent, rather than
 #: as a run that produces nothing and looks like agent failure.
-CONSTRAINT_CHECKS = (
-    "properties_without_domain", "properties_without_range",
-    "properties_without_characteristics", "predicates_used_but_not_declared",
-    "sibling_sets_without_disjointness", "classes_without_necessary_conditions",
-    "populated_classes_without_a_shape", "contradiction_capacity",
-    "individuals_declared",
-    "shacl_focus_nodes", "classes_with_no_upper_root",
+COMMITMENT_CHECKS = (
+    "trigger_statements", "trigger_source_hosts",
+    "triggers_with_foreign_subject", "triggers_with_foreign_object",
+    "wiktionary_language_editions", "wiktionary_non_english_triggers",
+    "class_iris_declared_across_groups", "namespaces_minting_classes",
+    "foreign_iris_used_as_subjects", "classes_without_definition_text",
+    "local_names_colliding_on_normalisation",
+    "populated_classes_without_a_shape", "shacl_focus_nodes",
 )
 
 
@@ -97,7 +101,7 @@ def main(argv=None) -> int:
     ap.add_argument("--no-reasoner", action="store_true",
                     help="skip HermiT; repository-root alone takes 23 minutes")
     ap.add_argument("--resume", action="store_true",
-                    help="continue from RUN2_STATE.yaml rather than starting over; "
+                    help="continue from RUN3_STATE.yaml rather than starting over; "
                          "phases already closed are skipped")
     args = ap.parse_args(argv)
 
@@ -105,7 +109,7 @@ def main(argv=None) -> int:
     out.mkdir(exist_ok=True)
     repo = layout.repository_root()
 
-    sub_path = out / "RUN2_INPUT.yaml"
+    sub_path = out / "RUN3_INPUT.yaml"
     if args.resume:
         # Reuse the exact substrate the run was built against rather than
         # rebuilding one and hoping it matches. It will not match: any change
@@ -121,8 +125,9 @@ def main(argv=None) -> int:
         print("REUSING substrate " + sub_path.name + " (" + substrate.checksum[:19]
               + "...), not rebuilding")
     else:
-        built = ingest.build("valuenet-run2", "2026-08-20", "2026-08-26", repo=repo,
+        built = ingest.build("valuenet-run3", "2026-08-20", "2026-08-26", repo=repo,
                              ontology=True, include_github=False,
+                             notes=out / "RUN3_NOTES.yaml",
                              reasoner=not args.no_reasoner)
         if built.errors:
             print(f"substrate invalid: {built.errors[0]}", file=sys.stderr)
@@ -130,7 +135,7 @@ def main(argv=None) -> int:
         sub_path = ingest.write(built, sub_path)
         substrate = Substrate.load(sub_path)
 
-    print("\nRUN 2  what the corpus should assert and does not")
+    print("\nRUN 3  commitments that exist outside the axioms")
     if built:
         print(f"  substrate  {len(substrate)} records "
               f"({built.counts.get('document', 0)} document, "
@@ -147,13 +152,13 @@ def main(argv=None) -> int:
     records = [r for r in substrate.to_dict().get("records", [])
                if r.get("type") == "metric"]
     present = {r["payload"]["check"] for r in records}
-    missing = [c for c in CONSTRAINT_CHECKS if c not in present]
-    print(f"\n  constraint evidence available: "
-          f"{len(CONSTRAINT_CHECKS) - len(missing)}/{len(CONSTRAINT_CHECKS)} checks")
+    missing = [c for c in COMMITMENT_CHECKS if c not in present]
+    print(f"\n  commitment evidence available: "
+          f"{len(COMMITMENT_CHECKS) - len(missing)}/{len(COMMITMENT_CHECKS)} checks")
     if missing:
         print(f"  MISSING, so no finding can cite them: {', '.join(missing)}")
     for r in records:
-        if r["payload"]["check"] in CONSTRAINT_CHECKS:
+        if r["payload"]["check"] in COMMITMENT_CHECKS:
             print(f"    {r['ref']:<58} {r['payload']['value']}")
 
     if args.dry_run:
@@ -169,8 +174,8 @@ def main(argv=None) -> int:
     backend = AnthropicAgentBackend(model=args.model, effort=args.effort, client=client)
     adj_backend = AnthropicBackend(model=args.model, effort=args.effort, client=client)
 
-    roster = [r.name for r in CONSTRAINT_ROSTER]
-    state_path = out / "RUN2_STATE.yaml"
+    roster = [r.name for r in COMMITMENT_ROSTER]
+    state_path = out / "RUN3_STATE.yaml"
     if args.resume:
         if not state_path.exists():
             print("--resume given but no state at " + str(state_path), file=sys.stderr)
@@ -179,7 +184,7 @@ def main(argv=None) -> int:
         print("RESUMED at phase " + rt.phase + ", version " + str(rt.version)
               + ", " + str(len(rt.state["issues"])) + " issue(s) carried")
     else:
-        rt = Runtime.initialize("valuenet-run2", substrate, roster=roster,
+        rt = Runtime.initialize("valuenet-run3", substrate, roster=roster,
                                 state_path=state_path)
     adj = Adjudicator(rt, adj_backend)
 
@@ -196,7 +201,7 @@ def main(argv=None) -> int:
         return ORDER.index(rt.phase) > ORDER.index(phase)
 
     def agents():
-        return build_roster(rt, backend, CONSTRAINT_ROSTER)
+        return build_roster(rt, backend, COMMITMENT_ROSTER)
 
     # ---- Phase 1 -------------------------------------------------------
     if done("gathering"):
@@ -337,7 +342,7 @@ def main(argv=None) -> int:
         ver = [e for e in i["evidence"] if e.get("verified")]
         print(f"    {i['id']:14} {i['status']:11} {len(ver)}/{len(i['evidence'])} verified  "
               f"{i['title'][:60]}")
-    print(f"\n  state {out / 'RUN2_STATE.yaml'}")
+    print(f"\n  state {out / 'RUN3_STATE.yaml'}")
     return 0
 
 

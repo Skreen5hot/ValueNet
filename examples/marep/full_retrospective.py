@@ -9,7 +9,7 @@ The findings are seeded from substrate records looked up at run time, so they
 cite whatever the corpus actually measures today rather than refs frozen into
 this file.
 
-Run: python examples/full_retrospective.py [--scope BFO]
+Run: python examples/marep/full_retrospective.py [--scope BFO]
 """
 
 from __future__ import annotations

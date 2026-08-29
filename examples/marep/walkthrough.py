@@ -5,7 +5,7 @@ point: it isolates what the Runtime does from what the agents would do, and
 shows that phase control, grounding, and the transition graph hold up without
 anything intelligent behind them.
 
-Run: python examples/walkthrough.py
+Run: python examples/marep/walkthrough.py
 """
 
 from __future__ import annotations

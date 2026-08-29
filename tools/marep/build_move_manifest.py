@@ -32,7 +32,7 @@ Under the settled rule, anything whose origin is `upstream-valuenet` is RETAINED
 at its current path whatever its maintenance state, documentation assets
 included. Only fork and external material moves.
 
-    python ValueNet_code/build_move_manifest.py [-o config/move-manifest.yaml]
+    python tools/marep/build_move_manifest.py [-o config/move-manifest.yaml]
 """
 
 from __future__ import annotations

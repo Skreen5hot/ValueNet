@@ -312,33 +312,49 @@ def pending_edits(through_wave: str | None) -> list[dict]:
 
 
 def regenerate(dest: Path, through_wave: str | None) -> list[str]:
-    """Run what the wave owes. Returns what could not be run."""
+    """Make the tree's generated artifacts match it, and report what is owed
+    that nothing can discharge.
+
+    Every regenerator runs, not only the ones this wave owes. A generated
+    artifact carries facts about the tree it was generated from -- the folk
+    header records its generator's path -- so copying one forward into a
+    tree where the generator sits somewhere else leaves it stale about a
+    difference the simulation introduced, and the consumer that reads it
+    fails for a reason that says nothing about the migration.
+
+    What is *owed* still decides the verdict. That is a statement about the
+    real repository and about which allowances have expired, and it is not
+    affected by keeping a temporary copy self-consistent.
+    """
     from marep import layout
     unperformed = []
     ran: set = set()
-    for a in owed_regenerations(through_wave):
-        spec = REGENERATORS.get(a.get("id"), None)
-        key = None if spec is None else (spec[0], tuple(spec[1]))
-        if key is not None and key in ran:
-            continue
+
+    for spec in REGENERATORS.values():
         if spec is None:
+            continue
+        key = (spec[0], tuple(spec[1]))
+        if key in ran:
+            continue
+        ran.add(key)
+        tool = layout.component(spec[0]).resolve(dest)
+        r = subprocess.run([sys.executable, str(tool), *spec[1]],
+                           capture_output=True, text=True, cwd=str(dest))
+        rel = os.path.relpath(tool, dest).replace(os.sep, "/")
+        if r.returncode == 0:
+            print(f"    regenerated via {rel}")
+        else:
+            print(f"    FAILED to regenerate via {rel}: "
+                  + (r.stderr.strip()[-140:] or r.stdout.strip()[-140:]))
+            unperformed.append(f"{spec[0]}: regeneration failed in the "
+                               f"materialised tree")
+
+    for a in owed_regenerations(through_wave):
+        if REGENERATORS.get(a.get("id"), None) is None:
             unperformed.append(
                 f"{a.get('id')}: {a.get('file')} must be brought up to "
                 f"date after the {a.get('remove_after_wave')} wave, and "
                 f"no automated way to do so is recorded")
-            continue
-        component_id, extra = spec
-        tool = layout.component(component_id).resolve(dest)
-        r = subprocess.run([sys.executable, str(tool), *extra],
-                           capture_output=True, text=True, cwd=str(dest))
-        ran.add(key)
-        rel = os.path.relpath(tool, dest).replace(os.sep, '/')
-        print(f"    regenerated {a.get('file')} via {rel}"
-              if r.returncode == 0 else
-              f"    FAILED to regenerate {a.get('file')}: "
-              + (r.stderr.strip()[-120:] or r.stdout.strip()[-120:]))
-        if r.returncode != 0:
-            unperformed.append(f"{a.get('id')}: regeneration failed")
     return unperformed
 
 #: Which files changed group, computed identically in this process and

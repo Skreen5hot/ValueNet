@@ -22,7 +22,7 @@ filename and the object agree — so both are renamed together.
 Idempotent: files already carrying the corrected IRI are left alone, so this
 can be re-run and serves as the record of exactly what changed.
 
-    python ValueNet_code/retarget_bad_trigger_objects.py [--check]
+    python tools/original-valuenet/retarget_bad_trigger_objects.py [--check]
 """
 
 from __future__ import annotations

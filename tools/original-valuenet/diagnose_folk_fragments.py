@@ -10,7 +10,7 @@ assumption about these files was that they shared one missing prefix. They do
 not, and the only way that became clear was running the repair and seeing what
 survived it.
 
-    python ValueNet_code/diagnose_folk_fragments.py [--verbose]
+    python tools/original-valuenet/diagnose_folk_fragments.py [--verbose]
 """
 
 from __future__ import annotations

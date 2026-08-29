@@ -446,9 +446,16 @@ def test_prose_occurrences_are_out_of_scope_and_counted():
 # ======================================================================
 
 
-def expired(completed: list[str]) -> list[str]:
-    """Allowances whose removal wave has run and which are still here."""
-    return [a["id"] for a in ALLOWANCES
+def expired(completed: list[str], allowances=None) -> list[str]:
+    """Allowances whose removal wave has run and which are still here.
+
+    `allowances` exists so the rule can be falsified against a synthetic
+    list. The live one empties as the migration proceeds, and a check
+    that can only be tested while temporary entries survive disappears
+    at the moment the last one is retired.
+    """
+    src = ALLOWANCES if allowances is None else allowances
+    return [a["id"] for a in src
             if a.get("remove_after_wave") in completed]
 
 
@@ -491,17 +498,24 @@ def test_the_lifecycle_check_knows_which_waves_have_run():
 
 
 def test_an_allowance_expires_after_its_wave():
-    """The falsification, against a synthetic completed-wave list.
+    """The falsification, on a synthetic list so it cannot go quiet.
 
-    Without it `expired` could return [] for every input and every lifecycle
-    assertion above would pass.
-    """
-    have_waves = {a.get("remove_after_wave") for a in ALLOWANCES} - {None}
-    if not have_waves:
-        pytest.skip("every allowance is permanent; nothing can expire")
-    for w in sorted(have_waves):
-        assert expired([w]), f"nothing expires after the {w} wave"
-
+    It ran against the live allowances and skipped once they were all
+    permanent -- which is precisely when the migration has retired the
+    last temporary entry. The proof that `expired` can return anything at
+    all vanished at the moment nothing was left to catch it, and a
+    lifecycle rule that only works while it has something to find is not
+    a rule."""
+    synthetic = [
+        {"id": "syn-bfo", "remove_after_wave": "bfo"},
+        {"id": "syn-tests", "remove_after_wave": "tests"},
+        {"id": "syn-permanent", "permanent": True},
+    ]
+    assert expired([], synthetic) == []
+    assert expired(["bfo"], synthetic) == ["syn-bfo"]
+    assert expired(WAVES, synthetic) == ["syn-bfo", "syn-tests"]
+    assert "syn-permanent" not in expired(WAVES, synthetic), (
+        "a permanent allowance can never expire")
 
 def test_every_temporary_allowance_names_a_wave_that_moves_its_referent():
     """An allowance must expire when the path it names actually moves.

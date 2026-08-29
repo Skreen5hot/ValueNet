@@ -21,7 +21,7 @@ file-per-value structure itself, which the diagnosis gave no reason to revisit.
 Idempotent. Files already carrying the header are left untouched, so it can be
 re-run safely and serves as the record of exactly what was changed.
 
-    python ValueNet_code/repair_folk_fragments.py [--check] [--dir PATH]
+    python tools/original-valuenet/repair_folk_fragments.py [--check] [--dir PATH]
 """
 
 from __future__ import annotations

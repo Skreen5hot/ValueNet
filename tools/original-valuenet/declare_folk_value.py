@@ -21,7 +21,7 @@ anything already declared cover it". Three of the six failed that check:
 
 Each is a modelling decision, not a mechanical gap, and is held for review.
 
-    python ValueNet_code/declare_folk_value.py [--check]
+    python tools/original-valuenet/declare_folk_value.py [--check]
 """
 
 from __future__ import annotations
@@ -100,7 +100,7 @@ folk:{name} rdf:type owl:Class ;
 #: rather than in what they say. Which is canonical is open under
 #: implementation plan §4.
 #: Writes ONLY to the authored source. folk_aligned.ttl is generated from it by
-#: ValueNet_code/generate_folk_aligned.py, and writing there by hand would be
+#: tools/original-valuenet/generate_folk_aligned.py, and writing there by hand would be
 #: overwritten on the next run and fail the staleness test in CI. Run the
 #: generator after this script.
 TARGETS = [("ThatsAllFolks/folk.ttl", FULL_TEMPLATE)]

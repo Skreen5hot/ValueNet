@@ -29,7 +29,7 @@ writing only one would deepen the divergence while that is undecided.
 
 Idempotent.
 
-    python ValueNet_code/add_folk_religion.py [--check]
+    python tools/original-valuenet/add_folk_religion.py [--check]
 """
 
 from __future__ import annotations
@@ -50,7 +50,7 @@ while not os.path.isfile(os.path.join(HERE, "config", "repository-layout.yaml"))
     HERE = _up
 
 #: Writes ONLY to the authored source. folk_aligned.ttl is generated from it by
-#: ValueNet_code/generate_folk_aligned.py, and writing there by hand would be
+#: tools/original-valuenet/generate_folk_aligned.py, and writing there by hand would be
 #: overwritten on the next run and fail the staleness test in CI. Run the
 #: generator after this script.
 

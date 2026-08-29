@@ -45,7 +45,7 @@ its comment reads "Those who value being assertive know what they want". The
 definition is about assertiveness. Declaring both would manufacture the
 near-synonym pair Run 1's DEF-003 and Run 3's LEXICON-003 report as a defect.
 
-    python ValueNet_code/settle_trigger_targets.py [--check]
+    python tools/original-valuenet/settle_trigger_targets.py [--check]
 """
 
 from __future__ import annotations
@@ -66,7 +66,7 @@ while not os.path.isfile(os.path.join(HERE, "config", "repository-layout.yaml"))
     HERE = _up
 
 #: Writes ONLY to the authored source. folk_aligned.ttl is generated from it by
-#: ValueNet_code/generate_folk_aligned.py, and writing there by hand would be
+#: tools/original-valuenet/generate_folk_aligned.py, and writing there by hand would be
 #: overwritten on the next run and fail the staleness test in CI. Run the
 #: generator after this script.
 

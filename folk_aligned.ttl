@@ -2,7 +2,7 @@
 # GENERATED FILE - DO NOT EDIT BY HAND
 #
 # Source:    ThatsAllFolks/folk.ttl
-# Generator: ValueNet_code/generate_folk_aligned.py
+# Generator: tools/original-valuenet/generate_folk_aligned.py
 #
 # Edits made here are lost the next time the generator runs, and CI fails
 # when this file is stale relative to its source. Change folk.ttl instead.

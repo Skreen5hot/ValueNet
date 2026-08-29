@@ -28,7 +28,7 @@ Blank-node *identity* is deliberately not preserved, and does not need to be:
 the restrictions are structurally identical, and two graphs differing only in
 bnode labels say the same thing.
 
-    python ValueNet_code/generate_folk_aligned.py [--check]
+    python tools/original-valuenet/generate_folk_aligned.py [--check]
 
 `--check` regenerates in memory and reports whether the committed file is
 stale, without writing. That is what CI runs.

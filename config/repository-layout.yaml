@@ -598,3 +598,36 @@ path_allowances:
     permanent: false
     discharge: edit
     remove_after_wave: original-valuenet
+
+  # ---- Exposed once pattern allowances became per-occurrence. Both sat
+  # in build_move_manifest.py and were certified by the table pattern
+  # matching somewhere else in the same file; neither is inside a span
+  # that pattern actually matches.
+
+  - id: manifest-builder-exact-repo-plan
+    file: ValueNet_code/build_move_manifest.py
+    literal: REPO_REORGANIZATION_PLAN.md
+    field: EXACT
+    category: bootstrap
+    owner: tool.build-move-manifest
+    justification: >-
+      The EXACT row for the plan document, as key and inside its own
+      destination. The key is a bare filename with no directory prefix,
+      so the table pattern -- which anchors on a quote followed by a
+      known top-level directory -- matches neither occurrence. The
+      builder defines the mapping and cannot resolve a path through a
+      contract it is producing.
+    permanent: true
+
+  - id: manifest-builder-name-prefix-comment
+    file: ValueNet_code/build_move_manifest.py
+    literal: MAREP_v2.1.md
+    field: NAME_PREFIXES comment
+    category: historical-record
+    owner: tool.build-move-manifest
+    justification: >-
+      Names the file a defect was found on: treating a name prefix like a
+      directory prefix turned MAREP_v2.1.md into 1.md. The sentence
+      describes what happened, so the filename in it is not a path
+      anything resolves and rewriting it would make the account wrong.
+    permanent: true

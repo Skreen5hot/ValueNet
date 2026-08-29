@@ -28,6 +28,7 @@ from __future__ import annotations
 import re
 import subprocess
 from pathlib import Path
+from typing import NamedTuple
 
 import pytest
 
@@ -114,29 +115,64 @@ def allowance_file(a: dict):
     return None
 
 
-def occurrences(suffixes=IN_SCOPE) -> set[tuple[str, str]]:
-    """Every (file, moving-path) pair, for files of the given kinds.
+class Occurrence(NamedTuple):
+    """One naming of a moving path, at one place in one file.
 
-    Keyed by the file's frozen identity, so an occurrence does not change
-    name when the file holding it is relocated.
+    `identity` is the containing file's frozen source path, so an occurrence
+    keeps its name when the file holding it moves. `start`/`end` are
+    character offsets, which is what lets a pattern allowance be judged
+    against this occurrence rather than against the file.
     """
-    found = set()
+
+    identity: str
+    literal: str
+    start: int
+    end: int
+    line: int
+
+
+def occurrences(suffixes=IN_SCOPE) -> list[Occurrence]:
+    """Every naming of a moving path, individually.
+
+    Collapsing these to a set of (file, path) pairs is what made per-file
+    coverage look sufficient: two occurrences a hundred lines apart, one
+    permitted and one not, were indistinguishable.
+    """
+    found: list[Occurrence] = []
     for f in tracked():
-        if identity_of(f) in EXEMPT or not f.endswith(suffixes):
+        ident = identity_of(f)
+        if ident in EXEMPT or not f.endswith(suffixes):
             continue
         text = (REPO / f).read_text(encoding="utf-8", errors="replace")
         for m in MOVING:
-            if m in text:
-                found.add((identity_of(f), m))
+            at = text.find(m)
+            while at != -1:
+                found.append(Occurrence(ident, m, at, at + len(m),
+                                        text.count("\n", 0, at) + 1))
+                at = text.find(m, at + 1)
     return found
 
 
-def covered_by(a: dict, f: str, m: str, text: str) -> bool:
-    if a["file"] != identity_of(f):
+def _pattern_spans(pattern: str, text: str) -> list[tuple[int, int]]:
+    return [mt.span() for mt in re.finditer(pattern, text)]
+
+
+def covered_by(a: dict, occ: Occurrence, text: str) -> bool:
+    """Whether this allowance permits this occurrence.
+
+    A literal allowance names the exact string, so it permits any occurrence
+    of that string in its file: the permission is about what may be named,
+    and five identical namings are one decision. A pattern allowance is
+    judged against the occurrence's span, because a pattern says which
+    *places* are permitted -- and a pattern accepted for matching elsewhere
+    in the file permits everything in that file, which is the whole defect.
+    """
+    if a["file"] != occ.identity:
         return False
     if a.get("literal"):
-        return a["literal"] == m
-    return bool(re.search(a["pattern"], text))
+        return a["literal"] == occ.literal
+    return any(start < occ.end and occ.start < end
+               for start, end in _pattern_spans(a["pattern"], text))
 
 
 # ======================================================================
@@ -328,16 +364,45 @@ def test_allowance_ids_are_unique():
 
 
 def test_every_occurrence_is_covered():
-    """The other direction, and the one that actually catches breakage."""
+    """The other direction, and the one that actually catches breakage.
+
+    Opens with the falsification for how coverage is judged, because every
+    assertion below inherits it. A pattern allowance permits places, not
+    files: given the same path written twice in one file -- once inside the
+    quoted mapping table the pattern is written for, once in a bare usage
+    line it is not -- only the first is covered. While a pattern was tested
+    against the whole file, the table licensed the usage line twelve lines
+    above it, and the inventory that should have demanded a fix reported
+    full coverage instead.
+    """
+    # A synthetic path. Naming a real moving one would put a literal in
+    # this file and make the inventory below demand an allowance for a
+    # string that exists only to demonstrate the rule.
+    lit = "OldDir/some_tool.py"
+    synthetic = (f'    "{lit}": "tools/marep/build_move_manifest.py",\n'
+                 f'    python {lit}\n')
+    table_at = synthetic.index(lit)
+    usage_at = synthetic.index(lit, synthetic.index("python"))
+    probe = {"file": "probe", "pattern": '"(OldDir|NewDir)/'}
+    table = Occurrence("probe", lit, table_at, table_at + len(lit), 1)
+    usage = Occurrence("probe", lit, usage_at, usage_at + len(lit), 2)
+
+    assert covered_by(probe, table, synthetic), (
+        "the pattern no longer covers the occurrence it exists for")
+    assert not covered_by(probe, usage, synthetic), (
+        "a pattern matching the table certified a usage line it does not "
+        "match; coverage has gone back to being per file")
+
     uncovered = []
-    for f, m in sorted(occurrences()):
-        holder = allowance_file({"file": f})
+    for occ in sorted(occurrences()):
+        holder = allowance_file({"file": occ.identity})
         if holder is None:
             continue
         text = holder.read_text(encoding="utf-8", errors="replace")
-        if not any(covered_by(a, f, m, text) for a in ALLOWANCES):
-            uncovered.append(f"{f} names {m} ({MOVING[m]['wave']} wave) "
-                             f"with no allowance")
+        if not any(covered_by(a, occ, text) for a in ALLOWANCES):
+            uncovered.append(
+                f"{occ.identity}:{occ.line} names {occ.literal} "
+                f"({MOVING[occ.literal]['wave']} wave) with no allowance")
     assert not uncovered, (
         f"{len(uncovered)} literal path occurrence(s) nobody has accounted "
         "for:\n" + "\n".join("  " + u for u in uncovered))
@@ -350,14 +415,15 @@ def test_no_two_allowances_cover_the_same_occurrence():
     path survives a move that should have rewritten it.
     """
     overlaps = []
-    for f, m in sorted(occurrences()):
-        holder = allowance_file({"file": f})
+    for occ in sorted(occurrences()):
+        holder = allowance_file({"file": occ.identity})
         if holder is None:
             continue
         text = holder.read_text(encoding="utf-8", errors="replace")
-        hits = [a["id"] for a in ALLOWANCES if covered_by(a, f, m, text)]
+        hits = [a["id"] for a in ALLOWANCES if covered_by(a, occ, text)]
         if len(hits) > 1:
-            overlaps.append(f"{f} / {m} is covered by {hits}")
+            overlaps.append(
+                f"{occ.identity}:{occ.line} / {occ.literal} is covered by {hits}")
     assert not overlaps, overlaps
 
 
@@ -368,7 +434,7 @@ def test_prose_occurrences_are_out_of_scope_and_counted():
     Rewriting their paths would falsify the record, so they are excluded here
     and their links are checked in the final documentation pass.
     """
-    prose = occurrences((".md",))
+    prose = {(o.identity, o.literal) for o in occurrences((".md",))}
     assert len(prose) <= 90, (
         f"{len(prose)} prose occurrences, up from the 77 recorded when the "
         "exclusion was justified; if documentation has grown this much the "

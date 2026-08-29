@@ -376,7 +376,12 @@ def test_an_undischargeable_obligation_fails_rather_than_notes(
     contract itself calls invalid. Reporting success there is how the CCO
     manifest kept naming a generator that had moved.
     """
-    monkeypatch.setitem(CHECKER.REGENERATORS, "syn-regen", None)
+    # The whole mapping, not one added entry. regenerate() now runs every
+    # real generator to keep a materialised tree self-consistent, so
+    # adding to the live mapping made this test resolve real components
+    # against an empty tmp_path and fail before reaching the behaviour it
+    # is about.
+    monkeypatch.setattr(CHECKER, "REGENERATORS", {"syn-regen": None})
     unperformed = CHECKER.regenerate(tmp_path, None)
     assert unperformed, "an undischargeable obligation returned nothing"
     assert "syn-regen" in unperformed[0]

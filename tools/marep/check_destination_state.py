@@ -337,7 +337,13 @@ def regenerate(dest: Path, through_wave: str | None) -> list[str]:
         if key in ran:
             continue
         ran.add(key)
-        tool = layout.component(spec[0]).resolve(dest)
+        try:
+            tool = layout.component(spec[0]).resolve(dest)
+        except layout.LayoutError as exc:
+            # A tree with no generator is a finding about the tree, not
+            # a traceback out of the checker. It still fails the wave.
+            unperformed.append(f"{spec[0]}: no generator in this tree: {exc}")
+            continue
         r = subprocess.run([sys.executable, str(tool), *spec[1]],
                            capture_output=True, text=True, cwd=str(dest))
         rel = os.path.relpath(tool, dest).replace(os.sep, "/")

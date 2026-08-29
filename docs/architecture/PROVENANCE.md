@@ -120,4 +120,4 @@ canonical digest is the invariant.
 | logical component ids and paths | `config/repository-layout.yaml` |
 | semantic fingerprints and test baseline | `config/reorganization-baseline.json` |
 | path-sensitive configuration and links | `config/path-sensitive-inventory.md` |
-| the reorganization plan | `REPO_REORGANIZATION_PLAN.md` |
+| the reorganization plan | `docs/architecture/REPO_REORGANIZATION_PLAN.md` |

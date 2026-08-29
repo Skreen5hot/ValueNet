@@ -85,6 +85,6 @@ Fork-authored maintenance utilities move to `tools/original-valuenet/` in wave
 ## Related
 
 - `docs/architecture/PROVENANCE.md` — the two-axis provenance model
-- `REPO_REORGANIZATION_PLAN.md` — why these paths are retained
+- `docs/architecture/REPO_REORGANIZATION_PLAN.md` — why these paths are retained
 - `MAREP_RUN1_FINDINGS.md`, `MAREP_RUN2_FINDINGS.md`, `MAREP_RUN3_FINDINGS.md`
   — what the audits found in this corpus

@@ -470,3 +470,643 @@ path_allowances:
       describes what happened, so the filename in it is not a path
       anything resolves and rewriting it would make the account wrong.
     permanent: true
+
+  # ---- Documentation references to paths the migration moved.
+  #
+  # Classified per occurrence in step 12, not per document: a README
+  # tells a reader where to look and was rewritten, while a dated review
+  # states where a file was when it was reviewed and is left alone.
+  #
+  # `file` is the frozen source path, like every other allowance, because
+  # that is the identity an allowance is attached to. Most of these
+  # documents have themselves moved.
+  - id: doc-history-bfo-bfo-alignment-remediation-plan-md-tests-test-bfo-alignment-remediation-py
+    file: BFO/BFO_ALIGNMENT_REMEDIATION_PLAN.md
+    literal: tests/test_bfo_alignment_remediation.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      Written against the layout of the time. The path is part of what was
+      said, not a pointer maintained for a reader. 3 occurrences in this
+      document.
+    permanent: true
+
+  - id: doc-history-bfo-bfo-alignment-remediation-plan-md-tests-test-bfo-core-definitions-py
+    file: BFO/BFO_ALIGNMENT_REMEDIATION_PLAN.md
+    literal: tests/test_bfo_core_definitions.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      Written against the layout of the time. The path is part of what was
+      said, not a pointer maintained for a reader.
+    permanent: true
+
+  - id: doc-history-bfo-bfo-alignment-remediation-plan-md-tests-test-bfo-external-closure-py
+    file: BFO/BFO_ALIGNMENT_REMEDIATION_PLAN.md
+    literal: tests/test_bfo_external_closure.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      Written against the layout of the time. The path is part of what was
+      said, not a pointer maintained for a reader.
+    permanent: true
+
+  - id: doc-history-bfo-bfo-alignment-remediation-plan-md-tests-test-bfo-mapping-semantics-py
+    file: BFO/BFO_ALIGNMENT_REMEDIATION_PLAN.md
+    literal: tests/test_bfo_mapping_semantics.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      Written against the layout of the time. The path is part of what was
+      said, not a pointer maintained for a reader.
+    permanent: true
+
+  - id: doc-history-bfo-bfo-alignment-remediation-plan-md-tests-test-bfo-moral-epistemics-categories-py
+    file: BFO/BFO_ALIGNMENT_REMEDIATION_PLAN.md
+    literal: tests/test_bfo_moral_epistemics_categories.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      Written against the layout of the time. The path is part of what was
+      said, not a pointer maintained for a reader.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-baseline-2026-08-24-md-tests-test-bfo-alignment-remediation-py
+    file: BFO/remediation/BASELINE_2026-08-24.md
+    literal: tests/test_bfo_alignment_remediation.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase1-exit-review-md-bfo-imports-cco-valuenet-extract-manifest-json
+    file: BFO/remediation/PHASE1_EXIT_REVIEW.md
+    literal: BFO/imports/cco-valuenet-extract.manifest.json
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase1-exit-review-md-bfo-imports-cco-valuenet-extract-ttl
+    file: BFO/remediation/PHASE1_EXIT_REVIEW.md
+    literal: BFO/imports/cco-valuenet-extract.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase1-exit-review-md-bfo-remediation-check-bfo-consistency-py
+    file: BFO/remediation/PHASE1_EXIT_REVIEW.md
+    literal: BFO/remediation/check_bfo_consistency.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase1-exit-review-md-bfo-remediation-generate-cco-extract-py
+    file: BFO/remediation/PHASE1_EXIT_REVIEW.md
+    literal: BFO/remediation/generate_cco_extract.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase4-definition-audit-md-bfo-valuenet-core-ttl
+    file: BFO/remediation/PHASE4_DEFINITION_AUDIT.md
+    literal: BFO/valuenet-core.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase4-exit-review-md-tests-test-bfo-core-definitions-py
+    file: BFO/remediation/PHASE4_EXIT_REVIEW.md
+    literal: tests/test_bfo_core_definitions.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-imports-cco-valuenet-extract-manifest-json
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/imports/cco-valuenet-extract.manifest.json
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-imports-cco-valuenet-extract-ttl
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/imports/cco-valuenet-extract.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time. 2 occurrences in this
+      document.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-remediation-phase5-mapping-audit-md
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/remediation/PHASE5_MAPPING_AUDIT.md
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-remediation-generate-cco-extract-py
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/remediation/generate_cco_extract.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time. 2 occurrences in this
+      document.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-valuenet-core-ttl
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/valuenet-core.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-valuenet-folk-ttl
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/valuenet-folk.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-valuenet-mappings-ttl
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/valuenet-mappings.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-valuenet-moral-epistemics-ttl
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/valuenet-moral-epistemics.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-bfo-valuenet-moral-foundations-ttl
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: BFO/valuenet-moral-foundations.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-tests-test-bfo-cco-extract-py
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: tests/test_bfo_cco_extract.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-tests-test-bfo-external-closure-py
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: tests/test_bfo_external_closure.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-tests-test-bfo-mapping-semantics-py
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: tests/test_bfo_mapping_semantics.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time. 4 occurrences in this
+      document.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-exit-review-md-tests-test-competency-questions-py
+    file: BFO/remediation/PHASE5_EXIT_REVIEW.md
+    literal: tests/test_competency_questions.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase5-mapping-audit-md-tests-test-bfo-mapping-semantics-py
+    file: BFO/remediation/PHASE5_MAPPING_AUDIT.md
+    literal: tests/test_bfo_mapping_semantics.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase6-exit-review-md-bfo-remediation-generate-cco-extract-py
+    file: BFO/remediation/PHASE6_EXIT_REVIEW.md
+    literal: BFO/remediation/generate_cco_extract.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-remediation-phase6-exit-review-md-tests-test-bfo-moral-epistemics-categories-py
+    file: BFO/remediation/PHASE6_EXIT_REVIEW.md
+    literal: tests/test_bfo_moral_epistemics_categories.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A dated record of remediation work. It states where a file was when
+      the phase was reviewed, and rewriting it would make the review
+      describe a tree that did not exist at the time.
+    permanent: true
+
+  - id: doc-history-bfo-vcvf-triggers-review-md-valuenet-code-add-folk-religion-py
+    file: BFO/vcvf-triggers-review.md
+    literal: ValueNet_code/add_folk_religion.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      Written against the layout of the time. The path is part of what was
+      said, not a pointer maintained for a reader.
+    permanent: true
+
+  - id: doc-history-bfo-vcvf-triggers-review-md-valuenet-code-retarget-bad-trigger-objects-py
+    file: BFO/vcvf-triggers-review.md
+    literal: ValueNet_code/retarget_bad_trigger_objects.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      Written against the layout of the time. The path is part of what was
+      said, not a pointer maintained for a reader.
+    permanent: true
+
+  - id: doc-history-marep-implementation-plan-md-valuenet-code-generate-folk-aligned-py
+    file: MAREP_IMPLEMENTATION_PLAN.md
+    literal: ValueNet_code/generate_folk_aligned.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A plan written against the layout of the time; its paths are what it
+      was planned against.
+    permanent: true
+
+  - id: doc-history-marep-implementation-plan-md-tests-test-folk-generation-py
+    file: MAREP_IMPLEMENTATION_PLAN.md
+    literal: tests/test_folk_generation.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A plan written against the layout of the time; its paths are what it
+      was planned against.
+    permanent: true
+
+  - id: doc-history-marep-run1-findings-md-valuenet-code-report-run-py
+    file: MAREP_RUN1_FINDINGS.md
+    literal: ValueNet_code/report_run.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-run1-findings-md-tests-test-ontology-artifacts-py
+    file: MAREP_RUN1_FINDINGS.md
+    literal: tests/test_ontology_artifacts.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-run2-findings-md-bfo-valuenet-core-shapes-ttl
+    file: MAREP_RUN2_FINDINGS.md
+    literal: BFO/valuenet-core-shapes.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-run2-findings-md-bfo-valuenet-mappings-ttl
+    file: MAREP_RUN2_FINDINGS.md
+    literal: BFO/valuenet-mappings.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from. 2 occurrences in this
+      document.
+    permanent: true
+
+  - id: doc-history-marep-run2-findings-md-bfo-valuenet-moral-epistemics-scenario-ttl
+    file: MAREP_RUN2_FINDINGS.md
+    literal: BFO/valuenet-moral-epistemics-scenario.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from. 3 occurrences in this
+      document.
+    permanent: true
+
+  - id: doc-history-marep-run2-findings-md-bfo-valuenet-moral-epistemics-shapes-ttl
+    file: MAREP_RUN2_FINDINGS.md
+    literal: BFO/valuenet-moral-epistemics-shapes.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-run2-findings-md-valuenet-code-report-run-py
+    file: MAREP_RUN2_FINDINGS.md
+    literal: ValueNet_code/report_run.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-run3-findings-md-bfo-bfo-core-ttl
+    file: MAREP_RUN3_FINDINGS.md
+    literal: BFO/bfo-core.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from. 2 occurrences in this
+      document.
+    permanent: true
+
+  - id: doc-history-marep-run3-findings-md-bfo-valuenet-core-shapes-ttl
+    file: MAREP_RUN3_FINDINGS.md
+    literal: BFO/valuenet-core-shapes.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-run3-findings-md-bfo-valuenet-moral-epistemics-scenario-ttl
+    file: MAREP_RUN3_FINDINGS.md
+    literal: BFO/valuenet-moral-epistemics-scenario.ttl
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-run3-findings-md-valuenet-code-report-run-py
+    file: MAREP_RUN3_FINDINGS.md
+    literal: ValueNet_code/report_run.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A run finding, citing the file it was found in. Evidence is only
+      evidence about the state it was gathered from.
+    permanent: true
+
+  - id: doc-history-marep-valuenet-plan-md-examples-full-retrospective-py
+    file: MAREP_VALUENET_PLAN.md
+    literal: examples/full_retrospective.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      A plan written against the layout of the time; its paths are what it
+      was planned against.
+    permanent: true
+
+  - id: doc-history-repo-reorganization-plan-md-marep-v2-1-md
+    file: REPO_REORGANIZATION_PLAN.md
+    literal: MAREP_v2.1.md
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The migration plan names sources and destinations because that is what
+      it plans. A source path here is the subject, not a link.
+    permanent: true
+
+  - id: doc-history-repo-reorganization-plan-md-valuenet-code-build-move-manifest-py
+    file: REPO_REORGANIZATION_PLAN.md
+    literal: ValueNet_code/build_move_manifest.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The migration plan names sources and destinations because that is what
+      it plans. A source path here is the subject, not a link.
+    permanent: true
+
+  - id: doc-history-repo-reorganization-plan-md-valuenet-code-generate-folk-aligned-py
+    file: REPO_REORGANIZATION_PLAN.md
+    literal: ValueNet_code/generate_folk_aligned.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The migration plan names sources and destinations because that is what
+      it plans. A source path here is the subject, not a link.
+    permanent: true
+
+  - id: doc-history-config-path-sensitive-inventory-md-bfo-imports-cco-valuenet-extract-manifest-json
+    file: config/path-sensitive-inventory.md
+    literal: BFO/imports/cco-valuenet-extract.manifest.json
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The inventory of path-sensitive occurrences. Its rows are those
+      occurrences, written as they were found; rewriting them erases the
+      finding the document exists to record.
+    permanent: true
+
+  - id: doc-history-config-path-sensitive-inventory-md-bfo-remediation-generate-cco-extract-py
+    file: config/path-sensitive-inventory.md
+    literal: BFO/remediation/generate_cco_extract.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The inventory of path-sensitive occurrences. Its rows are those
+      occurrences, written as they were found; rewriting them erases the
+      finding the document exists to record.
+    permanent: true
+
+  - id: doc-history-config-path-sensitive-inventory-md-bfo-vcvf-triggers-review-md
+    file: config/path-sensitive-inventory.md
+    literal: BFO/vcvf-triggers-review.md
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The inventory of path-sensitive occurrences. Its rows are those
+      occurrences, written as they were found; rewriting them erases the
+      finding the document exists to record.
+    permanent: true
+
+  - id: doc-history-config-path-sensitive-inventory-md-marep-run1-reconciliation-yaml
+    file: config/path-sensitive-inventory.md
+    literal: MAREP_RUN1_RECONCILIATION.yaml
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The inventory of path-sensitive occurrences. Its rows are those
+      occurrences, written as they were found; rewriting them erases the
+      finding the document exists to record.
+    permanent: true
+
+  - id: doc-history-config-path-sensitive-inventory-md-marep-run3-reconciliation-yaml
+    file: config/path-sensitive-inventory.md
+    literal: MAREP_RUN3_RECONCILIATION.yaml
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The inventory of path-sensitive occurrences. Its rows are those
+      occurrences, written as they were found; rewriting them erases the
+      finding the document exists to record.
+    permanent: true
+
+  - id: doc-history-config-path-sensitive-inventory-md-marep-v2-2-md
+    file: config/path-sensitive-inventory.md
+    literal: MAREP_v2.2.md
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The inventory of path-sensitive occurrences. Its rows are those
+      occurrences, written as they were found; rewriting them erases the
+      finding the document exists to record. 2 occurrences in this document.
+    permanent: true
+
+  - id: doc-history-config-path-sensitive-inventory-md-tests-test-ontology-artifacts-py
+    file: config/path-sensitive-inventory.md
+    literal: tests/test_ontology_artifacts.py
+    field: prose
+    category: historical-record
+    owner: unowned
+    justification: >-
+      The inventory of path-sensitive occurrences. Its rows are those
+      occurrences, written as they were found; rewriting them erases the
+      finding the document exists to record.
+    permanent: true

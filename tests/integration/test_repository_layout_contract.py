@@ -29,6 +29,7 @@ import re
 import subprocess
 from pathlib import Path
 from typing import NamedTuple
+from urllib.parse import unquote
 
 import pytest
 
@@ -74,6 +75,16 @@ WAVES = ["bfo", "marep", "original-valuenet", "architecture", "tests"]
 EXEMPT = {"config/repository-layout.yaml", "config/move-manifest.yaml",
           "marep/layout.py"}
 IN_SCOPE = (".py", ".json", ".yaml", ".yml", ".toml", ".cfg", ".ini", ".ttl")
+
+#: Documents whose job is to say where things are. Their references were
+#: rewritten to the destinations in step 12; everything else that names a
+#: moved path is a record of what was true when it was written.
+NAVIGATION_DOCS = {
+    "README.md",
+    "marep/README.md",
+    "docs/original-valuenet/README.md",
+    "docs/architecture/PROVENANCE.md",
+}
 
 
 def tracked() -> list[str]:
@@ -145,8 +156,21 @@ def occurrences(suffixes=IN_SCOPE) -> list[Occurrence]:
             continue
         text = (REPO / f).read_text(encoding="utf-8", errors="replace")
         for m in MOVING:
+            dst = MOVING[m]['destination']
             at = text.find(m)
             while at != -1:
+                # A source path that is a suffix of its own destination
+                # matches inside an already-corrected reference: a file
+                # moved from the repository root into a subdirectory
+                # keeps its name, so every mention of the new path
+                # contains the old one. Without this the check demands an
+                # allowance for a link that was just fixed. The example is
+                # described rather than quoted, because quoting it would
+                # put the very literal it is about into this file.
+                back = at - (len(dst) - len(m))
+                if back >= 0 and text[back:back + len(dst)] == dst:
+                    at = text.find(m, at + 1)
+                    continue
                 found.append(Occurrence(ident, m, at, at + len(m),
                                         text.count("\n", 0, at) + 1))
                 at = text.find(m, at + 1)
@@ -428,18 +452,68 @@ def test_no_two_allowances_cover_the_same_occurrence():
 
 
 def test_prose_occurrences_are_out_of_scope_and_counted():
-    """The exclusion is stated as a number so it cannot quietly grow.
+    """Every documentation reference to a moved path is accounted for.
 
-    Markdown review documents describe what was true when they were written.
-    Rewriting their paths would falsify the record, so they are excluded here
-    and their links are checked in the final documentation pass.
+    The name is now a misnomer and is kept anyway. It is a collected node
+    id, and the frozen identity set is the evidence that the migration
+    moved 99 files without changing what the suite is; renaming a test to
+    tidy a label would move that set for no gain.
+
+    What it asserted before was a ceiling: at most ninety prose
+    occurrences, on the argument that documentation was out of scope and
+    a number would stop the exclusion growing quietly. A ceiling cannot
+    tell a README pointing at a file that moved from a review describing
+    where the file was, and four waves ran while it counted both as one
+    number and passed.
+
+    Now every occurrence must be covered by exactly one allowance.
+    Navigation was rewritten to the destination, so a navigational
+    reference no longer occurs at all; anything still naming a moved path
+    is a record, and has to say so. Nothing is exempt by being prose.
     """
-    prose = {(o.identity, o.literal) for o in occurrences((".md",))}
-    assert len(prose) <= 90, (
-        f"{len(prose)} prose occurrences, up from the 77 recorded when the "
-        "exclusion was justified; if documentation has grown this much the "
-        "exclusion needs re-arguing rather than widening")
+    uncovered, overlapping = [], []
+    for occ in sorted(occurrences((".md",))):
+        holder = allowance_file({"file": occ.identity})
+        if holder is None:
+            continue
+        text = holder.read_text(encoding="utf-8", errors="replace")
+        hits = [a["id"] for a in ALLOWANCES if covered_by(a, occ, text)]
+        if not hits:
+            uncovered.append(
+                f"{occ.identity}:{occ.line} names {occ.literal} "
+                f"({MOVING[occ.literal]['wave']} wave)")
+        elif len(hits) > 1:
+            overlapping.append(
+                f"{occ.identity}:{occ.line} / {occ.literal}: {hits}")
 
+    assert not uncovered, (
+        f"{len(uncovered)} documentation reference(s) to a moved path "
+        "that are neither rewritten nor declared historical:" + chr(10)
+        + chr(10).join("  " + u for u in uncovered))
+    assert not overlapping, (
+        f"{len(overlapping)} reference(s) covered by more than one "
+        "allowance, so no single entry governs them:" + chr(10)
+        + chr(10).join("  " + o for o in overlapping))
+
+    # Every relative link in a navigation document has to resolve. The
+    # path sweep cannot see these: `BFO/` is a directory and never a
+    # manifest row, and `BFO/BFOizing%20ValueNet.md` is url-encoded, so
+    # the literal with a space in it does not match. Both were broken and
+    # both were found here rather than by the sweep.
+    broken = []
+    for rel in sorted(NAVIGATION_DOCS):
+        doc = REPO / rel
+        if not doc.is_file():
+            continue
+        for m in re.finditer(r"\]\(([^)#]+)\)", doc.read_text(encoding="utf-8")):
+            target = unquote(m.group(1).strip())
+            if target.startswith(("http://", "https://", "mailto:")):
+                continue
+            if not ((REPO / target).exists() or (doc.parent / target).exists()):
+                broken.append(f"{rel} -> {m.group(1)}")
+    assert not broken, (
+        f"{len(broken)} link target(s) in the navigation documents point "
+        "at nothing:" + chr(10) + chr(10).join("  " + b for b in broken))
 
 # ======================================================================
 # allowances: lifecycle

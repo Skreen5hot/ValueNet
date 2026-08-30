@@ -21,7 +21,7 @@ Furthermore, some additional modules are being developed:
 
 [MM](http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl) ``http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl``
 
-A parallel, BFO-aligned re-engineering of the suite lives in [BFO/](BFO/) and is described under [BFO-Aligned ValueNet](#bfo-aligned-valuenet) below.
+A parallel, BFO-aligned re-engineering of the suite lives in [ontology/bfo/](ontology/bfo/) and is described under [BFO-Aligned ValueNet](#bfo-aligned-valuenet) below.
 
 
 ![ValueNet_usage_network](https://github.com/StenDoipanni/ValueNet/blob/d625ceca215d5cfaea508e7e064dfbe601990361/ValueNet_import_schema_def.png)
@@ -65,22 +65,22 @@ MM is the ontological transposition of Curry's Moral Molecules theory, consideri
 
 ## BFO-Aligned ValueNet
 
-The modules above model values as ``dul:Description`` instances satisfied by situations. The suite in [BFO/](BFO/) re-engineers the same content against [BFO 2020](http://purl.obolibrary.org/obo/bfo/2020/bfo-core.ttl) (ISO/IEC 21838-2), modelling values instead as **realizable entities that inhere in agents**: a ``vn-core:ValueDisposition`` is internally grounded and a ``vn-core:ValueRole`` externally grounded, and both are *realized in* a ``vn-core:ValueRealizationProcess`` rather than *satisfied by* a situation. The rationale is set out in [BFOizing ValueNet.md](BFO/BFOizing%20ValueNet.md).
+The modules above model values as ``dul:Description`` instances satisfied by situations. The suite in [ontology/bfo/](ontology/bfo/) re-engineers the same content against [BFO 2020](http://purl.obolibrary.org/obo/bfo/2020/bfo-core.ttl) (ISO/IEC 21838-2), modelling values instead as **realizable entities that inhere in agents**: a ``vn-core:ValueDisposition`` is internally grounded and a ``vn-core:ValueRole`` externally grounded, and both are *realized in* a ``vn-core:ValueRealizationProcess`` rather than *satisfied by* a situation. The rationale is set out in [BFOizing ValueNet.md](docs/bfo/guides/BFOizing%20ValueNet.md).
 
 Canonical namespace: ``https://fandaws.com/ontology/bfo/valuenet-<module>#``. The ``https://w3id.org/valuenet/<module>#`` IRIs that appear as ``rdfs:seeAlso`` are reserved aliases; nothing is declared under them.
 
 | Module | Contents |
 | --- | --- |
-| [valuenet-core](BFO/valuenet-core.ttl) | ``ValueDisposition``, ``ValueRole``, ``ValueRealizationProcess``, ``ValueViolationProcess``, ``contravenes``, the annotation layer (``TextSpan``, ``isEvidenceFor``, ``evokesFrame``), and CCO ``Agent`` (``ont00001017``), in which every value inheres |
-| [valuenet-schwartz-values](BFO/valuenet-schwartz-values.ttl) | Schwartz's 10 Basic Human Values as dispositions |
-| [valuenet-moral-foundations](BFO/valuenet-moral-foundations.ttl) | Haidt's Moral Foundations as dispositions, and the six violations that contravene them, as processes |
-| [valuenet-folk](BFO/valuenet-folk.ttl) | 136 everyday folk values |
-| [valuenet-moral-epistemics](BFO/valuenet-moral-epistemics.ttl) | Moral assessment: behavioural observation, prudent discernment, rash judgment, protective action |
-| [valuenet-mappings](BFO/valuenet-mappings.ttl) | ``skos`` mappings back to the original ValueNet IRIs |
+| [valuenet-core](ontology/bfo/core/valuenet-core.ttl) | ``ValueDisposition``, ``ValueRole``, ``ValueRealizationProcess``, ``ValueViolationProcess``, ``contravenes``, the annotation layer (``TextSpan``, ``isEvidenceFor``, ``evokesFrame``), and CCO ``Agent`` (``ont00001017``), in which every value inheres |
+| [valuenet-schwartz-values](ontology/bfo/core/valuenet-schwartz-values.ttl) | Schwartz's 10 Basic Human Values as dispositions |
+| [valuenet-moral-foundations](ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl) | Haidt's Moral Foundations as dispositions, and the six violations that contravene them, as processes |
+| [valuenet-folk](ontology/bfo/core/valuenet-folk.ttl) | 136 everyday folk values |
+| [valuenet-moral-epistemics](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl) | Moral assessment: behavioural observation, prudent discernment, rash judgment, protective action |
+| [valuenet-mappings](ontology/bfo/core/valuenet-mappings.ttl) | ``skos`` mappings back to the original ValueNet IRIs |
 
 Every ontology file in this repository is a ``.ttl`` holding Turtle, and each is a valid document on its own — no header injection, no format guessing, no knowledge of where it sits in the tree. Modules were previously kept as a ``.ttl`` and an ``.owl`` that were both Turtle, which meant a reader had to be told which extension to disbelieve and made every class count double. Two tests hold the invariants: `test_extensions_state_the_serialization` and `test_every_ttl_in_the_repository_parses_standalone`.
 
-Supporting material: [annotationGuide.md](BFO/annotationGuide.md) (annotator workflow), [TestingFramework.md](BFO/TestingFramework.md) (reasoner and SPARQL checks), [RefactorPlan.md](BFO/RefactorPlan.md) (progress tracker), SHACL shapes ([core](BFO/valuenet-core-shapes.ttl), [moral epistemics](BFO/valuenet-moral-epistemics-shapes.ttl)), and competency questions with a worked scenario ([CQ](BFO/valuenet-moral-epistemics-CQ.md), [scenario](BFO/valuenet-moral-epistemics-scenario.ttl)).
+Supporting material: [annotationGuide.md](docs/bfo/guides/annotationGuide.md) (annotator workflow), [TestingFramework.md](docs/bfo/guides/TestingFramework.md) (reasoner and SPARQL checks), [RefactorPlan.md](docs/bfo/guides/RefactorPlan.md) (progress tracker), SHACL shapes ([core](ontology/bfo/shapes/valuenet-core-shapes.ttl), [moral epistemics](ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl)), and competency questions with a worked scenario ([CQ](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md), [scenario](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl)).
 
 ### Reaching the trigger data from the BFO suite
 

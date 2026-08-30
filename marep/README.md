@@ -1,6 +1,6 @@
 # MAREP Runtime
 
-A deterministic implementation of the Runtime half of [MAREP v2.2](../MAREP_v2.2.md) §4.1.1.
+A deterministic implementation of the Runtime half of [MAREP v2.2](../docs/marep/specifications/MAREP_v2.2.md) §4.1.1.
 
 MAREP splits its control plane in two. The **Adjudicator** is a language model and handles judgement: semantic contradiction, thematic merge, compression, tie-break. The **Runtime** is this package, and handles everything mechanically decidable. It contains no model call, and per §4.1.1 it must not: an LLM doing JSON Schema validation is both more expensive and less reliable than a validator.
 
@@ -108,8 +108,8 @@ Two properties matter more than how many sources it covers:
 
 ```
 python -m pytest tests/ -q          # 72 conformance tests
-python examples/walkthrough.py      # a full six-phase retrospective, no model
-python examples/real_sprint.py      # grounded in this repository's real git history
+python examples/marep/walkthrough.py      # a full six-phase retrospective, no model
+python examples/marep/real_sprint.py      # grounded in this repository's real git history
 ```
 
 The walkthrough is the useful demo: every agent is a hard-coded dict, which isolates what the Runtime does from what an agent would do. It exercises a stale-version rebase, a lock refusal, an ungrounded confirmation, an unevaluated-issue archive that would otherwise deadlock Phase 3, a sub-threshold vote landing on `unresolved`, and a Phase 5 exit blocked until a confirmed issue gets an action or a waiver.

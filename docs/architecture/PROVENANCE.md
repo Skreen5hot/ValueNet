@@ -25,7 +25,7 @@ unchanged; fork-authored and generated.
 Current per-category counts live in `config/move-manifest.yaml` and are not
 copied here: a hand-written total went stale within one commit, claiming 321
 while the tree held 327. Run
-`python ValueNet_code/build_move_manifest.py` for the live figures.
+`python tools/marep/build_move_manifest.py` for the live figures.
 
 | origin | maintenance | typical member |
 |---|---|---|
@@ -101,7 +101,7 @@ A generated file is never edited by hand; the generator is the source.
 | artifact | generated from | generator |
 |---|---|---|
 | `folk_aligned.ttl` | `ThatsAllFolks/folk.ttl` | `generate_folk_aligned.py` |
-| `BFO/imports/cco-valuenet-extract.ttl` | CCO 2.2 at a pinned commit | `generate_cco_extract.py` |
+| `ontology/bfo/vendor/cco/cco-valuenet-extract.ttl` | CCO 2.2 at a pinned commit | `generate_cco_extract.py` |
 | `config/move-manifest.yaml` | `git ls-files` + rename history | `build_move_manifest.py` |
 
 `folk_aligned.ttl` carries a `GENERATED FILE — DO NOT EDIT` header naming its

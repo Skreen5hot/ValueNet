@@ -202,12 +202,31 @@ def main(argv=None) -> int:
             "describe a state no commit contains: "
             + ", ".join(sorted(unexpected)[:6]))
 
-    before = git("rev-parse", args.before + "^{commit}").strip()
+    # The tag is what a reader should be told; the matrix's own input
+    # commit is what the diff must start from. Those are not the same
+    # commit: evidence is committed after the input it describes, so the
+    # matrix inside eol-hardened-v1 names that tag's parent.
+    #
+    # Citing the tag while diffing from the parent is only honest if the
+    # two hold the same corpus, so that is checked rather than assumed.
+    tag_commit = git("rev-parse", args.before + "^{commit}").strip()
+    matrix = json.loads(
+        (_root / "config/eol-transition-matrix.json").read_text(
+            encoding="utf-8"))
+    before = matrix["input_commit"]
     after = git("rev-parse", "HEAD").strip()
     if before == after:
         raise SystemExit(
             "before and after are the same commit; there is nothing to "
             "record and a matrix from this commit needs no exemption.")
+    drift, drift_renames = changed_turtle(before, tag_commit)
+    if drift or drift_renames:
+        raise SystemExit(
+            "%s and the commit its matrix measured (%s) hold different "
+            "corpora: %s. Citing the tag as the before-state would then be "
+            "wrong, because the matrix never measured what the tag "
+            "contains." % (args.before, before[:12],
+                           (drift + [r[1] for r in drift_renames])[:4]))
 
     changed, renamed = changed_turtle(before, after)
     if renamed:
@@ -222,7 +241,8 @@ def main(argv=None) -> int:
             "%s still describes this corpus and needs no record."
             % (args.before, args.before))
 
-    print("  before %s  after %s" % (before[:12], after[:12]))
+    print("  before %s (matrix input; %s is %s)  after %s"
+          % (before[:12], args.before, tag_commit[:12], after[:12]))
     print("  %d Turtle file(s) differ" % len(changed))
 
     removed, added = [], []
@@ -241,7 +261,14 @@ def main(argv=None) -> int:
         "format_version": FORMAT_VERSION,
         "generated_by": GENERATOR,
         "before_tag": args.before,
+        "before_tag_commit": tag_commit,
         "before_commit": before,
+        "before_commit_is": "the commit the transition matrix measured. "
+                            "It is the parent of " + args.before + ", which "
+                            "carries the evidence generated from it. No "
+                            "Turtle file differs between the two, so citing "
+                            "the tag as the before-state is accurate; that "
+                            "was checked, not assumed.",
         "after_commit": after,
         "working_tree_clean": not dirty,
         "why": "The transition matrix measured the corpus at "

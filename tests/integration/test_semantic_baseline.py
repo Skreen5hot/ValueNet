@@ -961,6 +961,22 @@ def test_the_baseline_says_which_corpus_the_matrix_described():
         "saying so")
     repaired = m["corpus_repaired_since"]
     assert repaired["before_tag"] == BEFORE_TAG
+    # The tag and the commit its matrix measured are not the same commit:
+    # evidence is committed after the input it describes. Citing the tag
+    # is accurate only because no Turtle file differs between the two, so
+    # that is asserted here rather than left to the record.
+    tag_commit = subprocess.run(
+        ["git", "rev-parse", BEFORE_TAG + "^{commit}"], cwd=str(REPO),
+        capture_output=True, text=True).stdout.strip()
+    assert RECORD["before_tag_commit"] == tag_commit
+    drift = subprocess.run(
+        ["git", "diff", "--name-only", RECORD["before_commit"], tag_commit,
+         "--", "*.ttl"], cwd=str(REPO),
+        capture_output=True, text=True).stdout.split()
+    assert not drift, (
+        BEFORE_TAG + " and the commit its matrix measured hold different "
+        "corpora, so the tag is not the before-state the diff describes: "
+        + str(drift))
     assert repaired["after_commit"] == BASELINE["input_commit"]
     assert repaired["corpus_files_changed"] == RECORD["corpus_files_changed"]
     assert "re-derived" in repaired["verified"]

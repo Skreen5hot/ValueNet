@@ -10,7 +10,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-ns7:hasDataValue a owl:DataTypeProperty .
+ns7:hasDataValue a owl:DatatypeProperty .
 
 ns3:act_1 ns4:hasDeterminer ns4:a .
 
@@ -131,7 +131,7 @@ ns3:hope_1 a ns3:Hope ;
 ns3:male_1 a ns3:Male .
 
 ns3:man_1 a ns3:FlawedMan ;
-    ns7:hasDataValue <1> ;
+    ns7:hasDataValue 1 ;
     ns7:hasQuality ns3:Flawed ;
     ns4:hasDeterminer ns4:that ;
     ns4:hasQuantifier ns4:one .

@@ -32,6 +32,7 @@ _root = next(p for p in (_here, *_here.parents)
 
 MATRIX = "config/eol-transition-matrix.json"
 BASELINE = "config/semantic-baseline.json"
+REMEDIATION = "config/remediation-record.json"
 
 
 def run(*cmd) -> int:
@@ -43,6 +44,13 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--matrix", default=MATRIX)
     ap.add_argument("--baseline", default=BASELINE)
+    ap.add_argument(
+        "--remediation", action="store_true",
+        help="a source-data repair landed after the matrix was measured. "
+             "Records the difference and rebuilds the baseline, leaving the "
+             "matrix frozen: its content is a comparison of three checkouts "
+             "of one commit, so re-running it against a repaired corpus "
+             "would replace the experiment rather than repeat it.")
     args = ap.parse_args(argv)
 
     status = subprocess.run(["git", "status", "--porcelain"], cwd=str(_root),
@@ -59,8 +67,12 @@ def main(argv=None) -> int:
     print("  input commit %s" % head)
     print()
 
-    rc = run(sys.executable, "tools/marep/build_transition_matrix.py",
-             "-o", args.matrix)
+    if args.remediation:
+        rc = run(sys.executable, "tools/marep/build_remediation_record.py",
+                 "-o", REMEDIATION)
+    else:
+        rc = run(sys.executable, "tools/marep/build_transition_matrix.py",
+                 "-o", args.matrix)
     if rc:
         return rc
     print()
@@ -73,19 +85,40 @@ def main(argv=None) -> int:
     matrix = json.loads((_root / args.matrix).read_text(encoding="utf-8"))
     baseline = json.loads((_root / args.baseline).read_text(encoding="utf-8"))
     problems = []
-    if matrix["input_commit"] != head:
-        problems.append("the matrix names %s" % matrix["input_commit"][:12])
     if baseline["input_commit"] != head:
         problems.append("the baseline names %s" % baseline["input_commit"][:12])
-    if baseline["transition"]["measured"]["input_commit"] != head:
-        problems.append("the baseline cites a matrix from another commit")
+    if args.remediation:
+        # The matrix is expected to name an earlier commit. What must hold
+        # is that the record bridging them names this one, and that the
+        # baseline actually carries it -- the loader re-derives the changed
+        # files from git before accepting it.
+        rec = json.loads((_root / REMEDIATION).read_text(encoding="utf-8"))
+        if rec["after_commit"] != head:
+            problems.append("the remediation record lands at %s"
+                            % rec["after_commit"][:12])
+        if rec["before_commit"] != matrix["input_commit"]:
+            problems.append("the record bridges from %s, the matrix is at %s"
+                            % (rec["before_commit"][:12],
+                               matrix["input_commit"][:12]))
+        if "corpus_repaired_since" not in baseline["transition"]["measured"]:
+            problems.append("the baseline does not carry the repair record")
+    else:
+        if matrix["input_commit"] != head:
+            problems.append("the matrix names %s" % matrix["input_commit"][:12])
+        if baseline["transition"]["measured"]["input_commit"] != head:
+            problems.append("the baseline cites a matrix from another commit")
     if problems:
         raise SystemExit("the two artifacts disagree about their input: "
                          + "; ".join(problems))
 
     print()
-    print("  both artifacts describe %s" % head[:12])
-    print("  matrix   %s" % args.matrix)
+    if args.remediation:
+        print("  baseline describes %s; matrix stays frozen at %s"
+              % (head[:12], matrix["input_commit"][:12]))
+        print("  record   %s" % REMEDIATION)
+    else:
+        print("  both artifacts describe %s" % head[:12])
+        print("  matrix   %s" % args.matrix)
     print("  baseline %s" % args.baseline)
     print()
     print("  commit these two files together; the commit they land in is not")

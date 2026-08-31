@@ -251,17 +251,164 @@ def test_shacl_reports_the_denominator(tmp_path: Path):
 # the document base, and what resolves against it
 # ======================================================================
 
-#: The one relative IRI reference known to exist in the corpus.
+#: Empty, and kept rather than deleted.
 #:
-#: `ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl` writes
-#: `ns7:hasDataValue <1>`, which is a relative IRI reference and not the
-#: number it looks like. It is upstream source-data debt with its own
-#: remediation task; a stable base makes the measurement reproducible
-#: without making the term correct.
-KNOWN_RELATIVE_IRIS = {
-    "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl":
-        ["ThatsAllFolks/MFRC_1k_graphs/1"],
-}
+#: It held one entry: `ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl`
+#: wrote `ns7:hasDataValue <1>`, a relative IRI reference and not the
+#: number it resembles, which made that file's contribution to the
+#: corpus digest a function of the checkout directory. It has been
+#: replaced by the integer literal the source sentence supports.
+#:
+#: The structure stays because the check runs in both directions: an
+#: unrecorded relative IRI fails, and so does a recorded one that has
+#: quietly disappeared. An empty inventory asserts the stronger
+#: thing -- that the corpus has none at all.
+KNOWN_RELATIVE_IRIS: dict[str, list[str]] = {}
+
+def test_every_hasdatavalue_object_is_a_literal():
+    """`dul:hasDataValue` carries a value, so its object is a literal.
+
+    The FRED export that produced these graphs wrote the number as a
+    relative IRI reference -- `<1>`, `<22>`, `<4200>` -- which parses
+    without complaint and resolves against whatever base the parser
+    was handed. The result looks like a number, compares equal to
+    nothing, and moves with the directory.
+
+    Both directions are asserted. A non-literal object fails, and so
+    does an object whose lexical form is not the value the source
+    sentence supports, because `hasDataValue 1` and
+    `hasDataValue "one"` are both literals and only one of them is
+    this datum."""
+    import rdflib
+    from marep import layout
+
+    HAS_DATA_VALUE = rdflib.URIRef(
+        "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl"
+        "#hasDataValue")
+    repo = layout.repository_root()
+    offenders, seen = {}, 0
+    for path in onto.discover(repo):
+        rel = path.relative_to(repo).as_posix()
+        # Cheap text filter first: parsing the whole corpus to check
+        # one property would make this a slow test for no reach.
+        if "hasDataValue" not in path.read_text(
+                encoding="utf-8", errors="replace"):
+            continue
+        fact = onto.measure_file(path, repo)
+        if not fact.parses:
+            continue
+        for _s, _p, obj in onto.graph_for(repo, fact).triples(
+                (None, HAS_DATA_VALUE, None)):
+            seen += 1
+            if not isinstance(obj, rdflib.Literal):
+                offenders.setdefault(rel, []).append(obj.n3())
+
+    assert seen, (
+        "no dul:hasDataValue triple was examined at all; if the property "
+        "has left the corpus this test is watching nothing")
+    assert not offenders, (
+        "dul:hasDataValue must carry a literal. A bare <N> in Turtle is "
+        "a relative IRI reference, not a number: it parses, resolves "
+        "against the document base, and makes the file mean something "
+        "different depending on where it sits. " + str(offenders))
+
+
+def test_the_remediated_datum_is_the_value_its_sentence_supports():
+    """The literal, not merely a literal.
+
+    The graph records the sentence it was built from. `man_1` is the
+    `one flawed man` of `voting for one flawed man`, and it already
+    carries `hasQuantifier one` alongside. Asserting only that the
+    object is a literal would accept any value at all in a file whose
+    provenance is recorded well enough to be specific."""
+    import rdflib
+    from marep import layout
+
+    repo = layout.repository_root()
+    rel = "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+    graph = onto.parse_source(rdflib.Graph(), repo / rel, repo)
+    subject = rdflib.URIRef(
+        "http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1")
+    value = graph.value(subject, rdflib.URIRef(
+        "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl"
+        "#hasDataValue"))
+    assert isinstance(value, rdflib.Literal)
+    assert value.toPython() == 1
+    assert value.datatype == rdflib.XSD.integer, (
+        "the source token is the cardinal word `one`; sibling graphs in "
+        "MFRC_1k_ESWC.zip write integers bare and decimals with a point "
+        "(12.5, 3.2, 2.0), so the plain integer form is the faithful one")
+
+    sentence = str(graph.value(
+        rdflib.URIRef("https://template/sdg/graph_357"),
+        rdflib.URIRef("https://w3id.org/sdg/meta#graphFor")))
+    assert "one flawed man" in sentence, (
+        "the provenance this substitution rests on is no longer in the "
+        "file; re-establish it before trusting the value")
+
+
+def test_hasdatavalue_is_declared_with_a_real_owl_term():
+    """`owl:DataTypeProperty` is not a spelling of anything.
+
+    The graph declared the predicate with a capital T. That is not a typo
+    a reasoner forgives -- it is a different IRI, absent from the OWL
+    vocabulary, so the declaration asserted membership of a class nothing
+    defines and left the property undeclared.
+
+    Checked against the vocabulary rather than against a majority vote:
+    the misspelling would still be wrong if every file in the corpus had
+    it, and in MFRC_1k_ESWC.zip every affected file does.
+    """
+    import rdflib
+    from marep import layout
+
+    OWL = "http://www.w3.org/2002/07/owl#"
+    correct = rdflib.URIRef(OWL + "DatatypeProperty")
+    misspelt = rdflib.URIRef(OWL + "DataTypeProperty")
+    assert correct == rdflib.OWL.DatatypeProperty, (
+        "rdflib disagrees about which spelling is the OWL term")
+
+    repo = layout.repository_root()
+    offenders, declarations = {}, 0
+    for path in onto.discover(repo):
+        rel = path.relative_to(repo).as_posix()
+        text = path.read_text(encoding="utf-8", errors="replace")
+        # Cheap filter first, so this stays out of the slow set.
+        if "atatypeProperty" not in text and "ataTypeProperty" not in text:
+            continue
+        fact = onto.measure_file(path, repo)
+        if not fact.parses:
+            continue
+        graph = onto.graph_for(repo, fact)
+        for subject in graph.subjects(rdflib.RDF.type, misspelt):
+            offenders.setdefault(rel, []).append(str(subject))
+        declarations += sum(1 for _ in graph.subjects(rdflib.RDF.type,
+                                                      correct))
+
+    assert not offenders, (
+        "owl:DataTypeProperty is not an OWL term, so these declare "
+        "membership of a class nothing defines and leave the property "
+        "undeclared: " + str(offenders))
+    assert declarations, (
+        "no owl:DatatypeProperty declaration was found anywhere, so this "
+        "test would pass equally on a corpus that had lost them all")
+
+
+def test_the_repaired_graph_declares_its_property():
+    """The specific declaration, in the file that lacked one."""
+    import rdflib
+    from marep import layout
+
+    repo = layout.repository_root()
+    rel = "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+    graph = onto.parse_source(rdflib.Graph(), repo / rel, repo)
+    prop = rdflib.URIRef(
+        "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl"
+        "#hasDataValue")
+    types = set(graph.objects(prop, rdflib.RDF.type))
+    assert rdflib.OWL.DatatypeProperty in types, (
+        "the predicate carrying the repaired literal is not declared a "
+        "datatype property: " + str(types))
 
 
 def test_the_document_base_is_absolute_and_versioned():

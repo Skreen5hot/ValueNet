@@ -456,9 +456,102 @@ TRANSITION_POLICY = {
 MATRIX_FORMAT_VERSION = 2
 MATRIX_GENERATOR = "tools/marep/build_transition_matrix.py"
 EVIDENCE_ORCHESTRATOR = "tools/marep/build_evidence.py"
+REMEDIATION_ARTIFACT = "config/remediation-record.json"
+REMEDIATION_GENERATOR = "tools/marep/build_remediation_record.py"
+REMEDIATION_FORMAT_VERSION = 1
 MATRIX_TAG = "reorg-post-move-v1"
 EXPECTED_CELLS = {"A": (False, False), "B": (True, False),
                   "C": (True, True)}
+
+
+def load_remediation(root: Path, matrix_commit: str,
+                     head: str) -> dict | None:
+    """The only way a matrix may describe an earlier corpus.
+
+    The transition matrix compares three checkouts of one commit. Once
+    the corpus is repaired, re-running it would not repeat that
+    experiment, it would replace it with a different one wearing the
+    same name -- so the matrix is frozen and the gap is recorded
+    instead.
+
+    A record asserting the gap would be worth nothing on its own, so
+    the list of changed Turtle files is re-derived here, from git, and
+    compared against what the record claims. A stale record, a
+    hand-edited one, or one describing a different pair of commits is
+    refused. Renames are refused outright: the document base is the
+    repository-relative path, so the same bytes at a new path are
+    different terms.
+    """
+    import hashlib
+
+    path = root / REMEDIATION_ARTIFACT
+    if not path.is_file():
+        return None
+    raw = path.read_bytes()
+    doc = json.loads(raw.decode("utf-8"))
+
+    def bad(why):
+        raise SystemExit(
+            "refusing the remediation record: " + why + ". It is the "
+            "only thing permitting a transition matrix measured at a "
+            "different commit, so it is not accepted on its word. "
+            "Regenerate it with " + REMEDIATION_GENERATOR + ".")
+
+    if doc.get("format_version") != REMEDIATION_FORMAT_VERSION:
+        bad("format version %r" % doc.get("format_version"))
+    if doc.get("generated_by") != REMEDIATION_GENERATOR:
+        bad("produced by %r" % doc.get("generated_by"))
+    if doc.get("working_tree_clean") is not True:
+        bad("it was produced from a tree with uncommitted changes")
+    if doc.get("before_commit") != matrix_commit:
+        bad("it describes a repair from %s, but the matrix was measured "
+            "at %s" % (str(doc.get("before_commit"))[:12],
+                       matrix_commit[:12]))
+    if doc.get("after_commit") != head:
+        bad("it describes a repair landing at %s, not %s"
+            % (str(doc.get("after_commit"))[:12], head[:12]))
+
+    # Asked of git, not read from the record.
+    out = subprocess.run(
+        ["git", "diff", "--name-status", "--find-renames",
+         matrix_commit, head, "--", "*.ttl"],
+        capture_output=True, text=True, cwd=str(root))
+    if out.returncode:
+        bad("git could not compare %s with %s"
+            % (matrix_commit[:12], head[:12]))
+    actual, renamed = [], []
+    for line in out.stdout.splitlines():
+        parts = line.split("	")
+        (renamed if parts[0].startswith("R") else actual).append(parts[-1])
+    if renamed:
+        bad("Turtle files were renamed between the two commits (%s); a "
+            "rename changes the document base and therefore the terms, "
+            "which this record cannot express" % renamed[:2])
+    if sorted(doc.get("corpus_files_changed") or []) != sorted(actual):
+        bad("it lists %s as changed, git says %s"
+            % (sorted(doc.get("corpus_files_changed") or [])[:4],
+               sorted(actual)[:4]))
+
+    subs = doc.get("substitutions") or {}
+    if not subs.get("removed") or not subs.get("added"):
+        bad("it enumerates no triples, so it documents nothing")
+
+    archive = (doc.get("not_remediated") or {}).get("archive") or {}
+    if len(str(archive.get("sha256", ""))) != 64:
+        bad("it records no digest for the archive it declines to repair")
+
+    return {
+        "artifact": REMEDIATION_ARTIFACT,
+        "artifact_sha256": hashlib.sha256(raw).hexdigest(),
+        "before_tag": doc.get("before_tag"),
+        "before_commit": doc["before_commit"],
+        "after_commit": doc["after_commit"],
+        "corpus_files_changed": doc["corpus_files_changed"],
+        "substitutions": subs,
+        "not_remediated": doc["not_remediated"],
+        "verified": "the changed-file list was re-derived from git by "
+                    "this baseline rather than taken from the record",
+    }
 
 
 def load_transition(root: Path, expected_commit: str) -> dict:
@@ -502,9 +595,19 @@ def load_transition(root: Path, expected_commit: str) -> dict:
     if doc.get("working_tree_clean") is not True:
         bad("it was produced from a tree with uncommitted changes, so it "
             "is a diagnostic and not evidence")
+    remediation = None
     if doc.get("input_commit") != expected_commit:
-        bad("it measured %s but this baseline describes %s"
-            % (str(doc.get("input_commit"))[:12], expected_commit[:12]))
+        # Not automatically wrong: a source-data repair moves the corpus
+        # forward while the experiment stays where it was measured. But
+        # it is wrong unless the gap is enumerated and the enumeration
+        # survives being checked against git.
+        remediation = load_remediation(
+            root, str(doc.get("input_commit")), expected_commit)
+        if remediation is None:
+            bad("it measured %s but this baseline describes %s, and no "
+                "%s enumerates the difference"
+                % (str(doc.get("input_commit"))[:12], expected_commit[:12],
+                   REMEDIATION_ARTIFACT))
 
     cells = doc.get("cells") or {}
     if set(cells) != set(EXPECTED_CELLS):
@@ -532,7 +635,7 @@ def load_transition(root: Path, expected_commit: str) -> dict:
         if key not in doc:
             bad("missing %r" % key)
 
-    return dict(TRANSITION_POLICY, measured={
+    measured = {
         "artifact": MATRIX_ARTIFACT,
         "artifact_sha256": hashlib.sha256(raw).hexdigest(),
         "format_version": doc["format_version"],
@@ -549,7 +652,11 @@ def load_transition(root: Path, expected_commit: str) -> dict:
         "invariants": doc["invariants"],
         "invariant_scope": doc["invariant_scope"],
         "relative_iris": doc["relative_iris"],
-    })
+    }
+    if remediation is not None:
+        measured["describes_corpus_at"] = doc["input_commit"]
+        measured["corpus_repaired_since"] = remediation
+    return dict(TRANSITION_POLICY, measured=measured)
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()

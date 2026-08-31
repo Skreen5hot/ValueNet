@@ -257,6 +257,19 @@ components:
       from any checkout. It cites config.transition-matrix rather than
       carrying copies of its numbers.
 
+  - id: config.remediation-record
+    path: config/remediation-record.json
+    moves_to: null
+    role: generated-artifact
+    generator: tool.build-remediation-record
+    description: >-
+      The exact RDF difference between the corpus the matrix measured
+      and the corpus now, plus the standing record of what was
+      deliberately not repaired: MFRC_1k_ESWC.zip, its digest, its
+      affected member and occurrence counts, and how to re-find them.
+      Consumers re-derive the changed-file list from git rather than
+      trusting this file's own account of it.
+
   - id: config.transition-matrix
     path: config/eol-transition-matrix.json
     moves_to: null
@@ -300,6 +313,19 @@ components:
       twice at two absolute paths, which is what shows the old document
       base was path-dependent. Born after the migration, so it has no
       source location and no moves_to.
+
+  - id: tool.build-remediation-record
+    path: tools/marep/build_remediation_record.py
+    moves_to: null
+    role: generator
+    description: >-
+      Records what a source-data repair changed and what it left alone.
+      The transition matrix measured the corpus at eol-hardened-v1 and
+      is frozen: its content is a comparison of three checkouts of one
+      commit, so re-running it against a repaired corpus would replace
+      the experiment rather than repeat it. This artifact is what lets
+      the successor baseline cite that matrix without pretending the
+      two describe the same corpus.
 
   - id: tool.build-evidence
     path: tools/marep/build_evidence.py

@@ -817,3 +817,205 @@ def test_a_committed_repository_carries_its_evidence():
     assert MATRIX_PATH.is_file(), (
         "the baseline cites a transition matrix that is not in the tree."
         + remedy)
+
+
+# ======================================================================
+# the source-data repair, and what it was allowed to move
+# ======================================================================
+
+#: The repair landed after the transition matrix was measured. The matrix
+#: is frozen deliberately -- its content is a comparison of three
+#: checkouts of one commit, so re-running it against a repaired corpus
+#: would replace the experiment rather than repeat it. This record is
+#: what permits the baseline to cite it anyway.
+RECORD_PATH = REPO / "config/remediation-record.json"
+RECORD = (json.loads(RECORD_PATH.read_text(encoding="utf-8"))
+          if RECORD_PATH.is_file() else None)
+
+needs_repair_record = pytest.mark.skipif(
+    RECORD is None or BASELINE is None,
+    reason="the remediation record is generated from the commit that "
+           "carries the repair, so it is absent for exactly that commit")
+
+BEFORE_TAG = "eol-hardened-v1"
+
+
+def _at_tag(rel):
+    """A committed artifact as of the tag, or None if it was not there."""
+    out = subprocess.run(["git", "show", BEFORE_TAG + ":" + rel],
+                         cwd=str(REPO), capture_output=True, text=True)
+    return json.loads(out.stdout) if out.returncode == 0 else None
+
+
+@needs_repair_record
+def test_the_archive_is_recorded_and_its_bytes_are_untouched():
+    """Declining to repair something is a claim that needs a digest.
+
+    The archive holds 180 further instances of the same defect. Leaving
+    it alone is the decision; leaving it undocumented would make that
+    decision indistinguishable from not having noticed.
+
+    This hashes the file. It does not open it -- a test that read the
+    members would make an inert artifact into a corpus, which is the one
+    thing the record says it is not.
+    """
+    import hashlib
+
+    archive = RECORD["not_remediated"]["archive"]
+    path = REPO / archive["path"]
+    assert path.is_file(), archive["path"] + " is gone"
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == archive["sha256"], (
+        "the archive's bytes have changed; it is recorded as preserved "
+        "upstream debt and nothing in this repository should rewrite it")
+    assert archive["excluded_from_live_corpus"] is True
+    assert archive["members_affected"] > 0 and archive["occurrences"] > 0
+    assert archive["detection"].strip(), (
+        "a record of a defect nobody can re-find is a rumour")
+    assert "upstream" in archive["disposition"]
+
+
+@needs_repair_record
+def test_the_archive_really_is_outside_the_corpus():
+    """Asserted against the discovery function, not against the record.
+
+    The record says the archive is excluded. That is the kind of claim
+    that stays in a file long after it stops being true.
+    """
+    from marep import ontology_source as onto
+
+    discovered = {p.relative_to(REPO).as_posix() for p in onto.discover(REPO)}
+    assert RECORD["not_remediated"]["archive"]["path"] not in discovered
+    assert not any(d.endswith(".zip") for d in discovered)
+    assert "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl" in discovered, (
+        "the one member that IS measured has left the corpus")
+
+
+@needs_repair_record
+def test_the_recorded_substitutions_are_the_ones_git_shows():
+    """Recomputed here rather than read.
+
+    The record is the only thing allowing a matrix from an earlier commit
+    to be cited. If its enumeration were taken on trust, the exemption
+    would be a way of saying 'the corpus changed somehow' with a
+    straight face.
+    """
+    import rdflib
+
+    from marep import ontology_source as onto
+
+    before = RECORD["before_commit"]
+    changed = subprocess.run(
+        ["git", "diff", "--name-only", "--find-renames", before, "HEAD",
+         "--", "*.ttl"],
+        cwd=str(REPO), capture_output=True, text=True).stdout.split()
+    assert sorted(changed) == sorted(RECORD["corpus_files_changed"])
+
+    removed, added = set(), set()
+    for rel in changed:
+        base = onto.public_id(rel)
+        old_text = subprocess.run(["git", "show", before + ":" + rel],
+                                  cwd=str(REPO), capture_output=True,
+                                  text=True).stdout
+        was = rdflib.Graph()
+        was.parse(data=old_text, format="turtle", publicID=base)
+        now = onto.parse_source(rdflib.Graph(), REPO / rel, REPO)
+        fmt = lambda t: " ".join(x.n3() for x in t)  # noqa: E731
+        removed |= {(rel, fmt(t)) for t in set(was) - set(now)}
+        added |= {(rel, fmt(t)) for t in set(now) - set(was)}
+
+    assert {(e["file"], e["triple"])
+            for e in RECORD["substitutions"]["removed"]} == removed
+    assert {(e["file"], e["triple"])
+            for e in RECORD["substitutions"]["added"]} == added
+    assert len(removed) == len(added) == RECORD["substitutions"]["count"] == 2, (
+        "this repair was two substitutions; a third would need its own "
+        "justification rather than arriving inside this one")
+
+
+@needs_repair_record
+def test_the_transition_matrix_was_left_frozen():
+    """The experiment is not re-run to make it describe a later corpus.
+
+    Its content is a comparison of three checkouts of one commit. Running
+    it again against the repaired corpus would produce a file with the
+    same name that had measured something else.
+    """
+    assert MATRIX == _at_tag("config/eol-transition-matrix.json"), (
+        "the transition matrix differs from " + BEFORE_TAG)
+    assert MATRIX["input_commit"] == RECORD["before_commit"]
+    assert MATRIX["path_dependence"]["differ"] is True, (
+        "the matrix's original assertion must survive this unchanged")
+
+
+@needs_repair_record
+def test_the_baseline_says_which_corpus_the_matrix_described():
+    """A citation across a known gap has to name the gap."""
+    m = BASELINE["transition"]["measured"]
+    assert m["describes_corpus_at"] == RECORD["before_commit"], (
+        "the baseline cites a matrix from an earlier corpus without "
+        "saying so")
+    repaired = m["corpus_repaired_since"]
+    assert repaired["before_tag"] == BEFORE_TAG
+    assert repaired["after_commit"] == BASELINE["input_commit"]
+    assert repaired["corpus_files_changed"] == RECORD["corpus_files_changed"]
+    assert "re-derived" in repaired["verified"]
+
+
+@needs_repair_record
+def test_only_the_measures_the_repair_touches_have_moved():
+    """Two triples changed. Everything that does not depend on them
+    should be identical to the tagged state, and a repair that moved a
+    reasoner verdict would be a different event needing a different
+    justification."""
+    old = _at_tag("config/semantic-baseline.json")
+    assert old, "no baseline at " + BEFORE_TAG
+
+    # Cardinality is unchanged: both substitutions replace a triple.
+    for key in ("files_discovered", "files_parsing", "distinct_triples",
+                "named_classes", "class_declarations_summed",
+                "trigger_statements", "distinct_trigger_objects"):
+        assert BASELINE["corpus"][key]["value"] == old["corpus"][key]["value"], (
+            key + " moved; this repair substitutes triples and adds none")
+
+    assert BASELINE["reasoner"] == old["reasoner"], (
+        "a reasoner measure moved on a two-triple substitution in a FRED "
+        "graph outside the BFO layer")
+
+    assert BASELINE["artifacts"] == old["artifacts"], (
+        "an unrelated artifact digest moved")
+
+    # The ground digest must move: it covers every triple with no blank
+    # node, which is exactly what the substitution changed.
+    assert (BASELINE["corpus"]["merged_ground_sha256"]["value"]
+            != old["corpus"]["merged_ground_sha256"]["value"]), (
+        "the ground digest is unchanged, so either the repair did not "
+        "land or the fingerprint cannot see a changed literal")
+
+    # The blank-node fingerprint must NOT move, and that is a claim about
+    # how far the repair reached rather than a formality: this graph holds
+    # no blank node at all, so neither substituted triple can belong to a
+    # component. Movement here would mean the repair touched something
+    # nobody described.
+    assert (BASELINE["corpus"]["merged_bnode_shape"]["value"]
+            == old["corpus"]["merged_bnode_shape"]["value"]), (
+        "the blank-node fingerprint moved on a substitution whose four "
+        "sides are all IRIs and literals")
+
+
+@needs_repair_record
+def test_the_repaired_file_holds_no_blank_node():
+    """Which is what makes the assertion above mean anything.
+
+    If this graph grew a blank node later, the unchanged-fingerprint
+    check would still pass while having quietly stopped saying anything.
+    """
+    import rdflib
+
+    from marep import ontology_source as onto
+
+    rel = "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+    graph = onto.parse_source(rdflib.Graph(), REPO / rel, REPO)
+    blank = [t for t in graph if any(isinstance(x, rdflib.BNode) for x in t)]
+    assert not blank, (
+        "this graph now has blank nodes, so the unchanged blank-node "
+        "fingerprint no longer follows from its contents")

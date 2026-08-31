@@ -267,8 +267,18 @@ def main(argv=None) -> int:
         shutil.rmtree(stage, ignore_errors=True)
         git("worktree", "prune", check=False)
 
-    counts = ["files_discovered", "files_parsing", "distinct_triples",
-              "named_classes", "trigger_statements", "distinct_trigger_objects"]
+    # Derived, not listed. The hand-written version omitted
+    # class_declarations_summed -- present, equal in all three cells, and
+    # silently outside an invariant called "corpus counts identical". A
+    # list of field names does not grow when the measurement does, so the
+    # invariant's name and its scope drift apart with nothing to say so.
+    #
+    # Every integer-valued corpus measure is a count; merged_ground_sha256
+    # is a string and merged_bnode_shape a mapping, and both legitimately
+    # differ between cells. The compared set is recorded beside the
+    # verdict so its scope is readable rather than implied.
+    counts = sorted(k for k, v in cells["A"]["corpus"].items()
+                    if isinstance(v, int) and not isinstance(v, bool))
     doc = {
         "format_version": FORMAT_VERSION,
         "generated_by": GENERATOR,
@@ -295,6 +305,16 @@ def main(argv=None) -> int:
             "C_has_no_crlf": cells["C"]["eol"]["distribution"].get("crlf", 0) == 0
                 and cells["C"]["eol"]["distribution"].get("mixed", 0) == 0,
         },
+        # The scope of the invariant above, beside it rather than inside
+        # it: `invariants` is booleans, and every one of them is asserted
+        # to be true.
+        "invariant_scope": {
+            "corpus_counts_compared": counts,
+            "definition": "every integer-valued corpus measure. "
+                          "merged_ground_sha256 and merged_bnode_shape are "
+                          "excluded because both legitimately differ between "
+                          "cells -- that difference is the measurement.",
+        },
         "line_ending_transition": enumerate_literal_transition(),
         "relative_iris": relative_iri_inventory(),
     }
@@ -303,6 +323,9 @@ def main(argv=None) -> int:
     print()
     for k, v in doc["invariants"].items():
         print("  %-42s %s" % (k, v))
+    print("  %-42s %d field(s)"
+          % ("counts compared",
+             len(doc["invariant_scope"]["corpus_counts_compared"])))
     print("  %-42s %s" % ("path dependence in A", doc["path_dependence"]["differ"]))
     print("  %-42s %d triple(s) in %d file(s)"
           % ("literal transition", doc["line_ending_transition"]["total"],

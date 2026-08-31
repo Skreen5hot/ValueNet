@@ -146,7 +146,7 @@ def test_the_baseline_was_written_by_this_version_of_the_tool():
 
 @needs_evidence
 def test_the_baseline_says_how_to_reproduce_itself():
-    assert BASELINE.get("reproduce", "").strip()
+    assert BASELINE["reproduce"]["command"].strip()
     assert BASELINE.get("input_commit"), (
         "the field was renamed from captured_at_commit: a baseline names "
         "the commit it was measured FROM, which is not the commit it "
@@ -412,6 +412,11 @@ def test_every_declared_invariant_actually_holds():
     including false. Nothing so far requires the answers to be true."""
     stated = MATRIX["invariants"]
     assert stated, "no invariants were declared"
+    nonbool = sorted(k for k, v in stated.items()
+                     if not isinstance(v, bool))
+    assert not nonbool, (
+        "an invariant has to be a boolean to be true or false; %s "
+        "would pass a truthiness check on any non-empty value" % nonbool)
     failed = sorted(k for k, v in stated.items() if v is not True)
     assert not failed, "the experiment reports these as false: %s" % failed
 
@@ -520,6 +525,27 @@ def test_the_recorded_invariants_match_the_artifact():
     assert m["path_dependence"] == MATRIX["path_dependence"]
 
 
+
+
+@needs_evidence
+def test_the_count_invariant_covers_every_count_there_is():
+    """The invariant is named for counts, so it has to mean all
+    of them.
+
+    The compared set was hand-written and omitted
+    class_declarations_summed: present, equal in all three cells, and
+    outside an invariant called `corpus_counts_identical_across_cells`.
+    A hand-written list does not grow when the measurement does, and
+    nothing said the two had drifted apart."""
+    scope = MATRIX["invariant_scope"]["corpus_counts_compared"]
+    for name, cell in MATRIX["cells"].items():
+        counts = sorted(k for k, v in cell["corpus"].items()
+                        if isinstance(v, int) and not isinstance(v, bool))
+        assert counts == sorted(scope), (
+            "cell " + name + " records counts the invariant does not "
+            "compare: " + str(sorted(set(counts) - set(scope))))
+    assert BASELINE["transition"]["measured"]["invariant_scope"] == \
+        MATRIX["invariant_scope"]
 @needs_evidence
 def test_the_successor_records_the_known_relative_iri():
     """The stable base makes the measurement reproducible. It does not
@@ -530,6 +556,55 @@ def test_the_successor_records_the_known_relative_iri():
     assert ex["status"].startswith("unremediated")
     assert list(MATRIX["relative_iris"]) == [ex["file"]], (
         "the corpus holds a relative IRI the record does not mention")
+
+
+@needs_evidence
+def test_the_published_reproduction_command_is_one_that_works():
+    """A command that exits 1 is worse than no command at all.
+
+    The baseline cites the transition matrix and refuses one measured
+    at any commit but its own. So running this builder by itself
+    succeeds at exactly one commit -- the one the matrix already names
+    -- and exits 1 everywhere else, including at the tag, where the
+    matrix names the parent commit because the evidence is always
+    committed after the input it describes. The refusal is correct;
+    the instruction that ignored it was not.
+
+    So the recorded command must be the orchestrator, and must say
+    which checkout to run it from."""
+    rep = BASELINE["reproduce"]
+    orchestrator = layout.component("tool.build-evidence")
+    assert rep["command"].split()[-1] == layout.relative(
+        orchestrator.resolve()), (
+        "the recorded command does not name the component the contract "
+        "declares as the evidence orchestrator")
+    assert orchestrator.resolve().is_file()
+    assert "build_semantic_baseline" not in rep["command"], (
+        "this builder refuses on its own at any commit but the one the "
+        "matrix names; publishing it as the reproduction step publishes "
+        "a command that exits 1")
+    assert "input_commit" in rep["from"], (
+        "the command works only from the commit the artifacts describe, "
+        "and the instruction has to say so")
+
+
+def test_the_loader_refuses_a_matrix_from_another_commit():
+    """Which is why the instruction has to name the orchestrator.
+
+    Exercised rather than described, and in both directions: a blanket
+    refusal would satisfy the first half of this while making the
+    artifact unusable, and would look identical in a passing suite."""
+    real = BASELINE["input_commit"]
+    wrong = "0" * 40
+    with pytest.raises(SystemExit) as exc:
+        TOOL.load_transition(REPO, wrong)
+    message = str(exc.value)
+    assert real[:12] in message and wrong[:12] in message, (
+        "the refusal should name both commits; a reader who cannot see "
+        "which two disagree cannot act on it")
+
+    accepted = TOOL.load_transition(REPO, real)
+    assert accepted["measured"]["input_commit"] == real
 
 
 @needs_evidence

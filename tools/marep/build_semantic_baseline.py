@@ -455,6 +455,7 @@ TRANSITION_POLICY = {
 
 MATRIX_FORMAT_VERSION = 2
 MATRIX_GENERATOR = "tools/marep/build_transition_matrix.py"
+EVIDENCE_ORCHESTRATOR = "tools/marep/build_evidence.py"
 MATRIX_TAG = "reorg-post-move-v1"
 EXPECTED_CELLS = {"A": (False, False), "B": (True, False),
                   "C": (True, True)}
@@ -513,8 +514,15 @@ def load_transition(root: Path, expected_commit: str) -> dict:
                 c not in "0123456789abcdef" for c in digest):
             bad("cell %s has no usable ground digest" % name)
 
+    nonbool = sorted(k for k, v in (doc.get("invariants") or {}).items()
+                     if not isinstance(v, bool))
+    if nonbool:
+        bad("invariants must be booleans; %s are not, and a consumer that "
+            "checks them for truth would pass on any non-empty value"
+            % nonbool)
+
     for key in ("path_dependence", "line_ending_transition", "invariants",
-                "relative_iris"):
+                "invariant_scope", "relative_iris"):
         if key not in doc:
             bad("missing %r" % key)
 
@@ -533,6 +541,7 @@ def load_transition(root: Path, expected_commit: str) -> dict:
         "path_dependence": doc["path_dependence"],
         "line_ending_transition": doc["line_ending_transition"],
         "invariants": doc["invariants"],
+        "invariant_scope": doc["invariant_scope"],
         "relative_iris": doc["relative_iris"],
     })
 
@@ -580,7 +589,23 @@ def main(argv=None) -> int:
         # The commit measured, not the commit this file will land in.
         "input_commit": head,
         "input_tree_state": tree_state,
-        "reproduce": "python tools/marep/build_semantic_baseline.py",
+        # Naming this builder alone was false. It cites the matrix and
+        # refuses one measured at any commit but its own, so run on its
+        # own at a later commit it exits 1 -- which is the refusal working
+        # and the instruction wrong. The two artifacts are produced
+        # together or not at all.
+        "reproduce": {
+            "command": "python " + EVIDENCE_ORCHESTRATOR,
+            "from": "a clean checkout of input_commit",
+            "why": "this baseline cites " + MATRIX_ARTIFACT + " and refuses "
+                   "a matrix measured at any other commit, so the two are "
+                   "generated together. The commit they are committed in is "
+                   "necessarily later than the one they describe.",
+            "expect": "the same values in every field except input_commit, "
+                      "the matrix digest cited here, and cell A -- which is "
+                      "the unhardened parser and is path-dependent by "
+                      "definition.",
+        },
         "policy": {
             "document_base": onto.SOURCE_BASE,
             "line_endings": "lf",

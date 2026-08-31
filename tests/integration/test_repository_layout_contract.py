@@ -204,20 +204,62 @@ def covered_by(a: dict, occ: Occurrence, text: str) -> bool:
 # ======================================================================
 
 
+#: Roles whose components are legitimately missing from a fresh
+#: checkout. Both exemptions are policed below, so neither becomes a
+#: place a broken path can sit unnoticed.
+ABSENT_FROM_A_CHECKOUT = {"generated-artifact", "generated-run-state"}
+
+
 def test_every_component_resolves():
     """Every component except the evidence, which is generated later.
 
-    The successor baseline and the transition matrix are produced *from*
-    the commit that carries the measurement code, so at that commit they
-    do not exist. That window is one commit wide and deliberate; it is
-    closed by `test_semantic_baseline.py::test_a_committed_repository_
-    carries_its_evidence`, not here.
+    Two roles are exempt, for different reasons. The successor baseline
+    and the transition matrix are produced *from* the commit that carries
+    the measurement code, so at that commit they do not exist; that window
+    is one commit wide and is closed by
+    `test_semantic_baseline.py::test_a_committed_repository_carries_its_
+    evidence`. Run state is gitignored and never exists in a checkout at
+    all -- this test passed for as long as it did only because the
+    machine it ran on happened to have some.
     """
     for c in COMPONENTS:
-        if c.get("role") == "generated-artifact":
+        if c.get("role") in ABSENT_FROM_A_CHECKOUT:
             continue
         layout.component(c["id"]).resolve()
 
+
+def test_run_state_is_exempt_only_because_git_ignores_it():
+    """The exemption has to be earned by the .gitignore, not by the role.
+
+    A component marked `generated-run-state` that git actually tracks
+    would be skipped by the resolution test above while being an
+    ordinary file that could go missing without anything noticing.
+
+    Probed with a file inside each location rather than the directory
+    itself: `git check-ignore` cannot apply a trailing-slash pattern to
+    a directory that does not exist yet, so asking about the bare path
+    reports the post-move location as unignored and would make this
+    test a description of which directories happen to exist.
+    """
+    local = [c for c in COMPONENTS
+             if c.get("role") == "generated-run-state"]
+    assert local, "the exemption is declared but nothing claims it"
+    for c in local:
+        for path in (c["path"], c.get("moves_to")):
+            if not path:
+                continue
+            probe = path.rstrip("/") + "/RUN1_STATE.yaml"
+            assert ignored(probe), (
+                c["id"] + " is exempt from resolution as run state, but "
+                "git does not ignore " + probe + ", so a checkout is "
+                "entitled to contain it and its absence would mean "
+                "something")
+        tracked = subprocess.run(
+            ["git", "ls-files", "--", c["path"]],
+            capture_output=True, text=True, cwd=str(REPO)).stdout.strip()
+        assert not tracked, (
+            c["id"] + " is declared never-committed but git tracks "
+            + tracked.splitlines()[0])
 
 def test_a_generated_artifact_is_either_present_or_has_a_live_generator():
     """The exception above must not become a place things hide.

@@ -1,16 +1,40 @@
-# Turtle is compared byte-for-byte by the semantic baseline, so its line
-# endings are part of the artifact. LF everywhere, on every platform.
+# Line endings are content here, so git is told rather than asked.
 #
-# Without this, core.autocrlf decided the bytes: a Windows checkout produced
-# CRLF, a Linux one LF, and the two disagreed about the contents of every
-# multi-line literal, because a CRLF inside one is part of that literal's
-# value. Measured over the whole corpus, that is 77 literal-object triples
-# in 8 files (config/eol-transition-matrix.json, line_ending_transition).
+# Without a rule, core.autocrlf decides, and it is a per-machine setting:
+# a Windows checkout produced CRLF, a Linux one LF, and the two disagreed
+# about the contents of every multi-line Turtle literal, because a CRLF
+# inside one is part of that literal's value. Measured over the whole
+# corpus that is 77 literal-object triples in 8 files -- see
+# config/eol-transition-matrix.json, line_ending_transition.
 #
-# 11 of those 77 are sh:select -- SPARQL text a validator executes, not
+# 11 of those 77 are sh:select: SPARQL text a validator executes, not
 # prose somebody reads. The rest are bibRef, rdfs:comment, skos notes and
-# owl:versionInfo. So this is not only a cosmetic difference in annotations.
+# owl:versionInfo. So this is not a cosmetic difference in annotations.
+#
+# The rule is repository-wide and not limited to *.ttl, because the
+# evidence has the same problem as the corpus. config/semantic-baseline.json
+# records the sha256 of the matrix artifact beside it; with only *.ttl
+# pinned, a fresh checkout re-encoded that JSON to CRLF and the recorded
+# digest could not match the bytes on disk anywhere except the machine
+# that wrote it. A byte digest over a file git is free to re-encode is
+# not a byte digest. This was found by checking out the commit that
+# introduced the fix and running the suite against it.
+#
+# The index is already LF throughout (327 text blobs at the time of
+# writing), so this pins existing behaviour rather than changing it.
 #
 # The byte digests recorded before this rule describe the machine that
 # measured them.
+
+* text=auto eol=lf
+
+# Redundant under the rule above, and kept anyway: the corpus is the
+# reason the rule exists, and a future narrowing of `*` should not
+# silently take the corpus with it.
 *.ttl text eol=lf
+
+# Detected as binary by content today; declared so the detection is not
+# what stands between an archive and a corrupting newline translation.
+*.zip -text
+*.png -text
+.DS_Store -text

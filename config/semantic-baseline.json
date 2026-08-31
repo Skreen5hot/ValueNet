@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "a38d86809541d7b13d3963c81646c1171981d2ff",
+  "input_commit": "e5c8edccf5254440bf8bdb7d90ffc8e4593ca8d4",
   "input_tree_state": "clean apart from the matrix artifact",
   "reproduce": "python tools/marep/build_semantic_baseline.py",
   "policy": {
@@ -34,16 +34,16 @@
     },
     "measured": {
       "artifact": "config/eol-transition-matrix.json",
-      "artifact_sha256": "ceac586378e8d77dc12dc071c6878b80b999ec628c9329896cce36282b404dcd",
+      "artifact_sha256": "c2ac09bc5472ec9c3f11753ea83eb3f85dec7a3a0d2e2606b68913470cc7df75",
       "format_version": 2,
-      "input_commit": "a38d86809541d7b13d3963c81646c1171981d2ff",
+      "input_commit": "e5c8edccf5254440bf8bdb7d90ffc8e4593ca8d4",
       "working_tree_clean": true,
       "cells": {
         "A": {
           "label": "CRLF checkout, filesystem document base",
           "hardened": false,
           "lf": false,
-          "ground": "78cc6168f22cddfd674892a1066ea37126c308abad32564259ed3c5fa3583d30",
+          "ground": "6169cb18e29c59d6deabf51c4e9612b147a3e710554e5bd49faf07b55b2764e7",
           "eol_distribution": {
             "crlf": 168
           },
@@ -71,8 +71,8 @@
         }
       },
       "path_dependence": {
-        "A_first": "78cc6168f22cddfd674892a1066ea37126c308abad32564259ed3c5fa3583d30",
-        "A_second": "6a2be83ed465248cadfa974eb9870d2398059bc10c5a179cdb1ff1ddb1438552",
+        "A_first": "6169cb18e29c59d6deabf51c4e9612b147a3e710554e5bd49faf07b55b2764e7",
+        "A_second": "85b18fe869cf5f8404526015b84d97f8e1a508966c3aeae03ec781fb9d4aec18",
         "definition": "cell A measured twice at two different absolute paths; a difference is the defect the stable base removes",
         "differ": true
       },
@@ -223,11 +223,11 @@
     }
   },
   "tests": {
-    "collected": 692,
-    "default_selected": 677,
+    "collected": 693,
+    "default_selected": 678,
     "default_deselected": 15,
-    "canonical_id_sha256": "1d927a69ebaa63fe02d3809449e8ea2e425ed6028b6d62fa6b5a7694f31825a9",
-    "default_selected_sha256": "ac0726ef76e454968477a3d980c42eb3ece6e6a94ea97dd6a828beb032afbd5a",
+    "canonical_id_sha256": "4365c10700b5949a274548a7a05ef70f822944ce4cdfc6e00e6be5294e4097f6",
+    "default_selected_sha256": "8fc33ffc7732eb18e0717f0bbae4597d52608ca99737ce975ed9761a56e17e97",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

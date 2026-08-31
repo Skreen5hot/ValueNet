@@ -52,9 +52,31 @@ VALIDATOR = _validator()
 #: regenerated baseline would move the goalposts: every comparison below would
 #: be against numbers computed from the same tree it is checking, which can
 #: only ever agree.
-BASELINE_TEXT, BASELINE_SOURCE = VALIDATOR.frozen_text(
+#: Historical evidence: what was measured at the freeze, under conditions
+#: that no longer obtain. Read from the tag, never from the working copy.
+FROZEN_TEXT, FROZEN_SOURCE = VALIDATOR.frozen_text(
     "config/reorganization-baseline.json")
-BASELINE = json.loads(BASELINE_TEXT)
+FROZEN = json.loads(FROZEN_TEXT)
+
+#: The live description of HEAD. Everything the working tree is required to
+#: reproduce is checked against this one.
+#: The successor baseline and the matrix it cites are generated from a clean
+#: commit, so between committing the measurement code and committing the
+#: evidence they do not exist. That window is the only reason either may be
+#: absent, and `test_a_committed_repository_carries_its_evidence` closes it.
+BASELINE_PATH = REPO / "config/semantic-baseline.json"
+MATRIX_PATH = REPO / "config/eol-transition-matrix.json"
+BASELINE_SOURCE = "config/semantic-baseline.json"
+
+BASELINE = (json.loads(BASELINE_PATH.read_text(encoding="utf-8"))
+            if BASELINE_PATH.is_file() else None)
+MATRIX = (json.loads(MATRIX_PATH.read_text(encoding="utf-8"))
+          if MATRIX_PATH.is_file() else None)
+
+needs_evidence = pytest.mark.skipif(
+    BASELINE is None or MATRIX is None,
+    reason="successor baseline or transition matrix not generated yet; they "
+           "are produced from the commit that carries the measurement code")
 
 #: Where each recorded artifact lives, by component rather than by the path
 #: the baseline recorded. The CCO extract moves to ontology/bfo/vendor/cco/ in
@@ -108,6 +130,7 @@ TOOL = _tool()
 # ======================================================================
 
 
+@needs_evidence
 def test_the_baseline_was_written_by_this_version_of_the_tool():
     """A baseline computed a different way is not comparable to this one.
 
@@ -121,12 +144,14 @@ def test_the_baseline_was_written_by_this_version_of_the_tool():
         f"version {TOOL.TOOL_VERSION}; regenerate before comparing")
 
 
+@needs_evidence
 def test_the_baseline_says_how_to_reproduce_itself():
     assert BASELINE.get("reproduce", "").strip()
     assert BASELINE.get("captured_at_commit")
 
 
 @pytest.mark.parametrize("section", ["corpus", "reasoner", "artifacts", "tests"])
+@needs_evidence
 def test_every_section_is_present_and_populated(section):
     assert BASELINE.get(section), f"{section} is missing or empty"
 
@@ -135,10 +160,12 @@ def test_every_section_is_present_and_populated(section):
     "files_discovered", "files_parsing", "distinct_triples", "named_classes",
     "trigger_statements", "distinct_trigger_objects", "merged_ground_sha256",
 ])
+@needs_evidence
 def test_corpus_measures_are_recorded(key):
     assert key in BASELINE["corpus"], key
 
 
+@needs_evidence
 def test_no_digest_is_empty_or_a_placeholder():
     """An empty digest compares equal to another empty digest."""
     seen, bad = [], []
@@ -174,6 +201,7 @@ def test_no_digest_is_empty_or_a_placeholder():
 # ======================================================================
 
 
+@needs_evidence
 def test_the_recorded_test_identities_still_reconcile():
     """collected, selected and deselected have to add up.
 
@@ -185,6 +213,7 @@ def test_the_recorded_test_identities_still_reconcile():
     assert t["collected"] == t["default_selected"] + t["default_deselected"], t
 
 
+@needs_evidence
 def test_canonical_identities_have_no_collisions():
     """Two tests reducing to one identity make the digest ambiguous.
 
@@ -196,6 +225,7 @@ def test_canonical_identities_have_no_collisions():
         BASELINE["tests"]["canonical_id_collisions"])
 
 
+@needs_evidence
 def test_the_deselected_tests_are_named_not_just_counted():
     """A count says how many left the default run; the names say which."""
     t = BASELINE["tests"]
@@ -223,6 +253,7 @@ def test_renaming_a_test_does_change_its_identity():
 
 
 @pytest.mark.slow
+@needs_evidence
 def test_the_test_baseline_still_reproduces():
     """Re-collect and compare. Slow: two full collection passes."""
     current = TOOL.test_baseline(REPO)
@@ -239,12 +270,14 @@ def test_the_test_baseline_still_reproduces():
 # ======================================================================
 
 
+@needs_evidence
 def test_every_recorded_artifact_resolves():
     """Through the contract, so the check survives the wave that moves it."""
     for name in BASELINE["artifacts"]:
         assert artifact_path(name).is_file(), name
 
 
+@needs_evidence
 def test_bytes_are_compared_only_where_the_baseline_says_they_are_invariant():
     """A byte digest and a canonical digest answer different questions.
 
@@ -264,6 +297,7 @@ def test_bytes_are_compared_only_where_the_baseline_says_they_are_invariant():
     assert not problems, problems
 
 
+@needs_evidence
 def test_something_is_expected_to_change_its_bytes():
     """Guards the reading where every artifact is byte-invariant and the
     test above is vacuous."""
@@ -273,6 +307,7 @@ def test_something_is_expected_to_change_its_bytes():
 
 
 @pytest.mark.slow
+@needs_evidence
 def test_the_canonical_digest_holds_for_every_artifact():
     """The invariant that has to survive the whole migration.
 
@@ -289,14 +324,212 @@ def test_the_canonical_digest_holds_for_every_artifact():
     assert not problems, problems
 
 
+@needs_evidence
 def test_the_baseline_being_checked_is_the_frozen_one():
-    """Once the tag exists, nothing here reads the working copy."""
+    """The two baselines are read from the two places they belong.
+
+    The name is kept because it is a collected node id. What it asserts has
+    changed: the frozen baseline comes from the tag and is never read from
+    the working copy, while the successor is read from the working tree
+    because describing the working tree is its whole purpose.
+    """
     if VALIDATOR.frozen_exists():
-        assert BASELINE_SOURCE.endswith("@" + VALIDATOR.FREEZE_TAG), BASELINE_SOURCE
+        assert FROZEN_SOURCE.endswith("@" + VALIDATOR.FREEZE_TAG), FROZEN_SOURCE
     else:
-        assert "working copy" in BASELINE_SOURCE, BASELINE_SOURCE
+        assert "working copy" in FROZEN_SOURCE, FROZEN_SOURCE
+    assert BASELINE_SOURCE == "config/semantic-baseline.json"
+    assert BASELINE is not FROZEN
 
 
+@needs_evidence
+def test_the_frozen_baseline_records_what_it_cannot_show():
+    """Historical evidence has to carry its own limits.
+
+    Its corpus digest was computed with the document base taken from the
+    filesystem, so it holds only for the original checkout path -- two
+    byte-identical clones elsewhere produce different values. Left
+    unqualified, a future reader would take a mismatch for corpus drift.
+    The successor records that, and this checks the record exists.
+    """
+    t = BASELINE["transition"]
+    assert t["supersedes"]["baseline"] == "config/reorganization-baseline.json"
+    assert t["supersedes"]["tag"] == VALIDATOR.FREEZE_TAG
+    assert t["supersedes"]["tool_version"] < BASELINE["tool_version"]
+    why = t["document_base"]["why"]
+    assert "checkout" in why and "reproducible only at the original path" in why
+
+
+@needs_evidence
+def test_the_matrix_measured_a_commit_and_not_a_desk():
+    """Conclusion 1: the experiment ran on published input.
+
+    A matrix produced from a dirty tree names a commit that does not
+    contain what it measured, and reads identically to one that does."""
+    assert MATRIX["working_tree_clean"] is True
+    assert MATRIX["measured_from_tag"] == "reorg-post-move-v1"
+    assert BASELINE["input_tree_state"] in (
+        "clean", "clean apart from the matrix artifact")
+
+
+@needs_evidence
+def test_both_artifacts_describe_one_commit():
+    """Conclusion 2: the baseline and the matrix are one run.
+
+    Two artifacts each internally consistent but generated from different
+    commits would still satisfy every field-shape check in this file."""
+    m = BASELINE["transition"]["measured"]
+    assert BASELINE["input_commit"] == MATRIX["input_commit"], (
+        "the baseline cites measurements taken from another commit")
+    assert m["input_commit"] == MATRIX["input_commit"]
+    assert m["working_tree_clean"] is True
+
+
+@needs_evidence
+def test_the_old_document_base_was_path_dependent():
+    """Conclusion 3: the defect being fixed was real, and is shown.
+
+    Cell A is one commit measured twice at two absolute paths. If those
+    agreed there would be nothing here to fix, and the successor
+    baseline's central claim would be unsupported."""
+    pd = MATRIX["path_dependence"]
+    assert pd["differ"] is True, (
+        "the unhardened parser produced the same digest at two paths; "
+        "either the harness reused a checkout, or the defect is not the "
+        "one this baseline says it repairs")
+    assert pd["A_first"] != pd["A_second"]
+    assert len(pd["A_first"]) == len(pd["A_second"]) == 64
+
+
+@needs_evidence
+def test_every_declared_invariant_actually_holds():
+    """Conclusion 4: recording an invariant is not asserting it.
+
+    The matrix computes each invariant and writes down the answer,
+    including false. Nothing so far requires the answers to be true."""
+    stated = MATRIX["invariants"]
+    assert stated, "no invariants were declared"
+    failed = sorted(k for k, v in stated.items() if v is not True)
+    assert not failed, "the experiment reports these as false: %s" % failed
+
+
+@needs_evidence
+def test_the_cells_are_the_conditions_they_claim_to_be():
+    """Conclusion 5: each cell's axes are the ones it is cited for.
+
+    The matrix is an argument from the difference between three
+    conditions. A mislabelled axis makes every comparison meaningless
+    while leaving all the digests well-formed."""
+    axes = {"A": (False, False), "B": (True, False), "C": (True, True)}
+    cells = BASELINE["transition"]["measured"]["cells"]
+    assert set(cells) == set(MATRIX["cells"]) == set(axes)
+    for name, (hardened, lf) in axes.items():
+        src = MATRIX["cells"][name]
+        assert (src["hardened"], src["lf"]) == (hardened, lf), name
+        rec = cells[name]
+        assert (rec["hardened"], rec["lf"]) == (hardened, lf), name
+        assert rec["ground"] == src["corpus"]["merged_ground_sha256"]
+        assert rec["label"] == src["label"]
+        assert rec["eol_distribution"] == src["eol"]["distribution"]
+        assert rec["eol_aggregate_sha256"] == src["eol"]["aggregate_sha256"]
+
+
+@needs_evidence
+def test_hardening_the_parser_changed_no_bytes_on_disk():
+    """Conclusion 6: A and B differ in code and in nothing else.
+
+    Asserted from the per-file line-ending map rather than from the
+    harness's own boolean, so a harness that computed the invariant
+    wrongly does not also get to certify it."""
+    a = MATRIX["cells"]["A"]["eol"]
+    b = MATRIX["cells"]["B"]["eol"]
+    assert a["aggregate_sha256"] == b["aggregate_sha256"]
+    assert a["distribution"] == b["distribution"]
+    assert a["per_file"] == b["per_file"], (
+        "A and B were supposed to be byte-identical checkouts; a file "
+        "listed differently means they differ in more than the parser, "
+        "and the digest comparison between them measures two changes")
+
+
+@needs_evidence
+def test_the_lf_cell_is_actually_lf():
+    """Conclusion 7: cell C is the policy, not a tree that resembles it.
+
+    C is the condition the successor baseline describes. If normalization
+    missed files, C is some third state, and the baseline documents a
+    condition the repository is never in."""
+    dist = MATRIX["cells"]["C"]["eol"]["distribution"]
+    assert dist.get("crlf", 0) == 0 and dist.get("mixed", 0) == 0, (
+        "cell C still holds CRLF in %s files and mixed endings in %s"
+        % (dist.get("crlf", 0), dist.get("mixed", 0)))
+    assert dist.get("lf", 0) > 0, "cell C holds no LF-terminated Turtle"
+
+
+@needs_evidence
+def test_the_baseline_measures_the_condition_cell_c_describes():
+    """Conclusion 8: the successor baseline is cell C, measured live.
+
+    This is the join between the experiment and the artifact it
+    justifies. If HEAD does not reproduce C, then either the policy is
+    not in force in this checkout or the baseline describes a different
+    corpus than the matrix reasoned about, and the matrix's conclusions
+    have been carried to a state they were never measured on."""
+    live = BASELINE["corpus"]["merged_ground_sha256"]["value"]
+    assert live == MATRIX["cells"]["C"]["corpus"]["merged_ground_sha256"], (
+        "HEAD does not reproduce cell C. Confirm .gitattributes is in "
+        "force in this checkout before reading this as a corpus change")
+
+
+@needs_evidence
+def test_the_successor_records_the_line_ending_transition():
+    """Field for field against the artifact, not a summary of it.
+
+    Checking that two independently written distributions both sum to 60
+    is satisfied by two different wrong distributions. What matters is
+    that the baseline reproduces what the harness measured, exactly."""
+    rec = BASELINE["transition"]["measured"]["line_ending_transition"]
+    assert rec == MATRIX["line_ending_transition"]
+    assert rec["total"] == sum(len(v) for v in rec["files"].values()), (
+        "the enumeration's total disagrees with its own per-file lists")
+
+
+@needs_evidence
+def test_the_successor_cites_the_artifact_it_was_built_from():
+    """Path and digest, so a reader can tell which run this is."""
+    import hashlib
+    m = BASELINE["transition"]["measured"]
+    assert m["artifact"] == "config/eol-transition-matrix.json"
+    assert m["artifact_sha256"] == hashlib.sha256(
+        MATRIX_PATH.read_bytes()).hexdigest(), (
+        "the baseline cites a different matrix than the one on disk")
+
+
+@needs_evidence
+def test_the_recorded_invariants_match_the_artifact():
+    m = BASELINE["transition"]["measured"]
+    assert m["invariants"] == MATRIX["invariants"]
+    assert m["path_dependence"] == MATRIX["path_dependence"]
+
+
+@needs_evidence
+def test_the_successor_records_the_known_relative_iri():
+    """The stable base makes the measurement reproducible. It does not
+    make hasDataValue <1> correct, and the record says so."""
+    ex = BASELINE["transition"]["known_exceptions"]["relative_iri"]
+    assert ex["file"] == "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+    assert "separate task" in ex["note"]
+    assert ex["status"].startswith("unremediated")
+    assert list(MATRIX["relative_iris"]) == [ex["file"]], (
+        "the corpus holds a relative IRI the record does not mention")
+
+
+@needs_evidence
+def test_the_successor_declares_its_policies():
+    pol = BASELINE["policy"]
+    assert pol["document_base"].startswith("https://")
+    assert pol["line_endings"] == "lf"
+
+
+@needs_evidence
 def test_an_artifact_says_which_of_its_digests_survive_the_move():
     """A byte digest and a canonical digest answer different questions.
 
@@ -315,6 +548,7 @@ def test_an_artifact_says_which_of_its_digests_survive_the_move():
         "are not an invariant of the migration")
 
 
+@needs_evidence
 def test_the_reasoner_verdict_carries_its_denominator():
     """`reasoner_consistent: 1` over an empty scope is not a verdict.
 
@@ -329,6 +563,7 @@ def test_the_reasoner_verdict_carries_its_denominator():
         "reported on")
 
 
+@needs_evidence
 def test_every_measure_states_what_it_counts():
     """The denominator principle, made structural.
 
@@ -352,6 +587,7 @@ def test_the_reasoner_scope_digest_still_reproduces():
         "the reasoner scope no longer canonicalizes to the recorded "
         "digest; either a module changed or the scope did")
 
+@needs_evidence
 def test_the_blank_node_fingerprint_is_the_component_form():
     """Version 2's fingerprint collided on non-isomorphic graphs.
 
@@ -366,6 +602,7 @@ def test_the_blank_node_fingerprint_is_the_component_form():
 
 
 @pytest.mark.slow
+@needs_evidence
 def test_the_ground_digest_still_reproduces():
     """The non-blank-node triples of the whole corpus. Minutes, not seconds."""
     from marep import ontology_source as onto
@@ -459,3 +696,39 @@ def test_the_version_history_documents_every_version():
            .read_text(encoding="utf-8"))
     for v in range(1, TOOL.TOOL_VERSION + 1):
         assert f"#:   {v}  " in src, f"version {v} has no history entry"
+
+
+def test_a_committed_repository_carries_its_evidence():
+    """This test is red at exactly one commit, on purpose.
+
+    The evidence is measured *from* a commit, so the commit that
+    introduces the measurement code cannot also contain the measurements:
+    they name the commit they were taken from, and that commit does not
+    exist until it is made. The sequence is therefore
+
+        1. commit the tools, the policy and these tests   <- red here
+        2. python tools/marep/build_evidence.py
+        3. commit config/semantic-baseline.json and
+           config/eol-transition-matrix.json               <- green again
+
+    and `build_evidence.py` exists so that step 2 is one command rather
+    than a sequence somebody can stop halfway through.
+
+    Every other time, a clean tree with no evidence means the baseline
+    cites measurements nobody can find, which is the failure this whole
+    pass is about. Skipping instead of failing would make that state
+    indistinguishable from the intended window, so it fails, and says
+    which of the two it thinks it is looking at."""
+    import subprocess
+    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=str(REPO),
+                           capture_output=True, text=True).stdout.strip()
+    if dirty:
+        pytest.skip("mid-procedure: the tree has uncommitted changes")
+    remedy = (" If this is the commit that introduced the measurement "
+              "tools, this failure is the expected one: run "
+              "tools/marep/build_evidence.py and commit its two outputs.")
+    assert BASELINE_PATH.is_file(), (
+        "a clean tree with no successor baseline." + remedy)
+    assert MATRIX_PATH.is_file(), (
+        "the baseline cites a transition matrix that is not in the tree."
+        + remedy)

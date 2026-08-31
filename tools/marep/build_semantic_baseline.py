@@ -48,7 +48,12 @@ from marep import layout  # noqa: E402
 #:      after the version-2 form was shown to collide on non-isomorphic graphs
 #:   4  the test baseline records the default-run selection as well as the
 #:      all-markers total, after a silent deselection left the total intact
-TOOL_VERSION = 4
+#:   5  every measurement parse resolves against a stable document base
+#:      instead of the file's own location, and the corpus is measured
+#:      from an LF working tree. A version-4 digest describes the machine
+#:      and checkout that produced it; a version-5 digest describes the
+#:      corpus. The two are not comparable and the version says so.
+TOOL_VERSION = 5
 
 
 def canonical_digest(path: Path) -> str:
@@ -61,7 +66,11 @@ def canonical_digest(path: Path) -> str:
     import rdflib
     from rdflib.compare import to_canonical_graph
     g = rdflib.Graph()
-    g.parse(str(path))
+    # The same stable base the corpus measurements use. An artifact
+    # canonicalized against its own filesystem path would carry the
+    # checkout directory into its digest.
+    from marep import ontology_source as _onto
+    _onto.parse_source(g, path, layout.repository_root())
     lines = sorted(to_canonical_graph(g).serialize(format="nt").splitlines())
     return hashlib.sha256("\n".join(lines).encode()).hexdigest()
 
@@ -292,7 +301,8 @@ def _scope_digest() -> str:
     import rdflib
     g = rdflib.Graph()
     for p in layout.reasoner_scope():
-        g.parse(str(p))
+        from marep import ontology_source as _onto
+        _onto.parse_source(g, p, layout.repository_root())
     return _graph_digest(g)
 
 
@@ -386,11 +396,152 @@ def test_baseline(root: Path) -> dict:
     }
 
 
+#: Where the measured half of the transition record comes from.
+#:
+#: It is loaded, never typed. Every number in it was produced by
+#: tools/marep/build_transition_matrix.py and is re-derivable by running
+#: that tool; the baseline records the artifact's path and digest so a
+#: reader can tell which run they are looking at. An earlier version of
+#: this file carried the same numbers as Python literals, and one of them
+#: was a digest transcribed from an abbreviated log -- correct in its
+#: first ten characters and invented in the remaining fifty-four.
+MATRIX_ARTIFACT = "config/eol-transition-matrix.json"
+
+#: The half that is a policy statement rather than a measurement. These
+#: are decisions and their reasons, and they are not derivable from any
+#: run.
+TRANSITION_POLICY = {
+    "supersedes": {
+        "baseline": "config/reorganization-baseline.json",
+        "tag": "reorg-pre-move-v1",
+        "tool_version": 4,
+    },
+    "document_base": {
+        "before": "the parsed file's own absolute filesystem path",
+        "after": "https://valuenet.invalid/source/v1/<repo-relative-path>",
+        "why": (
+            "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl writes "
+            "ns7:hasDataValue <1>, a relative IRI reference. Resolved "
+            "against the file's location it became a file: IRI holding "
+            "the checkout directory, so the corpus digest was a function "
+            "of where the repository sat on disk. The frozen value is "
+            "reproducible only at the original path; see the matrix "
+            "artifact's path_dependence section for the measurement."),
+    },
+    "line_endings": {
+        "before": "whatever core.autocrlf produced; CRLF on Windows",
+        "after": "LF, pinned by *.ttl text eol=lf in .gitattributes",
+        "why": (
+            "Committed content was always LF; the checkout converted it, "
+            "so byte digests recorded the platform. A CRLF inside a "
+            "multi-line literal is part of that literal's value, so the "
+            "conversion also changes annotation triples -- enumerated in "
+            "the matrix artifact, not summarised here."),
+    },
+    "known_exceptions": {
+        "relative_iri": {
+            "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+            "term": "ns7:hasDataValue <1>",
+            "status": "unremediated upstream source-data debt",
+            "note": (
+                "A stable base makes the measurement reproducible. It "
+                "does not make the term correct, and the intended range "
+                "of hasDataValue has not been established. Remediation "
+                "is a separate task."),
+        },
+    },
+}
+
+
+MATRIX_FORMAT_VERSION = 2
+MATRIX_GENERATOR = "tools/marep/build_transition_matrix.py"
+MATRIX_TAG = "reorg-post-move-v1"
+EXPECTED_CELLS = {"A": (False, False), "B": (True, False),
+                  "C": (True, True)}
+
+
+def load_transition(root: Path, expected_commit: str) -> dict:
+    """The policy statement, plus measurements that survive checking.
+
+    Key presence is not validation. A matrix produced with --allow-dirty,
+    or produced from a different commit, or missing a cell, satisfies a
+    check that only asks whether the fields exist -- and would then be
+    cited in this baseline as though it described this commit.
+    """
+    import hashlib
+
+    path = root / MATRIX_ARTIFACT
+    if not path.is_file():
+        raise SystemExit(
+            "no transition matrix at " + MATRIX_ARTIFACT + ". Run "
+            + MATRIX_GENERATOR + " first; this baseline cites its "
+            "measurements and will not invent them.")
+    raw = path.read_bytes()
+    doc = json.loads(raw.decode("utf-8"))
+
+    def bad(why):
+        raise SystemExit("refusing the transition matrix: " + why
+                         + ". Regenerate it with " + MATRIX_GENERATOR
+                         + " from this commit.")
+
+    if doc.get("format_version") != MATRIX_FORMAT_VERSION:
+        bad("format version %r, expected %r"
+            % (doc.get("format_version"), MATRIX_FORMAT_VERSION))
+    if doc.get("generated_by") != MATRIX_GENERATOR:
+        bad("produced by %r" % doc.get("generated_by"))
+    if doc.get("measured_from_tag") != MATRIX_TAG:
+        bad("measured from %r, expected %r"
+            % (doc.get("measured_from_tag"), MATRIX_TAG))
+    if doc.get("working_tree_clean") is not True:
+        bad("it was produced from a tree with uncommitted changes, so it "
+            "is a diagnostic and not evidence")
+    if doc.get("input_commit") != expected_commit:
+        bad("it measured %s but this baseline describes %s"
+            % (str(doc.get("input_commit"))[:12], expected_commit[:12]))
+
+    cells = doc.get("cells") or {}
+    if set(cells) != set(EXPECTED_CELLS):
+        bad("cells %s, expected %s"
+            % (sorted(cells), sorted(EXPECTED_CELLS)))
+    for name, (hardened, lf) in EXPECTED_CELLS.items():
+        cell = cells[name]
+        if (cell.get("hardened"), cell.get("lf")) != (hardened, lf):
+            bad("cell %s declares hardened=%r lf=%r, expected %r/%r"
+                % (name, cell.get("hardened"), cell.get("lf"), hardened, lf))
+        digest = cell.get("corpus", {}).get("merged_ground_sha256", "")
+        if len(digest) != 64 or any(
+                c not in "0123456789abcdef" for c in digest):
+            bad("cell %s has no usable ground digest" % name)
+
+    for key in ("path_dependence", "line_ending_transition", "invariants",
+                "relative_iris"):
+        if key not in doc:
+            bad("missing %r" % key)
+
+    return dict(TRANSITION_POLICY, measured={
+        "artifact": MATRIX_ARTIFACT,
+        "artifact_sha256": hashlib.sha256(raw).hexdigest(),
+        "format_version": doc["format_version"],
+        "input_commit": doc["input_commit"],
+        "working_tree_clean": doc["working_tree_clean"],
+        "cells": {k: {"label": v["label"], "hardened": v["hardened"],
+                      "lf": v["lf"],
+                      "ground": v["corpus"]["merged_ground_sha256"],
+                      "eol_distribution": v["eol"]["distribution"],
+                      "eol_aggregate_sha256": v["eol"]["aggregate_sha256"]}
+                  for k, v in cells.items()},
+        "path_dependence": doc["path_dependence"],
+        "line_ending_transition": doc["line_ending_transition"],
+        "invariants": doc["invariants"],
+        "relative_iris": doc["relative_iris"],
+    })
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", "--out", default=None)
     args = ap.parse_args(argv)
 
+    from marep import ontology_source as onto
     root = layout.repository_root()
     rev = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
                          text=True, cwd=str(root))
@@ -399,10 +550,43 @@ def main(argv=None) -> int:
                          "the commit it describes.\n" + rev.stderr.strip())
     head = rev.stdout.strip()
 
+    # The commit this describes must be one somebody else can check out.
+    # Measuring a dirty tree and recording HEAD attributes the result to a
+    # commit that does not contain what was measured.
+    #
+    # One exception, by path and no wider: the matrix artifact is written
+    # immediately before this runs, so it is untracked at exactly this
+    # moment. A blanket override would have let any uncommitted change
+    # through while producing a file indistinguishable from a clean
+    # measurement.
+    PERMITTED_UNTRACKED = {MATRIX_ARTIFACT}
+    status = subprocess.run(["git", "status", "--porcelain"],
+                            capture_output=True, text=True, cwd=str(root))
+    unexpected = []
+    for line in status.stdout.splitlines():
+        rel = line[3:].strip().strip('"')
+        if rel not in PERMITTED_UNTRACKED:
+            unexpected.append(rel)
+    if unexpected:
+        raise SystemExit(
+            "the working tree has changes beyond the matrix artifact, so "
+            "this baseline would describe a state no commit contains: "
+            + ", ".join(sorted(unexpected)[:6])
+            + ". Commit the measurement code and policies first.")
+    tree_state = ("clean apart from the matrix artifact"
+                  if status.stdout.strip() else "clean")
     baseline = {
         "tool_version": TOOL_VERSION,
-        "captured_at_commit": head,
+        # The commit measured, not the commit this file will land in.
+        "input_commit": head,
+        "input_tree_state": tree_state,
         "reproduce": "python tools/marep/build_semantic_baseline.py",
+        "policy": {
+            "document_base": onto.SOURCE_BASE,
+            "line_endings": "lf",
+            "measured_from": "the working tree, which .gitattributes pins to LF",
+        },
+        "transition": load_transition(root, head),
         "corpus": corpus_measures(root),
         "reasoner": reasoner_measures(root),
         "artifacts": artifact_digests(root),

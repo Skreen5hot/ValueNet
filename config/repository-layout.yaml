@@ -234,10 +234,39 @@ components:
     moves_to: null
     role: configuration
 
-  - id: config.semantic-baseline
+  - id: config.reorganization-baseline
     path: config/reorganization-baseline.json
     moves_to: null
     role: configuration
+    description: >-
+      The migration's evidence: what the corpus measured on either side
+      of the 99 moves, under the document base in force at the time.
+      Its digests are reproducible only in the checkout that produced
+      them, which is why it is bracketed by two tags and left alone
+      rather than regenerated. Superseded for new measurement by
+      config.semantic-baseline; not replaced by it.
+
+  - id: config.semantic-baseline
+    path: config/semantic-baseline.json
+    moves_to: null
+    role: generated-artifact
+    generator: tool.build-semantic-baseline
+    description: >-
+      The successor baseline: what HEAD measures under the stable
+      document base and the LF policy, so the same digest is obtained
+      from any checkout. It cites config.transition-matrix rather than
+      carrying copies of its numbers.
+
+  - id: config.transition-matrix
+    path: config/eol-transition-matrix.json
+    moves_to: null
+    role: generated-artifact
+    generator: tool.build-transition-matrix
+    description: >-
+      The measured half of the transition record: three cells crossing
+      the parser fix with the line-ending policy, the per-file ending
+      map, the literal enumeration and the relative-IRI inventory. The
+      successor baseline loads this file; nobody transcribes from it.
 
   # ---- Generators, so a generated artifact's `generator` field resolves. ----
 
@@ -260,6 +289,28 @@ components:
     path: ValueNet_code/build_semantic_baseline.py
     moves_to: tools/marep/build_semantic_baseline.py
     role: generator
+
+  - id: tool.build-transition-matrix
+    path: tools/marep/build_transition_matrix.py
+    moves_to: null
+    role: generator
+    description: >-
+      Measures the corpus in three disposable worktrees -- unhardened,
+      hardened, hardened and LF -- and measures the unhardened cell
+      twice at two absolute paths, which is what shows the old document
+      base was path-dependent. Born after the migration, so it has no
+      source location and no moves_to.
+
+  - id: tool.build-evidence
+    path: tools/marep/build_evidence.py
+    moves_to: null
+    role: generator
+    description: >-
+      Runs the matrix and the successor baseline as one step from a
+      clean commit. The two have a bootstrap relationship -- writing the
+      matrix dirties the tree the baseline requires to be clean -- and
+      resolving that with a blanket override would produce an artifact
+      indistinguishable from a clean measurement.
 
   - id: tool.validate-migration-state
     path: ValueNet_code/validate_migration_state.py
@@ -402,7 +453,7 @@ path_allowances:
     literal: BFO/imports/cco-valuenet-extract.ttl
     field: record
     category: historical-record
-    owner: config.semantic-baseline
+    owner: config.reorganization-baseline
     justification: >-
       Records where the file WAS when this record was written. Rewriting it
       would falsify the account of what was measured.
@@ -413,7 +464,7 @@ path_allowances:
     literal: ValueNet_code/build_semantic_baseline.py
     field: record
     category: historical-record
-    owner: config.semantic-baseline
+    owner: config.reorganization-baseline
     justification: >-
       Records where the file WAS when this record was written. Rewriting it
       would falsify the account of what was measured.

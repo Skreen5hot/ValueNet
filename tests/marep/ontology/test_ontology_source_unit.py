@@ -246,3 +246,167 @@ def test_shacl_reports_the_denominator(tmp_path: Path):
         pytest.skip("no shapes present")
     assert "shacl_focus_nodes" in metrics, "a violation count needs a denominator"
     assert "shacl_files_validated" in metrics
+
+# ======================================================================
+# the document base, and what resolves against it
+# ======================================================================
+
+#: The one relative IRI reference known to exist in the corpus.
+#:
+#: `ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl` writes
+#: `ns7:hasDataValue <1>`, which is a relative IRI reference and not the
+#: number it looks like. It is upstream source-data debt with its own
+#: remediation task; a stable base makes the measurement reproducible
+#: without making the term correct.
+KNOWN_RELATIVE_IRIS = {
+    "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl":
+        ["ThatsAllFolks/MFRC_1k_graphs/1"],
+}
+
+
+def test_the_document_base_is_absolute_and_versioned():
+    """A relative base would put the checkout path back in the graph, and
+    an unversioned one would let the rule change without any baseline
+    showing that it had."""
+    assert onto.SOURCE_BASE.startswith("https://")
+    assert onto.SOURCE_BASE.endswith("/v1/"), onto.SOURCE_BASE
+
+
+def test_the_public_id_is_derived_from_the_relative_path():
+    got = onto.public_id("ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl")
+    assert got == onto.SOURCE_BASE + \
+        "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+    # a path with a space has to survive as a usable IRI
+    # A synthetic name with a space. The repository does contain one, but
+    # naming it here would put a literal that moved into this file and
+    # the coverage inventory would demand an allowance for an example.
+    assert " " not in onto.public_id("docs/A Name With Spaces.md")
+    assert "%20" in onto.public_id("docs/A Name With Spaces.md")
+
+
+def test_identical_bytes_at_two_paths_are_two_documents(tmp_path: Path):
+    """The cache key includes the path, not only the checksum.
+
+    Two copies of a file containing a relative IRI resolve it against
+    their own bases, so they are different graphs. Keyed by checksum
+    alone the second copy silently received the first one's absolute
+    IRIs."""
+    onto.clear_graph_cache()
+    body = ("@prefix ex: <https://example.invalid/> ." + chr(10)
+            + "ex:s ex:p <1> ." + chr(10))
+    (tmp_path / "a").mkdir()
+    (tmp_path / "b").mkdir()
+    for d in ("a", "b"):
+        (tmp_path / d / "g.ttl").write_text(body, encoding="utf-8")
+    facts = [onto.measure_file(p, tmp_path) for p in onto.discover(tmp_path)]
+    assert len(facts) == 2
+    objects = set()
+    for f in facts:
+        for _s, _p, o in onto.graph_for(tmp_path, f):
+            objects.add(str(o))
+    assert len(objects) == 2, (
+        "the two copies resolved to one IRI, so one cache entry served "
+        "both documents: " + str(objects))
+
+
+@pytest.mark.slow
+def test_the_corpus_holds_no_unrecorded_relative_iri():
+    """Every IRI that resolved against the base is accounted for.
+
+    A relative IRI is invisible until something resolves it, and what it
+    resolves to depends on where the file is. One of them made the whole
+    corpus digest a function of the checkout directory for the entire
+    migration. A second one appearing unannounced is the same defect
+    again, so it fails here rather than being absorbed."""
+    import rdflib
+    from marep import layout
+
+    repo = layout.repository_root()
+    found: dict[str, set] = {}
+    for path in onto.discover(repo):
+        rel = path.relative_to(repo).as_posix()
+        fact = onto.measure_file(path, repo)
+        if not fact.parses:
+            continue
+        # Against the base itself, not the file's own public id. A
+        # relative reference replaces the last path segment, so `<1>` in
+        # .../MFRC_1k_graphs/357_GRAPH.ttl resolves to
+        # .../MFRC_1k_graphs/1 and never begins with the document's own
+        # id. Matching on that found nothing at all, including the one
+        # occurrence known to be there.
+        for triple in onto.graph_for(repo, fact):
+            for term in triple:
+                if isinstance(term, rdflib.URIRef) and \
+                        str(term).startswith(onto.SOURCE_BASE):
+                    found.setdefault(rel, set()).add(
+                        str(term)[len(onto.SOURCE_BASE):])
+
+    unexpected = {f: sorted(v) for f, v in found.items()
+                  if sorted(v) != KNOWN_RELATIVE_IRIS.get(f)}
+    assert not unexpected, (
+        "relative IRI reference(s) not in the recorded inventory. Each one resolves "
+        "against the document base, so it is a term whose value depends on "
+        "where the file sits: " + str(unexpected))
+    missing = set(KNOWN_RELATIVE_IRIS) - set(found)
+    assert not missing, (
+        "the recorded relative IRI is gone from " + str(missing) + "; if it was "
+        "fixed, remove it from KNOWN_RELATIVE_IRIS in the same commit")
+
+#: A file whose content depends on its document base: a relative IRI as
+#: an import, another as a class. Both resolve against whatever base the
+#: parser was given, so measuring it twice from two roots is the direct
+#: test of whether the base is stable.
+BASE_SENSITIVE = (
+    "@prefix owl: <http://www.w3.org/2002/07/owl#> ." + chr(10)
+    + "<> a owl:Ontology ; owl:imports <other.ttl> ." + chr(10)
+    + "<Thing> a owl:Class ." + chr(10)
+)
+
+
+def _plant(root: Path) -> Path:
+    d = root / "sub"
+    d.mkdir(parents=True)
+    (d / "g.ttl").write_text(BASE_SENSITIVE, encoding="utf-8")
+    return root
+
+
+def test_the_same_relative_path_under_two_roots_measures_the_same(tmp_path: Path):
+    """Two roots, one relative path, identical bytes.
+
+    Everything a measurement reports about this file has to come from the
+    file, not from where the file is. While measure_file let rdflib take
+    the base from the absolute path, the imports and the class IRI
+    differed between two roots holding byte-identical content -- and the
+    corpus digest inherited the difference, which is how it came to
+    depend on the checkout directory.
+
+    The cache is cleared between roots on purpose. Keyed by content alone
+    the second root would be served the first root's graph and the test
+    would pass without measuring anything."""
+    roots = [_plant(tmp_path / "r1"),
+             _plant(tmp_path / "a-considerably-longer-root-name")]
+
+    seen = []
+    for root in roots:
+        onto.clear_graph_cache()
+        facts = [onto.measure_file(q, root) for q in onto.discover(root)]
+        assert len(facts) == 1 and facts[0].parses, facts
+        merged = onto.merged_graph(root, facts)
+        seen.append({
+            "rel": facts[0].rel,
+            "imports": sorted(facts[0].imports or []),
+            "class_iris": sorted(facts[0].class_iris),
+            "triples": sorted("%s %s %s" % (a.n3(), b.n3(), c.n3())
+                              for a, b, c in merged),
+        })
+
+    assert seen[0] == seen[1], (
+        "the same file measured differently from two roots; the document "
+        "base is still coming from the filesystem"
+    )
+    blob = str(seen[0])
+    assert str(roots[0]) not in blob and str(roots[1]) not in blob, (
+        "a root path leaked into the measurement")
+    assert onto.SOURCE_BASE in blob, (
+        "nothing resolved against the stable base, so this file no longer "
+        "exercises the property it was written for")

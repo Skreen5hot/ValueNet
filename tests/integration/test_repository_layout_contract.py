@@ -205,8 +205,41 @@ def covered_by(a: dict, occ: Occurrence, text: str) -> bool:
 
 
 def test_every_component_resolves():
+    """Every component except the evidence, which is generated later.
+
+    The successor baseline and the transition matrix are produced *from*
+    the commit that carries the measurement code, so at that commit they
+    do not exist. That window is one commit wide and deliberate; it is
+    closed by `test_semantic_baseline.py::test_a_committed_repository_
+    carries_its_evidence`, not here.
+    """
     for c in COMPONENTS:
+        if c.get("role") == "generated-artifact":
+            continue
         layout.component(c["id"]).resolve()
+
+
+def test_a_generated_artifact_is_either_present_or_has_a_live_generator():
+    """The exception above must not become a place things hide.
+
+    Skipping generated artifacts in the resolution test would let a typo
+    in one of their paths, or a generator that no longer exists, sit
+    undetected for as long as the artifact happens to be absent.
+    """
+    generated = [c for c in COMPONENTS
+                 if c.get("role") == "generated-artifact"]
+    assert generated, "no generated artifacts are declared at all"
+    for c in generated:
+        if (REPO / c["path"]).exists():
+            assert layout.component(c["id"]).resolve() == REPO / c["path"]
+            continue
+        gen = c.get("generator")
+        assert gen, (
+            c["id"] + " is absent and names no generator, so nothing in "
+            "the contract says how to obtain it")
+        assert layout.component(gen).resolve().is_file(), (
+            c["id"] + " is absent and its generator " + gen + " does not "
+            "resolve either")
 
 
 def test_component_ids_are_unique():

@@ -17,7 +17,8 @@
     "closure_policy",
     "generated_by",
     "extract_sha256",
-    "modifications"
+    "modifications",
+    "extract_canonical_sha256"
   ],
   "properties": {
     "extract_id": {
@@ -26,7 +27,13 @@
     },
     "source_project": {
       "type": "string",
-      "enum": ["CCO", "RO", "IAO", "SKOS", "OTHER"]
+      "enum": [
+        "CCO",
+        "RO",
+        "IAO",
+        "SKOS",
+        "OTHER"
+      ]
     },
     "source_release": {
       "type": "string",
@@ -50,18 +57,33 @@
     "license": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["spdx", "url", "attribution_required"],
+      "required": [
+        "spdx",
+        "url",
+        "attribution_required"
+      ],
       "properties": {
-        "spdx": {"type": "string", "minLength": 1},
-        "url": {"type": "string", "format": "uri"},
-        "attribution_required": {"type": "boolean"}
+        "spdx": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "attribution_required": {
+          "type": "boolean"
+        }
       }
     },
     "root_terms": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"type": "string", "format": "uri"}
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
     },
     "closure_policy": {
       "type": "object",
@@ -74,26 +96,51 @@
         "import_declarations"
       ],
       "properties": {
-        "declarations": {"type": "boolean", "const": true},
-        "annotations": {"type": "boolean"},
-        "logical_axioms": {"type": "boolean", "const": true},
+        "declarations": {
+          "type": "boolean",
+          "const": true
+        },
+        "annotations": {
+          "type": "boolean"
+        },
+        "logical_axioms": {
+          "type": "boolean",
+          "const": true
+        },
         "referenced_entities": {
           "type": "string",
-          "enum": ["recursive", "declared-only", "none"]
+          "enum": [
+            "recursive",
+            "declared-only",
+            "none"
+          ]
         },
         "import_declarations": {
           "type": "string",
-          "enum": ["preserve", "rewrite-pinned", "omit-documented"]
+          "enum": [
+            "preserve",
+            "rewrite-pinned",
+            "omit-documented"
+          ]
         }
       }
     },
     "generated_by": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["script", "version"],
+      "required": [
+        "script",
+        "version"
+      ],
       "properties": {
-        "script": {"type": "string", "minLength": 1},
-        "version": {"type": "string", "minLength": 1}
+        "script": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "extract_sha256": {
@@ -101,7 +148,14 @@
     },
     "modifications": {
       "type": "array",
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extract_canonical_sha256": {
+      "$ref": "#/$defs/sha256",
+      "description": "Digest of the extract's canonical RDF, which line endings do not affect. The provenance refresh guards on this rather than on extract_sha256, so that normalizing line endings is permitted and a genuinely different extract is not."
     }
   },
   "$defs": {

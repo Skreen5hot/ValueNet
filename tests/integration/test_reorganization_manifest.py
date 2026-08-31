@@ -110,10 +110,14 @@ def test_every_frozen_row_is_present_at_exactly_one_of_its_paths():
                 f"{src}: present at both its source and {dst}; an "
                 f"interrupted move left a copy behind")
 
-    extra = sorted(files - represented)
+    # Files that existed at the freeze, not every file that will ever
+    # exist. The manifest records one migration; holding the live tree to its
+    # 335 rows fails on the first file added afterwards.
+    frozen_files = VALIDATOR.frozen_snapshot()
+    extra = sorted((files & frozen_files) - represented)
     dupes = sorted({p for p in seen if seen.count(p) > 1})
     assert not problems, problems[:10]
-    assert not extra, f"tracked but in no manifest row: {extra[:10]}"
+    assert not extra, f"tracked at the freeze but in no manifest row: {extra[:10]}"
     assert not dupes, f"classified twice: {dupes}"
 
 
@@ -439,28 +443,47 @@ def test_every_wave_complete_reports_every_wave():
     assert VALIDATOR.completed_waves(SYNTH, files) == ["bfo", "marep"]
 
 
+#: One row and the snapshot it was frozen from. Supplied explicitly:
+#: `validate` otherwise measures a one-row manifest against the real
+#: 335-file tag and returns 334 coverage complaints, which satisfies any
+#: bare `assert problems` whatever the rule under test does.
+ONE_ROW = [{"path": "src/a.ttl", "destination": "dst/a.ttl", "wave": "bfo"}]
+ONE_SNAPSHOT = {"src/a.ttl"}
+
+
 def test_a_move_completed_before_its_wave_is_a_violation():
     """Omitting --wave must mean zero moves completed, not skip the check."""
-    v = _validator()
-    rows = [{"path": "src/a.ttl", "destination": "dst/a.ttl", "wave": "bfo"}]
-    problems = v.validate(rows, files={"dst/a.ttl"}, current_wave=None)
+    problems = VALIDATOR.validate(ONE_ROW, files={"dst/a.ttl"},
+                                  current_wave=None, frozen=ONE_SNAPSHOT)
     assert any("has not run" in p for p in problems), problems
 
 
 def test_a_file_still_at_its_source_after_its_wave_is_a_violation():
-    v = _validator()
-    rows = [{"path": "src/a.ttl", "destination": "dst/a.ttl", "wave": "bfo"}]
-    problems = v.validate(rows, files={"src/a.ttl"}, current_wave="bfo")
+    problems = VALIDATOR.validate(ONE_ROW, files={"src/a.ttl"},
+                                  current_wave="bfo", frozen=ONE_SNAPSHOT)
     assert any("still at its" in p for p in problems), problems
 
 
 def test_a_file_at_both_paths_is_a_violation():
-    """The XOR rule: exactly one of source and destination is tracked."""
-    v = _validator()
-    rows = [{"path": "src/a.ttl", "destination": "dst/a.ttl", "wave": "bfo"}]
-    problems = v.validate(rows, files={"src/a.ttl", "dst/a.ttl"},
-                          current_wave="bfo")
-    assert problems, "a file present at both paths was accepted"
+    """The XOR rule: exactly one of source and destination is tracked.
+
+    Asserted on the specific diagnostic. `assert problems` alone was
+    satisfied by the coverage noise a one-row manifest generated against the
+    real snapshot, and would have gone on passing with the XOR check deleted.
+    """
+    problems = VALIDATOR.validate(
+        ONE_ROW, files={"src/a.ttl", "dst/a.ttl"},
+        current_wave="bfo", frozen=ONE_SNAPSHOT)
+    assert any("both" in p for p in problems), (
+        "a file present at both paths was accepted: " + str(problems))
+
+
+def test_the_clean_one_row_case_produces_no_problems():
+    """The control. Without it the three above could all pass because every
+    input produces complaints, which is how the XOR test became vacuous."""
+    problems = VALIDATOR.validate(ONE_ROW, files={"dst/a.ttl"},
+                                  current_wave="bfo", frozen=ONE_SNAPSHOT)
+    assert problems == [], problems
 
 
 # ======================================================================
@@ -650,3 +673,59 @@ def test_this_repository_is_a_work_tree_and_knows_it():
     assert VALIDATOR.in_git_work_tree() is True
     assert VALIDATOR.frozen_exists() is True, (
         "the freeze tag is not visible from this repository")
+
+
+# ======================================================================
+# coverage is about the migration, not about the repository forever
+# ======================================================================
+
+#: A frozen manifest small enough to reason about, with two moved rows
+#: and one retained, so a coverage rule can be caught dropping either.
+SNAPSHOT = {'src/one.ttl', 'src/two.ttl', 'keep/three.ttl'}
+TINY = [
+    {'path': 'src/one.ttl', 'destination': 'dst/one.ttl', 'wave': 'bfo'},
+    {'path': 'src/two.ttl', 'destination': 'dst/two.ttl', 'wave': 'bfo'},
+    {'path': 'keep/three.ttl', 'destination': 'RETAIN', 'wave': None},
+]
+MOVED = {'dst/one.ttl', 'dst/two.ttl', 'keep/three.ttl'}
+
+
+def test_a_file_created_after_the_freeze_is_accepted():
+    """The manifest records one migration, not the repository forever.
+
+    Held to the live tree, the first file added after step 12 would fail
+    a migration already signed off. Calls validate() rather than checking
+    a set expression, so it still means something if the implementation
+    changes underneath it."""
+    live = MOVED | {'created/after/the/freeze.txt'}
+    problems = VALIDATOR.validate(TINY, live, 'bfo', frozen=SNAPSHOT)
+    assert problems == [], problems
+
+
+def test_an_omitted_moved_row_is_caught():
+    """The defect the earlier rule could not see.
+
+    Intersecting live paths with the frozen snapshot dropped every
+    completed move before comparing -- source gone from the tree,
+    destination never in the snapshot -- so a moved row could be deleted
+    from the manifest unnoticed. Row count is held constant by
+    substituting a different row, so this cannot pass on a count check."""
+    without_one = [r for r in TINY if r['path'] != 'src/one.ttl']
+    without_one.append(
+        {'path': 'keep/four.ttl', 'destination': 'RETAIN', 'wave': None})
+    assert len(without_one) == len(TINY)
+    problems = VALIDATOR.validate(
+        without_one, MOVED | {'keep/four.ttl'}, 'bfo', frozen=SNAPSHOT)
+    assert any('src/one.ttl' in p for p in problems), (
+        'a moved row was dropped from the manifest and coverage did not '
+        'notice: ' + str(problems))
+
+
+def test_a_manifest_row_for_a_file_that_never_existed_is_caught():
+    """The other direction: the manifest may not invent rows."""
+    invented = TINY + [
+        {'path': 'src/ghost.ttl', 'destination': 'dst/ghost.ttl',
+         'wave': 'bfo'}]
+    problems = VALIDATOR.validate(
+        invented, MOVED | {'dst/ghost.ttl'}, 'bfo', frozen=SNAPSHOT)
+    assert any('ghost' in p for p in problems), problems

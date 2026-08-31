@@ -54,7 +54,16 @@ def _norm(text: str) -> str:
     return text.replace("\r\n", "\n")
 
 
-def validate(rows: list[dict], files: set[str], current_wave: str | None) -> list[str]:
+def validate(rows: list[dict], files: set[str], current_wave: str | None,
+             frozen: set | None = None) -> list[str]:
+    """Problems with the tree, given the frozen manifest.
+
+    `frozen` is the set of files tracked when the plan was frozen. Passed
+    in rather than read from git, so this function can be exercised
+    against any state a caller can describe -- including states no
+    repository is currently in, which is where the interesting failures
+    live. Defaults to reading the tag.
+    """
     problems: list[str] = []
     represented: set[str] = set()
     destinations: dict[str, str] = {}
@@ -108,10 +117,32 @@ def validate(rows: list[dict], files: set[str], current_wave: str | None) -> lis
                 f"{src}: wave {wave!r} has run but the file is still at its "
                 f"source path")
 
-    for f in sorted(files - represented):
-        problems.append(f"tracked but absent from the manifest: {f}")
+    # Only files that existed when the plan was frozen. The manifest is a
+    # record of one migration; a file created afterwards was never part of
+    # it and its absence from the rows is not a defect. Comparing against
+    # the live tree instead made the closed 335-row world permanent, so the
+    # first file added after step 12 would have failed a completed
+    # migration's validator.
+    # Against the frozen snapshot, not the live paths. Intersecting with
+    # `files` first dropped every completed move -- its source is gone --
+    # so an omitted moved row could not be detected: nothing would look
+    # for its destination and nothing would miss its source.
+    snapshot = frozen_snapshot() if frozen is None else frozen
+    sources = {r["path"] for r in rows}
+    for f in sorted(snapshot - sources):
+        problems.append(f"tracked at the freeze but absent from the manifest: {f}")
+    for f in sorted(sources - snapshot):
+        problems.append(f"in the manifest but not tracked at the freeze: {f}")
     return problems
 
+
+
+def frozen_snapshot() -> set:
+    """The files tracked at the freeze, read from the tag itself."""
+    if not frozen_exists():
+        return tracked()
+    out = sh("git", "ls-tree", "-r", "--name-only", FREEZE_TAG)
+    return {line for line in out.splitlines() if line}
 
 
 def completed_waves(rows: list[dict], files: set[str]) -> list[str]:
@@ -278,7 +309,7 @@ def main(argv=None) -> int:
     files = tracked()
     print(f"  manifest source: {source}")
 
-    problems = validate(rows, files, args.wave)
+    problems = validate(rows, files, args.wave, frozen_snapshot())
     moves = [r for r in rows if r["destination"] != "RETAIN"]
     pending = [r for r in moves if r["path"] in files]
 

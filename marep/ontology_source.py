@@ -169,7 +169,7 @@ def measure_file(path: Path, repo: Path) -> FileFacts:
     for fmt in PARSE_FORMATS:
         candidate = rdflib.Graph()
         try:
-            candidate.parse(str(path), format=fmt)
+            parse_source(candidate, path, repo, fmt)
             g = candidate
             facts.parsed_as = fmt
             break
@@ -268,21 +268,72 @@ def group_metrics(facts: list[FileFacts]) -> list[Metric]:
 #: checksum rather than the path so that a file edited between calls is
 #: re-read rather than served stale, which matters because these run inside a
 #: substrate build that must describe the tree as it is at HEAD.
-_GRAPH_CACHE: dict[str, Any] = {}
+_GRAPH_CACHE: dict[tuple, Any] = {}
 
+
+#: The document base every corpus parse resolves relative IRIs against.
+#:
+#: Versioned, because changing it changes every digest computed from a graph
+#: containing a relative IRI, and a reader comparing two baselines has to be
+#: able to see that the rule changed rather than the corpus.
+#:
+#: Synthetic and absolute. Letting rdflib default to the file's own location
+#: made the base an absolute filesystem path, so one relative IRI reference in
+#: one of 168 files -- `hasDataValue <1>` in
+#: ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl -- put
+#: `file:///C:/Users/.../357_GRAPH.ttl` into the merged graph. The corpus
+#: fingerprint then described where the repository sat on disk. It reproduced
+#: for the whole migration because nothing ever moved the checkout, which is
+#: not the same as being reproducible.
+SOURCE_BASE = "https://valuenet.invalid/source/v1/"
+
+
+def public_id(rel: str) -> str:
+    """The document base for one corpus file, from its repository-relative path."""
+    from urllib.parse import quote
+    return SOURCE_BASE + quote(rel.replace("\\", "/"), safe="/")
+
+
+def parse_source(graph, path, repo, fmt=None):
+    """Parse one corpus file into `graph` against the stable base.
+
+    Every parse that feeds a measurement goes through here. Letting
+    rdflib default to the file's own location makes the document base an
+    absolute filesystem path, and any relative IRI in the file then
+    resolves to something containing the checkout directory. Applying the
+    stable base in some places and not others is worse than not applying
+    it at all: the same file would parse two ways depending on which
+    measurement asked.
+    """
+    q = Path(path)
+    try:
+        rel = q.resolve().relative_to(Path(repo).resolve()).as_posix()
+    except (ValueError, OSError):
+        # Outside the repository -- a fixture in a tmp_path, say. Its own
+        # name is still a stable base, which is what matters.
+        rel = q.name
+    graph.parse(str(q), format=fmt, publicID=public_id(rel))
+    return graph
 
 def graph_for(repo: Path, fact: FileFacts):
-    """The parsed graph for one file, parsed at most once per content."""
+    """The parsed graph for one file, parsed at most once per (content, path).
+
+    Keyed by content *and* path. Identical bytes at two paths are two
+    documents when a relative IRI is present, because each resolves against
+    its own base; sharing one cached graph between them would silently give
+    the second file the first one's absolute IRIs.
+    """
     import rdflib
-    cached = _GRAPH_CACHE.get(fact.checksum)
+    key = (fact.checksum, fact.rel)
+    cached = _GRAPH_CACHE.get(key)
     if cached is not None:
         return cached
     g = rdflib.Graph()
     try:
-        g.parse(str(repo / fact.rel), format=fact.parsed_as or None)
+        parse_source(g, repo / fact.rel, repo, fact.parsed_as or None)
     except Exception:
         g = rdflib.Graph()
-    _GRAPH_CACHE[fact.checksum] = g
+    _GRAPH_CACHE[key] = g
     return g
 
 
@@ -550,7 +601,7 @@ def shape_coverage_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     targeted = set()
     for sf in shape_files:
         try:
-            sg = rdflib.Graph(); sg.parse(str(sf))
+            sg = parse_source(rdflib.Graph(), sf, repo)
         except Exception:
             continue
         targeted |= {str(o) for o in sg.objects(None, SH.targetClass)}
@@ -605,7 +656,7 @@ def suite_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     merged = rdflib.Graph()
     for m in modules:
         try:
-            merged.parse(str(m))
+            parse_source(merged, m, repo)
         except Exception:
             return out
 
@@ -681,7 +732,7 @@ def rooting_metrics(repo: Path, facts: list[FileFacts]) -> list[Metric]:
     for path in discover(repo):
         for fmt in PARSE_FORMATS:
             try:
-                merged.parse(str(path), format=fmt)
+                parse_source(merged, path, repo, fmt)
                 break
             except Exception:
                 continue
@@ -758,7 +809,7 @@ def shacl_metrics(repo: Path) -> list[Metric]:
             "valuenet-folk", "valuenet-moral-epistemics",
             "valuenet-moral-epistemics-scenario", root=repo):
         try:
-            data.parse(str(p))
+            parse_source(data, p, repo)
             loaded += 1
         except Exception:
             pass
@@ -774,7 +825,7 @@ def shacl_metrics(repo: Path) -> list[Metric]:
     focus = 0
     for shape_graph_file in shapes:
         try:
-            sg = rdflib.Graph(); sg.parse(str(shape_graph_file))
+            sg = parse_source(rdflib.Graph(), shape_graph_file, repo)
         except Exception:
             continue
         for cls in sg.objects(None, SH.targetClass):
@@ -799,7 +850,7 @@ def shacl_metrics(repo: Path) -> list[Metric]:
 
     for shape_file in shapes:
         try:
-            sg = rdflib.Graph(); sg.parse(str(shape_file))
+            sg = parse_source(rdflib.Graph(), shape_file, repo)
             _c, rg, _t = pyshacl.validate(data, shacl_graph=sg, advanced=True, inference="none")
             results = list(rg.subjects(RDF.type, SH.ValidationResult))
             sev = [str(rg.value(r, SH.resultSeverity)).split("#")[-1] for r in results]
@@ -919,7 +970,7 @@ def reasoner_metrics(repo: Path, scope: str = "bfo-layer") -> list[Metric]:
     loaded = 0
     for p in paths:
         try:
-            merged.parse(str(p))
+            parse_source(merged, p, repo)
             loaded += 1
         except Exception:
             return [Metric("reasoner_error", scope, 1,

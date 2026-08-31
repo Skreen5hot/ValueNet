@@ -6,8 +6,9 @@
     "logical_axioms": true,
     "referenced_entities": "recursive"
   },
+  "extract_canonical_sha256": "b3261ad21fc82c4005744cb754c3418476a79515d0f51b50769112ae36f046fc",
   "extract_id": "cco-valuenet-v2.2-2026-08-25-phase6",
-  "extract_sha256": "70add8bd654ede359575e1fdd3e1beac7b39fc09775d3c8474f8272e8896b421",
+  "extract_sha256": "ed9cd3a152b864ace9ee187910bf1f4cd9a0b9d45f6b5a0a7cdd8d29ff4e4142",
   "generated_by": {
     "script": "tools/bfo/generate_cco_extract.py",
     "version": "4"

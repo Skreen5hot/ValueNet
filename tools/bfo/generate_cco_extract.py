@@ -215,6 +215,53 @@ def build_extract(source: Graph) -> Graph:
     return canonical
 
 
+#: Every write below passes newline="\n". Without it Python translates to
+#: os.linesep, so the same generator produced LF on one machine and CRLF on
+#: another and the artifact's byte digest depended on who ran it last.
+FROZEN_TAG = "reorg-pre-move-v1"
+FROZEN_BASELINE = "config/reorganization-baseline.json"
+
+
+def frozen_canonical_anchor():
+    """The canonical digest recorded for this extract before this work.
+
+    An independent value: written by a different tool, at a different
+    time, under the previous document-base rule. That it agrees with a
+    freshly computed one is a fact worth checking rather than assuming --
+    it holds only because this extract contains no relative IRI."""
+    import json
+    import subprocess
+
+    r = subprocess.run(
+        ["git", "show", FROZEN_TAG + ":" + FROZEN_BASELINE],
+        capture_output=True, text=True, cwd=str(_root))
+    if r.returncode != 0:
+        return None
+    try:
+        rec = json.loads(r.stdout)["artifacts"]["cco_extract"]
+    except (ValueError, KeyError):
+        return None
+    if not rec.get("canonical_is_invariant"):
+        return None
+    return rec.get("canonical_sha256")
+
+def canonical_sha256(path: Path) -> str:
+    """A digest of the extract's meaning rather than its bytes.
+
+    Line endings are part of a file's bytes and not part of its graph, so
+    this is what the provenance guard can rely on: it is unchanged by the
+    LF policy and still moves if a triple changes."""
+    from rdflib.compare import to_canonical_graph
+    g = Graph()
+    g.parse(str(path), format="turtle",
+            publicID="https://valuenet.invalid/source/v1/"
+                     + relative(path).replace(" ", "%20"))
+    lines = sorted(
+        "%s %s %s ." % (s.n3(), p.n3(), o.n3())
+        for s, p, o in to_canonical_graph(g))
+    return hashlib.sha256(chr(10).join(lines).encode("utf-8")).hexdigest()
+
+
 def write_manifest(output: Path, manifest_path: Path, source_path: Path) -> None:
     manifest = {
         "extract_id": "cco-valuenet-v2.2-2026-08-25-phase6",
@@ -242,6 +289,7 @@ def write_manifest(output: Path, manifest_path: Path, source_path: Path) -> None
             "version": SCRIPT_VERSION,
         },
         "extract_sha256": sha256(output),
+        "extract_canonical_sha256": canonical_sha256(output),
         "modifications": [
             "Selected complete root-entity descriptions from the CCO 2.2 merged release.",
             "Expanded the roots with the Phase 5 CCO superclass alignments for moral epistemics.",
@@ -253,8 +301,8 @@ def write_manifest(output: Path, manifest_path: Path, source_path: Path) -> None
         ],
     }
     manifest_path.write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8", newline="\n")
 
 
 def parse_args() -> argparse.Namespace:
@@ -301,22 +349,62 @@ def refresh_provenance() -> None:
     extract_path = bfo_artifact("cco-valuenet-extract.ttl")
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
 
-    recorded, actual = data.get("extract_sha256"), sha256(extract_path)
-    if recorded != actual:
+    # Guard on meaning, not bytes. The byte digest legitimately changed when
+    # the LF policy landed; a changed canonical digest means a different
+    # extract, which is the case worth refusing.
+    want = data.get("extract_canonical_sha256")
+    have = canonical_sha256(extract_path)
+    if want is not None and want != have:
         raise SystemExit(
-            f"refusing to refresh provenance: {extract_path.name} has "
-            f"digest {actual}, but the manifest describes {recorded}. "
-            f"Regenerate the extract instead.")
+            f"refusing to refresh provenance: {extract_path.name} "
+            f"canonicalizes to {have}, but the manifest describes {want}. "
+            f"That is a different extract; regenerate it instead.")
+
+    changed = []
+    if data.get("extract_canonical_sha256") is None:
+        # Anchored to the frozen baseline, not to the file in front of us.
+        # Computing this from the current extract and storing it would let a
+        # modified extract certify itself, on the one run that introduces the
+        # field and can therefore never be cross-checked against a previous
+        # value.
+        anchor = frozen_canonical_anchor()
+        if anchor is None:
+            raise SystemExit(
+                "cannot initialise extract_canonical_sha256: no canonical "
+                "digest for this artifact is recorded in "
+                + FROZEN_BASELINE + " at " + FROZEN_TAG + ". Initialising it "
+                "from the extract on disk would make that extract its own "
+                "evidence; do it as a reviewed migration step instead.")
+        if anchor != have:
+            raise SystemExit(
+                "refusing to initialise extract_canonical_sha256: the extract "
+                "canonicalizes to " + have + ", but " + FROZEN_TAG + " records "
+                + anchor + ". This is a different extract.")
+        data["extract_canonical_sha256"] = anchor
+        changed.append("initialised extract_canonical_sha256 from " + FROZEN_TAG)
+    actual_bytes = sha256(extract_path)
+    if data.get("extract_sha256") != actual_bytes:
+        # Byte metadata, refreshed because the line-ending policy changed the
+        # bytes and nothing else did. The canonical check above is what makes
+        # that a safe thing to say.
+        changed.append("extract_sha256 %s -> %s"
+                       % (str(data.get("extract_sha256"))[:12], actual_bytes[:12]))
+        data["extract_sha256"] = actual_bytes
 
     want = script_path()
-    have = data.get("generated_by", {}).get("script")
-    if have == want:
-        print(f"provenance already current: {want}")
+    if data.get("generated_by", {}).get("script") != want:
+        changed.append("generated_by.script -> " + want)
+        data["generated_by"]["script"] = want
+
+    if not changed:
+        print("provenance already current: " + want)
         return
-    data["generated_by"]["script"] = want
+    for c in changed:
+        print("  " + c)
     manifest_path.write_text(
-        json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"refreshed generated_by.script: {have} -> {want}")
+        json.dumps(data, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8", newline="\n")
+    print("refreshed %s" % manifest_path.name)
 
 
 def main() -> None:
@@ -337,7 +425,8 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(extract.serialize(format="turtle"), encoding="utf-8")
+    args.output.write_text(extract.serialize(format="turtle"),
+                           encoding="utf-8", newline="\n")
     write_manifest(args.output, args.manifest, args.source)
 
     print(f"wrote {len(extract)} triples to {args.output}")

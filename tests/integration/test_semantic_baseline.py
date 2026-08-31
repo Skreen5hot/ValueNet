@@ -147,7 +147,11 @@ def test_the_baseline_was_written_by_this_version_of_the_tool():
 @needs_evidence
 def test_the_baseline_says_how_to_reproduce_itself():
     assert BASELINE.get("reproduce", "").strip()
-    assert BASELINE.get("captured_at_commit")
+    assert BASELINE.get("input_commit"), (
+        "the field was renamed from captured_at_commit: a baseline names "
+        "the commit it was measured FROM, which is not the commit it "
+        "lands in")
+    assert BASELINE.get("input_tree_state")
 
 
 @pytest.mark.parametrize("section", ["corpus", "reasoner", "artifacts", "tests"])
@@ -483,13 +487,19 @@ def test_the_baseline_measures_the_condition_cell_c_describes():
 def test_the_successor_records_the_line_ending_transition():
     """Field for field against the artifact, not a summary of it.
 
-    Checking that two independently written distributions both sum to 60
-    is satisfied by two different wrong distributions. What matters is
-    that the baseline reproduces what the harness measured, exactly."""
+    Checking that two independently written distributions sum to the
+    same total is satisfied by two different wrong distributions. What
+    matters is that the baseline reproduces what the harness measured,
+    exactly -- down to which file and which predicate."""
     rec = BASELINE["transition"]["measured"]["line_ending_transition"]
     assert rec == MATRIX["line_ending_transition"]
-    assert rec["total"] == sum(len(v) for v in rec["files"].values()), (
-        "the enumeration's total disagrees with its own per-file lists")
+    assert rec["total"] == sum(rec["files"].values()), (
+        "the enumeration's total disagrees with its own per-file counts")
+    assert rec["total"] == sum(rec["predicates"].values()), (
+        "the same triples counted by file and by predicate should give "
+        "the same total; they do not")
+    assert set(rec["examples"]) == set(rec["files"]), (
+        "every affected file should carry an example of what changed")
 
 
 @needs_evidence

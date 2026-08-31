@@ -1,0 +1,251 @@
+{
+  "tool_version": 5,
+  "input_commit": "a38d86809541d7b13d3963c81646c1171981d2ff",
+  "input_tree_state": "clean apart from the matrix artifact",
+  "reproduce": "python tools/marep/build_semantic_baseline.py",
+  "policy": {
+    "document_base": "https://valuenet.invalid/source/v1/",
+    "line_endings": "lf",
+    "measured_from": "the working tree, which .gitattributes pins to LF"
+  },
+  "transition": {
+    "supersedes": {
+      "baseline": "config/reorganization-baseline.json",
+      "tag": "reorg-pre-move-v1",
+      "tool_version": 4
+    },
+    "document_base": {
+      "before": "the parsed file's own absolute filesystem path",
+      "after": "https://valuenet.invalid/source/v1/<repo-relative-path>",
+      "why": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl writes ns7:hasDataValue <1>, a relative IRI reference. Resolved against the file's location it became a file: IRI holding the checkout directory, so the corpus digest was a function of where the repository sat on disk. The frozen value is reproducible only at the original path; see the matrix artifact's path_dependence section for the measurement."
+    },
+    "line_endings": {
+      "before": "whatever core.autocrlf produced; CRLF on Windows",
+      "after": "LF, pinned by *.ttl text eol=lf in .gitattributes",
+      "why": "Committed content was always LF; the checkout converted it, so byte digests recorded the platform. A CRLF inside a multi-line literal is part of that literal's value, so the conversion also changes annotation triples -- enumerated in the matrix artifact, not summarised here."
+    },
+    "known_exceptions": {
+      "relative_iri": {
+        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+        "term": "ns7:hasDataValue <1>",
+        "status": "unremediated upstream source-data debt",
+        "note": "A stable base makes the measurement reproducible. It does not make the term correct, and the intended range of hasDataValue has not been established. Remediation is a separate task."
+      }
+    },
+    "measured": {
+      "artifact": "config/eol-transition-matrix.json",
+      "artifact_sha256": "ceac586378e8d77dc12dc071c6878b80b999ec628c9329896cce36282b404dcd",
+      "format_version": 2,
+      "input_commit": "a38d86809541d7b13d3963c81646c1171981d2ff",
+      "working_tree_clean": true,
+      "cells": {
+        "A": {
+          "label": "CRLF checkout, filesystem document base",
+          "hardened": false,
+          "lf": false,
+          "ground": "78cc6168f22cddfd674892a1066ea37126c308abad32564259ed3c5fa3583d30",
+          "eol_distribution": {
+            "crlf": 168
+          },
+          "eol_aggregate_sha256": "18d39426b85f662f7b4af3e439eb07107ce97633562e0b4c985f5d2a37d1929a"
+        },
+        "B": {
+          "label": "CRLF checkout, stable document base",
+          "hardened": true,
+          "lf": false,
+          "ground": "e03e2b7eeb3a1b04cdf80a817cc26e0cc28f5f8a3ed3c9f424af48626ec65a76",
+          "eol_distribution": {
+            "crlf": 168
+          },
+          "eol_aggregate_sha256": "18d39426b85f662f7b4af3e439eb07107ce97633562e0b4c985f5d2a37d1929a"
+        },
+        "C": {
+          "label": "LF checkout, stable document base",
+          "hardened": true,
+          "lf": true,
+          "ground": "ffbce424c7272fa131b367f0de246e5725e55e3b0c36c3aef059a4616ee25ef5",
+          "eol_distribution": {
+            "lf": 168
+          },
+          "eol_aggregate_sha256": "9a7063d0d9f3422aa9355d403170a5d9cf50f63b68f578b0a2d456a4aee66918"
+        }
+      },
+      "path_dependence": {
+        "A_first": "78cc6168f22cddfd674892a1066ea37126c308abad32564259ed3c5fa3583d30",
+        "A_second": "6a2be83ed465248cadfa974eb9870d2398059bc10c5a179cdb1ff1ddb1438552",
+        "definition": "cell A measured twice at two different absolute paths; a difference is the defect the stable base removes",
+        "differ": true
+      },
+      "line_ending_transition": {
+        "definition": "literal-object triples present when the file is CRLF and absent when it is LF, over every tracked Turtle file, blank-node subjects included, compared as multisets",
+        "examples": {
+          "MoralMolecules/curry_no_combinations_updated.ttl": "<http://www.ontologydesignpatterns.org/ont/is/exuviae.owl#bibRef> \"\"\"According to the theory of morality-as-cooperation, morality is a collection of biological ",
+          "ValueCore.ttl": "<http://www.w3.org/2000/01/rdf-schema#comment> \"\"\"A minimal vocabulary to talk about values as defined in different theories, accompanied by an alignment to fou",
+          "bhv.ttl": "<http://www.w3.org/2000/01/rdf-schema#comment> \"\"\"\"An interest and concern for the wellbeing of persons with whom one is in close contact.\"\\r\n\\r\nGim\u00e9nez, August",
+          "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl": "<http://purl.org/dc/terms/description> \"\"\"Supplies the definition ValueCore 0.4 omits for\\r\nvcvf:triggers. Annotation only: no logical axiom is added, and under",
+          "ontology/bfo/shapes/valuenet-core-shapes.ttl": "<http://www.w3.org/ns/shacl#select> \"\"\"\\r\n      SELECT $this ?bearer\\r\n      WHERE {\\r\n        $this rdf:type/rdfs:subClassOf* vn-core:ValueRelatedRealizableEnt",
+          "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl": "<http://www.w3.org/ns/shacl#select> \"\"\"\\r\n      SELECT $this\\r\n      WHERE {\\r\n        FILTER NOT EXISTS {\\r\n          $this vn-me:hasInformationalOutput ?ascri",
+          "ontology/bfo/shapes/vcvf-triggers-shapes.ttl": "<http://www.w3.org/2000/01/rdf-schema#comment> \"\"\"Enforces the direction convention and the declaration\\r\nrequirement that OWL's range axiom cannot, because a r",
+          "wvs.ttl": "<http://www.w3.org/2000/01/rdf-schema#comment> \"\"\"Core Survey Variables: \\r\nSocial Values, Norms, Stereotypes (Q1-Q45)\\r\nThese values are extracted from the mos"
+        },
+        "files": {
+          "MoralMolecules/curry_no_combinations_updated.ttl": 14,
+          "ValueCore.ttl": 2,
+          "bhv.ttl": 34,
+          "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl": 5,
+          "ontology/bfo/shapes/valuenet-core-shapes.ttl": 10,
+          "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl": 1,
+          "ontology/bfo/shapes/vcvf-triggers-shapes.ttl": 1,
+          "wvs.ttl": 10
+        },
+        "predicates": {
+          "http://purl.org/dc/terms/description": 1,
+          "http://www.ontologydesignpatterns.org/ont/is/exuviae.owl#bibRef": 12,
+          "http://www.w3.org/2000/01/rdf-schema#comment": 22,
+          "http://www.w3.org/2002/07/owl#versionInfo": 2,
+          "http://www.w3.org/2004/02/skos/core#definition": 1,
+          "http://www.w3.org/2004/02/skos/core#editorialNote": 1,
+          "http://www.w3.org/2004/02/skos/core#scopeNote": 1,
+          "http://www.w3.org/ns/shacl#select": 11,
+          "https://w3id.org/spice/SON/SchwartzValues#bibRef": 26
+        },
+        "total": 77
+      },
+      "invariants": {
+        "A_and_B_are_byte_identical_checkouts": true,
+        "C_has_no_crlf": true,
+        "corpus_counts_identical_across_cells": true,
+        "reasoner_identical_across_cells": true
+      },
+      "relative_iris": {
+        "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl": [
+          "ThatsAllFolks/MFRC_1k_graphs/1"
+        ]
+      }
+    }
+  },
+  "corpus": {
+    "files_discovered": {
+      "value": 168,
+      "definition": "ontology_source.discover over the repository"
+    },
+    "files_parsing": {
+      "value": 168,
+      "definition": "measure_file(...).parses is True"
+    },
+    "distinct_triples": {
+      "value": 104763,
+      "definition": "len of the merged graph over all parsing files"
+    },
+    "named_classes": {
+      "value": 2889,
+      "definition": "owl:Class subjects that are rdflib.URIRef; blank-node restrictions excluded. Counting them gave 3,703 against a true 2,889."
+    },
+    "class_declarations_summed": {
+      "value": 5402,
+      "definition": "sum of per-file class counts; double-counts a class declared in two files, by design"
+    },
+    "trigger_statements": {
+      "value": 57578,
+      "definition": "vcvf:triggers statements in the merged graph"
+    },
+    "distinct_trigger_objects": {
+      "value": 147,
+      "definition": "distinct objects of vcvf:triggers"
+    },
+    "merged_ground_sha256": {
+      "value": "ffbce424c7272fa131b367f0de246e5725e55e3b0c36c3aef059a4616ee25ef5",
+      "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
+    },
+    "merged_bnode_shape": {
+      "value": {
+        "blank_nodes": 8365,
+        "triples_touching": 30040,
+        "components": 6644,
+        "largest_component_nodes": 13,
+        "component_digest_sha256": "39863b557d59dfbe4a5d32772b2c8d261f3d58cd3d4ccfd4f81a00f209e512f9"
+      },
+      "definition": "identity-invariant digest over the blank-node subgraph: blank nodes partitioned into connected components, every triple touching a component collected with its named and literal anchors, each component canonicalized independently, sorted component digests hashed. Complete rather than heuristic. Affordable because components are OWL restrictions of a few triples each; the whole corpus canonicalized at once measured about 29 minutes."
+    }
+  },
+  "reasoner": {
+    "bfo_layer_classes": {
+      "value": 306,
+      "definition": "named classes in the HermiT scope, including the configured CCO extract"
+    },
+    "bfo_layer_files": {
+      "value": 8,
+      "definition": "files loaded into the HermiT scope"
+    },
+    "bfo_layer_imports_unresolved": {
+      "value": 0,
+      "definition": "imports naming an ontology no loaded file provides"
+    },
+    "bfo_layer_consistent": {
+      "value": 1,
+      "definition": "HermiT consistency over the BFO layer"
+    },
+    "bfo_layer_unsatisfiable": {
+      "value": 0,
+      "definition": "unsatisfiable named classes"
+    },
+    "bfo_scope_canonical_sha256": {
+      "value": "fe807a179ba08741f90efe8a42013ed826a321c96b339ba10a65cfe8c43cf13c",
+      "definition": "SHA-256 over sorted N-Triples of the canonicalized union of layout.reasoner_scope()"
+    },
+    "bfo_scope_files": {
+      "value": 8,
+      "definition": "files the layout contract declares as the HermiT scope"
+    }
+  },
+  "artifacts": {
+    "folk_source": {
+      "path": "ThatsAllFolks/folk.ttl",
+      "canonical_sha256": "850e9340b81ecd324b0935abe5b0ff2913e1db8b7f963b712900068e57277289",
+      "canonical_is_invariant": true,
+      "byte_sha256": "e3e4489eb373191c544b02d11c8e09eed6c5ff8b0b4177563e74a5ba21c3f53c",
+      "byte_is_invariant": true
+    },
+    "folk_aligned": {
+      "path": "folk_aligned.ttl",
+      "canonical_sha256": "850e9340b81ecd324b0935abe5b0ff2913e1db8b7f963b712900068e57277289",
+      "canonical_is_invariant": true,
+      "byte_sha256": "d51fb64a148c9acda876b0c1634b850ce9b93913e5a32ce4a8b19e409cb8db57",
+      "byte_is_invariant": false,
+      "byte_transition_note": "The generated header embeds the generator's path, so this changes when the generator moves in the original-valuenet wave. The canonical digest must not."
+    },
+    "cco_extract": {
+      "path": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+      "canonical_sha256": "b3261ad21fc82c4005744cb754c3418476a79515d0f51b50769112ae36f046fc",
+      "canonical_is_invariant": true,
+      "byte_sha256": "ed9cd3a152b864ace9ee187910bf1f4cd9a0b9d45f6b5a0a7cdd8d29ff4e4142",
+      "byte_is_invariant": true
+    }
+  },
+  "tests": {
+    "collected": 692,
+    "default_selected": 677,
+    "default_deselected": 15,
+    "canonical_id_sha256": "1d927a69ebaa63fe02d3809449e8ea2e425ed6028b6d62fa6b5a7694f31825a9",
+    "default_selected_sha256": "ac0726ef76e454968477a3d980c42eb3ece6e6a94ea97dd6a828beb032afbd5a",
+    "deselected_ids": [
+      "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[bfo]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[marep]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[original-valuenet]",
+      "test_destination_state.py::test_every_consumer_resolves_after_each_wave[tests]",
+      "test_folk_generation.py::test_the_check_flag_reports_staleness",
+      "test_ontology_artifacts.py::test_every_ttl_in_the_repository_parses_standalone",
+      "test_ontology_artifacts.py::test_extensions_state_the_serialization",
+      "test_ontology_source_unit.py::test_the_corpus_holds_no_unrecorded_relative_iri",
+      "test_semantic_baseline.py::test_the_canonical_digest_holds_for_every_artifact",
+      "test_semantic_baseline.py::test_the_ground_digest_still_reproduces",
+      "test_semantic_baseline.py::test_the_reasoner_scope_digest_still_reproduces",
+      "test_semantic_baseline.py::test_the_test_baseline_still_reproduces",
+      "test_trigger_shapes.py::test_the_corpus_conforms"
+    ],
+    "canonical_id_collisions": [],
+    "definition": "pytest --collect-only -q, run twice: once with -m 'slow or not slow' for `collected` and once with the configured default for `default_selected`. Each id is reduced to its basename plus node path so directory moves do not perturb it. Both are recorded because a silent deselection leaves `collected` unchanged."
+  }
+}

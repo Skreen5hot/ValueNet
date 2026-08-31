@@ -2,8 +2,15 @@
 # endings are part of the artifact. LF everywhere, on every platform.
 #
 # Without this, core.autocrlf decided the bytes: a Windows checkout produced
-# CRLF, a Linux one LF, and 60 annotation triples across four files differed
-# between them because a CRLF inside a multi-line literal is part of that
-# literal value. The byte digests recorded before this rule describe the
-# machine that measured them.
+# CRLF, a Linux one LF, and the two disagreed about the contents of every
+# multi-line literal, because a CRLF inside one is part of that literal's
+# value. Measured over the whole corpus, that is 77 literal-object triples
+# in 8 files (config/eol-transition-matrix.json, line_ending_transition).
+#
+# 11 of those 77 are sh:select -- SPARQL text a validator executes, not
+# prose somebody reads. The rest are bibRef, rdfs:comment, skos notes and
+# owl:versionInfo. So this is not only a cosmetic difference in annotations.
+#
+# The byte digests recorded before this rule describe the machine that
+# measured them.
 *.ttl text eol=lf

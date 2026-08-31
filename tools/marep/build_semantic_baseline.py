@@ -474,16 +474,22 @@ def load_transition(root: Path, expected_commit: str) -> dict:
     path = root / MATRIX_ARTIFACT
     if not path.is_file():
         raise SystemExit(
-            "no transition matrix at " + MATRIX_ARTIFACT + ". Run "
-            + MATRIX_GENERATOR + " first; this baseline cites its "
-            "measurements and will not invent them.")
+            "no transition matrix at " + MATRIX_ARTIFACT + ". Generate "
+            "both artifacts with python " + EVIDENCE_ORCHESTRATOR + " from "
+            "a clean checkout of this commit; this baseline cites the "
+            "matrix's measurements and will not invent them.")
     raw = path.read_bytes()
     doc = json.loads(raw.decode("utf-8"))
 
     def bad(why):
+        # Both artifacts, not just this one. Regenerating the matrix
+        # alone leaves the reader to notice that the baseline has to
+        # follow, which is the same half-instruction the published
+        # `reproduce` field carried until it was corrected.
         raise SystemExit("refusing the transition matrix: " + why
-                         + ". Regenerate it with " + MATRIX_GENERATOR
-                         + " from this commit.")
+                         + ". Regenerate both artifacts with python "
+                         + EVIDENCE_ORCHESTRATOR + " from a clean checkout "
+                         "of this commit.")
 
     if doc.get("format_version") != MATRIX_FORMAT_VERSION:
         bad("format version %r, expected %r"

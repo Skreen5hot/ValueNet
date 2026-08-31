@@ -387,10 +387,30 @@ def test_both_artifacts_describe_one_commit():
     Two artifacts each internally consistent but generated from different
     commits would still satisfy every field-shape check in this file."""
     m = BASELINE["transition"]["measured"]
-    assert BASELINE["input_commit"] == MATRIX["input_commit"], (
-        "the baseline cites measurements taken from another commit")
     assert m["input_commit"] == MATRIX["input_commit"]
     assert m["working_tree_clean"] is True
+
+    if BASELINE["input_commit"] == MATRIX["input_commit"]:
+        return
+
+    # They may differ, but only across a bridge that exists and holds.
+    # A source-data repair moves the corpus forward while the experiment
+    # stays where it was measured; the matrix is frozen because its
+    # content is a comparison of three checkouts of one commit.
+    #
+    # This is the case the exemption exists for, so it is checked harder
+    # than the equal case, not waved through: the record must name both
+    # ends, the baseline must carry it, and the far end must be this
+    # commit.
+    assert RECORD is not None, (
+        "the baseline cites a matrix from another commit and no "
+        "remediation record explains the gap")
+    assert RECORD["before_commit"] == MATRIX["input_commit"]
+    assert RECORD["after_commit"] == BASELINE["input_commit"]
+    assert m["describes_corpus_at"] == MATRIX["input_commit"]
+    assert m["corpus_repaired_since"]["artifact_sha256"] == hashlib.sha256(
+        RECORD_PATH.read_bytes()).hexdigest(), (
+        "the baseline carries a different record than the one on disk")
 
 
 @needs_evidence
@@ -479,6 +499,7 @@ def test_the_lf_cell_is_actually_lf():
 
 
 @needs_evidence
+@pytest.mark.slow
 def test_the_baseline_measures_the_condition_cell_c_describes():
     """Conclusion 8: the successor baseline is cell C, measured live.
 
@@ -488,9 +509,31 @@ def test_the_baseline_measures_the_condition_cell_c_describes():
     corpus than the matrix reasoned about, and the matrix's conclusions
     have been carried to a state they were never measured on."""
     live = BASELINE["corpus"]["merged_ground_sha256"]["value"]
-    assert live == MATRIX["cells"]["C"]["corpus"]["merged_ground_sha256"], (
-        "HEAD does not reproduce cell C. Confirm .gitattributes is in "
-        "force in this checkout before reading this as a corpus change")
+    cell_c = MATRIX["cells"]["C"]["corpus"]["merged_ground_sha256"]
+    if RECORD is None:
+        assert live == cell_c, (
+            "HEAD does not reproduce cell C. Confirm .gitattributes is in "
+            "force in this checkout before reading this as a corpus change")
+        return
+
+    # A repair landed after cell C was measured, so equality is now the
+    # wrong assertion -- and "they differ, as expected" would be a much
+    # weaker one, satisfied by any corpus change at all.
+    #
+    # What has to hold is that cell C plus exactly the recorded
+    # substitutions is HEAD. Asserted by reverting the recorded files to
+    # their pre-repair contents and re-measuring: if the result is cell
+    # C, then nothing outside the record moved the corpus. Slow, because
+    # it parses everything; this is the join between the experiment and
+    # the artifact it justifies, and it is the only claim here that the
+    # exemption could have quietly hollowed out.
+    assert live != cell_c, (
+        "a repair is recorded but the ground digest is unchanged")
+    assert TOOL.ground_digest_with(
+        REPO, {rel: _text_at(RECORD["before_commit"], rel)
+               for rel in RECORD["corpus_files_changed"]}) == cell_c, (
+        "reverting the recorded files does not reproduce cell C, so the "
+        "corpus moved for reasons the remediation record does not name")
 
 
 @needs_evidence
@@ -609,7 +652,16 @@ def test_the_loader_refuses_a_matrix_from_another_commit():
         "which two disagree cannot act on it")
 
     accepted = TOOL.load_transition(REPO, real)
-    assert accepted["measured"]["input_commit"] == real
+    # The matrix names the commit it measured, which is this one only
+    # when no repair has landed since.
+    assert accepted["measured"]["input_commit"] == MATRIX["input_commit"]
+    if RECORD is None:
+        assert MATRIX["input_commit"] == real
+    else:
+        assert accepted["measured"]["corpus_repaired_since"][
+            "after_commit"] == real, (
+            "the loader accepted this commit without recording what "
+            "separates it from the one the matrix measured")
 
 
 @needs_evidence
@@ -843,6 +895,14 @@ needs_repair_record = pytest.mark.skipif(
            "carries the repair, so it is absent for exactly that commit")
 
 BEFORE_TAG = "eol-hardened-v1"
+
+
+def _text_at(rev, rel):
+    """One file as of one commit, decoded but not parsed."""
+    out = subprocess.run(["git", "show", rev + ":" + rel],
+                         cwd=str(REPO), capture_output=True, text=True)
+    assert out.returncode == 0, rel + " is not in " + rev[:12]
+    return out.stdout
 
 
 def _at_tag(rel):

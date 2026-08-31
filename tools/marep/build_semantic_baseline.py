@@ -169,6 +169,56 @@ def _ground_digest(graph) -> str:
     return hashlib.sha256("\n".join(lines).encode()).hexdigest()
 
 
+def ground_digest_with(root: Path, overrides: dict) -> str:
+    """The corpus ground digest, with named files' text replaced.
+
+    Exists so a claim about a repair can be checked instead of
+    described. Once a source-data fix lands, the successor baseline no
+    longer reproduces the transition matrix's cell C, and the two
+    available assertions are both bad: equality is false, and
+    inequality is satisfied by any corpus change whatsoever.
+
+    Reverting the recorded files and re-measuring gives the assertion
+    that means something -- cell C plus exactly these substitutions is
+    HEAD -- so a change the record does not mention cannot hide behind
+    a change it does.
+
+    `overrides` maps a repository-relative path to the file's text as
+    it was. Every other file is read from the working tree. The
+    document base is derived from the path, so a reverted file parses
+    exactly as it did in the commit it came from.
+    """
+    import rdflib
+
+    from marep import ontology_source as onto
+
+    unknown = sorted(set(overrides) - {
+        p.relative_to(root).as_posix() for p in onto.discover(root)})
+    if unknown:
+        raise ValueError(
+            "these paths are not in the corpus, so overriding them "
+            "would measure something the corpus never contained: "
+            + str(unknown))
+
+    merged = rdflib.Graph()
+    for path in onto.discover(root):
+        rel = path.relative_to(root).as_posix()
+        graph = rdflib.Graph()
+        try:
+            if rel in overrides:
+                graph.parse(data=overrides[rel], format="turtle",
+                            publicID=onto.public_id(rel))
+            else:
+                onto.parse_source(graph, path, root)
+        except Exception:
+            # Unparseable files are outside the merged graph in the
+            # ordinary measurement too; including them here would make
+            # this digest incomparable with the one it checks.
+            continue
+        merged += graph
+    return _ground_digest(merged)
+
+
 def _bnode_shape(graph) -> dict:
     """Identity-invariant digest over the blank-node subgraph.
 

@@ -14,7 +14,7 @@
           "largest_component_nodes": 13,
           "triples_touching": 30040
         },
-        "merged_ground_sha256": "6169cb18e29c59d6deabf51c4e9612b147a3e710554e5bd49faf07b55b2764e7",
+        "merged_ground_sha256": "4bcba70e8ff18c795bbab3992dee6e94b23920449e6ea49c9c14e408220b5150",
         "named_classes": 2889,
         "trigger_statements": 57578
       },
@@ -627,7 +627,19 @@
   },
   "format_version": 2,
   "generated_by": "tools/marep/build_transition_matrix.py",
-  "input_commit": "e5c8edccf5254440bf8bdb7d90ffc8e4593ca8d4",
+  "input_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
+  "invariant_scope": {
+    "corpus_counts_compared": [
+      "class_declarations_summed",
+      "distinct_trigger_objects",
+      "distinct_triples",
+      "files_discovered",
+      "files_parsing",
+      "named_classes",
+      "trigger_statements"
+    ],
+    "definition": "every integer-valued corpus measure. merged_ground_sha256 and merged_bnode_shape are excluded because both legitimately differ between cells -- that difference is the measurement."
+  },
   "invariants": {
     "A_and_B_are_byte_identical_checkouts": true,
     "C_has_no_crlf": true,
@@ -671,8 +683,8 @@
   },
   "measured_from_tag": "reorg-post-move-v1",
   "path_dependence": {
-    "A_first": "6169cb18e29c59d6deabf51c4e9612b147a3e710554e5bd49faf07b55b2764e7",
-    "A_second": "85b18fe869cf5f8404526015b84d97f8e1a508966c3aeae03ec781fb9d4aec18",
+    "A_first": "4bcba70e8ff18c795bbab3992dee6e94b23920449e6ea49c9c14e408220b5150",
+    "A_second": "38160faae4f79dc2564dfd703d75689d8f909ddaa4c6c58f69ad1b33804ca584",
     "definition": "cell A measured twice at two different absolute paths; a difference is the defect the stable base removes",
     "differ": true
   },

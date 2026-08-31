@@ -1,8 +1,13 @@
 {
   "tool_version": 5,
-  "input_commit": "e5c8edccf5254440bf8bdb7d90ffc8e4593ca8d4",
+  "input_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "input_tree_state": "clean apart from the matrix artifact",
-  "reproduce": "python tools/marep/build_semantic_baseline.py",
+  "reproduce": {
+    "command": "python tools/marep/build_evidence.py",
+    "from": "a clean checkout of input_commit",
+    "why": "this baseline cites config/eol-transition-matrix.json and refuses a matrix measured at any other commit, so the two are generated together. The commit they are committed in is necessarily later than the one they describe.",
+    "expect": "the same values in every field except input_commit, the matrix digest cited here, and cell A -- which is the unhardened parser and is path-dependent by definition."
+  },
   "policy": {
     "document_base": "https://valuenet.invalid/source/v1/",
     "line_endings": "lf",
@@ -34,16 +39,16 @@
     },
     "measured": {
       "artifact": "config/eol-transition-matrix.json",
-      "artifact_sha256": "c2ac09bc5472ec9c3f11753ea83eb3f85dec7a3a0d2e2606b68913470cc7df75",
+      "artifact_sha256": "75da3d0b184bb83f20a489f439d291f3176fdc5706b54e8526951e3bc9370716",
       "format_version": 2,
-      "input_commit": "e5c8edccf5254440bf8bdb7d90ffc8e4593ca8d4",
+      "input_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "working_tree_clean": true,
       "cells": {
         "A": {
           "label": "CRLF checkout, filesystem document base",
           "hardened": false,
           "lf": false,
-          "ground": "6169cb18e29c59d6deabf51c4e9612b147a3e710554e5bd49faf07b55b2764e7",
+          "ground": "4bcba70e8ff18c795bbab3992dee6e94b23920449e6ea49c9c14e408220b5150",
           "eol_distribution": {
             "crlf": 168
           },
@@ -71,8 +76,8 @@
         }
       },
       "path_dependence": {
-        "A_first": "6169cb18e29c59d6deabf51c4e9612b147a3e710554e5bd49faf07b55b2764e7",
-        "A_second": "85b18fe869cf5f8404526015b84d97f8e1a508966c3aeae03ec781fb9d4aec18",
+        "A_first": "4bcba70e8ff18c795bbab3992dee6e94b23920449e6ea49c9c14e408220b5150",
+        "A_second": "38160faae4f79dc2564dfd703d75689d8f909ddaa4c6c58f69ad1b33804ca584",
         "definition": "cell A measured twice at two different absolute paths; a difference is the defect the stable base removes",
         "differ": true
       },
@@ -116,6 +121,18 @@
         "C_has_no_crlf": true,
         "corpus_counts_identical_across_cells": true,
         "reasoner_identical_across_cells": true
+      },
+      "invariant_scope": {
+        "corpus_counts_compared": [
+          "class_declarations_summed",
+          "distinct_trigger_objects",
+          "distinct_triples",
+          "files_discovered",
+          "files_parsing",
+          "named_classes",
+          "trigger_statements"
+        ],
+        "definition": "every integer-valued corpus measure. merged_ground_sha256 and merged_bnode_shape are excluded because both legitimately differ between cells -- that difference is the measurement."
       },
       "relative_iris": {
         "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl": [
@@ -223,11 +240,11 @@
     }
   },
   "tests": {
-    "collected": 693,
-    "default_selected": 678,
+    "collected": 696,
+    "default_selected": 681,
     "default_deselected": 15,
-    "canonical_id_sha256": "4365c10700b5949a274548a7a05ef70f822944ce4cdfc6e00e6be5294e4097f6",
-    "default_selected_sha256": "8fc33ffc7732eb18e0717f0bbae4597d52608ca99737ce975ed9761a56e17e97",
+    "canonical_id_sha256": "44c2de7698f7d28f3fd3084a83552a04d7174c796cae9dc3afcdf704e011448c",
+    "default_selected_sha256": "34fb18c9ff865c4b0094c5a7f4979f97b6c6c9f4a63062d1f269ed87780f7318",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

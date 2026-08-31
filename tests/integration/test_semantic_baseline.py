@@ -371,8 +371,13 @@ def test_the_matrix_measured_a_commit_and_not_a_desk():
     contain what it measured, and reads identically to one that does."""
     assert MATRIX["working_tree_clean"] is True
     assert MATRIX["measured_from_tag"] == "reorg-post-move-v1"
-    assert BASELINE["input_tree_state"] in (
-        "clean", "clean apart from the matrix artifact")
+    # Either exactly clean, or clean apart from the one evidence artifact
+    # the orchestrator wrote immediately before the baseline ran. Named,
+    # so "dirty" cannot broaden into a category.
+    state = BASELINE["input_tree_state"]
+    assert state == "clean" or state in (
+        "clean apart from config/eol-transition-matrix.json",
+        "clean apart from config/remediation-record.json"), state
 
 
 @needs_evidence

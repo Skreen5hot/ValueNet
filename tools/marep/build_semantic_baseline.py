@@ -676,12 +676,14 @@ def main(argv=None) -> int:
     # Measuring a dirty tree and recording HEAD attributes the result to a
     # commit that does not contain what was measured.
     #
-    # One exception, by path and no wider: the matrix artifact is written
-    # immediately before this runs, so it is untracked at exactly this
-    # moment. A blanket override would have let any uncommitted change
+    # Two exceptions, by path and no wider. Whichever evidence artifact
+    # the orchestrator wrote immediately before this runs is untracked at
+    # exactly this moment: the matrix on a normal cycle, the remediation
+    # record when a source-data repair landed after the matrix was
+    # measured. A blanket override would have let any uncommitted change
     # through while producing a file indistinguishable from a clean
     # measurement.
-    PERMITTED_UNTRACKED = {MATRIX_ARTIFACT}
+    PERMITTED_UNTRACKED = {MATRIX_ARTIFACT, REMEDIATION_ARTIFACT}
     status = subprocess.run(["git", "status", "--porcelain"],
                             capture_output=True, text=True, cwd=str(root))
     unexpected = []
@@ -691,12 +693,16 @@ def main(argv=None) -> int:
             unexpected.append(rel)
     if unexpected:
         raise SystemExit(
-            "the working tree has changes beyond the matrix artifact, so "
+            "the working tree has changes beyond the evidence artifacts, so "
             "this baseline would describe a state no commit contains: "
             + ", ".join(sorted(unexpected)[:6])
             + ". Commit the measurement code and policies first.")
-    tree_state = ("clean apart from the matrix artifact"
-                  if status.stdout.strip() else "clean")
+    written = sorted(rel for rel in
+                     (line[3:].strip().strip('"')
+                      for line in status.stdout.splitlines())
+                     if rel in PERMITTED_UNTRACKED)
+    tree_state = ("clean apart from " + ", ".join(written)
+                  if written else "clean")
     baseline = {
         "tool_version": TOOL_VERSION,
         # The commit measured, not the commit this file will land in.

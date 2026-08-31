@@ -1,7 +1,7 @@
 {
   "tool_version": 5,
-  "input_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-  "input_tree_state": "clean apart from the matrix artifact",
+  "input_commit": "a7a8188a206b0fbb2ca335b3e3b904f729552b28",
+  "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
     "from": "a clean checkout of input_commit",
@@ -138,6 +138,58 @@
         "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl": [
           "ThatsAllFolks/MFRC_1k_graphs/1"
         ]
+      },
+      "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
+      "corpus_repaired_since": {
+        "artifact": "config/remediation-record.json",
+        "artifact_sha256": "8e538d29049935e1269ef396d57e36d812855079e8883a8ea10536bff2a2457d",
+        "before_tag": "eol-hardened-v1",
+        "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
+        "after_commit": "a7a8188a206b0fbb2ca335b3e3b904f729552b28",
+        "corpus_files_changed": [
+          "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+        ],
+        "substitutions": {
+          "added": [
+            {
+              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+              "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty>"
+            },
+            {
+              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+              "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> \"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+            }
+          ],
+          "count": 2,
+          "removed": [
+            {
+              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+              "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DataTypeProperty>"
+            },
+            {
+              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+              "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <https://valuenet.invalid/source/v1/ThatsAllFolks/MFRC_1k_graphs/1>"
+            }
+          ]
+        },
+        "not_remediated": {
+          "archive": {
+            "bytes": 1732230,
+            "defect": "dul:hasDataValue objects are relative IRI references (<1>, <22>, <4200>) rather than literals, and the property is declared owl:DataTypeProperty, which is not an OWL term. Both are the FRED export's behaviour, not damage to this copy.",
+            "detection": "python -c \"import zipfile,rdflib,collections;z=zipfile.ZipFile('ThatsAllFolks/MFRC_1k_ESWC.zip');P=rdflib.URIRef('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue');c=collections.Counter();[c.update({n:sum(1 for _ in rdflib.Graph().parse(data=z.read(n).decode('utf-8'),format='turtle',publicID='https://probe.invalid/'+n).triples((None,P,None)))}) for n in z.namelist() if n.endswith('.ttl') and not n.startswith('__MACOSX')];print(sum(1 for v in c.values() if v),sum(c.values()))\"",
+            "disposition": "permanent upstream debt; bytes preserved. Repacking would fork an unaudited binary that nothing reads and no check measures, and would diverge from upstream for no observable effect.",
+            "excluded_from_live_corpus": true,
+            "members_affected": 139,
+            "members_with_misdeclared_property": 139,
+            "note": "No runtime test opens this archive. Tests assert its sha256 over the bytes, which is how 'unchanged' is checked without treating it as a corpus.",
+            "occurrences": 181,
+            "path": "ThatsAllFolks/MFRC_1k_ESWC.zip",
+            "sha256": "51eda226ea192938de2513c0a393da73b64f1e34431936b1ccb1d156004a0656",
+            "turtle_members": 908,
+            "why_excluded": "marep.ontology_source.discover() walks Turtle files in the working tree. Archive members are not files in the working tree, so no corpus measure, digest or reasoner run has ever seen them. The one member extracted into ThatsAllFolks/MFRC_1k_graphs/ is measured; the other members are not."
+          }
+        },
+        "verified": "the changed-file list was re-derived from git by this baseline rather than taken from the record"
       }
     }
   },
@@ -171,7 +223,7 @@
       "definition": "distinct objects of vcvf:triggers"
     },
     "merged_ground_sha256": {
-      "value": "ffbce424c7272fa131b367f0de246e5725e55e3b0c36c3aef059a4616ee25ef5",
+      "value": "c181f4ba256ce43a44cf422e259484fae7dced75b0d41e053d7e5896f0be1149",
       "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
     },
     "merged_bnode_shape": {
@@ -240,11 +292,11 @@
     }
   },
   "tests": {
-    "collected": 696,
-    "default_selected": 681,
-    "default_deselected": 15,
-    "canonical_id_sha256": "44c2de7698f7d28f3fd3084a83552a04d7174c796cae9dc3afcdf704e011448c",
-    "default_selected_sha256": "34fb18c9ff865c4b0094c5a7f4979f97b6c6c9f4a63062d1f269ed87780f7318",
+    "collected": 707,
+    "default_selected": 691,
+    "default_deselected": 16,
+    "canonical_id_sha256": "0203beb99e119a780efb06e0407f8f8a70e7f2521fc121c393900a65a28182e3",
+    "default_selected_sha256": "48255116a11b8484f6d959bd2466b5dccbc1872dc9bd046c50e83dbc588bcc4b",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",
@@ -256,6 +308,7 @@
       "test_ontology_artifacts.py::test_every_ttl_in_the_repository_parses_standalone",
       "test_ontology_artifacts.py::test_extensions_state_the_serialization",
       "test_ontology_source_unit.py::test_the_corpus_holds_no_unrecorded_relative_iri",
+      "test_semantic_baseline.py::test_the_baseline_measures_the_condition_cell_c_describes",
       "test_semantic_baseline.py::test_the_canonical_digest_holds_for_every_artifact",
       "test_semantic_baseline.py::test_the_ground_digest_still_reproduces",
       "test_semantic_baseline.py::test_the_reasoner_scope_digest_still_reproduces",

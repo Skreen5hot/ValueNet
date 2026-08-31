@@ -1,0 +1,54 @@
+{
+  "after_commit": "a7a8188a206b0fbb2ca335b3e3b904f729552b28",
+  "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
+  "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle file differs between the two, so citing the tag as the before-state is accurate; that was checked, not assumed.",
+  "before_tag": "eol-hardened-v1",
+  "before_tag_commit": "2475e3480bfd40ed2b010e31990ff41ffd1e07be",
+  "corpus_files_changed": [
+    "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+  ],
+  "format_version": 1,
+  "generated_by": "tools/marep/build_remediation_record.py",
+  "not_remediated": {
+    "archive": {
+      "bytes": 1732230,
+      "defect": "dul:hasDataValue objects are relative IRI references (<1>, <22>, <4200>) rather than literals, and the property is declared owl:DataTypeProperty, which is not an OWL term. Both are the FRED export's behaviour, not damage to this copy.",
+      "detection": "python -c \"import zipfile,rdflib,collections;z=zipfile.ZipFile('ThatsAllFolks/MFRC_1k_ESWC.zip');P=rdflib.URIRef('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue');c=collections.Counter();[c.update({n:sum(1 for _ in rdflib.Graph().parse(data=z.read(n).decode('utf-8'),format='turtle',publicID='https://probe.invalid/'+n).triples((None,P,None)))}) for n in z.namelist() if n.endswith('.ttl') and not n.startswith('__MACOSX')];print(sum(1 for v in c.values() if v),sum(c.values()))\"",
+      "disposition": "permanent upstream debt; bytes preserved. Repacking would fork an unaudited binary that nothing reads and no check measures, and would diverge from upstream for no observable effect.",
+      "excluded_from_live_corpus": true,
+      "members_affected": 139,
+      "members_with_misdeclared_property": 139,
+      "note": "No runtime test opens this archive. Tests assert its sha256 over the bytes, which is how 'unchanged' is checked without treating it as a corpus.",
+      "occurrences": 181,
+      "path": "ThatsAllFolks/MFRC_1k_ESWC.zip",
+      "sha256": "51eda226ea192938de2513c0a393da73b64f1e34431936b1ccb1d156004a0656",
+      "turtle_members": 908,
+      "why_excluded": "marep.ontology_source.discover() walks Turtle files in the working tree. Archive members are not files in the working tree, so no corpus measure, digest or reasoner run has ever seen them. The one member extracted into ThatsAllFolks/MFRC_1k_graphs/ is measured; the other members are not."
+    }
+  },
+  "substitutions": {
+    "added": [
+      {
+        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+        "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty>"
+      },
+      {
+        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+        "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> \"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      }
+    ],
+    "count": 2,
+    "removed": [
+      {
+        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+        "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DataTypeProperty>"
+      },
+      {
+        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+        "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <https://valuenet.invalid/source/v1/ThatsAllFolks/MFRC_1k_graphs/1>"
+      }
+    ]
+  },
+  "why": "The transition matrix measured the corpus at eol-hardened-v1. This repair changed the corpus after that measurement. The matrix is left frozen because its content is a comparison of three checkouts of one commit; re-running it against a later corpus would replace the experiment rather than repeat it. This record is what lets the successor baseline cite the older matrix without pretending the two describe the same corpus.",
+  "working_tree_clean": true
+}

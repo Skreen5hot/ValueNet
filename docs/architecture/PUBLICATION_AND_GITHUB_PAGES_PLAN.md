@@ -110,7 +110,7 @@ may begin while they are pending.
 | Citation | add `CITATION.cff` with title, authors, repository URL, preferred citation, and version policy | repository owner supplies authorship/citation |
 | Initial public URL | `https://skreen5hot.github.io/ValueNet/` | repository owner confirms casing and account |
 | Canonical namespace relationship | documentation site only for v1; state visibly that `https://fandaws.com/ontology/bfo/...` IRIs are identifiers that do not currently resolve, and do not claim dereferenceability unless routing is configured and tested | ontology lead decides later custom-domain work |
-| Existing namespace annotation | `valuenet-core.ttl` currently calls the namespace “canonical, resolvable”; either configure and test resolution or correct that annotation in a separately scoped RDF change before launch | ontology lead resolves the contradiction |
+| Existing namespace annotation | **Resolved.** `valuenet-core.ttl` called the namespace “canonical, resolvable” while it resolved to nothing; the publication-metadata cycle corrected the annotation to say the IRIs are identifiers and are not currently HTTP-dereferenceable | closed |
 | Download version label | label the Pages build `latest from main` plus its full commit; reserve “release” for a signed-off Git tag or GitHub Release | dev team implements |
 
 The absence of a root license and citation record is a **launch blocker**, not a
@@ -133,12 +133,12 @@ click into a silent 404, label the namespace “resolvable”, or imply that the
 GitHub Pages project URL is the ontology namespace. Making the canonical domain
 dereferenceable is future routing/content-negotiation work outside this plan.
 
-The current `valuenet-core.ttl` ontology comment says the namespace is
-“canonical, resolvable,” which conflicts with the observed HTTP state. The site
-must not repeat that claim. Before launch, either resolution is configured and
-verified or the ontology annotation is corrected through a separate,
-evidence-bearing RDF change; this site plan itself authorizes neither.
-
+`valuenet-core.ttl` previously said the namespace was “canonical,
+resolvable”, which conflicted with the observed HTTP state. The
+publication-metadata cycle corrected it: the annotation now says the
+IRIs are identifiers and are not currently HTTP-dereferenceable, so the
+ontology and the site say the same thing. Making the canonical domain
+dereferenceable remains future routing work outside this plan.
 ---
 
 ## 5. Information architecture
@@ -197,13 +197,29 @@ For every authored public BFO module, show:
 Vendored BFO and CCO dependencies are identified separately and are not
 presented as ValueNet-authored modules.
 
-`ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl` is an
-authored public semantics extension and receives a module card and download. It
-intentionally declares zero classes: it supplies annotation semantics for the
-upstream `vcvf:triggers` property. Zero is displayed as a measured property of
-the module, not treated as a discovery failure. The file contributes to the
-interoperability model but not to the class index.
+The eleven public Turtle deliverables divide into two groups.
 
+**Primary modules** (seven) carry the ontology and its semantics:
+core, Schwartz values, folk, moral foundations, moral epistemics,
+mappings, and trigger semantics. Two of them declare no classes --
+mappings contributes annotations to classes defined elsewhere, and
+trigger semantics supplies annotation semantics for an upstream
+property. Zero is displayed as a measured property with its reason,
+not as a discovery failure.
+
+**Validation and examples** (four) are presented in their own section:
+the three SHACL graphs and the worked scenario. They are published,
+downloadable, and in the authored bundle, but contribute no class
+records -- a shape constrains rather than declares, and a scenario is
+individuals. Keeping them out of the module list stops a reader
+treating a constraint graph as part of the vocabulary.
+
+Every card's title and description are **extracted** from exactly one
+`dcterms:title` and one `dcterms:description` on the module's ontology
+header. All eleven carry both, plus `dcterms:license`. Curated display
+names and purposes have been removed from `site/content/site.json`; a
+module described in two places is a module whose two descriptions can
+disagree.
 ### 5.5 Downloads
 
 - individual canonical `.ttl` modules;

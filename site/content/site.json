@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "note": "Curated public copy only. This file deliberately contains no repository paths: config/repository-layout.yaml is authoritative for where files live, and a path duplicated here would be a second place that can drift. Modules are named by logical key; Phase 2 binds each key to a layout-contract component identifier. Everything derivable from the ontology - class counts, definition coverage, category distribution - is generated at build time and must not appear here.",
+  "note": "Curated public copy only. This file holds no repository paths and no value the build can derive. Every catalog entry binds to a logical component in config/repository-layout.yaml, which is authoritative for where the file is; titles, descriptions, class counts, definition coverage and category distribution are extracted from the ontology headers at build time. A display name or purpose written here would be a second description of a module that can drift from the module.",
   "site": {
     "name": "BFO-Aligned ValueNet",
     "tagline": "An ontology of human values as realizable entities",
@@ -45,7 +45,7 @@
         "downloads"
       ],
       "text": "Canonical ValueNet IRIs identify ontology entities but are not currently HTTP-dereferenceable. Use the explorer, repository source links, or module downloads to inspect their definitions.",
-      "why": "The canonical namespace does not resolve today. An IRI rendered as a link would send a reader to a 404 and imply the ontology is broken. IRIs stay copyable and searchable and are never presented as fetchable URLs."
+      "why": "The canonical namespace does not resolve today. An IRI rendered as a link would send a reader to a 404 and imply the ontology is broken. IRIs stay copyable and searchable and are never presented as fetchable URLs. The core module's own namespace policy now says the same thing; it previously called the namespace resolvable, and that was corrected in the publication-metadata cycle rather than repeated here."
     },
     "reserved_aliases": {
       "text": "The w3id.org ValueNet IRIs that appear as rdfs:seeAlso are reserved aliases. They are not registered, nothing is declared under them, and no query should rely on them.",
@@ -105,60 +105,6 @@
       "body": "Every class descends from a BFO or CCO term, so ValueNet composes with other BFO-aligned ontologies instead of needing a bespoke bridge to each one."
     }
   ],
-  "modules": [
-    {
-      "key": "valuenet-core",
-      "display_name": "ValueNet Core",
-      "authored": true,
-      "indexed": true,
-      "purpose": "Top-level entities: the disposition and role split, realization and violation processes, and the textual-evidence chain. Every other module imports this."
-    },
-    {
-      "key": "valuenet-schwartz-values",
-      "display_name": "Schwartz Values",
-      "authored": true,
-      "indexed": true,
-      "purpose": "Schwartz's ten Basic Human Values as BFO dispositions, serving as the high-level classification for finer-grained terms."
-    },
-    {
-      "key": "valuenet-folk",
-      "display_name": "Folk Values",
-      "authored": true,
-      "indexed": true,
-      "purpose": "The folk-value vocabulary, the large and specific layer people actually name in text, classified under the Schwartz values.",
-      "note": "This module declares no dcterms:title or dcterms:description. Its display name and purpose here are curated, not extracted, and are marked as such wherever the site distinguishes generated from authored copy."
-    },
-    {
-      "key": "valuenet-moral-foundations",
-      "display_name": "Moral Foundations",
-      "authored": true,
-      "indexed": true,
-      "purpose": "Haidt's Moral Foundations as BFO dispositions, with the violation processes that contravene them."
-    },
-    {
-      "key": "valuenet-moral-epistemics",
-      "display_name": "Moral Epistemics",
-      "authored": true,
-      "indexed": true,
-      "purpose": "The cognitive acts by which agents assess one another morally: behavioural observation, prudent discernment, and rash judgment."
-    },
-    {
-      "key": "valuenet-mappings",
-      "display_name": "Mappings",
-      "authored": true,
-      "indexed": false,
-      "purpose": "Annotation-only correspondences from BFO-aligned terms to the original ValueNet and related value ontologies.",
-      "note": "Declares no classes. It contributes mapping annotations to classes defined elsewhere, so it appears in the module catalog and downloads but produces no class records."
-    },
-    {
-      "key": "vcvf-triggers-semantics",
-      "display_name": "Trigger Semantics",
-      "authored": true,
-      "indexed": false,
-      "purpose": "Supplies the definition ValueCore omits for the vcvf:triggers property. Annotation only; it adds no logical axiom.",
-      "note": "Declares zero classes by design. The module card displays zero as a measured property, not as a discovery failure. This module also declares no dcterms:title; its display name is curated."
-    }
-  ],
   "vendored": {
     "label": "Upstream dependencies",
     "body": "BFO core and a pinned Common Core Ontologies extract are included so the suite can be loaded offline. They are upstream material under their own licenses, are never presented as ValueNet-authored modules, and are excluded from the authored class catalog and the default download bundle."
@@ -176,5 +122,74 @@
     "base_path": "/ValueNet/",
     "why": "Recorded here so the value is read rather than retyped. The site tests copy the built artifact under a directory named from base_path and resolve every reference from there, which is the shape production has; a hard-coded directory name in a test would keep passing after the project path changed.",
     "constraint": "Every internal URL stays relative. base_path is what the site is served under, not something the markup embeds: a root-absolute /ValueNet/... would break the moment the site moved, and would work in local preview until then."
+  },
+  "catalog": {
+    "note": "Eleven public Turtle deliverables. Seven primary modules carry the ontology and its semantics; four supporting graphs are published and downloadable but contribute no class records. All eleven are in the authored download bundle.",
+    "extraction": "Each entry's title and description come from exactly one dcterms:title and one dcterms:description on the ontology header of the bound component. A module with neither, or with more than one of either, fails the build rather than falling back to curated text.",
+    "primary": [
+      {
+        "key": "valuenet-core",
+        "component": "bfo.module.core",
+        "indexed": true
+      },
+      {
+        "key": "valuenet-schwartz-values",
+        "component": "bfo.module.schwartz-values",
+        "indexed": true
+      },
+      {
+        "key": "valuenet-folk",
+        "component": "bfo.module.folk",
+        "indexed": true
+      },
+      {
+        "key": "valuenet-moral-foundations",
+        "component": "bfo.module.moral-foundations",
+        "indexed": true
+      },
+      {
+        "key": "valuenet-moral-epistemics",
+        "component": "bfo.module.moral-epistemics",
+        "indexed": true
+      },
+      {
+        "key": "valuenet-mappings",
+        "component": "bfo.module.mappings",
+        "indexed": false,
+        "editorial": "Excluded from the class index because it declares no classes: it contributes mapping annotations to classes defined elsewhere."
+      },
+      {
+        "key": "vcvf-triggers-semantics",
+        "component": "bfo.module.trigger-semantics",
+        "indexed": false,
+        "editorial": "Excluded from the class index because it declares no classes. Zero is a property of the module, not a discovery failure: it supplies annotation semantics for an upstream property."
+      }
+    ],
+    "supporting": [
+      {
+        "key": "valuenet-core-shapes",
+        "component": "bfo.validation.core-shapes",
+        "indexed": false,
+        "editorial": "A SHACL graph constrains rather than declares, so it contributes no class records."
+      },
+      {
+        "key": "valuenet-moral-epistemics-shapes",
+        "component": "bfo.validation.moral-epistemics-shapes",
+        "indexed": false,
+        "editorial": "A SHACL graph constrains rather than declares."
+      },
+      {
+        "key": "vcvf-triggers-shapes",
+        "component": "bfo.validation.trigger-shapes",
+        "indexed": false,
+        "editorial": "A SHACL graph constrains rather than declares."
+      },
+      {
+        "key": "valuenet-moral-epistemics-scenario",
+        "component": "bfo.scenario",
+        "indexed": false,
+        "editorial": "A worked scenario of invented individuals, published as an example. Individuals are not classes, so it contributes no class records."
+      }
+    ]
   }
 }

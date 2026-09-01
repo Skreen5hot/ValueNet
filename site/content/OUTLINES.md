@@ -72,14 +72,30 @@ section.
 
 ## Modules
 
-One card per authored module: purpose, canonical namespace, source path,
-imports, class count, definition coverage, relationships, download link.
-Counts and coverage are generated. Two modules legitimately show zero classes;
-zero is rendered as a measured value with a one-line reason, not as an error.
+Two sections, because the eleven deliverables are not one kind of
+thing.
 
-Vendored BFO and CCO appear in a separate, clearly labelled dependencies
-section.
+**Primary modules** (seven): purpose, canonical namespace, source path,
+imports, class count, definition coverage, relationships, download
+link. Title and description are extracted from the ontology header;
+counts and coverage are generated. Two of the seven legitimately show
+zero classes, rendered as a measured value with the editorial reason
+beside it.
 
+**Validation and examples** (four): three SHACL graphs and one worked
+scenario. Published, downloadable, and in the authored bundle, but
+contributing no class records — a shape constrains rather than
+declares, and a scenario is individuals. Presented in their own
+section so a reader is not invited to read a constraint graph as part
+of the vocabulary.
+
+Vendored BFO and CCO appear in a separate, clearly labelled
+dependencies section and are in neither count.
+
+Nothing on these cards is written in `site.json`. It holds the
+identity, the component binding, the indexing status, and an editorial
+note where a decision needs explaining; everything a reader sees comes
+from the ontology or the build.
 ## Downloads
 
 Individual modules, a deterministic bundle, and a checksum manifest. Each entry

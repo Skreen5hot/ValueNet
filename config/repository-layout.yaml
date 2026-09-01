@@ -108,6 +108,98 @@ components:
       reclassified three files after the move while reporting zero changes
       against the unmoved tree.
 
+  # ---- The eleven public Turtle deliverables, one component each. ----
+  #
+  # site/content/site.json binds each catalog entry to one of these
+  # identifiers. Before they existed the contract held only directory
+  # groups, so a catalog entry could name a file that was not there and
+  # nothing would have noticed.
+  #
+  # Seven primary modules carry the ontology and its semantics. Four
+  # supporting graphs -- three SHACL and one worked scenario -- are
+  # published and downloadable but contribute no class records: shapes
+  # constrain rather than declare, and the scenario is individuals.
+
+  - id: bfo.module.core
+    path: ontology/bfo/core/valuenet-core.ttl
+    moves_to: null
+    role: ontology-module
+    description: >-
+      Top-level entities: the disposition and role split beneath one
+      realizable-entity superclass, realization and violation processes,
+      and the CCO-based textual-evidence chain. Every other module imports
+      it.
+
+  - id: bfo.module.schwartz-values
+    path: ontology/bfo/core/valuenet-schwartz-values.ttl
+    moves_to: null
+    role: ontology-module
+    description: >-
+      Schwartz's ten Basic Human Values as BFO dispositions, the
+      high-level classification the finer-grained terms hang from.
+
+  - id: bfo.module.folk
+    path: ontology/bfo/core/valuenet-folk.ttl
+    moves_to: null
+    role: ontology-module
+    description: >-
+      The folk-value vocabulary: the large, specific layer people actually
+      name in text, classified under the Schwartz values.
+
+  - id: bfo.module.moral-foundations
+    path: ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl
+    moves_to: null
+    role: ontology-module
+    description: >-
+      Haidt's Moral Foundations as dispositions, with the violation
+      processes that contravene them.
+
+  - id: bfo.module.moral-epistemics
+    path: ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl
+    moves_to: null
+    role: ontology-module
+    description: >-
+      The cognitive acts by which agents assess one another morally.
+
+  - id: bfo.module.mappings
+    path: ontology/bfo/core/valuenet-mappings.ttl
+    moves_to: null
+    role: ontology-module
+    description: >-
+      Annotation-only correspondences to the original ValueNet. Declares
+      no classes; contributes mapping annotations to classes defined
+      elsewhere.
+
+  - id: bfo.module.trigger-semantics
+    path: ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl
+    moves_to: null
+    role: ontology-module
+    description: >-
+      Supplies the definition ValueCore omits for vcvf:triggers.
+      Annotation only, and declares no classes by design.
+
+  - id: bfo.validation.core-shapes
+    path: ontology/bfo/shapes/valuenet-core-shapes.ttl
+    moves_to: null
+    role: ontology-validation
+    description: >-
+      SHACL constraints on the core evidence chain.
+
+  - id: bfo.validation.moral-epistemics-shapes
+    path: ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl
+    moves_to: null
+    role: ontology-validation
+    description: >-
+      SHACL constraints on the moral-epistemics extension.
+
+  - id: bfo.validation.trigger-shapes
+    path: ontology/bfo/shapes/vcvf-triggers-shapes.ttl
+    moves_to: null
+    role: ontology-validation
+    description: >-
+      SHACL constraints enforcing the vcvf:triggers direction convention
+      and declaration requirement, which an OWL range axiom cannot: a
+      range entails rather than validates.
   - id: bfo.vendored
     path: BFO
     moves_to: ontology/bfo/vendor

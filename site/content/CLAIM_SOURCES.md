@@ -29,14 +29,26 @@ curated string contains a number the build could have derived.
 
 | claim | source | kind |
 |---|---|---|
-| Core, Schwartz, moral-foundations, moral-epistemics, mappings purposes | `dcterms:description` on each module's `owl:Ontology` | quoted or condensed |
-| Folk module purpose | **curated** — the module declares no `dcterms:title` or `dcterms:description` | curated, flagged |
-| Trigger-semantics purpose | `dcterms:description` on its ontology | quoted |
-| Trigger semantics adds no logical axiom | its own description states annotation-only | quoted |
-| Mappings adds no logical axioms | `dcterms:description` states annotation-only correspondences | quoted |
-| Which modules declare zero classes | generated at build time | generated |
+| Every module's title | one `dcterms:title` on its ontology header | extracted |
+| Every module's description | one `dcterms:description` on its ontology header | extracted |
+| Every module's licence | `dcterms:license` on its ontology header, CC BY 4.0 | extracted |
+| Where each module lives | its logical component in [repository-layout.yaml](../../config/repository-layout.yaml) | contract |
 | Class counts, definition coverage, category distribution | generated at build time | generated |
+| Which modules declare zero classes | generated at build time | generated |
 | Import relationships | `owl:imports` in each module | asserted |
+| Why a module is excluded from the class index | [site.json](site.json) `editorial` | curated, flagged |
+
+All eleven deliverables carry a title, a description and a licence.
+None is curated: the publication-metadata cycle added the three that
+were missing, taking each module's own `rdfs:label` and `rdfs:comment`
+rather than authoring new prose. `site.json` no longer holds a display
+name or a purpose for any module — a second description of a module is
+a thing that can drift from the module.
+
+The catalog partitions into **seven primary** modules and **four
+supporting** graphs: three SHACL and one worked scenario. All eleven
+are downloadable; only the primary ones with classes contribute class
+records.
 
 ## Claims about mappings
 
@@ -50,14 +62,17 @@ curated string contains a number the build could have derived.
 
 | claim | source | kind |
 |---|---|---|
-| Canonical IRIs do not currently resolve | observed HTTP state; recorded in publication plan §4.1 | measured |
+| Canonical IRIs do not currently resolve | observed HTTP state | measured |
 | w3id aliases are reserved and unregistered | namespace-policy `rdfs:comment` in valuenet-core.ttl | quoted |
-| The core module currently calls the namespace "resolvable" | same comment | quoted — **known contradiction** |
+| The core module says the IRIs are identifiers, not fetchable URLs | the same comment, as corrected | quoted |
 
-The last row is a live conflict between the ontology and observed reality. The
-site must not repeat the "resolvable" claim. Correcting the annotation is a
-separately scoped RDF change that this plan does not authorize, and it is a
-launch blocker recorded in the publication plan's decision table.
+The namespace contradiction is **resolved**. The core module used to
+call the namespace "canonical, resolvable" while it resolved to
+nothing; the publication-metadata cycle corrected that annotation to
+say the IRIs are identifiers and are not currently
+HTTP-dereferenceable. The site and the ontology now say the same
+thing, so the site is no longer declining to repeat a claim its own
+source made.
 
 ## Claims about validation
 

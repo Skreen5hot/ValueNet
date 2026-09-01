@@ -142,6 +142,11 @@ def check_built(out: Path) -> list[str]:
         rel = page.relative_to(out).as_posix()
         if "not currently HTTP-dereferenceable" not in text:
             problems.append(rel + " omits the IRI-resolution notice")
+        if "substantial assistance from Anthropic Claude and OpenAI "                 "Codex" not in text:
+            problems.append(
+                rel + " omits the contributor acknowledgment. The AI "
+                      "assistance here was substantive; a page that states "
+                      "authorship without it understates what was done.")
         if "CC BY 4.0" not in text or "Apache 2.0" not in text:
             problems.append(rel + " omits the licence notice")
         if "not covered" not in text:

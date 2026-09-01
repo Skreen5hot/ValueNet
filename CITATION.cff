@@ -58,7 +58,35 @@ references:
       repository grants no rights over it.
     repository-code: https://github.com/StenDoipanni/ValueNet
     authors:
-      - name: The original ValueNet authors
+      - given-names: Stefano
+        family-names: De Giorgis
+  # Computational contributors. Deliberately referenced rather than
+  # listed as authors: authorship carries responsibility for the
+  # accuracy and integrity of the work, which an AI system cannot
+  # assume. Credited in full in ACKNOWLEDGMENTS.md.
+  - type: software
+    title: Claude
+    version: Claude Opus 5
+    notes: >-
+      Substantial assistance with ontology engineering, implementation,
+      testing, evidence design, review and documentation. The model
+      identifier is the one recorded in the Co-Authored-By trailer of
+      the commits it contributed to, not a version reconstructed after
+      the fact.
+    url: https://www.anthropic.com/claude
+    authors:
+      - name: Anthropic
+
+  - type: software
+    title: Codex
+    notes: >-
+      Assistance with implementation and code during the repository's
+      development. Product-level name only: no model identifier was
+      recorded at the time, and none is reconstructed here.
+    url: https://openai.com/codex
+    authors:
+      - name: OpenAI
+
   - type: software
     title: Basic Formal Ontology (BFO) 2020
     repository-code: https://github.com/BFO-ontology/BFO-2020

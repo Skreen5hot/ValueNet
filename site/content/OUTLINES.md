@@ -92,6 +92,18 @@ and never re-serializes. License and attribution links sit on this page, and
 until Phase 0 issues them the page carries the license-pending notice rather
 than a link to a file that does not exist.
 
+## About and credits
+
+| block | content | source |
+|---|---|---|
+| Acknowledgment | The one-sentence credit, repeated in the footer of every page | curated (`site.json`) |
+| Authorship | Why the AI agents are credited but not listed as authors | curated |
+| Computational contributors | Claude with its recorded model identifier; Codex at product level | curated |
+| Original ValueNet | The source tradition and its author | curated |
+| Upstream ontologies | BFO and CCO under their own licences | curated |
+
+The acknowledgment appears in the footer of every page, not only here. A credit reachable only by navigating to it is one most readers never see, and the assistance was substantive enough that understating it would misdescribe the work.
+
 ## Documentation
 
 Curated links, in reading order: BFO alignment rationale, annotation guide,

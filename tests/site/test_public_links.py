@@ -60,7 +60,7 @@ def test_the_build_produced_the_expected_pages(built):
     assert pages == {
         "index.html", "explore/index.html", "models/index.html",
         "modules/index.html", "downloads/index.html",
-        "documentation/index.html",
+        "documentation/index.html", "about/index.html",
     }
 
 
@@ -139,6 +139,13 @@ def test_every_page_carries_the_notices_the_plan_requires(built):
         # the project licences without the exclusion reads as
         # licensing the upstream corpus too.
         assert "not covered" in text, rel
+        # The contributor credit sits in every footer, not only on the
+        # About page. A credit reachable only by navigating to it is one
+        # most readers never see, and the assistance was substantive
+        # enough that understating it would misdescribe the work.
+        assert ("substantial assistance from Anthropic Claude and OpenAI "
+                "Codex") in text, rel
+        assert "Aaron Damiano" in text, rel
 
 
 def test_the_build_stamp_is_substituted_on_every_page(built):

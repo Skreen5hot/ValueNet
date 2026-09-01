@@ -8,6 +8,8 @@ acts. The suite is grounded in the Basic Formal Ontology (BFO) and reuses
 Common Core Ontologies (CCO) terms for the information entities that carry
 textual evidence.
 
+**Developed by Aaron Damiano with substantial assistance from Anthropic Claude and OpenAI Codex agents.** See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md).
+
 ---
 
 ## Why BFO alignment
@@ -243,4 +245,4 @@ Which licence governs a given file is derived rather than listed:
 python tools/licensing/disposition.py
 ```
 
-See [LICENSE](LICENSE) for the full policy and [CITATION.cff](CITATION.cff) for how to cite the suite. No ontology release has been tagged yet; cite the repository and the commit you used.
+See [LICENSE](LICENSE) for the full policy, [CITATION.cff](CITATION.cff) for how to cite the suite, and [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) for contributor credit. No ontology release has been tagged yet; cite the repository and the commit you used.

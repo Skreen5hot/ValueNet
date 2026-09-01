@@ -31,6 +31,10 @@
     {
       "key": "documentation",
       "label": "Documentation"
+    },
+    {
+      "key": "about",
+      "label": "About"
     }
   ],
   "notices": {
@@ -59,6 +63,15 @@
       "text": "Project-authored ontologies, documentation and site content are licensed CC BY 4.0; project-authored code and tooling are licensed Apache 2.0. Both permit commercial use and modification with attribution.",
       "exclusion": "The original ValueNet material this suite maps to is not covered. Its licence has not been identified, no rights are granted over it, and it is excluded from the download bundle.",
       "why": "Replaces the licence-pending placeholder carried while Phase 0 was outstanding. The exclusion is stated wherever the licence is: a permissive grant printed without it would read as covering everything in the repository."
+    },
+    "acknowledgment": {
+      "scope": [
+        "all"
+      ],
+      "text": "Developed by Aaron Damiano with substantial assistance from Anthropic Claude and OpenAI Codex agents.",
+      "detail": "Aaron Damiano is the citable human author and is answerable for the content. The AI agents are credited and referenced but are not listed as authors: authorship carries responsibility for accuracy and integrity that an AI system cannot assume.",
+      "why": "The assistance was substantive rather than incidental. A generic AI-assisted footnote would understate it and leave a reader unable to judge it. Recorded on every page rather than on one, because a credit reachable only by navigation is a credit most readers never see.",
+      "identifiers": "Claude is named with the model identifier recorded in commit trailers at the time. Codex is named at product level only, because no identifier was recorded and inventing one afterwards would be worse than the absence."
     }
   },
   "product_hierarchy": [

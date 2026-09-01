@@ -290,6 +290,27 @@ def test_the_governance_files_exist_and_cross_reference():
     assert "BSD-3-Clause" in notices and "CC BY 4.0" in notices
     assert "cff-version" in citation and "CC-BY-4.0" in citation
 
+    # Contributor credit, required alongside the terms rather than in a
+    # separate document nobody is pointed at.
+    # Whitespace-normalised. These are wrapped prose documents and a
+    # literal search straddles the line break -- the same defect that made
+    # the site notice checks report six pages as missing text they carried,
+    # fixed there and promptly reintroduced here.
+    flat = lambda t: " ".join(t.split())  # noqa: E731
+    ack = flat((REPO / "ACKNOWLEDGMENTS.md").read_text(encoding="utf-8"))
+    readme = flat((REPO / "README.md").read_text(encoding="utf-8"))
+    sentence = ("Developed by Aaron Damiano with substantial assistance from "
+                "Anthropic Claude and OpenAI Codex agents.")
+    assert sentence in ack, "ACKNOWLEDGMENTS.md omits the credit sentence"
+    assert sentence in readme, "README omits the credit sentence"
+    assert "ACKNOWLEDGMENTS.md" in readme, (
+        "the README states the credit but does not link the detail")
+    for contribution in ("ontology engineering", "Implementation", "Testing",
+                         "Evidence design", "Review", "Documentation"):
+        assert contribution.lower() in ack.lower(), (
+            "ACKNOWLEDGMENTS.md does not describe " + contribution
+            + "; a generic AI-assisted note is what this replaces")
+
 
 def test_the_classifier_refuses_without_upstream(monkeypatch):
     """Absence of the remote must not read as evidence of fork authorship.
@@ -409,3 +430,31 @@ def test_the_citation_record_claims_no_release():
         "a version is claimed but no ontology release has been tagged")
     assert "date-released" not in doc
     assert doc["license"] == "CC-BY-4.0"
+
+    # Authorship is human and singular; the AI agents are referenced.
+    # Authorship carries responsibility for accuracy and integrity that an
+    # AI system cannot assume, so listing them as authors would assert
+    # something none of them can stand behind.
+    authors = doc["authors"]
+    assert len(authors) == 1, [a.get("family-names") for a in authors]
+    assert authors[0]["family-names"] == "Damiano"
+    for a in authors:
+        blob = " ".join(str(v) for v in a.values()).lower()
+        assert "claude" not in blob and "codex" not in blob, (
+            "an AI agent is listed as an author")
+
+    refs = {r["title"]: r for r in doc.get("references", [])}
+    assert "Claude" in refs and "Codex" in refs, sorted(refs)
+    assert refs["Claude"]["authors"][0]["name"] == "Anthropic"
+    assert refs["Codex"]["authors"][0]["name"] == "OpenAI"
+    for title in ("Claude", "Codex"):
+        assert refs[title]["type"] == "software"
+        assert refs[title].get("notes", "").strip(), (
+            title + " is referenced with no description of what it did")
+
+    # Claude's identifier was recorded in commit trailers, so it is used.
+    # Codex's was not, so none is invented: a version reconstructed after
+    # the fact would be worse than the absence it replaces.
+    assert refs["Claude"].get("version") == "Claude Opus 5"
+    assert "version" not in refs["Codex"], (
+        "a model identifier is claimed for Codex; none was recorded")

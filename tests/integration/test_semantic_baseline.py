@@ -944,7 +944,7 @@ def _text_at(rev, rel):
     The failure is silent and platform-specific: on a UTF-8 locale the
     two agree and nothing is wrong.
     """
-    out = subprocess.run(["git", "show", rev + ":" + rel],
+    out = subprocess.run(["git", "cat-file", "blob", rev + ":" + rel],
                          cwd=str(REPO), capture_output=True)
     assert out.returncode == 0, rel + " is not in " + rev[:12]
     return out.stdout.decode("utf-8")
@@ -952,7 +952,7 @@ def _text_at(rev, rel):
 
 def _at_tag(rel):
     """A committed artifact as of the tag, or None if it was not there."""
-    out = subprocess.run(["git", "show", BEFORE_TAG + ":" + rel],
+    out = subprocess.run(["git", "cat-file", "blob", BEFORE_TAG + ":" + rel],
                          cwd=str(REPO), capture_output=True)
     # UTF-8, not the locale codec: an evidence artifact holding a
     # non-ASCII definition would decode to different characters and
@@ -1040,12 +1040,12 @@ def test_the_recorded_substitutions_are_the_ones_git_shows():
             base = onto.public_id(rel)
             was = rdflib.Graph()
             was.parse(data=subprocess.run(
-                ["git", "show", lo + ":" + rel], cwd=str(REPO),
+                ["git", "cat-file", "blob", lo + ":" + rel], cwd=str(REPO),
                 capture_output=True).stdout.decode("utf-8"),
                 format="turtle", publicID=base)
             now = rdflib.Graph()
             now.parse(data=subprocess.run(
-                ["git", "show", hi + ":" + rel], cwd=str(REPO),
+                ["git", "cat-file", "blob", hi + ":" + rel], cwd=str(REPO),
                 capture_output=True).stdout.decode("utf-8"),
                 format="turtle", publicID=base)
             fmt = lambda t: " ".join(x.n3() for x in t)  # noqa: E731

@@ -318,7 +318,7 @@ def divergence() -> list[tuple[str, int, int, int]]:
             continue
         try:
             was = subprocess.run(
-                ["git", "show", "upstream/main:" + row.path],
+                ["git", "cat-file", "blob", "upstream/main:" + row.path],
                 cwd=str(_root), capture_output=True
             ).stdout.decode("utf-8", "replace")
             now = (_root / row.path).read_text(encoding="utf-8",

@@ -234,7 +234,7 @@ def frozen_canonical_anchor():
     import subprocess
 
     r = subprocess.run(
-        ["git", "show", FROZEN_TAG + ":" + FROZEN_BASELINE],
+        ["git", "cat-file", "blob", FROZEN_TAG + ":" + FROZEN_BASELINE],
         capture_output=True, cwd=str(_root))
     if r.returncode != 0:
         return None

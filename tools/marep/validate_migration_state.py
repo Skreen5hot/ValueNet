@@ -249,7 +249,7 @@ def frozen_text(rel: str) -> tuple[str, str]:
     the whole reason the freeze exists.
     """
     if frozen_exists():
-        return sh("git", "show", f"{FREEZE_TAG}:{rel}"), f"{rel}@{FREEZE_TAG}"
+        return sh("git", "cat-file", "blob", f"{FREEZE_TAG}:{rel}"), f"{rel}@{FREEZE_TAG}"
     root = layout.repository_root()
     return (root / rel).read_text(encoding="utf-8"), f"{rel} (working copy)"
 
@@ -298,7 +298,7 @@ def main(argv=None) -> int:
         text = (root / args.manifest).read_text(encoding="utf-8")
         source = f"{args.manifest} (working copy; no freeze tag yet)"
     else:
-        text = sh("git", "show", f"{ref}:{args.manifest}")
+        text = sh("git", "cat-file", "blob", f"{ref}:{args.manifest}")
         working = (root / args.manifest).read_text(encoding="utf-8")
         if _norm(working) != _norm(text):
             print(f"  note: working manifest differs from {ref}; "

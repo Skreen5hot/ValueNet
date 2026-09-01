@@ -166,7 +166,18 @@ def event_boundaries(before: str, after: str) -> list:
 
 
 def parse_at(rev: str | None, rel: str):
-    """One version of one file, under its own stable document base."""
+    """One version of one file, under its own stable document base.
+
+    Read with `git cat-file blob`, not `git show`. `git show rev:path`
+    stats the path to disambiguate a revision from a filename, and on
+    Windows that stat fails with "Filename too long" once the checkout
+    directory plus the repository-relative path exceeds the limit -- 140
+    plus 79 characters was enough. `cat-file blob` reads the object
+    directly and has no such bound.
+
+    It surfaced as three tests failing in a deep checkout and passing in
+    a shallow one, blaming the evidence for a limit in the reader.
+    """
     import rdflib
 
     from marep import ontology_source as onto
@@ -174,7 +185,8 @@ def parse_at(rev: str | None, rel: str):
     if rev is None:
         text = (_root / rel).read_text(encoding="utf-8")
     else:
-        raw = subprocess.run(["git", "show", rev + ":" + rel], cwd=str(_root),
+        raw = subprocess.run(["git", "cat-file", "blob", rev + ":" + rel],
+                             cwd=str(_root),
                              capture_output=True).stdout
         text = raw.decode("utf-8")
     g = rdflib.Graph()

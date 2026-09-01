@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "0d3402365dccfd6fddd63c57fa38b4357bbcf285",
+  "input_commit": "3f4957b8527c0143b95342c32522a31df514fff7",
   "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
@@ -142,10 +142,10 @@
       "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "corpus_repaired_since": {
         "artifact": "config/remediation-record.json",
-        "artifact_sha256": "0326f23a3bcf7549ce9912255b8a08a353b56ba93eb1b58eeb4aae380fdeaaaa",
+        "artifact_sha256": "d28b578f28576b9496d1264382096b99db626df28f6f8dc852b66926458fa987",
         "before_tag": "eol-hardened-v1",
         "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-        "after_commit": "0d3402365dccfd6fddd63c57fa38b4357bbcf285",
+        "after_commit": "3f4957b8527c0143b95342c32522a31df514fff7",
         "corpus_files_changed": [
           "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
         ],
@@ -292,11 +292,11 @@
     }
   },
   "tests": {
-    "collected": 745,
-    "default_selected": 729,
+    "collected": 755,
+    "default_selected": 739,
     "default_deselected": 16,
-    "canonical_id_sha256": "1bdfc387a7d4f1c81658360eee371f032cfcbc915f895f96b0a15bb9b94f6e4c",
-    "default_selected_sha256": "4b7a6aaef46740bb7a65b08c2004ecb23a43dad700f5719a32a9050614a3fdf9",
+    "canonical_id_sha256": "001d20b7096ad3a40e8f12a8dd3514d9deeb12a455d3b953114e054a8819c0e9",
+    "default_selected_sha256": "eeef84941ad6fd233d9f8c81fb514c15d789648a5c06085b91cd0c5f9dbc39aa",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

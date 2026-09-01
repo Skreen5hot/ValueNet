@@ -1,0 +1,134 @@
+{
+  "format_version": 1,
+  "note": "Curated public copy only. This file deliberately contains no repository paths: config/repository-layout.yaml is authoritative for where files live, and a path duplicated here would be a second place that can drift. Modules are named by logical key; Phase 2 binds each key to a layout-contract component identifier. Everything derivable from the ontology - class counts, definition coverage, category distribution - is generated at build time and must not appear here.",
+  "site": {
+    "name": "BFO-Aligned ValueNet",
+    "tagline": "An ontology of human values as realizable entities",
+    "summary": "ValueNet represents a value not as a label attached to a thing, but as a realizable entity that inheres in an agent and is realized in the processes where that agent appraises, chooses, feels, or acts.",
+    "base_path_note": "The site is served from a project subpath. Every internal URL is relative; none may assume the site is at the domain root."
+  },
+  "navigation": [
+    {"key": "home", "label": "Home"},
+    {"key": "explore", "label": "Explore classes"},
+    {"key": "models", "label": "Models"},
+    {"key": "modules", "label": "Modules"},
+    {"key": "downloads", "label": "Downloads"},
+    {"key": "documentation", "label": "Documentation"}
+  ],
+  "notices": {
+    "iri_resolution": {
+      "scope": ["home", "explore", "downloads"],
+      "text": "Canonical ValueNet IRIs identify ontology entities but are not currently HTTP-dereferenceable. Use the explorer, repository source links, or module downloads to inspect their definitions.",
+      "why": "The canonical namespace does not resolve today. An IRI rendered as a link would send a reader to a 404 and imply the ontology is broken. IRIs stay copyable and searchable and are never presented as fetchable URLs."
+    },
+    "reserved_aliases": {
+      "text": "The w3id.org ValueNet IRIs that appear as rdfs:seeAlso are reserved aliases. They are not registered, nothing is declared under them, and no query should rely on them.",
+      "why": "Stated in the core module's own namespace policy; repeated publicly so a reader does not treat an alias as an alternative endpoint."
+    },
+    "build_label": {
+      "text": "latest from main",
+      "why": "A Pages build is not a release. The full source commit is displayed alongside this label, and the word release is reserved for a signed-off tag."
+    },
+    "license_pending": {
+      "text": "No project license has been issued yet. No reuse terms are granted for ValueNet-authored material, and terms must not be inferred from vendored BFO or CCO files, which carry their own upstream licenses.",
+      "why": "Placeholder until the publication plan's Phase 0 governance gate completes. This notice is removed, not edited, when LICENSE, THIRD_PARTY_NOTICES.md, and CITATION.cff exist."
+    }
+  },
+  "product_hierarchy": [
+    {
+      "key": "bfo-aligned-valuenet",
+      "label": "BFO-Aligned ValueNet",
+      "role": "The maintained, primary public ontology suite."
+    },
+    {
+      "key": "original-valuenet",
+      "label": "Original ValueNet",
+      "role": "The DUL-aligned source tradition, lexical trigger data, and empirical corpora. The mapping target, not a deprecated release."
+    },
+    {
+      "key": "marep",
+      "label": "MAREP",
+      "role": "The audit framework that produces the quality evidence. Evidence about the work, not a prerequisite for using the ontology."
+    }
+  ],
+  "value_proposition": [
+    {
+      "heading": "A bearer",
+      "body": "A value disposition inheres in an agent. Asking whose value it is has an answer in the model rather than in a naming convention."
+    },
+    {
+      "heading": "A realization",
+      "body": "Holding a value and acting on it are different entities. The disposition persists; the value realization process occurs. So does its counterpart, the violation process, which lets the suite say an act contravened a value without asserting the agent lacks it."
+    },
+    {
+      "heading": "Interoperability by construction",
+      "body": "Every class descends from a BFO or CCO term, so ValueNet composes with other BFO-aligned ontologies instead of needing a bespoke bridge to each one."
+    }
+  ],
+  "modules": [
+    {
+      "key": "valuenet-core",
+      "display_name": "ValueNet Core",
+      "authored": true,
+      "indexed": true,
+      "purpose": "Top-level entities: the disposition and role split, realization and violation processes, and the textual-evidence chain. Every other module imports this."
+    },
+    {
+      "key": "valuenet-schwartz-values",
+      "display_name": "Schwartz Values",
+      "authored": true,
+      "indexed": true,
+      "purpose": "Schwartz's ten Basic Human Values as BFO dispositions, serving as the high-level classification for finer-grained terms."
+    },
+    {
+      "key": "valuenet-folk",
+      "display_name": "Folk Values",
+      "authored": true,
+      "indexed": true,
+      "purpose": "The folk-value vocabulary, the large and specific layer people actually name in text, classified under the Schwartz values.",
+      "note": "This module declares no dcterms:title or dcterms:description. Its display name and purpose here are curated, not extracted, and are marked as such wherever the site distinguishes generated from authored copy."
+    },
+    {
+      "key": "valuenet-moral-foundations",
+      "display_name": "Moral Foundations",
+      "authored": true,
+      "indexed": true,
+      "purpose": "Haidt's Moral Foundations as BFO dispositions, with the violation processes that contravene them."
+    },
+    {
+      "key": "valuenet-moral-epistemics",
+      "display_name": "Moral Epistemics",
+      "authored": true,
+      "indexed": true,
+      "purpose": "The cognitive acts by which agents assess one another morally: behavioural observation, prudent discernment, and rash judgment."
+    },
+    {
+      "key": "valuenet-mappings",
+      "display_name": "Mappings",
+      "authored": true,
+      "indexed": false,
+      "purpose": "Annotation-only correspondences from BFO-aligned terms to the original ValueNet and related value ontologies.",
+      "note": "Declares no classes. It contributes mapping annotations to classes defined elsewhere, so it appears in the module catalog and downloads but produces no class records."
+    },
+    {
+      "key": "vcvf-triggers-semantics",
+      "display_name": "Trigger Semantics",
+      "authored": true,
+      "indexed": false,
+      "purpose": "Supplies the definition ValueCore omits for the vcvf:triggers property. Annotation only; it adds no logical axiom.",
+      "note": "Declares zero classes by design. The module card displays zero as a measured property, not as a discovery failure. This module also declares no dcterms:title; its display name is curated."
+    }
+  ],
+  "vendored": {
+    "label": "Upstream dependencies",
+    "body": "BFO core and a pinned Common Core Ontologies extract are included so the suite can be loaded offline. They are upstream material under their own licenses, are never presented as ValueNet-authored modules, and are excluded from the authored class catalog and the default download bundle."
+  },
+  "mapping_policy": {
+    "body": "Correspondences to the original ValueNet are recorded with ValueNet annotation properties and are published exactly as asserted. They are not SKOS mapping relations and are never translated into any.",
+    "why": "Asserting historical or conceptual correspondence is a weaker and more honest claim than logical equivalence, and rewriting the predicate would silently strengthen it."
+  },
+  "evidence_statement": {
+    "body": "Ontology changes here are measured rather than asserted. The repository records a semantic fingerprint of the whole corpus that reproduces from any checkout, an experiment showing why earlier digests did not, and a triple-by-triple record of every source-data repair made since.",
+    "tone": "State what is measured and link to it. Do not characterise the ontology as verified, validated, or correct; those are claims the evidence does not make."
+  }
+}

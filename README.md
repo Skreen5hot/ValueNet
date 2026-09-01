@@ -1,165 +1,236 @@
-# ValueNet Ontology
+# ValueNet
 
+ValueNet is an ontology of human values. **BFO-Aligned ValueNet** — the
+maintained suite in this repository — represents a value not as a label
+attached to a thing, but as a *realizable entity* that inheres in an agent and
+is realized in the processes where that agent appraises, chooses, feels, or
+acts. The suite is grounded in the Basic Formal Ontology (BFO) and reuses
+Common Core Ontologies (CCO) terms for the information entities that carry
+textual evidence.
 
-Values, as intended in ethics, are part of the broad and challenging area of research about Commonsense Knowledge. The attempt
-to untangle the complex structure of relations among human moral and social values requires investigating subjective human perception of the world as well as socio-cultural dynamics. 
+---
 
-We propose **ValueNet**, a modular ontology representing values. 
-ValueNet is based on reusable Ontology Design Patterns, it is aligned to the [DOLCE](https://ontopia-lode.agid.gov.it/lode/extract?url=http://ontologydesignpatterns.org/ont/dul/DUL.owl) foundational ontology, and it is a component of the [Framester](https://github.com/framester/Framester) factual-linguistic knowledge graph.
+## Why BFO alignment
 
-The current version of ValueNet includes:
+Value vocabularies usually model a value as a category you assign to something.
+That is easy to author and hard to reason with: it gives no account of *when* a
+value is at stake, *who* holds it, or *what happened* when it was acted on or
+violated.
 
-[ValueCore](http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl) ``http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl`` <br/>
-[BHV](https://w3id.org/spice/SON/SchwartzValues) ``https://w3id.org/spice/SON/SchwartzValues`` <br/>
-[BHV Triggers]() <br/>
-[MFT](https://w3id.org/spice/SON/HaidtValues) ``https://w3id.org/spice/SON/HaidtValues`` <br/>
-[MFTriggers](http://www.ontologydesignpatterns.org/ont/ClosureHaidtValuesFrames.owl) ``http://www.ontologydesignpatterns.org/ont/ClosureHaidtValuesFrames.owl`` <br/>
-[FolkValues](http://www.ontologydesignpatterns.org/ont/values/valuemerge_rev.owl) ``http://www.ontologydesignpatterns.org/ont/values/valuemerge_rev.owl`` <br/>
-[ThatsAllFolks](http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl) ``http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl`` <br/>
+BFO alignment buys three things:
 
-Furthermore, some additional modules are being developed:
+- **A bearer.** A value disposition inheres in an agent. Asking whose value it
+  is has an answer in the model, not in a naming convention.
+- **A realization.** Holding a value and acting on it are different entities:
+  the disposition persists, the
+  [value realization process](ontology/bfo/core/valuenet-core.ttl) occurs. So
+  is its counterpart, the value *violation* process, which lets the suite say
+  that an act contravened a value without asserting the agent lacks it.
+- **Interoperability by construction.** Because every class descends from a BFO
+  or CCO term, ValueNet terms compose with other BFO-aligned ontologies instead
+  of needing a bespoke bridge to each one.
 
-[MM](http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl) ``http://www.ontologydesignpatterns.org/ont/values/CurryMoralMolecules.owl``
+---
 
-A parallel, BFO-aligned re-engineering of the suite lives in [ontology/bfo/](ontology/bfo/) and is described under [BFO-Aligned ValueNet](#bfo-aligned-valuenet) below.
+## The core model
 
-
-![ValueNet_usage_network](https://github.com/StenDoipanni/ValueNet/blob/d625ceca215d5cfaea508e7e064dfbe601990361/ValueNet_import_schema_def.png)
-
-
-## ValueCore
-ValueCore module defines a framal structure (Fillmore's Frame Semantics) to represent entities and relations in Value Situations.
-The module reuses the [Description&Situation](http://ontologydesignpatterns.org/wiki/Submissions:DescriptionAndSituation) Ontology Design Pattern, considering Value as a dul:Description, satisfied by the occurrence of some Value frame situation specified as follows.
-
-
-![iswc_valuecore](https://user-images.githubusercontent.com/40241049/171409820-7cf4cb8e-8cc1-4d34-beb7-3f34020b2232.png)
-
-
-
-Three main types of vn:ValueSituation, subclasses of dul:Situation, are modeled: 
-
-- **vn:ValueAppraisal** : An agent appraises some entity according to some pivoting Value.
-
-- **vn:ValueRecognition** : An agent recognizes some Value in some context.
-
-- **vn:ValueCommitment** : An agent commits to some Value in some context.
-
-
-
-![value_appr_comm_recog](https://user-images.githubusercontent.com/40241049/171410630-97d76958-9892-4436-8003-549e5a994ba6.png)
-
-
-## BHV
-BHV is the ontological transposition of the Theory of Basic Human Values by Shalom Schwartz, proposed as a pan-cultural theory in the 1980s. Its main assumption is that human values are organized in a “value wheel”, that is, an ordering structure that organizes values as a circumplex model, dividing them in four quadrants with two opposing axes, and a congruity continuum between adjacent values.
-
-
-## MFT
-MFT is the ontological transposition of the Moral Foundation Theory, that was proposed as a cultural-independent theory of moral and social values, inspired by Schweder’s et al. work on universal human ethics and tightly related to the investigation of moral emotions, with a particular focus on behavioural neuro-cognitivism. Its agnostic point of view towards cultural dependencies is realized via its dyadic oppositional structure.
-
-
-## MFTriggers
-MFTriggers operationalizes Graham and Haidt’s Moral Foundation Theory, providing an explicit semantics to its moral values and violations.contains more than 12000 triples linking moral values to entities from existing lexical and factual web semantics resources, such as FrameNet, VerbNet, WordNet, and DBpedia.
-
-## MM
-MM is the ontological transposition of Curry's Moral Molecules theory, considering values as "cooperation strategies". It is still under development.
-
-## BFO-Aligned ValueNet
-
-The modules above model values as ``dul:Description`` instances satisfied by situations. The suite in [ontology/bfo/](ontology/bfo/) re-engineers the same content against [BFO 2020](http://purl.obolibrary.org/obo/bfo/2020/bfo-core.ttl) (ISO/IEC 21838-2), modelling values instead as **realizable entities that inhere in agents**: a ``vn-core:ValueDisposition`` is internally grounded and a ``vn-core:ValueRole`` externally grounded, and both are *realized in* a ``vn-core:ValueRealizationProcess`` rather than *satisfied by* a situation. The rationale is set out in [BFOizing ValueNet.md](docs/bfo/guides/BFOizing%20ValueNet.md).
-
-Canonical namespace: ``https://fandaws.com/ontology/bfo/valuenet-<module>#``. The ``https://w3id.org/valuenet/<module>#`` IRIs that appear as ``rdfs:seeAlso`` are reserved aliases; nothing is declared under them.
-
-| Module | Contents |
-| --- | --- |
-| [valuenet-core](ontology/bfo/core/valuenet-core.ttl) | ``ValueDisposition``, ``ValueRole``, ``ValueRealizationProcess``, ``ValueViolationProcess``, ``contravenes``, the annotation layer (``TextSpan``, ``isEvidenceFor``, ``evokesFrame``), and CCO ``Agent`` (``ont00001017``), in which every value inheres |
-| [valuenet-schwartz-values](ontology/bfo/core/valuenet-schwartz-values.ttl) | Schwartz's 10 Basic Human Values as dispositions |
-| [valuenet-moral-foundations](ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl) | Haidt's Moral Foundations as dispositions, and the six violations that contravene them, as processes |
-| [valuenet-folk](ontology/bfo/core/valuenet-folk.ttl) | 136 everyday folk values |
-| [valuenet-moral-epistemics](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl) | Moral assessment: behavioural observation, prudent discernment, rash judgment, protective action |
-| [valuenet-mappings](ontology/bfo/core/valuenet-mappings.ttl) | ``skos`` mappings back to the original ValueNet IRIs |
-
-Every ontology file in this repository is a ``.ttl`` holding Turtle, and each is a valid document on its own — no header injection, no format guessing, no knowledge of where it sits in the tree. Modules were previously kept as a ``.ttl`` and an ``.owl`` that were both Turtle, which meant a reader had to be told which extension to disbelieve and made every class count double. Two tests hold the invariants: `test_extensions_state_the_serialization` and `test_every_ttl_in_the_repository_parses_standalone`.
-
-Supporting material: [annotationGuide.md](docs/bfo/guides/annotationGuide.md) (annotator workflow), [TestingFramework.md](docs/bfo/guides/TestingFramework.md) (reasoner and SPARQL checks), [RefactorPlan.md](docs/bfo/guides/RefactorPlan.md) (progress tracker), SHACL shapes ([core](ontology/bfo/shapes/valuenet-core-shapes.ttl), [moral epistemics](ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl)), and competency questions with a worked scenario ([CQ](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md), [scenario](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl)).
-
-### Reaching the trigger data from the BFO suite
-
-The BFO refactor drops ``vcvf:triggers`` but does not discard the 12,338 trigger statements in [MFTriggers/](MFTriggers/). A ``vn-core:TextSpan`` reaches a BFO-aligned disposition through them:
-
-``TextSpan --evokesFrame--> FrameNet frame --vcvf:triggers--> Haidt value <--skos:broadMatch-- ValueDisposition``
-
-All trigger statements use a single namespace, ``http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#`` — the one ValueCore itself declares and the one documented under *Ontology Prefixes* below — so one prefix binding reaches the whole corpus.
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-### Ontology Prefixes
-
-To explore in detail all the modules we list here some useful prefixes which can be used to query the Framester endpoint.
-
-```
-DOLCE foundational ontology
-dul : <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl/>
-Framester schema
-fschema : <https://w3id.org/framester/schema/>
-MFT module
-mft : <https://w3id.org/spice/SON/HaidtValues#>
-BHV module
-bhv : <https://w3id.org/spice/SON/SchwartzValues#>
-ValueCore module
-vc : <http://www.ontologydesignpatterns.org/ont/values/valuecore.owl#>
+```mermaid
+graph TD
+    BFO17["bfo:realizable entity"] --> VRRE["ValueRelatedRealizableEntity"]
+    VRRE --> VD["ValueDisposition"]
+    VRRE --> VR["ValueRole"]
+    BFO16["bfo:disposition"] --> VD
+    BFO23["bfo:role"] --> VR
+    VD --> PVD["PersonalValueDisposition"]
+    VD --> MVD["MoralValueDisposition"]
+    BFO15["bfo:process"] --> VRP["ValueRealizationProcess"]
+    BFO15 --> VVP["ValueViolationProcess"]
+    CCO["cco:information content entity"] --> ES["EvidenceSource"]
+    ES --> TS["TextSpan"]
+    ES --> VEA["ValueEvidenceAnnotation"]
 ```
 
-### Explore the MFTriggers Resource
+Every class above is declared in
+[valuenet-core.ttl](ontology/bfo/core/valuenet-core.ttl).
 
-Here some useful queries to explore the resource. <br/>
-The queries can be performed on the [Framester endpoint](http://etna.istc.cnr.it/framester2/sparql) <br/>
-Enjoy! <br/>
-
-
-
-> **Note on the query below.** Its second clause, `?o vcvf:oppositeTo ?o2`, matches nothing: `oppositeTo` is declared but asserted zero times anywhere in this repository, as is `mft:opposedTo`. The dyadic pairings were never encoded. They are now, in the BFO-aligned suite: each violation process carries a `contravenes` restriction naming the foundation it violates, plus a `dyadicOppositeOf` annotation in both directions. Drop the second clause to make the query below return rows.
-
-Query to find all value triggers starting from a lexical variable, e.g. "war", retrieving in addition all the Moral Foundations triggered, and their opposite value in the dyad.
+**A worked example.** Honesty is a specific disposition, not a free-standing
+tag. In the suite it sits on a chain of asserted subclass edges that ends in
+BFO:
 
 ```
-
-PREFIX vcvf: <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_value_frames.owl#>
-PREFIX haidt: <https://w3id.org/spice/SON/HaidtValues#>
-
-SELECT ?s ?o ?o2
-WHERE
- { ?s vcvf:triggers ?o . ?o vcvf:oppositeTo ?o2 . 
-FILTER(regex(?s, "war", "i"))
-}
-LIMIT 10
-
+vn-folk:HonestyDisposition
+  rdfs:subClassOf vn-folk:IntegrityDisposition
+  rdfs:subClassOf vn-schwartz:UniversalismDisposition
+  …
+  rdfs:subClassOf vn-core:PersonalValueDisposition
+  rdfs:subClassOf vn-core:ValueDisposition
+  rdfs:subClassOf bfo:disposition
 ```
 
+so a reasoner that knows an agent bears an honesty disposition also knows it
+bears a BFO disposition, that the disposition inheres in *that agent*, and that
+its realizations are processes. The definition ValueNet supplies for it — "a
+personal value disposition to be truthful, sincere, and straightforward in
+communication and action" — is authored text in
+[valuenet-folk.ttl](ontology/bfo/core/valuenet-folk.ttl), not generated prose.
 
-### BHV Competency Questions
+---
 
+## Modules
 
-1. Is the entity x an instance of some value, according to BHV theory?
-2. What values have as focus some ```bhv:SocialFocus``` or ```bhv:PersonalFocus```?
-3. What is the ```bhv:opposingFocus``` of some value?
-4. What is the attitude of some value?
-5. What is the value motivation for some value?
+| module | purpose |
+|---|---|
+| [valuenet-core.ttl](ontology/bfo/core/valuenet-core.ttl) | Top-level entities: the disposition/role split, realization and violation processes, and the textual-evidence chain. Everything else imports this. |
+| [valuenet-schwartz-values.ttl](ontology/bfo/core/valuenet-schwartz-values.ttl) | Schwartz's ten Basic Human Values as BFO dispositions, used as the high-level classification for finer-grained terms. |
+| [valuenet-folk.ttl](ontology/bfo/core/valuenet-folk.ttl) | The folk-value vocabulary — the large, specific layer people actually name in text — classified under the Schwartz values. |
+| [valuenet-moral-foundations.ttl](ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl) | Haidt's Moral Foundations (Care, Fairness, Loyalty, Authority, Sanctity) as dispositions, with the violation processes that contravene them. |
+| [valuenet-moral-epistemics.ttl](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl) | The cognitive acts by which agents assess one another morally: behavioural observation, prudent discernment, and rash judgment. |
+| [valuenet-mappings.ttl](ontology/bfo/core/valuenet-mappings.ttl) | Annotation-only correspondences from BFO-aligned terms to the original ValueNet and related value ontologies. Adds no logical axioms. |
+| [vcvf-triggers-semantics.ttl](ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl) | Supplies the definition ValueCore omits for the `vcvf:triggers` property. Annotation only; it declares no classes by design. |
 
+[SHACL shapes](ontology/bfo/shapes) constrain the evidence chain and the
+trigger semantics. Vendored dependencies —
+[BFO core](ontology/bfo/vendor/bfo/bfo-core.ttl) and a
+[pinned CCO extract](ontology/bfo/vendor/cco/cco-valuenet-extract.ttl) — are
+upstream material, not ValueNet-authored modules.
 
-The above mentioned CQs are satisfied by a scenario in ttl format available [here](https://github.com/spice-h2020/SON/blob/main/SchwartzValues/Schwartz_scenario.ttl).
+Class and definition counts are derived from the ontology at build time rather
+than copied here, so they cannot drift out of date in prose.
 
+---
 
-### MFT Competency Questions
+## Quick start
 
-1. Is the entity x an instance of some value, according to MFT theory?
-2. What is the value ```mft:opposedTo``` some entity x?
+**Read a module.** Every module is Turtle and readable as text. Start with
+[valuenet-core.ttl](ontology/bfo/core/valuenet-core.ttl).
 
+**Download.** Clone the repository, or fetch individual `.ttl` files from
+`ontology/bfo/`. A checksummed download bundle is planned; until it exists, the
+repository is the distribution.
 
-The above mentioned CQs are satisfied by a scenario in ttl format available [here](https://github.com/spice-h2020/SON/blob/main/HaidtValues/haidt_scenario.ttl)
+**Parse.**
 
+```python
+from rdflib import Graph
 
+g = Graph().parse("ontology/bfo/core/valuenet-core.ttl", format="turtle")
+print(len(g), "triples")
+```
 
+To load the suite with its imports resolved offline, parse the vendored
+dependencies from `ontology/bfo/vendor/` rather than fetching the import IRIs —
+see the note on IRI resolution below.
 
+**Cite.** A citation record has not been issued yet. See
+[Licensing, attribution, and citation](#licensing-attribution-and-citation).
 
+### A note on IRIs
 
+Canonical ValueNet IRIs identify ontology entities but are **not currently
+HTTP-dereferenceable**. `https://fandaws.com/ontology/bfo/valuenet-core#…` is a
+stable identifier, not a URL you can fetch today. Use the module files in this
+repository to inspect definitions. The `https://w3id.org/valuenet/…` IRIs that
+appear as `rdfs:seeAlso` are reserved aliases that are not registered; nothing
+is declared under them and no query should rely on them.
 
+---
+
+## Browsing the ontology
+
+A public class explorer and a set of explanatory BFO diagrams are planned and
+are not yet deployed. This README deliberately does not link to a site that
+does not exist. Until it does, the module files above and the
+[competency questions](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md)
+are the way in. Progress and scope for the public site are recorded in the
+[publication plan](docs/architecture/PUBLICATION_AND_GITHUB_PAGES_PLAN.md).
+
+---
+
+## Original ValueNet and BFO-Aligned ValueNet
+
+ValueNet began as a DUL-aligned suite, and that work is the source tradition
+this one builds on. It is present in this repository and remains readable:
+[ValueCore.ttl](ValueCore.ttl), [bhv.ttl](bhv.ttl), [mft.ttl](mft.ttl),
+[wvs.ttl](wvs.ttl), the [moral-foundation trigger frames](MFTriggers), and the
+[folk-value corpus](ThatsAllFolks). See the
+[original ValueNet overview](docs/original-valuenet/README.md).
+
+The two are not competing versions of one thing:
+
+- **Original ValueNet** supplies the conceptual vocabulary, the lexical trigger
+  data, and the empirical corpora. It is the mapping target, not a deprecated
+  release.
+- **BFO-Aligned ValueNet** re-expresses that vocabulary under an upper ontology
+  so it composes with other BFO-aligned work, and records the correspondence
+  explicitly in
+  [valuenet-mappings.ttl](ontology/bfo/core/valuenet-mappings.ttl) using
+  annotation properties that assert historical and conceptual correspondence
+  without claiming logical equivalence.
+
+Neither supersedes the other. The mappings are annotations precisely because
+"this term corresponds to that one" is a weaker and more honest claim than
+`owl:equivalentClass`.
+
+---
+
+## Validation and reproducibility
+
+Ontology changes in this repository are measured, not asserted. The measurement
+apparatus produces a semantic fingerprint of the whole corpus that is
+independent of where the repository is checked out:
+
+- [config/semantic-baseline.json](config/semantic-baseline.json) records what
+  the current commit measures — corpus counts, a ground digest over every
+  triple with no blank node, a blank-node fingerprint, and reasoner results.
+- [config/eol-transition-matrix.json](config/eol-transition-matrix.json)
+  records the experiment that made those digests reproducible, by measuring the
+  corpus under three different parsing and line-ending conditions.
+- [config/remediation-record.json](config/remediation-record.json) enumerates
+  every source-data repair made since that experiment, triple by triple, so a
+  digest that moved can be attributed to a specific change.
+- [config/reorganization-baseline.json](config/reorganization-baseline.json) is
+  the historical evidence bracketing a 99-file repository reorganization.
+
+Tagged checkpoints: `reorg-pre-move-v1`, `reorg-post-move-v1`, and
+`eol-hardened-v1`. [PROVENANCE.md](docs/architecture/PROVENANCE.md) records
+where the material came from.
+
+**MAREP** is the audit framework that produces this evidence. It is
+documentation *about* the work rather than something a user of the ontology
+needs: see [marep/README.md](marep/README.md) and the
+[testing framework](docs/bfo/guides/TestingFramework.md).
+
+---
+
+## Repository layout
+
+[config/repository-layout.yaml](config/repository-layout.yaml) is authoritative
+for where things live; tools resolve paths through it rather than hard-coding
+them.
+
+| directory | contents |
+|---|---|
+| [ontology/bfo/](ontology/bfo) | BFO-Aligned ValueNet: core, extensions, shapes, and vendored dependencies. |
+| [docs/](docs) | Guides, architecture records, and remediation history. |
+| [tools/](tools) | Generators and checkers, including the evidence pipeline. |
+| [tests/](tests) | The test suite, including ontology and evidence checks. |
+| [marep/](marep) | The MAREP audit framework. |
+| [config/](config) | The layout contract, move manifest, and evidence artifacts. |
+| [MFTriggers/](MFTriggers), [ThatsAllFolks/](ThatsAllFolks) | Original ValueNet trigger frames and folk-value corpus. |
+
+Contributor guides: [annotation guide](docs/bfo/guides/annotationGuide.md),
+[BFO alignment rationale](docs/bfo/guides/BFOizing%20ValueNet.md).
+
+---
+
+## Licensing, attribution, and citation
+
+**No project license has been issued yet.** Until a `LICENSE` file exists at the
+repository root, no reuse terms are granted for ValueNet-authored material, and
+you should not infer terms from the vendored BFO or CCO files — those carry
+their own upstream licenses and are included as dependencies.
+
+A `LICENSE`, a `THIRD_PARTY_NOTICES.md` separating upstream material, and a
+`CITATION.cff` are the first deliverables of the publication plan and are
+required before any public release. If you want to use this material now, ask
+first.

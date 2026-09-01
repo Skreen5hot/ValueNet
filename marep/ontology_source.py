@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Ontology facts as substrate records (MAREP v2.2 §7).
 
 `ingest.py` builds a substrate from git history, which grounds a retrospective

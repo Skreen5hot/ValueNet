@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Declare a folk value that trigger data references but nothing declares.
 
 Six trigger objects remained undeclared after the Repayment, Strenght and

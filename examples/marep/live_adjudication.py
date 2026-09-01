@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """A live Adjudicator run over this repository's own history and findings.
 
 An earlier version of this script invented a sprint — a fictional search

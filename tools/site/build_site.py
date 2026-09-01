@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Build the public site into _site/, deterministically.
 
     python tools/site/build_site.py

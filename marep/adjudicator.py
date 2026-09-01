@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The Adjudicator — the model-driven half of MAREP's control plane (v2.2 §4.1.2).
 
 Four responsibilities, and only four: semantic contradiction, thematic merge,

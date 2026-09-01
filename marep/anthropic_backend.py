@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Anthropic-backed Adjudicator (MAREP v2.2 §4.1.2).
 
 The only module in this package that talks to a model, and the only one that

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Measure the semantic-measurement hardening, and write down what it measured.
 
     python tools/marep/build_transition_matrix.py -o config/eol-transition-matrix.json

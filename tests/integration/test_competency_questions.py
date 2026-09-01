@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The documented queries have to keep working, automatically.
 
 Nine SPARQL queries live in two markdown documents and were, until now, run by

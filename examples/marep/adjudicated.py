@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The full control plane: Runtime plus Adjudicator, with no model involved.
 
 MAREP v2.2 §4.1.2 claims the Adjudicator holds no privileged write path. That

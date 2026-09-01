@@ -1,0 +1,74 @@
+cff-version: 1.2.0
+title: BFO-Aligned ValueNet
+message: >-
+  If you use the BFO-aligned ValueNet ontology suite, please cite it using
+  these metadata. This record covers the project-authored suite only. The
+  original DUL-aligned ValueNet is separate upstream work with its own
+  authorship; cite it directly rather than through this entry.
+type: software
+abstract: >-
+  An ontology of human values aligned to the Basic Formal Ontology. Values
+  are modelled as realizable entities that inhere in an agent and are
+  realized in processes of appraisal, choice, feeling, and action, rather
+  than as labels attached to things. The suite reuses Common Core
+  Ontologies terms for the information entities that carry textual
+  evidence, and records annotation-level correspondences to the original
+  ValueNet vocabulary.
+repository-code: https://github.com/Skreen5hot/ValueNet
+license: CC-BY-4.0
+license-url: https://creativecommons.org/licenses/by/4.0/
+
+# Authorship is the repository owner's to state, not this file's to infer.
+# The entry below is the account the commits are made under. Before public
+# release the owner should confirm the author list, add any co-authors, and
+# supply ORCID and affiliation if they want them cited.
+authors:
+  - alias: Skreen5hot
+    name-particle: ''
+    given-names: Aaron
+    family-names: Damiano
+
+# No release has been tagged for the ontology suite. The repository's
+# existing tags mark measurement checkpoints, not ontology releases, and
+# citing one would imply a release that has not been made.
+#
+# Version policy: a citable version is a signed-off Git tag or GitHub
+# Release. Until one exists, cite the repository and the commit you used.
+# A GitHub Pages build is labelled "latest from main" and is not a release.
+#
+# When the first ontology release is tagged, add here:
+#   version: <tag>
+#   date-released: <YYYY-MM-DD>
+#   doi: <if minted>
+
+keywords:
+  - ontology
+  - Basic Formal Ontology
+  - BFO
+  - human values
+  - Schwartz values
+  - moral foundations
+  - knowledge representation
+
+references:
+  - type: software
+    title: ValueNet
+    notes: >-
+      The original DUL-aligned ValueNet, the source tradition this suite
+      re-expresses and maps to. Its licence has not been identified; this
+      repository grants no rights over it.
+    repository-code: https://github.com/StenDoipanni/ValueNet
+    authors:
+      - name: The original ValueNet authors
+  - type: software
+    title: Basic Formal Ontology (BFO) 2020
+    repository-code: https://github.com/BFO-ontology/BFO-2020
+    license: CC-BY-4.0
+    authors:
+      - name: The BFO development team
+  - type: software
+    title: Common Core Ontologies
+    repository-code: https://github.com/CommonCoreOntology/CommonCoreOntologies
+    license: BSD-3-Clause
+    authors:
+      - name: The Common Core Ontologies development team

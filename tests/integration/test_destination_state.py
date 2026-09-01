@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The move is evaluated before it happens.
 
 Step 4 passed a gate that could not have failed. Nothing had moved, so every

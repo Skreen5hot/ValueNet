@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Settle the last five undeclared trigger targets.
 
 Each decision rests on the fragment, the hierarchy and the surrounding

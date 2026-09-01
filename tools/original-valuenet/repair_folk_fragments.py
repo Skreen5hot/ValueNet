@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Make every ThatsAllFolks/folk_*.ttl a valid, independently loadable document.
 
 The fragments were written to be read alongside a parent that declares their

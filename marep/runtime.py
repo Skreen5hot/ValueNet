@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The MAREP Runtime (v2.2 §4.1.1).
 
 Deterministic code. No model is consulted anywhere in this module, and none may

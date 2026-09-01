@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Anti-pattern enforcement (MAREP v2.2 §18).
 
 Every check here is deterministic and decidable from the documents in front of

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Run an offline HermiT consistency check over the ValueNet BFO modules."""
 
 from __future__ import annotations

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The site must work where it is actually served, and be checkable before
 it is committed.
 

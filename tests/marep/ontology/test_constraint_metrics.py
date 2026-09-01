@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """What the corpus asserts about its own terms, and what it leaves open.
 
 Run 2 asks what this corpus treats as true without ever saying so. A finding of

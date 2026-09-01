@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The site build has to be reproducible, or a deployment proves nothing.
 
 The site is deployed from an Actions artifact rather than from a committed

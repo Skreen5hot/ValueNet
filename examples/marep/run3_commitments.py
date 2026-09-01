@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Run 3 of MAREP_VALUENET_PLAN: commitments that exist outside the axioms.
 
 Run 2 asked what the corpus should assert. Run 3 asks the wider question: what

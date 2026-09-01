@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """A retrospective grounded in this repository's real git history.
 
 `walkthrough.py` proves the Runtime's mechanics against data written to exercise

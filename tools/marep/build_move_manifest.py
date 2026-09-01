@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Derive the reorganization move manifest from the repository, not by hand.
 
 Hand-listing destinations missed six files in the first two plan drafts. Version

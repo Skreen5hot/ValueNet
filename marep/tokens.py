@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Token accounting (MAREP v2.2 §14.1).
 
 Reducing token waste is goal three, which requires that tokens be counted.

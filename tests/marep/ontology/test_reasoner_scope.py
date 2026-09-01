@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The reasoner verdict has to carry its own reach.
 
 `reasoner_consistent: 1` was the most over-readable number this repository

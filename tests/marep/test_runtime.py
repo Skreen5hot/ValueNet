@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Conformance tests for the MAREP Runtime.
 
 Each test names the MAREP v2.2 clause it exercises. These are not smoke tests:

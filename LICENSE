@@ -1,0 +1,96 @@
+# Licensing
+
+This repository holds material with four different licensing
+dispositions. Which one governs a given file is **derived from recorded
+provenance**, not from a list maintained by hand: run
+
+    python tools/licensing/disposition.py
+
+to print the disposition of every tracked file, or
+
+    python tools/licensing/disposition.py --list project-content
+
+to list one category. `tests/licensing/test_disposition.py` requires every
+tracked file to fall under exactly one.
+
+---
+
+## 1. Project-authored content — CC BY 4.0
+
+The BFO-aligned ontology modules, their annotations, project
+documentation, diagrams, and site content.
+
+    SPDX-License-Identifier: CC-BY-4.0
+
+Full text: [LICENSES/CC-BY-4.0.txt](LICENSES/CC-BY-4.0.txt).
+Summary: <https://creativecommons.org/licenses/by/4.0/>
+
+You may share and adapt this material, including commercially, provided
+you give appropriate credit.
+
+## 2. Project-authored software — Apache License 2.0
+
+Code, tests, build tools, generators, checkers, repository
+configuration, and CI workflows.
+
+    SPDX-License-Identifier: Apache-2.0
+
+Full text: [LICENSES/Apache-2.0.txt](LICENSES/Apache-2.0.txt).
+
+Apache-2.0 is permissive and includes an express patent grant.
+
+## 3. Third-party material — under its own licence
+
+Vendored upstream dependencies, redistributed under the terms their
+authors set. This repository grants nothing over them and changes
+nothing about them.
+
+| material | licence | full text |
+|---|---|---|
+| Basic Formal Ontology (BFO) | CC BY 4.0 | [LICENSES/CC-BY-4.0.txt](LICENSES/CC-BY-4.0.txt) |
+| Common Core Ontologies (CCO) extract | BSD-3-Clause | [LICENSES/BSD-3-Clause.txt](LICENSES/BSD-3-Clause.txt) |
+
+See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## 4. Original ValueNet material — no licence identified, no rights granted
+
+The original ValueNet corpus, trigger frames, folk-value fragments, and
+associated data descend from upstream work whose licence this repository
+has **not been able to identify**.
+
+**No rights are granted over this material by this repository.** Nothing
+here relicenses it, and its presence in this repository is not a
+statement that it may be reused. It is excluded from the public download
+bundle until its redistribution terms are established. If you want to use
+it, establish the terms with the upstream authors.
+
+This is the largest category in the repository by file count. That is a
+fact about where ValueNet came from, not an oversight.
+
+---
+
+## Why the split
+
+The two project licences are the most permissive terms this project can
+lawfully grant: broad reuse including commercial use and modification,
+with attribution. No NonCommercial, NoDerivatives, ShareAlike,
+source-availability, or field-of-use restriction is imposed.
+
+"Most permissive" is bounded by what is ours to grant. It does not
+extend to third-party material and does not extend to upstream content
+whose terms are unknown — relicensing either by omission would be the
+opposite of permissive.
+
+## A file this notice does not settle
+
+`README.md` descends from the upstream ValueNet README, so its recorded
+origin is `upstream-valuenet` and the classifier places it in category 4.
+Its current text shares exactly one line with the upstream version, and
+that line is a bare markdown code fence. In substance it is
+fork-authored; in recorded provenance it is not.
+
+The conservative classification stands until the repository owner rules,
+because under-claiming our own work is safe and over-claiming somebody
+else's is not. The measurement is reproducible:
+
+    python tools/licensing/disposition.py --divergence

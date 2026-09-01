@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Canonical state: construction, merge semantics, and the audit log.
 
 MAREP v2.2 §8, §10, §12.1. Updates are YAML-merge-style diffs, so this module

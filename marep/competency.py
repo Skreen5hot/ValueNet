@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Competency questions and sanity queries, executed and emitted as records.
 
 The last of the three checks `MAREP_VALUENET_PLAN` §2 lists as missing. A

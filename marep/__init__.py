@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """MAREP Runtime — a deterministic implementation of MAREP v2.2 §4.1.1.
 
 The Runtime is the half of MAREP's control plane that must not be a language

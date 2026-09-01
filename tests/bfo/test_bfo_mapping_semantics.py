@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Phase 5 controls for mapping semantics and the selected OWL 2 DL profile."""
 
 from __future__ import annotations

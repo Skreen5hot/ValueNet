@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Generate folk_aligned.ttl from ThatsAllFolks/folk.ttl.
 
 The two files held the same ontology in two serializations, maintained by hand

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Run 1 of MAREP_VALUENET_PLAN: a live retrospective over the unaudited layer.
 
 Scoped to `ThatsAllFolks/` and the DUL-layer files at the repository root. The

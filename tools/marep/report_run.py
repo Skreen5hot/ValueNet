@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Render a MAREP state file as a readable findings report.
 
 `RETRO_STATE.yaml` is the canonical record and is not meant to be read by a

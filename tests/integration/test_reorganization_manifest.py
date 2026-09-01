@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The move manifest has to describe this repository, exactly once each.
 
 `config/move-manifest.yaml` is generated, and a generated file is easy to

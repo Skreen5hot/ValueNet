@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Check the site source and the built artifact.
 
     python tools/site/check_site.py            # source + built _site/

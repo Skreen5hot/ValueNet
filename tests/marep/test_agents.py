@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Tests for the analytical agents (MAREP v2.2 §4.2).
 
 An agent is the only component that decides what is worth saying, which makes

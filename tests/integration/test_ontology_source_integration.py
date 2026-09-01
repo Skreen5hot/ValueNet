@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Ontology substrate records, end to end through `ingest`.
 
 The unit half of these tests is in `test_ontology_source_unit.py` and measures

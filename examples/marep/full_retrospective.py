@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """All six phases, the full roster, the real ontology corpus, no model.
 
 This is the composition test. Every part has unit tests; none of that shows

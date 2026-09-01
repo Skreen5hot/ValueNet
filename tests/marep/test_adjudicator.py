@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Tests for the Adjudicator (MAREP v2.2 §4.1.2).
 
 The tests that matter most are the negative ones. §4.1.2's central claim is

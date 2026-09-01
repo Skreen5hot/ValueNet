@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Rejection causes and result types for the MAREP Runtime.
 
 Every rejection the Runtime can issue is named here. MAREP v2.2 requires that

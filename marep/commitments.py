@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Semantic commitments that live outside the axioms.
 
 Run 2 asked what the corpus should assert and does not. Run 3 asks a wider

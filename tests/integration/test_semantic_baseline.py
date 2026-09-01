@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The baseline has to be a measurement, not a number that survived.
 
 `config/reorganization-baseline.json` is the evidence that the move changed

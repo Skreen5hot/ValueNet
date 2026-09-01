@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Command-line interface to the Runtime.
 
 Agents in MAREP need not be Python. They submit YAML update documents and read

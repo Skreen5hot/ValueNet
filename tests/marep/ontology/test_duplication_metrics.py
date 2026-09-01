@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Distinct content, not summed content.
 
 Every count in `group_metrics` is a sum over files. That is honest about what

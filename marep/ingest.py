@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Build a MAREP sprint input substrate from real repository data.
 
 MAREP v2.2 §7. Until this exists the substrate has to be hand-authored, which

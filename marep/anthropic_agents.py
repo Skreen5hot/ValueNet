@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Analytical agents backed by Claude (MAREP v2.2 §4.2).
 
 Kept apart from `anthropic_backend`, which serves the Adjudicator. The two ask

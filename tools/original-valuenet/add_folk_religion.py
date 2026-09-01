@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Declare folk:Religion under folk:Beliefs and retarget the orphaned triggers.
 
 `folk:Belief` was the object of 480 trigger statements and was declared

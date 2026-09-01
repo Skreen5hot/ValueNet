@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Sprint input substrate: freezing, checksumming, and reference resolution.
 
 MAREP v2.2 §7. The substrate is the only admissible ground for evidence. An

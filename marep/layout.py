@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Resolve repository paths from the layout contract, not from source location.
 
 Layout was hardcoded in three independent modules and twenty files. A move

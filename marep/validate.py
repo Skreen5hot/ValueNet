@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """JSON Schema validation for canonical state and substrate.
 
 MAREP v2.2 §8.1 requires conforming implementations to publish a JSON Schema

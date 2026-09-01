@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Run 2 of MAREP_VALUENET_PLAN: what the corpus should assert and does not.
 
 Rescoped from a BFO-layer calibration pass. The reasoner survey supplied that

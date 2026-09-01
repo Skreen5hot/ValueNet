@@ -1,0 +1,27 @@
+# Pinned dependencies for the site build and the site tests.
+#
+# Only what the site build or site tests actually import -- verified by
+# installing this file into an empty environment and running the suite
+# there, which is how the first version of this file was found wrong.
+#
+# The build and the checker are standard library only. The tests are
+# not, and by more than one link: they import marep.layout to resolve
+# components through the layout contract, and importing anything from
+# `marep` executes its package __init__, which loads the MAREP runtime
+# and with it jsonschema. tests/conftest.py imports yaml directly.
+#
+# So a site test drags in the whole MAREP stack to ask the layout
+# contract where a file is. That is worth knowing and is recorded
+# here rather than hidden behind a wider pin; narrowing it means
+# making marep.layout importable on its own, which is a change to
+# marep and not to the site.
+#
+# Pinned exactly rather than with a floor: the point of a pinned file
+# is that a clean environment reproduces this one, and ">=" reproduces
+# whatever was newest that day.
+#
+# rdflib joins this list when Phase 3 introduces the class-index
+# generator, not before.
+pytest==9.1.1
+PyYAML==6.0.3
+jsonschema==4.26.0

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Retarget the two trigger objects that name no declared value.
 
 Both are errors rather than modelling gaps, and neither should be declared as a

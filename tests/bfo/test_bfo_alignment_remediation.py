@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Executable controls for the BFO alignment remediation plan.
 
 Negative controls begin as strict expected failures when a defect is confirmed.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Phase entry and exit criteria, and advancement (MAREP v2.2 §13).
 
 Transitions are performed exclusively by the Runtime, which evaluates exit

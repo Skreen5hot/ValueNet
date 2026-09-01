@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Definition-quality and extension controls for remediation Phase 4."""
 
 from pathlib import Path

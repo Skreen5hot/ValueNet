@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Issue status transition graph and reopening guards.
 
 MAREP v2.2 §16.3 and §16.4. Every edge is enumerated; anything not enumerated

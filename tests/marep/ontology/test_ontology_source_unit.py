@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Unit tests for the ontology substrate source (MAREP v2.2 §7).
 
 The failure mode this component has to avoid is not crashing — it is asserting

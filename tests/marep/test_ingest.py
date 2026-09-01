@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Tests for the substrate builder (MAREP v2.2 §7).
 
 Built against a throwaway git repository with fixed commit dates, so the

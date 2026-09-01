@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """A citation that resolves is not evidence that the claim is true.
 
 `resolve` answers a structural question: does this reference name a real record

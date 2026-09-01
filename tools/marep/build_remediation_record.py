@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Record exactly what a source-data repair changed, and what it did not.
 
     python tools/marep/build_remediation_record.py

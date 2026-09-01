@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Repository invariants for the ontology artifacts themselves.
 
 These are not tests of `marep`. They are tests of the files in this repository,

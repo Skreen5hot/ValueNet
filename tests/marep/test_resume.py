@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Resuming a run must preserve what was verified, or refuse.
 
 Run 2 reached version 117 with 28 findings, every one carrying verified

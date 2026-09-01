@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Evaluate every consumer against the post-move tree, without moving anything.
 
 Step 4 passed its gate on a tree where nothing had moved, and that gate could

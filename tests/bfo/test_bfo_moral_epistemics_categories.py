@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Phase 6 controls for moral-epistemics category separation."""
 
 from __future__ import annotations

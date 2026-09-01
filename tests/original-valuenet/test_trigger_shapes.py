@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The trigger shapes must catch the defects that were repaired by hand.
 
 A SHACL run that reports nothing is worth nothing on its own. This corpus has

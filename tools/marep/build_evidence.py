@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Produce the transition matrix and the successor baseline in one run.
 
     python tools/marep/build_evidence.py

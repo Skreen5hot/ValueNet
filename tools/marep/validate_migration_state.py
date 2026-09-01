@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Validate the working tree against the frozen move manifest.
 
 Run after every move commit. From step 7 onward the manifest is **read, never

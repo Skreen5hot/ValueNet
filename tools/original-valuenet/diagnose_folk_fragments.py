@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Diagnose why ThatsAllFolks/folk_*.ttl does not parse. Read-only.
 
 Applies nothing. It reports what is wrong, in what proportions, and what each

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Analytical agents (MAREP v2.2 §4.2).
 
 The Runtime decides what is legal and the Adjudicator decides what is

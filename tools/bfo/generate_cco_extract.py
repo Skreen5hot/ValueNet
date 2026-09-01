@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Generate the pinned CCO subset required by the ValueNet BFO layer.
 
 The generator copies complete descriptions of the requested CCO entities,

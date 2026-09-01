@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Constants and helpers shared across test modules.
 
 Separated from `conftest.py` because the two files answer to different rules.

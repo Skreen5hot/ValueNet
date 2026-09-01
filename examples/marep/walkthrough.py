@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """A complete retrospective, driven end to end through the Runtime.
 
 No model is involved. Every agent here is a hard-coded dict, which is the

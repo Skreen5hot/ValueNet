@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Capture the semantic fingerprints the migration gate compares against.
 
 Counts alone are not invariants: two different graphs can have identical triple

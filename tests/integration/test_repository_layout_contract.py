@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """The layout contract has to be true about this repository.
 
 `config/repository-layout.yaml` is the single place that says where things

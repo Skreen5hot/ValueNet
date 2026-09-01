@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Commitments that live outside the axioms, measured rather than sampled.
 
 Run 1 reported on the alignment layer by reading files that did not parse, and

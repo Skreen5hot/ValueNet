@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Phase authorization and scope enforcement (MAREP v2.2 §11.4, §18.4).
 
 Outside an exclusive operation an agent's write authority comes from the

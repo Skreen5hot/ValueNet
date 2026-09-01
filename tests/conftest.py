@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Shared fixtures, and nothing else.
 
 Constants and helpers moved to `_support.py`. What is left is the set of

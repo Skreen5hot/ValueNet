@@ -53,13 +53,44 @@ references:
   - type: software
     title: ValueNet
     notes: >-
-      The original DUL-aligned ValueNet, the source tradition this suite
-      re-expresses and maps to. Its licence has not been identified; this
-      repository grants no rights over it.
+      The original DUL-aligned ValueNet repository, the source tradition
+      this suite re-expresses and maps to. Its licence has not been
+      identified; this repository grants no rights over it.
+
+      Scope of this credit: sole recorded Git author of the upstream
+      repository. That is a measurement of commit authorship and is not a
+      claim about intellectual authorship of ValueNet, which is credited
+      in the publication reference below.
     repository-code: https://github.com/StenDoipanni/ValueNet
     authors:
       - given-names: Stefano
         family-names: De Giorgis
+
+  - type: conference-paper
+    title: >-
+      Basic Human Values and Moral Foundations Theory in ValueNet Ontology
+    doi: 10.1007/978-3-031-17105-5_1
+    year: 2022
+    collection-title: Lecture Notes in Computer Science
+    publisher:
+      name: Springer International Publishing
+    start: 3
+    end: 18
+    notes: >-
+      The published conceptual authorship of ValueNet. The three authors
+      contributed equally; naming only the repository's Git author would
+      credit what git can measure and erase what it cannot.
+
+      CFF 1.2 has no book-chapter type. This is an LNCS proceedings
+      chapter, so conference-paper is the nearest accurate mapping rather
+      than an exact one.
+    authors:
+      - given-names: Stefano
+        family-names: De Giorgis
+      - given-names: Aldo
+        family-names: Gangemi
+      - given-names: Rossana
+        family-names: Damiano
   # Computational contributors. Deliberately referenced rather than
   # listed as authors: authorship carries responsibility for the
   # accuracy and integrity of the work, which an AI system cannot

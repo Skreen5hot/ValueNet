@@ -170,5 +170,11 @@
   "evidence_statement": {
     "body": "Ontology changes here are measured rather than asserted. The repository records a semantic fingerprint of the whole corpus that reproduces from any checkout, an experiment showing why earlier digests did not, and a triple-by-triple record of every source-data repair made since.",
     "tone": "State what is measured and link to it. Do not characterise the ontology as verified, validated, or correct; those are claims the evidence does not make."
+  },
+  "deployment": {
+    "public_url": "https://skreen5hot.github.io/ValueNet/",
+    "base_path": "/ValueNet/",
+    "why": "Recorded here so the value is read rather than retyped. The site tests copy the built artifact under a directory named from base_path and resolve every reference from there, which is the shape production has; a hard-coded directory name in a test would keep passing after the project path changed.",
+    "constraint": "Every internal URL stays relative. base_path is what the site is served under, not something the markup embeds: a root-absolute /ValueNet/... would break the moment the site moved, and would work in local preview until then."
   }
 }

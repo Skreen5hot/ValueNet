@@ -67,12 +67,19 @@ repository's development.
 
 ## Original ValueNet
 
-The BFO-aligned suite re-expresses the original DUL-aligned ValueNet,
-authored by Stefano De Giorgis. That work is the source tradition and the
-mapping target, and it is cited as a reference in
-[CITATION.cff](CITATION.cff). Its licence has not been identified and this
-repository grants no rights over it — see
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The BFO-aligned suite re-expresses the original DUL-aligned ValueNet.
+
+Its published conceptual authorship is Stefano De Giorgis, Aldo Gangemi
+and Rossana Damiano, who contributed equally
+([10.1007/978-3-031-17105-5_1](https://doi.org/10.1007/978-3-031-17105-5_1)).
+Stefano De Giorgis is the sole recorded Git author of the upstream
+repository — a measurement of commit authorship, which is a different and
+narrower fact. Both are cited in [CITATION.cff](CITATION.cff), separately,
+because crediting only the one git can see would erase the other.
+
+That work is the source tradition and the mapping target for this suite.
+Its licence has not been identified and this repository grants no rights
+over it — see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Upstream ontologies
 

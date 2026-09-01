@@ -458,3 +458,21 @@ def test_the_citation_record_claims_no_release():
     assert refs["Claude"].get("version") == "Claude Opus 5"
     assert "version" not in refs["Codex"], (
         "a model identifier is claimed for Codex; none was recorded")
+
+    # Repository authorship and published authorship are different facts.
+    # Git measures the first. Crediting only its sole recorded author
+    # would credit what git can see and erase what it cannot, so the
+    # repository reference is scoped and the publication is cited
+    # separately with all three authors.
+    repo_ref = refs["ValueNet"]
+    assert [a["family-names"] for a in repo_ref["authors"]] == ["De Giorgis"]
+    scope = " ".join(repo_ref["notes"].split()).lower()
+    assert "sole recorded git author" in scope, (
+        "the repository credit is unqualified, so it reads as a claim about "
+        "authorship of ValueNet rather than of the repository")
+
+    paper = next(r for r in doc["references"]
+                 if r.get("doi") == "10.1007/978-3-031-17105-5_1")
+    names = sorted(a["family-names"] for a in paper["authors"])
+    assert names == ["Damiano", "De Giorgis", "Gangemi"], names
+    assert "contributed equally" in " ".join(paper["notes"].split())

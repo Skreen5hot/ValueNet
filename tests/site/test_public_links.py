@@ -19,6 +19,7 @@ file under `site/` as a finding.
 from __future__ import annotations
 
 import importlib.util
+import json
 import shutil
 import subprocess
 from urllib.parse import unquote, urlparse
@@ -40,6 +41,14 @@ def _tool(component: str, name: str):
 
 BUILD = _tool("tool.build-site", "build_site_links")
 CHECK = _tool("tool.check-site", "check_site")
+
+#: The approved deployment, read from configuration rather than retyped.
+#: The subpath test below builds its directory name from this, so a
+#: changed project path moves the test with it instead of leaving it
+#: passing against a name nobody serves from.
+DEPLOYMENT = json.loads(
+    (layout.component("site.content").resolve() / "site.json")
+    .read_text(encoding="utf-8"))["deployment"]
 
 
 @pytest.fixture(scope="module")
@@ -96,7 +105,7 @@ def test_every_reference_resolves_from_a_project_subpath(built, tmp_path):
     path and every reference is resolved from there. A page that only
     works at the domain root fails here.
     """
-    served = tmp_path / "ValueNet"
+    served = tmp_path / DEPLOYMENT["base_path"].strip("/")
     shutil.copytree(built, served)
 
     broken = []
@@ -119,6 +128,14 @@ def test_every_reference_resolves_from_a_project_subpath(built, tmp_path):
                                   % (page.relative_to(served).as_posix(),
                                      target))
     assert not broken, broken
+
+    # The approved deployment, asserted so the simulated subpath is the
+    # one the site will actually be served from.
+    assert DEPLOYMENT["public_url"] == "https://skreen5hot.github.io/ValueNet/"
+    assert DEPLOYMENT["base_path"] == "/ValueNet/"
+    assert DEPLOYMENT["public_url"].endswith(DEPLOYMENT["base_path"]), (
+        "the recorded URL and base path disagree, so the subpath simulated "
+        "here is not the one production serves")
 
 
 def test_every_page_carries_the_notices_the_plan_requires(built):

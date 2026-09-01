@@ -1,54 +1,257 @@
 {
-  "after_commit": "3f4957b8527c0143b95342c32522a31df514fff7",
+  "after_commit": "67033a45383b4d6231899667bbead23b644723a1",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-  "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle file differs between the two, so citing the tag as the before-state is accurate; that was checked, not assumed.",
+  "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
   "before_tag_commit": "2475e3480bfd40ed2b010e31990ff41ffd1e07be",
   "corpus_files_changed": [
-    "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+    "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+    "ontology/bfo/core/valuenet-core.ttl",
+    "ontology/bfo/core/valuenet-folk.ttl",
+    "ontology/bfo/core/valuenet-mappings.ttl",
+    "ontology/bfo/core/valuenet-schwartz-values.ttl",
+    "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+    "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+    "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+    "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
+    "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+    "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
+    "ontology/bfo/shapes/vcvf-triggers-shapes.ttl"
   ],
-  "format_version": 1,
+  "events": [
+    {
+      "after_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
+      "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 0,
+          "component_digest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "components": 0,
+          "largest_component_nodes": 0,
+          "triples_touching": 0
+        },
+        "before": {
+          "blank_nodes": 0,
+          "component_digest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "components": 0,
+          "largest_component_nodes": 0,
+          "triples_touching": 0
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        ],
+        "subclass_edges_unchanged": true,
+        "subjects_touched": [
+          "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue",
+          "http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1"
+        ]
+      },
+      "files": [
+        "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+            "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty>"
+          },
+          {
+            "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+            "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> \"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+          }
+        ],
+        "count": 4,
+        "removed": [
+          {
+            "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+            "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DataTypeProperty>"
+          },
+          {
+            "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+            "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <https://valuenet.invalid/source/v1/ThatsAllFolks/MFRC_1k_graphs/1>"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "67033a45383b4d6231899667bbead23b644723a1",
+      "before_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 97,
+          "component_digest_sha256": "32d7714479dd61667825b2e6deff09e1971956fd6ee345151b69dbaf6afaba1c",
+          "components": 81,
+          "largest_component_nodes": 4,
+          "triples_touching": 399
+        },
+        "before": {
+          "blank_nodes": 97,
+          "component_digest_sha256": "32d7714479dd61667825b2e6deff09e1971956fd6ee345151b69dbaf6afaba1c",
+          "components": 81,
+          "largest_component_nodes": 4,
+          "triples_touching": 399
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "publication-metadata",
+        "header_predicates_only": true,
+        "header_subjects_only": true,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://purl.org/dc/terms/description",
+          "http://purl.org/dc/terms/license",
+          "http://purl.org/dc/terms/title",
+          "http://www.w3.org/2000/01/rdf-schema#comment"
+        ],
+        "subclass_edges_unchanged": true,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl",
+          "https://fandaws.com/ontology/bfo/valuenet-core.owl",
+          "https://fandaws.com/ontology/bfo/valuenet-folk.owl",
+          "https://fandaws.com/ontology/bfo/valuenet-mappings.owl",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario.ttl",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics.owl",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl",
+          "https://fandaws.com/ontology/valuenet/triggers-semantics#",
+          "https://fandaws.com/ontology/valuenet/triggers-shapes#"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-core.ttl",
+        "ontology/bfo/core/valuenet-folk.ttl",
+        "ontology/bfo/core/valuenet-mappings.ttl",
+        "ontology/bfo/core/valuenet-schwartz-values.ttl",
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+        "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+        "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
+        "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+        "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
+        "ontology/bfo/shapes/vcvf-triggers-shapes.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core.owl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core.owl> <http://www.w3.org/2000/01/rdf-schema#comment> \"Namespace policy: https://fandaws.com/ontology/bfo/valuenet-<module># is the canonical namespace for every entity in this suite. These IRIs are identifiers: they are not currently HTTP-dereferenceable, and nothing should assume that resolving one returns a definition. The https://w3id.org/valuenet/<module># IRIs that appear throughout as rdfs:seeAlso are reserved aliases and are not currently registered; nothing should be declared under them, and no query should rely on them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk.owl> <http://purl.org/dc/terms/description> \"An ontology of common-sense or 'folk' human values, aligned with BFO and the ValueNet suite. This module extends the core psychological models with more granular, everyday value concepts.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk.owl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk.owl> <http://purl.org/dc/terms/title> \"ValueNet Folk Values Module\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-mappings.owl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario.ttl> <http://purl.org/dc/terms/description> \"A fictional worked scenario satisfying the competency questions in valuenet-moral-epistemics-CQ.md. Two agents witness the same conduct. One discerns and acts; the other judges rashly. All individuals are invented.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario.ttl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics.owl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
+            "triple": "<https://fandaws.com/ontology/valuenet/triggers-semantics#> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
+            "triple": "<https://fandaws.com/ontology/valuenet/triggers-semantics#> <http://purl.org/dc/terms/title> \"Semantics for vcvf:triggers\"@en"
+          },
+          {
+            "file": "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/shapes/vcvf-triggers-shapes.ttl",
+            "triple": "<https://fandaws.com/ontology/valuenet/triggers-shapes#> <http://purl.org/dc/terms/description> \"\"\"Enforces the direction convention and the declaration\nrequirement that OWL's range axiom cannot, because a range entails rather than\nvalidates.\"\"\"@en"
+          },
+          {
+            "file": "ontology/bfo/shapes/vcvf-triggers-shapes.ttl",
+            "triple": "<https://fandaws.com/ontology/valuenet/triggers-shapes#> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/>"
+          },
+          {
+            "file": "ontology/bfo/shapes/vcvf-triggers-shapes.ttl",
+            "triple": "<https://fandaws.com/ontology/valuenet/triggers-shapes#> <http://purl.org/dc/terms/title> \"SHACL constraints for vcvf:triggers\"@en"
+          }
+        ],
+        "count": 19,
+        "removed": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core.owl> <http://www.w3.org/2000/01/rdf-schema#comment> \"Namespace policy: https://fandaws.com/ontology/bfo/valuenet-<module># is the canonical, resolvable namespace for every entity in this suite. The https://w3id.org/valuenet/<module># IRIs that appear throughout as rdfs:seeAlso are reserved aliases and are not currently registered; nothing should be declared under them, and no query should rely on them.\"@en"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    }
+  ],
+  "format_version": 2,
   "generated_by": "tools/marep/build_remediation_record.py",
   "not_remediated": {
     "archive": {
       "bytes": 1732230,
-      "defect": "dul:hasDataValue objects are relative IRI references (<1>, <22>, <4200>) rather than literals, and the property is declared owl:DataTypeProperty, which is not an OWL term. Both are the FRED export's behaviour, not damage to this copy.",
-      "detection": "python -c \"import zipfile,rdflib,collections;z=zipfile.ZipFile('ThatsAllFolks/MFRC_1k_ESWC.zip');P=rdflib.URIRef('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue');c=collections.Counter();[c.update({n:sum(1 for _ in rdflib.Graph().parse(data=z.read(n).decode('utf-8'),format='turtle',publicID='https://probe.invalid/'+n).triples((None,P,None)))}) for n in z.namelist() if n.endswith('.ttl') and not n.startswith('__MACOSX')];print(sum(1 for v in c.values() if v),sum(c.values()))\"",
-      "disposition": "permanent upstream debt; bytes preserved. Repacking would fork an unaudited binary that nothing reads and no check measures, and would diverge from upstream for no observable effect.",
+      "defect": "dul:hasDataValue objects are relative IRI references rather than literals, and the property is declared owl:DataTypeProperty, which is not an OWL term. Both are the FRED export's behaviour, not damage to this copy.",
+      "detection": "python -c \"import zipfile,rdflib;z=zipfile.ZipFile('ThatsAllFolks/MFRC_1k_ESWC.zip');P=rdflib.URIRef('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue');m=o=d=0;\nfor n in z.namelist():\n    t=z.read(n).decode('utf-8','replace') if n.endswith('.ttl') and not n.startswith('__MACOSX') else None\n    if t is None or 'hasDataValue' not in t: continue\n    d+= 'owl:DataTypeProperty' in t\n    g=rdflib.Graph()\n    g.parse(data=t,format='turtle',publicID='https://probe.invalid/'+n)\n    c=sum(1 for _ in g.triples((None,P,None)))\n    m+=bool(c); o+=c\nprint('members_affected',m,'occurrences',o,'members_with_misdeclared_property',d)\"",
+      "disposition": "permanent upstream debt; bytes preserved. Repacking would fork an unaudited binary that nothing reads.",
       "excluded_from_live_corpus": true,
       "members_affected": 139,
       "members_with_misdeclared_property": 139,
-      "note": "No runtime test opens this archive. Tests assert its sha256 over the bytes, which is how 'unchanged' is checked without treating it as a corpus.",
+      "note": "No runtime test opens this archive. Tests assert its sha256 over the bytes.",
       "occurrences": 181,
       "path": "ThatsAllFolks/MFRC_1k_ESWC.zip",
       "sha256": "51eda226ea192938de2513c0a393da73b64f1e34431936b1ccb1d156004a0656",
       "turtle_members": 908,
-      "why_excluded": "marep.ontology_source.discover() walks Turtle files in the working tree. Archive members are not files in the working tree, so no corpus measure, digest or reasoner run has ever seen them. The one member extracted into ThatsAllFolks/MFRC_1k_graphs/ is measured; the other members are not."
+      "why_excluded": "discover() walks Turtle files in the working tree. Archive members are not files in the working tree, so no corpus measure has ever seen them."
     }
   },
-  "substitutions": {
-    "added": [
-      {
-        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-        "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty>"
-      },
-      {
-        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-        "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> \"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
-      }
-    ],
-    "count": 2,
-    "removed": [
-      {
-        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-        "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DataTypeProperty>"
-      },
-      {
-        "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-        "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <https://valuenet.invalid/source/v1/ThatsAllFolks/MFRC_1k_graphs/1>"
-      }
-    ]
-  },
-  "why": "The transition matrix measured the corpus at eol-hardened-v1. This repair changed the corpus after that measurement. The matrix is left frozen because its content is a comparison of three checkouts of one commit; re-running it against a later corpus would replace the experiment rather than repeat it. This record is what lets the successor baseline cite the older matrix without pretending the two describe the same corpus.",
+  "why": "The matrix measured the corpus at eol-hardened-v1 and is frozen: its content is a comparison of three checkouts of one commit, so re-running it against a later corpus would replace the experiment rather than repeat it. This ledger is what lets the successor baseline cite it without pretending the two describe the same corpus.",
   "working_tree_clean": true
 }

@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "3f4957b8527c0143b95342c32522a31df514fff7",
+  "input_commit": "67033a45383b4d6231899667bbead23b644723a1",
   "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
@@ -142,54 +142,76 @@
       "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "corpus_repaired_since": {
         "artifact": "config/remediation-record.json",
-        "artifact_sha256": "d28b578f28576b9496d1264382096b99db626df28f6f8dc852b66926458fa987",
+        "artifact_sha256": "9fc91989fdead444aff7ceef6a7951cd01d6ac39034c248842b4d221bf625a5e",
         "before_tag": "eol-hardened-v1",
         "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-        "after_commit": "3f4957b8527c0143b95342c32522a31df514fff7",
+        "after_commit": "67033a45383b4d6231899667bbead23b644723a1",
         "corpus_files_changed": [
-          "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+          "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
+          "ontology/bfo/core/valuenet-core.ttl",
+          "ontology/bfo/core/valuenet-folk.ttl",
+          "ontology/bfo/core/valuenet-mappings.ttl",
+          "ontology/bfo/core/valuenet-schwartz-values.ttl",
+          "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+          "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+          "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+          "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
+          "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+          "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
+          "ontology/bfo/shapes/vcvf-triggers-shapes.ttl"
         ],
-        "substitutions": {
-          "added": [
-            {
-              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-              "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty>"
-            },
-            {
-              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-              "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> \"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
-            }
-          ],
-          "count": 2,
-          "removed": [
-            {
-              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-              "triple": "<http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DataTypeProperty>"
-            },
-            {
-              "file": "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
-              "triple": "<http://www.ontologydesignpatterns.org/ont/fred/domain.owl#man_1> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue> <https://valuenet.invalid/source/v1/ThatsAllFolks/MFRC_1k_graphs/1>"
-            }
-          ]
-        },
+        "events": [
+          {
+            "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
+            "after_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
+            "files": [
+              "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 2,
+            "ground_removed": 2,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
+            "after_commit": "67033a45383b4d6231899667bbead23b644723a1",
+            "files": [
+              "ontology/bfo/core/valuenet-core.ttl",
+              "ontology/bfo/core/valuenet-folk.ttl",
+              "ontology/bfo/core/valuenet-mappings.ttl",
+              "ontology/bfo/core/valuenet-schwartz-values.ttl",
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+              "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+              "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
+              "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+              "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
+              "ontology/bfo/shapes/vcvf-triggers-shapes.ttl"
+            ],
+            "change_class": "publication-metadata",
+            "ground_added": 18,
+            "ground_removed": 1,
+            "blank_node_shape_unchanged": true
+          }
+        ],
         "not_remediated": {
           "archive": {
             "bytes": 1732230,
-            "defect": "dul:hasDataValue objects are relative IRI references (<1>, <22>, <4200>) rather than literals, and the property is declared owl:DataTypeProperty, which is not an OWL term. Both are the FRED export's behaviour, not damage to this copy.",
-            "detection": "python -c \"import zipfile,rdflib,collections;z=zipfile.ZipFile('ThatsAllFolks/MFRC_1k_ESWC.zip');P=rdflib.URIRef('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue');c=collections.Counter();[c.update({n:sum(1 for _ in rdflib.Graph().parse(data=z.read(n).decode('utf-8'),format='turtle',publicID='https://probe.invalid/'+n).triples((None,P,None)))}) for n in z.namelist() if n.endswith('.ttl') and not n.startswith('__MACOSX')];print(sum(1 for v in c.values() if v),sum(c.values()))\"",
-            "disposition": "permanent upstream debt; bytes preserved. Repacking would fork an unaudited binary that nothing reads and no check measures, and would diverge from upstream for no observable effect.",
+            "defect": "dul:hasDataValue objects are relative IRI references rather than literals, and the property is declared owl:DataTypeProperty, which is not an OWL term. Both are the FRED export's behaviour, not damage to this copy.",
+            "detection": "python -c \"import zipfile,rdflib;z=zipfile.ZipFile('ThatsAllFolks/MFRC_1k_ESWC.zip');P=rdflib.URIRef('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue');m=o=d=0;\nfor n in z.namelist():\n    t=z.read(n).decode('utf-8','replace') if n.endswith('.ttl') and not n.startswith('__MACOSX') else None\n    if t is None or 'hasDataValue' not in t: continue\n    d+= 'owl:DataTypeProperty' in t\n    g=rdflib.Graph()\n    g.parse(data=t,format='turtle',publicID='https://probe.invalid/'+n)\n    c=sum(1 for _ in g.triples((None,P,None)))\n    m+=bool(c); o+=c\nprint('members_affected',m,'occurrences',o,'members_with_misdeclared_property',d)\"",
+            "disposition": "permanent upstream debt; bytes preserved. Repacking would fork an unaudited binary that nothing reads.",
             "excluded_from_live_corpus": true,
             "members_affected": 139,
             "members_with_misdeclared_property": 139,
-            "note": "No runtime test opens this archive. Tests assert its sha256 over the bytes, which is how 'unchanged' is checked without treating it as a corpus.",
+            "note": "No runtime test opens this archive. Tests assert its sha256 over the bytes.",
             "occurrences": 181,
             "path": "ThatsAllFolks/MFRC_1k_ESWC.zip",
             "sha256": "51eda226ea192938de2513c0a393da73b64f1e34431936b1ccb1d156004a0656",
             "turtle_members": 908,
-            "why_excluded": "marep.ontology_source.discover() walks Turtle files in the working tree. Archive members are not files in the working tree, so no corpus measure, digest or reasoner run has ever seen them. The one member extracted into ThatsAllFolks/MFRC_1k_graphs/ is measured; the other members are not."
+            "why_excluded": "discover() walks Turtle files in the working tree. Archive members are not files in the working tree, so no corpus measure has ever seen them."
           }
         },
-        "verified": "the changed-file list was re-derived from git by this baseline rather than taken from the record"
+        "verified": "each event's file list, triple enumeration, blank-node fingerprint and classification were recomputed by this baseline and compared, not read from the record"
       }
     }
   },
@@ -203,7 +225,7 @@
       "definition": "measure_file(...).parses is True"
     },
     "distinct_triples": {
-      "value": 104763,
+      "value": 104780,
       "definition": "len of the merged graph over all parsing files"
     },
     "named_classes": {
@@ -223,7 +245,7 @@
       "definition": "distinct objects of vcvf:triggers"
     },
     "merged_ground_sha256": {
-      "value": "c181f4ba256ce43a44cf422e259484fae7dced75b0d41e053d7e5896f0be1149",
+      "value": "68da629d5021e07bbca5cea2c70f7eb29c0bafcc4946a7a4b2c53224f5bf57a9",
       "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
     },
     "merged_bnode_shape": {
@@ -259,7 +281,7 @@
       "definition": "unsatisfiable named classes"
     },
     "bfo_scope_canonical_sha256": {
-      "value": "fe807a179ba08741f90efe8a42013ed826a321c96b339ba10a65cfe8c43cf13c",
+      "value": "470d5b967ae95b02dd3e19e6be0de316fe42dec4ab23fc6ee817a6b6f9e20aee",
       "definition": "SHA-256 over sorted N-Triples of the canonicalized union of layout.reasoner_scope()"
     },
     "bfo_scope_files": {
@@ -292,11 +314,11 @@
     }
   },
   "tests": {
-    "collected": 755,
-    "default_selected": 739,
+    "collected": 772,
+    "default_selected": 756,
     "default_deselected": 16,
-    "canonical_id_sha256": "001d20b7096ad3a40e8f12a8dd3514d9deeb12a455d3b953114e054a8819c0e9",
-    "default_selected_sha256": "eeef84941ad6fd233d9f8c81fb514c15d789648a5c06085b91cd0c5f9dbc39aa",
+    "canonical_id_sha256": "808e1cd4c3cecee6793b1b013d676528a4aab236d07540484176f6b7f837a202",
+    "default_selected_sha256": "6a710fbdb64fa0349348ef8216bdb06f53e6c629c56194c7deeb78f1ea327a1d",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

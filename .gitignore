@@ -13,3 +13,8 @@ examples/**/_run/
 *.key
 *.pem
 secrets/
+
+# Generated site artifact. Deployed from an Actions build, never committed:
+# a committed copy is a second description of the site that can drift from
+# the source it was built from.
+_site/

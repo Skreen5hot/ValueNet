@@ -234,6 +234,58 @@ components:
     moves_to: null
     role: configuration
 
+  # ---- Public site: authored source, builders, generated artifact. ----
+
+  - id: site.source
+    path: site/src
+    moves_to: null
+    role: configuration
+    description: >-
+      Authored site markup and assets. Every URL inside is relative: the
+      site is served from a project subpath, and a root-absolute path
+      resolves in local preview and 404s in production.
+
+  - id: site.content
+    path: site/content
+    moves_to: null
+    role: configuration
+    description: >-
+      Curated public copy, page outlines, and the claim-to-source map.
+      Holds no repository paths and no value the build could derive;
+      this contract is authoritative for the first and generated data
+      for the second.
+
+  - id: tool.build-site
+    path: tools/site/build_site.py
+    moves_to: null
+    role: generator
+    description: >-
+      Builds site/src into _site deterministically: inputs enumerated in
+      sorted order, the source commit's timestamp instead of the wall
+      clock, output removed and rewritten so a deleted file cannot
+      survive, and bytes copied rather than re-encoded.
+
+  - id: tool.check-site
+    path: tools/site/check_site.py
+    moves_to: null
+    role: checker
+    description: >-
+      Checks the site source and the built artifact. Enumerates the
+      filesystem rather than git, because a pre-commit gate that reads
+      git ls-files reports on the past: three files added under site/
+      once passed the allowance sweep without being opened, having been
+      untracked at the time.
+
+  - id: site.generated
+    path: _site
+    moves_to: null
+    role: generated-site-output
+    generator: tool.build-site
+    description: >-
+      The deployed artifact. Gitignored and never committed: a committed
+      copy is a second description of the site that can drift from the
+      source it was built from.
+
   - id: config.reorganization-baseline
     path: config/reorganization-baseline.json
     moves_to: null

@@ -1,0 +1,151 @@
+/* BFO-Aligned ValueNet — site shell.
+ *
+ * No web font, no CDN, no third-party stylesheet: the site must work with no
+ * external request, and a font that fails to load must not change layout.
+ *
+ * Colours are declared as tokens so contrast can be checked in one place.
+ * Both themes are defined explicitly; a transparent body would borrow
+ * whatever the host paints behind it.
+ */
+
+:root {
+  --bg: #fbfbf9;
+  --surface: #ffffff;
+  --ink: #1b1c1a;
+  --ink-soft: #55574f;
+  --rule: #d9d8d0;
+  --accent: #3a5a40;
+  --accent-ink: #ffffff;
+  --notice-bg: #f4f1e8;
+  --focus: #1b4d89;
+  --measure: 42rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16171a;
+    --surface: #1e2024;
+    --ink: #e9e8e3;
+    --ink-soft: #b0b2ab;
+    --rule: #34363b;
+    --accent: #9dbfa4;
+    --accent-ink: #16171a;
+    --notice-bg: #232529;
+    --focus: #8ab4f8;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 1rem/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Keyboard users need to reach content without walking the whole nav, and
+ * need to see where they are once they get there. */
+.skip {
+  position: absolute;
+  left: -9999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0.6rem 1rem;
+}
+.skip:focus { left: 0.5rem; top: 0.5rem; z-index: 10; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface);
+  padding: 1rem 1.25rem;
+}
+
+.wordmark { margin: 0 0 0.5rem; font-weight: 700; letter-spacing: 0.01em; }
+.wordmark a { color: inherit; text-decoration: none; }
+.wordmark a:hover { text-decoration: underline; }
+
+.masthead nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+}
+
+.masthead nav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover { color: var(--ink); text-decoration: underline; }
+.masthead nav a[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+main {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 0.75rem; }
+h2 { font-size: 1.25rem; margin: 2rem 0 0.5rem; }
+
+.lead { font-size: 1.1rem; color: var(--ink-soft); margin: 0 0 1.5rem; }
+
+.reasons dt { font-weight: 650; margin-top: 1rem; }
+.reasons dd { margin: 0.25rem 0 0; color: var(--ink-soft); }
+
+.placeholder {
+  border: 1px dashed var(--rule);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+}
+.placeholder h2 { margin-top: 0; font-size: 1.05rem; }
+
+.footer {
+  border-top: 1px solid var(--rule);
+  background: var(--surface);
+  padding: 1.5rem 1.25rem;
+}
+
+.footer .notice,
+.footer .build {
+  max-width: var(--measure);
+  margin: 0 auto 0.75rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.footer .notice {
+  background: var(--notice-bg);
+  border-left: 3px solid var(--accent);
+  padding: 0.7rem 0.9rem;
+}
+
+.footer .build { margin-bottom: 0; }
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+/* Wide content scrolls inside its own container; the page body never does. */
+.scroll-x { overflow-x: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

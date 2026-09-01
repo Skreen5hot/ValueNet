@@ -207,7 +207,14 @@ def covered_by(a: dict, occ: Occurrence, text: str) -> bool:
 #: Roles whose components are legitimately missing from a fresh
 #: checkout. Both exemptions are policed below, so neither becomes a
 #: place a broken path can sit unnoticed.
-ABSENT_FROM_A_CHECKOUT = {"generated-artifact", "generated-run-state"}
+ABSENT_FROM_A_CHECKOUT = {"generated-artifact", "generated-run-state",
+                          "generated-site-output"}
+
+#: Roles whose components must never be committed at all, as opposed to
+#: generated artifacts that are. Each one is required below to be
+#: genuinely ignored by git, so the exemption is earned rather than
+#: asserted by choosing a role name.
+NEVER_COMMITTED = {"generated-run-state", "generated-site-output"}
 
 
 def test_every_component_resolves():
@@ -228,7 +235,7 @@ def test_every_component_resolves():
         layout.component(c["id"]).resolve()
 
 
-def test_run_state_is_exempt_only_because_git_ignores_it():
+def test_never_committed_roles_are_exempt_only_because_git_ignores_them():
     """The exemption has to be earned by the .gitignore, not by the role.
 
     A component marked `generated-run-state` that git actually tracks
@@ -242,13 +249,20 @@ def test_run_state_is_exempt_only_because_git_ignores_it():
     test a description of which directories happen to exist.
     """
     local = [c for c in COMPONENTS
-             if c.get("role") == "generated-run-state"]
+             if c.get("role") in NEVER_COMMITTED]
     assert local, "the exemption is declared but nothing claims it"
+    assert {c.get("role") for c in local} == NEVER_COMMITTED, (
+        "a never-committed role is declared with no component claiming it, "
+        "so this test would police an empty set for that role")
     for c in local:
         for path in (c["path"], c.get("moves_to")):
             if not path:
                 continue
-            probe = path.rstrip("/") + "/RUN1_STATE.yaml"
+            # A file inside, not the directory. `git check-ignore` cannot
+            # apply a trailing-slash pattern to a directory that does not
+            # exist yet, so asking about the bare path reports an
+            # unmaterialised location as unignored.
+            probe = path.rstrip("/") + "/.ignore-probe"
             assert ignored(probe), (
                 c["id"] + " is exempt from resolution as run state, but "
                 "git does not ignore " + probe + ", so a checkout is "

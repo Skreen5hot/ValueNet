@@ -196,6 +196,19 @@ def measure_file(path: Path, repo: Path) -> FileFacts:
     return facts
 
 
+#: Directories that hold copies of corpus files rather than corpus files.
+#:
+#: `.git` and `_run` were here first. `_site` is the one that had not
+#: happened yet: the site build copies canonical Turtle into the
+#: deployment artifact byte-for-byte, so the moment downloads are built
+#: every module would be discovered twice and every count and digest
+#: would move for a reason nothing in the ontology explains. It is
+#: excluded now, while the artifact still holds no Turtle and the
+#: exclusion therefore changes no measurement, rather than later while
+#: someone reconciles a baseline that moved on its own.
+EXCLUDED_DIRS = {".git", "_run", "_site"}
+
+
 def discover(repo: Path, scopes: Iterable[str] | None = None) -> list[Path]:
     """Ontology files under `repo`, optionally limited to given subpaths."""
     roots = [repo / s for s in scopes] if scopes else [repo]
@@ -206,7 +219,7 @@ def discover(repo: Path, scopes: Iterable[str] | None = None) -> list[Path]:
             continue
         for suffix in ONTOLOGY_SUFFIXES:
             found.update(p for p in root.rglob(f"*{suffix}")
-                         if ".git" not in p.parts and "_run" not in p.parts)
+                         if not EXCLUDED_DIRS.intersection(p.parts))
     return sorted(found)
 
 

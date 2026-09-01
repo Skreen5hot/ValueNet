@@ -33,6 +33,11 @@
 # =====================================================================
 
 vn: a owl:Ontology ;
+    <http://purl.org/dc/terms/title> "SHACL constraints for vcvf:triggers"@en ;
+    <http://purl.org/dc/terms/description> """Enforces the direction convention and the declaration
+requirement that OWL's range axiom cannot, because a range entails rather than
+validates."""@en ;
+    <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/> ;
     rdfs:label "SHACL constraints for vcvf:triggers"@en ;
     rdfs:comment """Enforces the direction convention and the declaration
 requirement that OWL's range axiom cannot, because a range entails rather than

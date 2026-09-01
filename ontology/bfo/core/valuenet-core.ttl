@@ -6,13 +6,14 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-core.owl>
   a owl:Ontology ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-core.owl> ;
   owl:imports <http://purl.obolibrary.org/obo/bfo/2020/bfo-core.ttl> ,
     <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6> ;
   dc:title "ValueNet Core Ontology (BFO-Aligned)"@en ;
   dc:description "The core module of the BFO-aligned ValueNet suite. It defines the top-level entities for modeling human values as BFO realizable entities."@en ;
   rdfs:comment "This ontology refactors the original ValueNet (which used DUL) into a realist framework based on BFO 2020."@en ,
-    "Namespace policy: https://fandaws.com/ontology/bfo/valuenet-<module># is the canonical, resolvable namespace for every entity in this suite. The https://w3id.org/valuenet/<module># IRIs that appear throughout as rdfs:seeAlso are reserved aliases and are not currently registered; nothing should be declared under them, and no query should rely on them."@en .
+    "Namespace policy: https://fandaws.com/ontology/bfo/valuenet-<module># is the canonical namespace for every entity in this suite. These IRIs are identifiers: they are not currently HTTP-dereferenceable, and nothing should assume that resolving one returns a definition. The https://w3id.org/valuenet/<module># IRIs that appear throughout as rdfs:seeAlso are reserved aliases and are not currently registered; nothing should be declared under them, and no query should rely on them."@en .
 
 #################################################################
 #    Annotation-only ontology-entity mapping vocabulary

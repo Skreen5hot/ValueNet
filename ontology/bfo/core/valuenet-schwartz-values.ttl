@@ -5,6 +5,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl>
   a owl:Ontology ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-schwartz-values.owl> ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-core.owl> ;
   dc:title "ValueNet Schwartz Values Module"@en ;

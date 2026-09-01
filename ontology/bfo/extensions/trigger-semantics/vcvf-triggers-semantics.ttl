@@ -35,6 +35,8 @@
 # =====================================================================
 
 vn:  a owl:Ontology ;
+     dct:license <https://creativecommons.org/licenses/by/4.0/> ;
+     dct:title "Semantics for vcvf:triggers"@en ;
      rdfs:label "Semantics for vcvf:triggers"@en ;
      dct:description """Supplies the definition ValueCore 0.4 omits for
 vcvf:triggers. Annotation only: no logical axiom is added, and under RDFS

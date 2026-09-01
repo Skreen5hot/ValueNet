@@ -5,6 +5,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl>
   a owl:Ontology ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-moral-foundations.owl> ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-core.owl> ;
   dc:title "ValueNet Moral Foundations Module"@en ;

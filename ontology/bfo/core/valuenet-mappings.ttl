@@ -4,6 +4,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-mappings.owl>
   a owl:Ontology ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> ;
   dc:title "ValueNet Mappings"@en ;
   dc:description "Provides annotation-only historical correspondences from BFO-aligned ValueNet entities to entities in the original ValueNet and related value ontologies."@en .

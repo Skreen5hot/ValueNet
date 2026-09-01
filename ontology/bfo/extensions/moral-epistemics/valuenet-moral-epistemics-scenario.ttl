@@ -12,6 +12,8 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario.ttl>
   a owl:Ontology ;
+  dc:description """A fictional worked scenario satisfying the competency questions in valuenet-moral-epistemics-CQ.md. Two agents witness the same conduct. One discerns and acts; the other judges rashly. All individuals are invented."""@en ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics.owl> ;
   dc:title "ValueNet Moral Epistemics Scenario"@en ;
   rdfs:comment "A fictional worked scenario satisfying the competency questions in valuenet-moral-epistemics-CQ.md. Two agents witness the same conduct. One discerns and acts; the other judges rashly. All individuals are invented."@en .

@@ -10,6 +10,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl>
   a owl:Ontology ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   dc:title "ValueNet Core Shapes"@en ;
   dc:description "SHACL shapes for realization integrity and annotation well-formedness, covering the bearer-participant contract, vn-core:TextSpan, and vn-core:isEvidenceFor."@en ;
   rdfs:comment "The realization shapes enforce closed-world annotation requirements that OWL's open-world semantics cannot: a realized value instance must have a recorded agent bearer, and at least one of its recorded bearers must participate in the realizing process. vn-core:isEvidenceFor is an annotation property: its rdfs:domain and rdfs:range are documentary and no OWL reasoner enforces them, and it cannot appear in a class restriction. Run these shapes over an annotated data graph together with valuenet-core.ttl. Referenced from annotationGuide.md."@en .

@@ -5,6 +5,9 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-folk.owl>
   a owl:Ontology ;
+  <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/> ;
+  <http://purl.org/dc/terms/title> "ValueNet Folk Values Module"@en ;
+  <http://purl.org/dc/terms/description> "An ontology of common-sense or 'folk' human values, aligned with BFO and the ValueNet suite. This module extends the core psychological models with more granular, everyday value concepts."@en ;
   owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-folk.owl> ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-core.owl>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl> ;
   rdfs:comment "An ontology of common-sense or 'folk' human values, aligned with BFO and the ValueNet suite. This module extends the core psychological models with more granular, everyday value concepts." ;

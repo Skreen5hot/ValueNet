@@ -509,31 +509,33 @@ MATRIX_GENERATOR = "tools/marep/build_transition_matrix.py"
 EVIDENCE_ORCHESTRATOR = "tools/marep/build_evidence.py"
 REMEDIATION_ARTIFACT = "config/remediation-record.json"
 REMEDIATION_GENERATOR = "tools/marep/build_remediation_record.py"
-REMEDIATION_FORMAT_VERSION = 1
 MATRIX_TAG = "reorg-post-move-v1"
 EXPECTED_CELLS = {"A": (False, False), "B": (True, False),
                   "C": (True, True)}
+
+
+REMEDIATION_FORMAT_VERSION = 2
 
 
 def load_remediation(root: Path, matrix_commit: str,
                      head: str) -> dict | None:
     """The only way a matrix may describe an earlier corpus.
 
-    The transition matrix compares three checkouts of one commit. Once
-    the corpus is repaired, re-running it would not repeat that
-    experiment, it would replace it with a different one wearing the
-    same name -- so the matrix is frozen and the gap is recorded
-    instead.
+    The record is not accepted on its word. Three things are checked
+    against something other than the record itself:
 
-    A record asserting the gap would be worth nothing on its own, so
-    the list of changed Turtle files is re-derived here, from git, and
-    compared against what the record claims. A stale record, a
-    hand-edited one, or one describing a different pair of commits is
-    refused. Renames are refused outright: the document base is the
-    repository-relative path, so the same bytes at a new path are
-    different terms.
+      * the files each event claims to have changed are re-derived from
+        git;
+      * the chain must run unbroken from the matrix's input commit to
+        this one, covering exactly the files that differ across the whole
+        span; and
+      * every event's classification, triple enumeration and blank-node
+        fingerprint are recomputed from the two parses and compared. A
+        stored boolean saying `blank_node_shape_unchanged` is worth
+        nothing if the consumer's only evidence for it is that boolean.
     """
     import hashlib
+    import importlib.util
 
     path = root / REMEDIATION_ARTIFACT
     if not path.is_file():
@@ -543,10 +545,10 @@ def load_remediation(root: Path, matrix_commit: str,
 
     def bad(why):
         raise SystemExit(
-            "refusing the remediation record: " + why + ". It is the "
-            "only thing permitting a transition matrix measured at a "
-            "different commit, so it is not accepted on its word. "
-            "Regenerate it with " + REMEDIATION_GENERATOR + ".")
+            "refusing the remediation record: " + why + ". It is the only "
+            "thing permitting a transition matrix measured at a different "
+            "commit, so it is not accepted on its word. Regenerate it with "
+            + REMEDIATION_GENERATOR + ".")
 
     if doc.get("format_version") != REMEDIATION_FORMAT_VERSION:
         bad("format version %r" % doc.get("format_version"))
@@ -555,37 +557,103 @@ def load_remediation(root: Path, matrix_commit: str,
     if doc.get("working_tree_clean") is not True:
         bad("it was produced from a tree with uncommitted changes")
     if doc.get("before_commit") != matrix_commit:
-        bad("it describes a repair from %s, but the matrix was measured "
-            "at %s" % (str(doc.get("before_commit"))[:12],
-                       matrix_commit[:12]))
+        bad("it bridges from %s, but the matrix measured %s"
+            % (str(doc.get("before_commit"))[:12], matrix_commit[:12]))
     if doc.get("after_commit") != head:
-        bad("it describes a repair landing at %s, not %s"
+        bad("it lands at %s, not %s"
             % (str(doc.get("after_commit"))[:12], head[:12]))
 
-    # Asked of git, not read from the record.
-    out = subprocess.run(
-        ["git", "diff", "--name-status", "--find-renames",
-         matrix_commit, head, "--", "*.ttl"],
-        capture_output=True, text=True, cwd=str(root))
-    if out.returncode:
-        bad("git could not compare %s with %s"
-            % (matrix_commit[:12], head[:12]))
-    actual, renamed = [], []
-    for line in out.stdout.splitlines():
-        parts = line.split("	")
-        (renamed if parts[0].startswith("R") else actual).append(parts[-1])
-    if renamed:
-        bad("Turtle files were renamed between the two commits (%s); a "
-            "rename changes the document base and therefore the terms, "
-            "which this record cannot express" % renamed[:2])
-    if sorted(doc.get("corpus_files_changed") or []) != sorted(actual):
-        bad("it lists %s as changed, git says %s"
-            % (sorted(doc.get("corpus_files_changed") or [])[:4],
-               sorted(actual)[:4]))
+    events = doc.get("events") or []
+    if not events:
+        bad("it records no events, so it documents nothing")
 
-    subs = doc.get("substitutions") or {}
-    if not subs.get("removed") or not subs.get("added"):
-        bad("it enumerates no triples, so it documents nothing")
+    # The chain, checked link by link rather than only end to end.
+    if events[0].get("before_commit") != matrix_commit:
+        bad("the first event starts at %s, not at the matrix input"
+            % str(events[0].get("before_commit"))[:12])
+    if events[-1].get("after_commit") != head:
+        bad("the last event ends at %s, not at this commit"
+            % str(events[-1].get("after_commit"))[:12])
+    for a, b in zip(events, events[1:]):
+        if a.get("after_commit") != b.get("before_commit"):
+            bad("the chain breaks between %s and %s, so a change in the gap "
+                "is unaccounted for" % (str(a.get("after_commit"))[:12],
+                                        str(b.get("before_commit"))[:12]))
+
+    spec = importlib.util.spec_from_file_location(
+        "rr_verify", root / REMEDIATION_GENERATOR)
+    rr = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rr)
+
+    span, renamed = rr.changed_turtle(matrix_commit, head)
+    if renamed:
+        bad("Turtle was renamed in the span (%s); a rename changes the "
+            "document base and therefore the terms" % renamed[:2])
+    covered = sorted({f for e in events for f in e.get("files", [])})
+    if covered != sorted(span):
+        bad("the ledger covers %s but git reports %s changed across the span"
+            % (covered[:4], sorted(span)[:4]))
+
+    # The boundaries themselves, derived here rather than read. Replaying
+    # whatever intervals the record hands over accepts a ledger that
+    # merged two events into one: each replay succeeds, the files and
+    # triples all reconcile, and the distinction the ledger exists to
+    # preserve is quietly gone. The same function the generator used is
+    # called, so the two cannot disagree about what the events were.
+    expected = rr.event_boundaries(matrix_commit, head)
+    expected = [(lo, hi) for lo, hi in expected
+                if rr.changed_turtle(lo, hi)[0]]
+    stored = [(e.get("before_commit"), e.get("after_commit")) for e in events]
+    if stored != expected:
+        bad("the ledger records %d event(s) %s but the commits between %s "
+            "and %s make %d %s; a merged or invented boundary changes which "
+            "changes are classified together"
+            % (len(stored), [(a[:8], b[:8]) for a, b in stored[:3]],
+               matrix_commit[:8], head[:8], len(expected),
+               [(a[:8], b[:8]) for a, b in expected[:3]]))
+
+    verified = []
+    for e in events:
+        lo, hi = e["before_commit"], e["after_commit"]
+        files, ren = rr.changed_turtle(lo, hi)
+        if ren or files != sorted(e.get("files", [])):
+            bad("event %s..%s lists %s, git says %s"
+                % (lo[:8], hi[:8], sorted(e.get("files", []))[:3], files[:3]))
+
+        # Recomputed, not read. This is the check the record cannot
+        # satisfy by asserting anything about itself.
+        fresh = rr.build_event(lo, hi, files, head)
+        if fresh["substitutions"] != e.get("substitutions"):
+            bad("event %s..%s stores a triple enumeration that does not "
+                "reproduce" % (lo[:8], hi[:8]))
+        if fresh["blank_node_shape"] != e.get("blank_node_shape"):
+            bad("event %s..%s stores a blank-node fingerprint that does not "
+                "reproduce" % (lo[:8], hi[:8]))
+        if fresh["classification"] != e.get("classification"):
+            bad("event %s..%s stores a classification that does not "
+                "reproduce: recomputed %r, stored %r"
+                % (lo[:8], hi[:8], fresh["classification"]["change_class"],
+                   (e.get("classification") or {}).get("change_class")))
+
+        cls = fresh["classification"]
+        if cls["change_class"] == "publication-metadata" and not all((
+                cls["header_subjects_only"],
+                cls["header_predicates_only"],
+                cls["named_classes_unchanged"],
+                cls["subclass_edges_unchanged"],
+                cls["blank_node_shape_unchanged"])):
+            bad("event %s..%s calls itself publication metadata while one of "
+                "its five conditions is false" % (lo[:8], hi[:8]))
+
+        verified.append({
+            "before_commit": lo,
+            "after_commit": hi,
+            "files": files,
+            "change_class": cls["change_class"],
+            "ground_added": len(fresh["substitutions"]["added"]),
+            "ground_removed": len(fresh["substitutions"]["removed"]),
+            "blank_node_shape_unchanged": cls["blank_node_shape_unchanged"],
+        })
 
     archive = (doc.get("not_remediated") or {}).get("archive") or {}
     if len(str(archive.get("sha256", ""))) != 64:
@@ -598,10 +666,11 @@ def load_remediation(root: Path, matrix_commit: str,
         "before_commit": doc["before_commit"],
         "after_commit": doc["after_commit"],
         "corpus_files_changed": doc["corpus_files_changed"],
-        "substitutions": subs,
+        "events": verified,
         "not_remediated": doc["not_remediated"],
-        "verified": "the changed-file list was re-derived from git by "
-                    "this baseline rather than taken from the record",
+        "verified": "each event's file list, triple enumeration, blank-node "
+                    "fingerprint and classification were recomputed by this "
+                    "baseline and compared, not read from the record",
     }
 
 

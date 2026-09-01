@@ -7,6 +7,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics.owl>
   a owl:Ontology ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-moral-epistemics.owl> ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-folk.owl>, <https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> ;
   dc:title "ValueNet Moral Epistemics Module"@en ;

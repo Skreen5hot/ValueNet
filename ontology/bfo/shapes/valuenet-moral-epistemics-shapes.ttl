@@ -10,6 +10,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl>
   a owl:Ontology ;
+  dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   dc:title "ValueNet Moral Epistemics Shapes"@en ;
   dc:description "SHACL shapes that enforce the evidential-warrant conditions of the moral epistemics module."@en ;
   rdfs:comment "OWL reasoning is open-world: a reasoner will never conclude that a culpability ascription is unwarranted merely because no warrant has been recorded. These shapes supply the closed-world half of the design. Run them over an annotated data graph together with valuenet-moral-epistemics.ttl."@en .

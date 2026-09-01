@@ -20,8 +20,17 @@
 # is that a clean environment reproduces this one, and ">=" reproduces
 # whatever was newest that day.
 #
-# rdflib joins this list when Phase 3 introduces the class-index
-# generator, not before.
+# rdflib was scheduled to arrive with the Phase 3 class-index generator.
+# It arrived earlier, with the catalog controls: asserting that every
+# deliverable has one ontology header, one title, one description and the
+# exact CC BY 4.0 IRI means parsing Turtle, and tests/site/test_catalog.py
+# does. The alternative was to move that test out of tests/site purely to
+# preserve the phase boundary, which would change canonical test
+# identities and leave the dependency just as real.
+#
+# This file describes what the suite imports. It said otherwise for one
+# commit, and the requirements-only gate is what found it.
 pytest==9.1.1
 PyYAML==6.0.3
 jsonschema==4.26.0
+rdflib==7.6.0

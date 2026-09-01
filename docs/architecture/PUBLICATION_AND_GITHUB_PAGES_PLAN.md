@@ -638,6 +638,13 @@ file to migrate. `requirements-site.txt` is therefore the repository's first
 pinned dependency file and must name only dependencies the site build or site
 tests actually import.
 
+Its contents are established by installing it into an empty environment and
+running the suite there, not by reading imports. rdflib was expected to arrive
+with the Phase 3 class-index generator and arrived earlier, with the catalog
+controls: checking that every deliverable declares one title, one description
+and the CC BY 4.0 IRI means parsing Turtle. The pinned file describes what is
+imported.
+
 ### Phase 1 — README and public content architecture
 
 Deliverables:

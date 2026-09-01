@@ -333,21 +333,27 @@ def test_the_pinned_site_requirements_name_only_what_is_used():
             if l.strip() and not l.startswith("#")]
     names = sorted(p.split("==")[0].lower() for p in pins)
 
-    # Established by installing this file into an empty environment and
-    # running the site suite there. The first version named pytest alone
-    # and the suite could not import its own conftest: the tests reach
-    # marep.layout for component resolution, and importing anything from
-    # `marep` executes a package __init__ that loads the MAREP runtime.
-    assert names == ["jsonschema", "pytest", "pyyaml"], names
+    # Established by installing this file into an empty environment
+    # and running the site suite there, twice. The first version named
+    # pytest alone and the suite could not import its own conftest: the
+    # tests reach marep.layout, and importing anything from `marep`
+    # executes a package __init__ that loads the MAREP runtime.
+    #
+    # The second omitted rdflib, on the reasoning that it belonged to
+    # Phase 3. The catalog controls parse Turtle to check that every
+    # deliverable declares one title, one description and the CC BY 4.0
+    # IRI, so the dependency arrived with them. A pinned file describes
+    # what is imported, not what was planned.
+    assert names == ["jsonschema", "pytest", "pyyaml", "rdflib"], names
     assert all("==" in p for p in pins), (
         "a floor reproduces whatever was newest that day, not this "
         "environment")
-    # Against the pins, not the file text: the comment names rdflib to say
-    # when it will be added, and a substring search over the whole file
-    # cannot tell an explanation from a dependency.
-    assert "rdflib" not in names, (
-        "rdflib is not imported by the Phase 2 build, checker or tests; it "
-        "joins this file when Phase 3 introduces the class-index generator")
+    # Every pin exact, and the set closed: an entry nothing imports is as
+    # wrong as a missing one, because both make the file stop describing
+    # the environment it claims to reproduce.
+    assert "rdflib==7.6.0" in pins, (
+        "rdflib must be pinned to the version the passing suite ran "
+        "against, not to a range")
 
 
 # ======================================================================

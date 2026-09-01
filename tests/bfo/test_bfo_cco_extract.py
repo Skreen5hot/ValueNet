@@ -188,7 +188,41 @@ def test_the_canonical_anchor_comes_from_the_freeze():
 
     The anchor is an independent value: written by a different tool, at a
     different time, under the previous document-base rule."""
+    import json as _json
+    import subprocess as _sp
+    import unittest.mock
+
     gen = _generator()
+
+    # The anchor is read out of git. That read used `text=True`, which
+    # decodes with the locale codec -- cp1252 on Windows -- so a frozen
+    # baseline holding a non-ASCII definition would decode to different
+    # characters and the anchor would silently fail to match. Fed bytes
+    # here so the property holds on any platform, not only one whose
+    # locale happens to be UTF-8.
+    payload_obj = {"artifacts": {"cco_extract": {
+        "canonical_is_invariant": True,
+        "canonical_sha256": "a" * 64,
+        "note": "curly quote \u2019 and em dash \u2014"}}}
+    text = _json.dumps(payload_obj, ensure_ascii=False)
+    payload = text.encode("utf-8")
+    assert len(payload) > len(text), (
+        "the probe payload contains no multi-byte sequence, so it cannot "
+        "distinguish the two decodings")
+
+    seen = {}
+
+    def _bytes_only(cmd, **kw):
+        seen.update(kw)
+        return _sp.CompletedProcess(cmd, 0, stdout=payload, stderr=b"")
+
+    with unittest.mock.patch.object(_sp, "run", _bytes_only):
+        probed = gen.frozen_canonical_anchor()
+    assert seen.get("text") is not True, (
+        "frozen_canonical_anchor asked for locale-decoded text")
+    assert probed == "a" * 64, (
+        "the anchor did not survive a UTF-8 payload: %r" % probed)
+
     anchor = gen.frozen_canonical_anchor()
     assert anchor is not None, (
         "no canonical digest for this artifact at " + gen.FROZEN_TAG)

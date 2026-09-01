@@ -235,11 +235,15 @@ def frozen_canonical_anchor():
 
     r = subprocess.run(
         ["git", "show", FROZEN_TAG + ":" + FROZEN_BASELINE],
-        capture_output=True, text=True, cwd=str(_root))
+        capture_output=True, cwd=str(_root))
     if r.returncode != 0:
         return None
     try:
-        rec = json.loads(r.stdout)["artifacts"]["cco_extract"]
+        # Decoded as UTF-8 rather than by the locale. `text=True` uses
+        # cp1252 on Windows, which turns a multi-byte sequence into
+        # separate characters and can make an identical artifact compare
+        # unequal -- silently, and only on some machines.
+        rec = json.loads(r.stdout.decode("utf-8"))["artifacts"]["cco_extract"]
     except (ValueError, KeyError):
         return None
     if not rec.get("canonical_is_invariant"):

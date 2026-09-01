@@ -509,6 +509,38 @@ def test_the_baseline_measures_the_condition_cell_c_describes():
     not in force in this checkout or the baseline describes a different
     corpus than the matrix reasoned about, and the matrix's conclusions
     have been carried to a state they were never measured on."""
+    # This test once failed against a corpus that was entirely correct,
+    # because `_text_at` read git with `text=True` and the locale codec
+    # on this platform is cp1252: a multi-byte UTF-8 sequence came back
+    # as several characters, the graph parsed different literals, and the
+    # digest differed. Silent, and invisible on a UTF-8 locale.
+    #
+    # So the reader is fed bytes it does not control the decoding of. The
+    # property is "asks for bytes, decodes UTF-8", not "the corpus
+    # currently contains a character that exposes the difference".
+    import unittest.mock
+
+    probe = 'ex:a rdfs:comment "em dash \u2014 e acute \u00e9"@en .\n'
+    probe_bytes = probe.encode("utf-8")
+    assert len(probe_bytes) > len(probe), (
+        "the probe contains no multi-byte sequence, so it cannot "
+        "distinguish the two decodings")
+
+    seen = {}
+
+    def _bytes_only(cmd, **kw):
+        seen.update(kw)
+        return subprocess.CompletedProcess(cmd, 0, stdout=probe_bytes,
+                                           stderr=b"")
+
+    with unittest.mock.patch.object(subprocess, "run", _bytes_only):
+        got = _text_at("0" * 40, "probe.ttl")
+    assert seen.get("text") is not True, (
+        "_text_at asked for locale-decoded text; on a non-UTF-8 locale "
+        "that silently changes the content it returns")
+    assert got == probe, (
+        "_text_at did not decode UTF-8: got %r" % got[:60])
+
     live = BASELINE["corpus"]["merged_ground_sha256"]["value"]
     cell_c = MATRIX["cells"]["C"]["corpus"]["merged_ground_sha256"]
     if RECORD is None:
@@ -899,18 +931,34 @@ BEFORE_TAG = "eol-hardened-v1"
 
 
 def _text_at(rev, rel):
-    """One file as of one commit, decoded but not parsed."""
+    """One file as of one commit, decoded as UTF-8 and not parsed.
+
+    Explicitly UTF-8, not `text=True`. That decodes with the locale
+    codec, which on Windows is cp1252: a multi-byte UTF-8 sequence comes
+    back as two or three separate characters, the file parses to
+    different literals, and the digest computed over it differs. Three of
+    the twelve files in the current span contain such a sequence --
+    valuenet-core.ttl alone gained four characters -- so the cell-C join
+    failed against a corpus that was entirely correct.
+
+    The failure is silent and platform-specific: on a UTF-8 locale the
+    two agree and nothing is wrong.
+    """
     out = subprocess.run(["git", "show", rev + ":" + rel],
-                         cwd=str(REPO), capture_output=True, text=True)
+                         cwd=str(REPO), capture_output=True)
     assert out.returncode == 0, rel + " is not in " + rev[:12]
-    return out.stdout
+    return out.stdout.decode("utf-8")
 
 
 def _at_tag(rel):
     """A committed artifact as of the tag, or None if it was not there."""
     out = subprocess.run(["git", "show", BEFORE_TAG + ":" + rel],
-                         cwd=str(REPO), capture_output=True, text=True)
-    return json.loads(out.stdout) if out.returncode == 0 else None
+                         cwd=str(REPO), capture_output=True)
+    # UTF-8, not the locale codec: an evidence artifact holding a
+    # non-ASCII definition would decode to different characters and
+    # compare unequal to a value that is in fact identical.
+    return (json.loads(out.stdout.decode("utf-8"))
+            if out.returncode == 0 else None)
 
 
 @needs_repair_record
@@ -958,44 +1006,71 @@ def test_the_archive_really_is_outside_the_corpus():
 
 @needs_repair_record
 def test_the_recorded_substitutions_are_the_ones_git_shows():
-    """Recomputed here rather than read.
+    """Recomputed per event, rather than read.
 
     The record is the only thing allowing a matrix from an earlier commit
     to be cited. If its enumeration were taken on trust, the exemption
-    would be a way of saying 'the corpus changed somehow' with a
-    straight face.
+    would be a way of saying "the corpus changed somehow" with a straight
+    face.
+
+    Per event, because the span holds two of them and a single
+    enumeration over the whole interval cannot say which change was
+    which.
     """
     import rdflib
 
     from marep import ontology_source as onto
 
-    before = RECORD["before_commit"]
-    changed = subprocess.run(
-        ["git", "diff", "--name-only", "--find-renames", before, "HEAD",
-         "--", "*.ttl"],
-        cwd=str(REPO), capture_output=True, text=True).stdout.split()
-    assert sorted(changed) == sorted(RECORD["corpus_files_changed"])
+    def ground(g):
+        return {t for t in g
+                if not any(isinstance(x, rdflib.BNode) for x in t)}
 
-    removed, added = set(), set()
-    for rel in changed:
-        base = onto.public_id(rel)
-        old_text = subprocess.run(["git", "show", before + ":" + rel],
-                                  cwd=str(REPO), capture_output=True,
-                                  text=True).stdout
-        was = rdflib.Graph()
-        was.parse(data=old_text, format="turtle", publicID=base)
-        now = onto.parse_source(rdflib.Graph(), REPO / rel, REPO)
-        fmt = lambda t: " ".join(x.n3() for x in t)  # noqa: E731
-        removed |= {(rel, fmt(t)) for t in set(was) - set(now)}
-        added |= {(rel, fmt(t)) for t in set(now) - set(was)}
+    total_added = total_removed = 0
+    for event in RECORD["events"]:
+        lo, hi = event["before_commit"], event["after_commit"]
+        changed = subprocess.run(
+            ["git", "diff", "--name-only", "--find-renames", lo, hi,
+             "--", "*.ttl"],
+            cwd=str(REPO), capture_output=True, text=True).stdout.split()
+        assert sorted(changed) == sorted(event["files"]), (
+            "event %s..%s lists files git does not report" % (lo[:8], hi[:8]))
 
-    assert {(e["file"], e["triple"])
-            for e in RECORD["substitutions"]["removed"]} == removed
-    assert {(e["file"], e["triple"])
-            for e in RECORD["substitutions"]["added"]} == added
-    assert len(removed) == len(added) == RECORD["substitutions"]["count"] == 2, (
-        "this repair was two substitutions; a third would need its own "
-        "justification rather than arriving inside this one")
+        added, removed = set(), set()
+        for rel in changed:
+            base = onto.public_id(rel)
+            was = rdflib.Graph()
+            was.parse(data=subprocess.run(
+                ["git", "show", lo + ":" + rel], cwd=str(REPO),
+                capture_output=True).stdout.decode("utf-8"),
+                format="turtle", publicID=base)
+            now = rdflib.Graph()
+            now.parse(data=subprocess.run(
+                ["git", "show", hi + ":" + rel], cwd=str(REPO),
+                capture_output=True).stdout.decode("utf-8"),
+                format="turtle", publicID=base)
+            fmt = lambda t: " ".join(x.n3() for x in t)  # noqa: E731
+            # Ground triples only. A blank node is renamed by every parse,
+            # so diffing triples that touch one reports each as both added
+            # and removed -- on the SHACL graphs that is 414 for a change
+            # of 14.
+            added |= {(rel, fmt(t)) for t in ground(now) - ground(was)}
+            removed |= {(rel, fmt(t)) for t in ground(was) - ground(now)}
+
+        assert {(e["file"], e["triple"])
+                for e in event["substitutions"]["added"]} == added
+        assert {(e["file"], e["triple"])
+                for e in event["substitutions"]["removed"]} == removed
+        total_added += len(added)
+        total_removed += len(removed)
+
+    # The two events this span holds, by their measured size. A third
+    # would need its own justification rather than arriving unnoticed
+    # inside one of these.
+    sizes = sorted((len(e["substitutions"]["added"]),
+                    len(e["substitutions"]["removed"]))
+                   for e in RECORD["events"])
+    assert sizes == [(2, 2), (18, 1)], sizes
+    assert (total_added, total_removed) == (20, 3)
 
 
 @needs_repair_record
@@ -1022,6 +1097,11 @@ def test_the_baseline_says_which_corpus_the_matrix_described():
         "saying so")
     repaired = m["corpus_repaired_since"]
     assert repaired["before_tag"] == BEFORE_TAG
+    # The ledger, not a single interval: each event carries its own
+    # verdict, and the span holds one of each kind.
+    classes = [e["change_class"] for e in repaired["events"]]
+    assert classes == ["content-change", "publication-metadata"], classes
+    assert all(e["blank_node_shape_unchanged"] for e in repaired["events"])
     # The tag and the commit its matrix measured are not the same commit:
     # evidence is committed after the input it describes. Citing the tag
     # is accurate only because no Turtle file differs between the two, so
@@ -1040,48 +1120,93 @@ def test_the_baseline_says_which_corpus_the_matrix_described():
         + str(drift))
     assert repaired["after_commit"] == BASELINE["input_commit"]
     assert repaired["corpus_files_changed"] == RECORD["corpus_files_changed"]
-    assert "re-derived" in repaired["verified"]
+    assert "recomputed by this baseline" in " ".join(repaired["verified"].split())
 
 
 @needs_repair_record
 def test_only_the_measures_the_repair_touches_have_moved():
-    """Two triples changed. Everything that does not depend on them
-    should be identical to the tagged state, and a repair that moved a
-    reasoner verdict would be a different event needing a different
-    justification."""
+    """Two events have landed since the tag, and they move different things.
+
+    The repair substituted triples and added none. The metadata pass
+    added seventeen net. So cardinality is no longer invariant, and
+    saying it is would be false; what stays invariant is everything that
+    describes the ontology's content rather than its self-description.
+
+    The reasoner is the interesting case. Every verdict holds. The scope
+    digest does not, and cannot: it is a fingerprint over the content
+    reasoned about, and that content gained seventeen triples. It is a
+    fingerprint of the input, not a result.
+    """
+    # Same reader, same hazard: an evidence artifact holding a non-ASCII
+    # definition would decode to different characters under the locale
+    # codec and compare unequal to a value that is in fact identical.
+    import json as _json
+    import unittest.mock
+
+    sample = {"note": "curly quote \u2019 and em dash \u2014"}
+    payload = _json.dumps(sample, ensure_ascii=False).encode("utf-8")
+    assert len(payload) > len(_json.dumps(sample, ensure_ascii=False)), (
+        "the probe payload contains no multi-byte sequence")
+
+    seen = {}
+
+    def _bytes_only(cmd, **kw):
+        seen.update(kw)
+        return subprocess.CompletedProcess(cmd, 0, stdout=payload,
+                                           stderr=b"")
+
+    with unittest.mock.patch.object(subprocess, "run", _bytes_only):
+        round_tripped = _at_tag("anything.json")
+    assert seen.get("text") is not True, (
+        "_at_tag asked for locale-decoded text")
+    assert round_tripped == sample, (
+        "_at_tag did not decode UTF-8: got %r" % round_tripped)
+
     old = _at_tag("config/semantic-baseline.json")
     assert old, "no baseline at " + BEFORE_TAG
 
-    # Cardinality is unchanged: both substitutions replace a triple.
-    for key in ("files_discovered", "files_parsing", "distinct_triples",
-                "named_classes", "class_declarations_summed",
-                "trigger_statements", "distinct_trigger_objects"):
+    # Unchanged: the shape of the ontology, not its size.
+    for key in ("files_discovered", "files_parsing", "named_classes",
+                "class_declarations_summed", "trigger_statements",
+                "distinct_trigger_objects"):
         assert BASELINE["corpus"][key]["value"] == old["corpus"][key]["value"], (
-            key + " moved; this repair substitutes triples and adds none")
+            key + " moved; no event in the ledger declares a class or a "
+            "trigger")
 
-    assert BASELINE["reasoner"] == old["reasoner"], (
-        "a reasoner measure moved on a two-triple substitution in a FRED "
-        "graph outside the BFO layer")
+    # Every reasoner verdict and count.
+    for key in ("bfo_layer_classes", "bfo_layer_files",
+                "bfo_layer_imports_unresolved", "bfo_layer_consistent",
+                "bfo_layer_unsatisfiable", "bfo_scope_files"):
+        assert (BASELINE["reasoner"][key]["value"]
+                == old["reasoner"][key]["value"]), key + " moved"
 
     assert BASELINE["artifacts"] == old["artifacts"], (
-        "an unrelated artifact digest moved")
+        "an artifact digest moved; no event touches those three files")
 
-    # The ground digest must move: it covers every triple with no blank
-    # node, which is exactly what the substitution changed.
+    # Moved, and each for a reason the ledger names.
+    added = sum(len(e["substitutions"]["added"]) for e in RECORD["events"])
+    removed = sum(len(e["substitutions"]["removed"]) for e in RECORD["events"])
+    assert (BASELINE["corpus"]["distinct_triples"]["value"]
+            - old["corpus"]["distinct_triples"]["value"]) == added - removed, (
+        "the triple count moved by something other than the enumerated "
+        "difference")
+
     assert (BASELINE["corpus"]["merged_ground_sha256"]["value"]
-            != old["corpus"]["merged_ground_sha256"]["value"]), (
-        "the ground digest is unchanged, so either the repair did not "
-        "land or the fingerprint cannot see a changed literal")
+            != old["corpus"]["merged_ground_sha256"]["value"])
+    assert (BASELINE["reasoner"]["bfo_scope_canonical_sha256"]["value"]
+            != old["reasoner"]["bfo_scope_canonical_sha256"]["value"]), (
+        "the reasoner scope digest is unchanged although triples were "
+        "added to files inside the scope")
 
-    # The blank-node fingerprint must NOT move, and that is a claim about
-    # how far the repair reached rather than a formality: this graph holds
-    # no blank node at all, so neither substituted triple can belong to a
-    # component. Movement here would mean the repair touched something
-    # nobody described.
+    # The blank-node fingerprint must NOT move: every changed triple in
+    # both events is ground, and the ledger says so for each of them.
     assert (BASELINE["corpus"]["merged_bnode_shape"]["value"]
-            == old["corpus"]["merged_bnode_shape"]["value"]), (
-        "the blank-node fingerprint moved on a substitution whose four "
-        "sides are all IRIs and literals")
+            == old["corpus"]["merged_bnode_shape"]["value"])
+    # In the raw record the flag lives under classification; only the
+    # baseline's verified summary lifts it to the top level.
+    assert all(e["classification"]["blank_node_shape_unchanged"]
+               for e in RECORD["events"])
+    assert all(e["blank_node_shape"]["unchanged"] for e in RECORD["events"])
 
 
 @needs_repair_record

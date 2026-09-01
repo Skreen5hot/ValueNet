@@ -121,8 +121,8 @@ To load the suite with its imports resolved offline, parse the vendored
 dependencies from `ontology/bfo/vendor/` rather than fetching the import IRIs —
 see the note on IRI resolution below.
 
-**Cite.** A citation record has not been issued yet. See
-[Licensing, attribution, and citation](#licensing-attribution-and-citation).
+**Cite.** See [CITATION.cff](CITATION.cff). No ontology release has been
+tagged, so cite the repository and the commit you used.
 
 ### A note on IRIs
 
@@ -225,12 +225,22 @@ Contributor guides: [annotation guide](docs/bfo/guides/annotationGuide.md),
 
 ## Licensing, attribution, and citation
 
-**No project license has been issued yet.** Until a `LICENSE` file exists at the
-repository root, no reuse terms are granted for ValueNet-authored material, and
-you should not infer terms from the vendored BFO or CCO files — those carry
-their own upstream licenses and are included as dependencies.
+Three answers, depending on which part of the repository you mean.
 
-A `LICENSE`, a `THIRD_PARTY_NOTICES.md` separating upstream material, and a
-`CITATION.cff` are the first deliverables of the publication plan and are
-required before any public release. If you want to use this material now, ask
-first.
+| material | licence |
+|---|---|
+| Project-authored ontologies, documentation, diagrams, site content | [CC BY 4.0](LICENSES/CC-BY-4.0.txt) |
+| Project-authored code, tests, build tools, workflows | [Apache 2.0](LICENSES/Apache-2.0.txt) |
+| Vendored BFO and CCO | their own terms — see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) |
+
+Both project licences permit commercial use and modification with attribution. No NonCommercial, NoDerivatives, ShareAlike, source-availability, or field-of-use restriction is imposed.
+
+**The original ValueNet material is not covered by either.** Its licence has not been identified, so this repository grants no rights over it and excludes it from the public download bundle. By file count it is the largest category here — a fact about where ValueNet came from, not an oversight. To reuse it, establish terms with the upstream authors.
+
+Which licence governs a given file is derived rather than listed:
+
+```
+python tools/licensing/disposition.py
+```
+
+See [LICENSE](LICENSE) for the full policy and [CITATION.cff](CITATION.cff) for how to cite the suite. No ontology release has been tagged yet; cite the repository and the commit you used.

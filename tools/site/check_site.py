@@ -135,12 +135,20 @@ def check_built(out: Path) -> list[str]:
     # The notices the plan requires on every page, checked as text rather
     # than assumed from the template.
     for page in pages:
-        text = page.read_text(encoding="utf-8")
+        # Whitespace-normalised: the notices are wrapped prose, so a
+        # literal substring can fall across a line break and report a
+        # page as missing text it plainly carries.
+        text = " ".join(page.read_text(encoding="utf-8").split())
         rel = page.relative_to(out).as_posix()
         if "not currently HTTP-dereferenceable" not in text:
             problems.append(rel + " omits the IRI-resolution notice")
-        if "No project license has been issued" not in text:
-            problems.append(rel + " omits the license-pending notice")
+        if "CC BY 4.0" not in text or "Apache 2.0" not in text:
+            problems.append(rel + " omits the licence notice")
+        if "not covered" not in text:
+            problems.append(
+                rel + " states the project licences without the "
+                      "upstream exclusion, so a permissive grant "
+                      "reads as covering the whole repository")
         if 'data-build="commit">unknown' in text:
             problems.append(rel + " still carries the unsubstituted build "
                                   "placeholder")

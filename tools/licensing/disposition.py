@@ -63,6 +63,12 @@ LICENCE_OF = {
     SOFTWARE: "Apache-2.0",
 }
 
+#: Vendored files whose licence is not the default for their tree.
+VENDORED_LICENCE = {
+    "tools/licensing/vendor/citation-file-format-1.2.0.schema.json":
+        "CC-BY-4.0",
+}
+
 THIRD_PARTY_LICENCE = {
     "external-bfo": "CC-BY-4.0",
     "external-cco": "BSD-3-Clause",
@@ -87,6 +93,28 @@ CONTENT_SUFFIXES = (".ttl", ".md", ".html", ".css", ".svg", ".png",
 #: reproduced instrument -- the reproduced instruments live in
 #: LICENSES/ and are classified third-party.
 CONTENT_NAMES = ("LICENSE",)
+
+#: Explicit owner adjudications, each naming the evidence it rests on.
+#:
+#: Recorded provenance answers where a file came from. A licence
+#: question asks who wrote what is there now, and those can diverge: a
+#: file may descend from upstream and retain none of its text. Where
+#: they diverge the answer is a judgement, not a measurement, so it is
+#: made once, by the owner, for a named file, and written down here
+#: with the commit that justifies it.
+#:
+#: Deliberately not a similarity threshold. A rule of the form "less
+#: than N% shared lines means fork-authored" would apply itself to
+#: files nobody adjudicated, and relicensing somebody else's work on a
+#: heuristic is the failure this whole classifier exists to avoid. The
+#: historical origin below is preserved, not rewritten.
+ADJUDICATIONS = {
+    "README.md": (
+        CONTENT, "CC-BY-4.0",
+        "owner adjudication: rewritten in full at commit 39a8001, sharing "
+        "one line with the upstream original and that line a bare markdown "
+        "code fence. Historical origin remains upstream-valuenet."),
+}
 
 
 class Disposition(NamedTuple):
@@ -160,6 +188,28 @@ def rules(path: str, origin: str) -> list[tuple[str, str | None, str]]:
     # provenance record says about who added the file. They are verbatim
     # copies of somebody else's instrument, and the licence they fall
     # under is the one they are.
+    # An adjudication replaces the origin-derived rule for exactly the
+    # file it names, so "exactly one disposition" still holds and the
+    # exception cannot silently widen.
+    if path in ADJUDICATIONS:
+        disposition, licence, why = ADJUDICATIONS[path]
+        return [(disposition, licence, why)]
+
+    # Vendored third-party material the manifest does not already place.
+    # ontology/bfo/vendor/ is covered by the origin rule above; this
+    # catches vendored files added after the freeze, whose origin would
+    # otherwise read `fork` and claim authorship of somebody else's file.
+    #
+    # Guarded on origin rather than written first: an unguarded path rule
+    # matched the ontology vendor tree as well, giving those files two
+    # third-party rules. `rules()` returning every match is what surfaced
+    # that instead of letting precedence hide it.
+    if "/vendor/" in path and origin not in THIRD_PARTY_LICENCE:
+        matched.append((THIRD_PARTY, VENDORED_LICENCE.get(path, "CC-BY-4.0"),
+                        "vendored third-party material, redistributed under "
+                        "its own licence"))
+        return matched
+
     if path.startswith("LICENSES/"):
         matched.append((THIRD_PARTY, Path(path).stem,
                         "verbatim licence text, reproduced under the terms "

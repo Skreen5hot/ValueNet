@@ -8,16 +8,38 @@
     "base_path_note": "The site is served from a project subpath. Every internal URL is relative; none may assume the site is at the domain root."
   },
   "navigation": [
-    {"key": "home", "label": "Home"},
-    {"key": "explore", "label": "Explore classes"},
-    {"key": "models", "label": "Models"},
-    {"key": "modules", "label": "Modules"},
-    {"key": "downloads", "label": "Downloads"},
-    {"key": "documentation", "label": "Documentation"}
+    {
+      "key": "home",
+      "label": "Home"
+    },
+    {
+      "key": "explore",
+      "label": "Explore classes"
+    },
+    {
+      "key": "models",
+      "label": "Models"
+    },
+    {
+      "key": "modules",
+      "label": "Modules"
+    },
+    {
+      "key": "downloads",
+      "label": "Downloads"
+    },
+    {
+      "key": "documentation",
+      "label": "Documentation"
+    }
   ],
   "notices": {
     "iri_resolution": {
-      "scope": ["home", "explore", "downloads"],
+      "scope": [
+        "home",
+        "explore",
+        "downloads"
+      ],
       "text": "Canonical ValueNet IRIs identify ontology entities but are not currently HTTP-dereferenceable. Use the explorer, repository source links, or module downloads to inspect their definitions.",
       "why": "The canonical namespace does not resolve today. An IRI rendered as a link would send a reader to a 404 and imply the ontology is broken. IRIs stay copyable and searchable and are never presented as fetchable URLs."
     },
@@ -29,9 +51,14 @@
       "text": "latest from main",
       "why": "A Pages build is not a release. The full source commit is displayed alongside this label, and the word release is reserved for a signed-off tag."
     },
-    "license_pending": {
-      "text": "No project license has been issued yet. No reuse terms are granted for ValueNet-authored material, and terms must not be inferred from vendored BFO or CCO files, which carry their own upstream licenses.",
-      "why": "Placeholder until the publication plan's Phase 0 governance gate completes. This notice is removed, not edited, when LICENSE, THIRD_PARTY_NOTICES.md, and CITATION.cff exist."
+    "license": {
+      "scope": [
+        "home",
+        "downloads"
+      ],
+      "text": "Project-authored ontologies, documentation and site content are licensed CC BY 4.0; project-authored code and tooling are licensed Apache 2.0. Both permit commercial use and modification with attribution.",
+      "exclusion": "The original ValueNet material this suite maps to is not covered. Its licence has not been identified, no rights are granted over it, and it is excluded from the download bundle.",
+      "why": "Replaces the licence-pending placeholder carried while Phase 0 was outstanding. The exclusion is stated wherever the licence is: a permissive grant printed without it would read as covering everything in the repository."
     }
   },
   "product_hierarchy": [

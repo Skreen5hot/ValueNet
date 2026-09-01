@@ -24,7 +24,6 @@ license-url: https://creativecommons.org/licenses/by/4.0/
 # supply ORCID and affiliation if they want them cited.
 authors:
   - alias: Skreen5hot
-    name-particle: ''
     given-names: Aaron
     family-names: Damiano
 

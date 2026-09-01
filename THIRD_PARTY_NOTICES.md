@@ -71,26 +71,24 @@ upstream authors directly.
 
 ### How the boundary is drawn
 
-Not by a list of filenames. Each file's origin is read from
-`config/move-manifest.yaml`, a provenance record frozen and reviewed
-before this licensing work began, which classifies every file as `fork`,
-`upstream-valuenet`, `external-bfo`, or `external-cco`. A tracked file
-absent from that manifest is confirmed absent from the upstream remote
-before it is treated as fork-authored.
+From recorded provenance plus explicit owner adjudications — not from a
+list of filenames.
 
-`tests/licensing/test_disposition.py` requires every tracked file to fall
-under exactly one disposition, so a new file cannot land without one and
-an overlapping rule fails rather than resolving silently.
+Each file's origin is read from `config/move-manifest.yaml`, a
+provenance record frozen and reviewed before this licensing work began,
+which classifies every file as `fork`, `upstream-valuenet`,
+`external-bfo`, or `external-cco`. A tracked file absent from that
+manifest is confirmed absent from the upstream remote before it is
+treated as fork-authored.
 
-### One case the boundary does not settle cleanly
+Where recorded descent and current authorship diverge, the owner rules
+on the named file and the ruling is recorded with its evidence. One such
+ruling exists: `README.md`, rewritten in full at commit `39a8001`. It
+does not generalize. The folk fragments retain most of their upstream
+text and remain unresolved, and a test requires every
+`upstream-valuenet` file other than the single adjudicated one to stay
+excluded.
 
-`README.md` descends from the upstream README — recorded origin
-`upstream-valuenet` — but shares exactly one line with it, a bare
-markdown code fence. The recorded provenance and the surviving text
-disagree.
-
-It is classified conservatively as unresolved until the repository owner
-rules. `python tools/licensing/disposition.py --divergence` reports the
-overlap for every upstream-descended file, so the same question can be
-asked of any of them; the folk fragments, by contrast, retain most of
-their upstream text and are unambiguously upstream material.
+`tests/licensing/test_disposition.py` requires every tracked file to
+fall under exactly one disposition, so a new file cannot land without
+one and an overlapping rule fails rather than resolving silently.

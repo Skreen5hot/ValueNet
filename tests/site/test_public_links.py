@@ -128,10 +128,17 @@ def test_every_page_carries_the_notices_the_plan_requires(built):
     the source looking correct.
     """
     for page in sorted(built.rglob("*.html")):
-        text = page.read_text(encoding="utf-8")
+        # Normalised, because these notices are wrapped prose and a
+        # literal search can straddle a line break -- which it did, and
+        # reported six pages as missing text every one of them carried.
+        text = " ".join(page.read_text(encoding="utf-8").split())
         rel = page.relative_to(built).as_posix()
         assert "not currently HTTP-dereferenceable" in text, rel
-        assert "No project license has been issued" in text, rel
+        assert "CC BY 4.0" in text and "Apache 2.0" in text, rel
+        # The grant and its limit travel together. A page stating
+        # the project licences without the exclusion reads as
+        # licensing the upstream corpus too.
+        assert "not covered" in text, rel
 
 
 def test_the_build_stamp_is_substituted_on_every_page(built):

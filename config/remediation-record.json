@@ -1,5 +1,5 @@
 {
-  "after_commit": "e3ac41988177256cab42570b552c7fe9c70326da",
+  "after_commit": "deaf8f6eb25f569f8e49b0b4123cc01593bb1503",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -86,7 +86,7 @@
       }
     },
     {
-      "after_commit": "e3ac41988177256cab42570b552c7fe9c70326da",
+      "after_commit": "deaf8f6eb25f569f8e49b0b4123cc01593bb1503",
       "before_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
       "blank_node_shape": {
         "after": {

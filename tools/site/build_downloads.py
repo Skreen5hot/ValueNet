@@ -348,18 +348,30 @@ def build(out: Path, commit: str, epoch: int) -> dict:
                            "sha256": hashlib.sha256(data).hexdigest()})
         members.append((BUNDLE_ROOT + "/" + name, data))
 
-    # The checksum record travels inside the archive as well, so an
-    # unpacked bundle can be verified without fetching anything.
-    inner = sha256sums([(r["filename"], r["sha256"]) for r in records]
-                       + [(g["filename"], g["sha256"]) for g in governance])
+    # Two checksum records, because they describe two different
+    # directories and a single one describes neither.
+    #
+    # The inner file sits beside the unpacked archive and covers what is
+    # in there: the Turtle and the three governance documents.
+    inner_rows = ([(r["filename"], r["sha256"]) for r in records]
+                  + [(g["filename"], g["sha256"]) for g in governance])
+    inner = sha256sums(inner_rows)
     members.append((BUNDLE_ROOT + "/SHA256SUMS", inner))
 
     members.sort()
     bundle_bytes = deterministic_zip(published / BUNDLE_NAME, members, epoch)
     os.utime(published / BUNDLE_NAME, (epoch, epoch))
 
+    # The outer file sits in the published downloads directory and covers
+    # what is served from it: the Turtle and the archive. One file listing
+    # both sets was verifiable in neither place -- run against the
+    # published directory it reported three missing governance files and
+    # never checked the archive at all.
+    outer_rows = ([(r["filename"], r["sha256"]) for r in records]
+                  + [(BUNDLE_NAME,
+                      hashlib.sha256(bundle_bytes).hexdigest())])
     sums = published / "SHA256SUMS"
-    sums.write_bytes(inner)
+    sums.write_bytes(sha256sums(outer_rows))
     os.utime(sums, (epoch, epoch))
 
     manifest = {
@@ -375,7 +387,18 @@ def build(out: Path, commit: str, epoch: int) -> dict:
             "sha256": hashlib.sha256(bundle_bytes).hexdigest(),
             "members": [name for name, _ in members],
         },
-        "checksums": "SHA256SUMS",
+        "checksums": {
+            "published": {
+                "path": "SHA256SUMS",
+                "covers": sorted(name for name, _ in outer_rows),
+                "note": "verifiable in the downloads directory as served",
+            },
+            "in_bundle": {
+                "path": BUNDLE_ROOT + "/SHA256SUMS",
+                "covers": sorted(name for name, _ in inner_rows),
+                "note": "verifiable beside the unpacked archive",
+            },
+        },
         "note": (
             "Membership is the intersection of the reviewed catalog and the "
             "files this repository licenses for publication; the build "

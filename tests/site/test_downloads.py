@@ -24,6 +24,7 @@ import pytest
 from marep import layout
 
 REPO = layout.repository_root()
+NEWLINE = chr(10)
 
 
 def _load(name, relative):
@@ -119,19 +120,76 @@ def test_the_archived_copy_is_also_the_source_bytes(built):
                 record["filename"]
 
 
-def test_every_published_checksum_recomputes(built):
-    out, manifest = built
-    lines = (out / "downloads/SHA256SUMS").read_text(encoding="utf-8")
-    assert lines.endswith("\n")
-    seen = 0
-    for line in lines.strip().split("\n"):
+def _parse_sums(text):
+    assert text.endswith(NEWLINE), "a checksum file must end with a newline"
+    rows = {}
+    for line in text.strip().split(NEWLINE):
         digest, name = line.split("  ", 1)
-        candidate = out / "downloads" / name
-        if not candidate.exists():
-            candidate = REPO / name          # the governance files
-        assert hashlib.sha256(candidate.read_bytes()).hexdigest() == digest, name
-        seen += 1
-    assert seen == len(manifest["modules"]) + len(manifest["governance"])
+        assert name not in rows, "listed twice: " + name
+        rows[name] = digest
+    return rows
+
+
+def test_the_published_checksums_verify_where_they_are_published(built):
+    """Run in the downloads directory as served, with no fallback.
+
+    The first version of this test fell back to the repository when a
+    listed file was not in the artifact. That is how a SHA256SUMS naming
+    three governance files which are not published, and omitting the
+    archive which is, passed as correct: it proved the source digests and
+    said nothing about whether anyone could use the file.
+    """
+    out, manifest = built
+    served = out / "downloads"
+    rows = _parse_sums((served / "SHA256SUMS").read_text(encoding="utf-8"))
+
+    expected = ({r["filename"] for r in manifest["modules"]}
+                | {manifest["bundle"]["filename"]})
+    assert set(rows) == expected, sorted(set(rows) ^ expected)
+
+    for name, digest in sorted(rows.items()):
+        target = served / name
+        assert target.is_file(), (
+            "%s is listed but is not in the published directory, so "
+            "verification fails for whoever runs it" % name)
+        assert hashlib.sha256(target.read_bytes()).hexdigest() == digest, name
+
+
+def test_the_bundled_checksums_verify_beside_the_unpacked_archive(built):
+    """The other record, covering the other directory."""
+    out, manifest = built
+    root = manifest["bundle"]["root"]
+    with zipfile.ZipFile(out / "downloads"
+                         / manifest["bundle"]["filename"]) as archive:
+        rows = _parse_sums(archive.read(root + "/SHA256SUMS").decode("utf-8"))
+        present = {n.split("/", 1)[1] for n in archive.namelist()}
+
+        expected = ({r["filename"] for r in manifest["modules"]}
+                    | {g["filename"] for g in manifest["governance"]})
+        assert set(rows) == expected, sorted(set(rows) ^ expected)
+
+        for name, digest in sorted(rows.items()):
+            assert name in present, (
+                "%s is listed in the archive checksums but is not in the "
+                "archive" % name)
+            data = archive.read(root + "/" + name)
+            assert hashlib.sha256(data).hexdigest() == digest, name
+
+
+def test_neither_checksum_record_lists_what_the_other_covers(built):
+    """They describe different directories on purpose. A single record
+    listing both sets is verifiable in neither."""
+    _out, manifest = built
+    published = set(manifest["checksums"]["published"]["covers"])
+    bundled = set(manifest["checksums"]["in_bundle"]["covers"])
+    assert manifest["bundle"]["filename"] in published
+    assert manifest["bundle"]["filename"] not in bundled, (
+        "the archive cannot contain its own checksum")
+    for governance in manifest["governance"]:
+        assert governance["filename"] in bundled
+        assert governance["filename"] not in published, (
+            "%s is not served from the downloads directory"
+            % governance["filename"])
 
 
 def test_the_bundle_checksum_is_the_bundle(built):
@@ -235,16 +293,18 @@ def test_the_two_modules_with_no_terms_of_their_own_are_the_expected_two(built):
     assert empty == ["valuenet-mappings", "vcvf-triggers-semantics"], empty
 
 
-def test_the_class_index_and_the_manifest_agree_on_namespaces(built):
+def test_the_class_index_and_the_manifest_agree_on_namespaces(
+        built, class_index):
     """Two generators derive the namespace differently -- the index from
     class IRIs, the manifest from the ontology IRI. Where both have an
-    opinion they must match, or one of the two pages is wrong."""
+    opinion they must match, or one of the two pages is wrong.
+
+    Both are generated for the test. Comparing against the build artifact
+    meant this skipped whenever nobody had built, which is precisely when
+    a disagreement would go unnoticed.
+    """
     _out, manifest = built
-    index_path = REPO / "_site/data/class-index.json"
-    if not index_path.is_file():
-        pytest.skip("no built class index to compare against")
-    index = json.loads(index_path.read_text(encoding="utf-8"))
-    by_key = {m["key"]: m["namespace"] for m in index["modules"]}
+    by_key = {m["key"]: m["namespace"] for m in class_index["modules"]}
     for record in manifest["modules"]:
         if record["id"] in by_key:
             assert record["namespace"] == by_key[record["id"]], record["id"]
@@ -307,3 +367,58 @@ def test_a_page_without_its_marker_is_left_alone():
     """Substitution must not be silently partial across seven pages."""
     text = "<p>no marker here</p>"
     assert F.substitute(text, {"modules": "<p>x</p>"}) == text
+
+
+# ================================================ the M-002 record
+
+
+RECORD = REPO / "docs/bfo/ONTOLOGY_METADATA_DECISIONS.md"
+
+
+def _m002_section():
+    whole = RECORD.read_text(encoding="utf-8")
+    return whole[whole.index("## M-002"):]
+
+
+def test_the_iri_form_record_matches_the_manifest(built):
+    """M-002 tabulates every ontology IRI and the namespace derived from
+    it. Both are extracted, so the record either stays true or fails --
+    the alternative is a policy document describing a corpus that moved.
+    """
+    _out, manifest = built
+    section = _m002_section()
+
+    listed = {}
+    for line in section.splitlines():
+        if line.startswith("| `"):
+            cells = [c.strip().strip("`") for c in line.strip("|").split("|")]
+            listed[cells[0]] = (cells[1], cells[3])
+
+    actual = {r["id"]: (r["ontology_iri"], r["namespace"])
+              for r in manifest["modules"]}
+    assert listed == actual, (
+        "only in the record: %s; only in the manifest: %s"
+        % (sorted(set(listed) - set(actual)), sorted(set(actual) - set(listed))))
+
+
+def test_the_iri_forms_are_still_the_three_the_record_names(built):
+    """The finding is that three forms are in use. If that became one
+    form, M-002 is answered and should be closed rather than left open
+    describing a problem that no longer exists."""
+    _out, manifest = built
+    forms = {}
+    for record in manifest["modules"]:
+        iri = record["ontology_iri"]
+        key = (".owl" if iri.endswith(".owl") else
+               ".ttl" if iri.endswith(".ttl") else
+               "#" if iri.endswith("#") else "other")
+        forms[key] = forms.get(key, 0) + 1
+    assert forms == {".owl": 6, ".ttl": 3, "#": 2}, forms
+    section = _m002_section()
+    assert "Six end it `.owl`, three end it `.ttl`, and two already end"         in " ".join(section.split()), "the record's counts have drifted"
+
+
+def test_the_iri_record_authorises_no_edit():
+    """Changing an ontology IRI is a breaking change to identifiers. It
+    needs its own decision, its own commit and its own evidence run."""
+    assert "**Status:** Open" in _m002_section()

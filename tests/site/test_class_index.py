@@ -809,7 +809,14 @@ def test_the_label_style_record_matches_the_corpus(built):
     document quietly describing a corpus that has moved on.
     """
     index, _coverage = built
-    doc = RECORD.read_text(encoding="utf-8")
+    whole = RECORD.read_text(encoding="utf-8")
+
+    # Scoped to M-001's own section. The file gained a second record with
+    # a table in the same format, and reading the whole document made
+    # this collect eleven module ids as if they were class ids.
+    doc = whole[whole.index("## M-001"):]
+    if "## M-002" in doc:
+        doc = doc[:doc.index("## M-002")]
 
     listed = {line.split("`")[1] for line in doc.splitlines()
               if line.startswith("| `")}
@@ -828,7 +835,10 @@ def test_the_label_style_record_authorises_no_edit(built):
     answered. If it ever reads as adopted, the RDF edit it would authorise
     needs its own evidence cycle, and this test should be the thing that
     makes somebody say so out loud."""
-    doc = RECORD.read_text(encoding="utf-8")
+    whole = RECORD.read_text(encoding="utf-8")
+    doc = whole[whole.index("## M-001"):]
+    if "## M-002" in doc:
+        doc = doc[:doc.index("## M-002")]
     assert "**Status:** Open" in doc, (
         "M-001 is no longer open; a label edit moves the ground digest, the "
         "blank-node fingerprint and the pinned class-index digest, and needs "

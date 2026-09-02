@@ -187,9 +187,18 @@ and their checksums match the source.</p>
 
 <section>
 <h2>Verifying what you downloaded</h2>
-<p>The published <a href="SHA256SUMS">SHA256SUMS</a> covers every file
-listed above. The same file travels inside the archive, so an unpacked
-bundle can be checked without fetching anything further.</p>
+<p>There are two checksum records, because they describe two different
+directories.</p>
+<ul>
+<li><a href="SHA256SUMS">SHA256SUMS</a> here covers what is served from
+this directory: the %(count)s Turtle files and the archive. Run your
+checksum tool where you downloaded them and every line resolves.</li>
+<li>A second <code>SHA256SUMS</code> travels inside the archive, beside
+the unpacked files, and covers those: the same Turtle plus the license,
+notices and citation record.</li>
+</ul>
+<p>Neither lists a file that is not beside it. One record naming both
+sets would be verifiable in neither place.</p>
 <p>A machine-readable record of this page, including the source commit
 each file was published from, is at
 <a href="../data/downloads.json">downloads.json</a>.</p>
@@ -199,6 +208,7 @@ each file was published from, is at
         "bundle_sha": esc(bundle["sha256"]),
         "root": esc(bundle["root"]),
         "members": esc(len(bundle["members"])),
+        "count": esc(len(manifest["modules"])),
         "rows": "\n".join(rows),
         "governance": governance,
     }

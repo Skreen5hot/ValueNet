@@ -57,16 +57,17 @@ def depicted(attribute: str) -> list[str]:
 def local(iri: str) -> str:
     """The name after the last separator.
 
-    Both are needed: ValueNet and BFO write fragments after `#`, CCO
-    writes the identifier after the last `/`. Splitting on `#` alone left
-    two upstream terms comparing as whole IRIs and reading as absent from
-    text that names them.
+    Three forms reach this. ValueNet and BFO write fragments after `#`,
+    CCO writes the identifier after the last `/`, and the explorer links
+    use the compact `module:Name`. Handling only the first two left the
+    written pairs prefixed and comparing unequal to the same pairs read
+    out of the ontology.
     """
-    return re.split(r"[#/]", iri)[-1]
+    return re.split(r"[#/]", iri)[-1].rsplit(":", 1)[-1]
 
 
 @pytest.fixture(scope="module")
-def declared():
+def declared(class_index):
     """Every IRI this repository or its vendored dependencies declare.
 
     Three sources, because a diagram legitimately names three kinds of
@@ -92,12 +93,9 @@ def declared():
         if isinstance(subject, rdflib.URIRef):
             found.setdefault(str(subject), "vendored upstream")
 
-    index_path = REPO / "_site/data/class-index.json"
-    if index_path.is_file():
-        index = json.loads(index_path.read_text(encoding="utf-8"))
-        for record in index["classes"]:
-            for mapping in record["mappings"]:
-                found.setdefault(mapping["target"], "asserted mapping target")
+    for record in class_index["classes"]:
+        for mapping in record["mappings"]:
+            found.setdefault(mapping["target"], "asserted mapping target")
     return found
 
 
@@ -140,15 +138,16 @@ def test_authored_terms_are_attributed_to_an_authored_module(declared):
 # ============================================================ the links
 
 
-def test_every_explorer_link_names_a_real_class():
+def test_every_explorer_link_names_a_real_class(class_index):
     """A model page that links to a class the index does not hold sends a
     reader to an error state, and the link is the whole point of drawing
-    the term."""
-    index_path = REPO / "_site/data/class-index.json"
-    if not index_path.is_file():
-        pytest.skip("the class index has not been built")
-    index = json.loads(index_path.read_text(encoding="utf-8"))
-    known = {record["id"] for record in index["classes"]}
+    the term.
+
+    The index is generated for the test. Reading the build artifact made
+    this skip in a clean clone, and a skipped link check reads exactly
+    like a passing one.
+    """
+    known = {record["id"] for record in class_index["classes"]}
     linked = sorted(set(re.findall(r'\.\./explore/\?class=([^"&]+)', PAGE)))
     assert linked, "the diagrams link to no classes at all"
     missing = [i for i in linked if i not in known]
@@ -220,10 +219,8 @@ def test_the_written_description_covers_every_pair_in_diagram_two():
     assert len([i for i in items if "contravenes" in i]) == 6, len(items)
 
 
-def test_the_contravenes_pairs_are_the_ones_the_ontology_asserts():
-    """Drawn from the file, not from the names. The pairing is a
-    restriction in the ontology and could be changed there without a
-    single label on this page looking wrong."""
+def _asserted_pairs():
+    """(process, disposition) from the OWL restrictions."""
     from rdflib.namespace import OWL, RDFS
 
     graph = rdflib.Graph()
@@ -231,25 +228,71 @@ def test_the_contravenes_pairs_are_the_ones_the_ontology_asserts():
         onto.parse_source(graph, layout.component(component).resolve(), REPO)
     contravenes = rdflib.URIRef(
         "https://fandaws.com/ontology/bfo/valuenet-core#contravenes")
-
-    asserted = set()
+    found = set()
     for restriction in graph.subjects(OWL.onProperty, contravenes):
         targets = list(graph.objects(restriction, OWL.someValuesFrom))
         for owner in graph.subjects(RDFS.subClassOf, restriction):
             if targets:
-                asserted.add((str(owner).rsplit("#", 1)[-1],
-                              str(targets[0]).rsplit("#", 1)[-1]))
+                found.add((local(str(owner)), local(str(targets[0]))))
+    return found
 
+
+def _drawn_pairs():
+    """(source, target) from the diagram's edge metadata."""
+    return {(local(a), local(b)) for a, b in re.findall(
+        r'data-source="([^"]+)"\s+data-target="([^"]+)"', PAGE)}
+
+
+def _written_pairs():
+    """(first link, second link) from each item of the alternative.
+
+    Order inside the item matters: the sentence runs process contravenes
+    disposition, which is the direction the property is asserted in.
+    """
     section = PAGE[PAGE.index("<h3>Description of diagram 2</h3>"):
-                   PAGE.index("<h2 id=\"m3\">")]
-    normalised = " ".join(section.split())
+                   PAGE.index('<h2 id="m3">')]
+    found = set()
+    for item in re.findall(r"<li>(.*?)</li>", section, re.S):
+        linked = re.findall(r'\.\./explore/\?class=([^"&]+)', item)
+        if len(linked) == 2:
+            found.add((local(linked[0]), local(linked[1])))
+    return found
+
+
+def test_the_three_accounts_of_the_pairs_are_the_same_set():
+    """Exact sets, in both directions, across all three.
+
+    The previous version asserted `A before B, or A is present`, whose
+    right branch is true whenever the process is named anywhere. Swapping
+    the Care and Fairness targets passed it, because every name still
+    appeared somewhere in the section. A vacuous check on a diagram is
+    worse than none: it reads as coverage.
+    """
+    asserted, drawn, written = (_asserted_pairs(), _drawn_pairs(),
+                                _written_pairs())
     assert len(asserted) == 6, asserted
-    for process, disposition in sorted(asserted):
-        # The written pair must run process-then-disposition, which is the
-        # direction the property is asserted in.
-        assert normalised.index(process) < normalised.index(disposition) or \
-            process in normalised, (process, disposition)
-        assert process in normalised and disposition in normalised
+    assert drawn == asserted, (
+        "the diagram and the ontology disagree; drawn only: %s; asserted "
+        "only: %s" % (sorted(drawn - asserted), sorted(asserted - drawn)))
+    assert written == asserted, (
+        "the written alternative and the ontology disagree; written only: "
+        "%s; asserted only: %s"
+        % (sorted(written - asserted), sorted(asserted - written)))
+
+
+def test_swapping_two_targets_would_be_caught():
+    """Guards the comparison above against becoming order-insensitive.
+
+    A set of pairs catches a swap only while the pairs stay ordered; if
+    the parsing ever returned unordered pairs this would still pass on
+    correct data and stop catching anything.
+    """
+    asserted = _asserted_pairs()
+    swapped = set(asserted)
+    (p1, d1), (p2, d2) = sorted(asserted)[:2]
+    swapped -= {(p1, d1), (p2, d2)}
+    swapped |= {(p1, d2), (p2, d1)}
+    assert swapped != asserted, "a swap is invisible to this comparison"
 
 
 def test_no_original_valuenet_diagram_is_reproduced():

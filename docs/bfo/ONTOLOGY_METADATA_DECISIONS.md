@@ -97,3 +97,76 @@ to whoever owns the ontology's authoring style.
   or
 - new modules add labels in a third pattern, which would mean the
   convention is not being inherited from anywhere.
+
+## M-002 -- Ontology IRI form
+
+**Status:** Open, recorded 2026-09-02
+**Raised by:** the Phase 5 download manifest, which needs each file's term
+namespace and could not get it from the header without a rule
+**Blocks:** any evidence-bearing edit to an `owl:Ontology` IRI
+
+### Finding
+
+The eleven reviewed deliverables write their ontology IRI in three forms.
+Six end it `.owl`, three end it `.ttl`, and two already end it `#`.
+
+| Module | Ontology IRI | Ends | Derived namespace |
+| --- | --- | --- | --- |
+| `valuenet-core` | `https://fandaws.com/ontology/bfo/valuenet-core.owl` | `.owl` | `https://fandaws.com/ontology/bfo/valuenet-core#` |
+| `valuenet-folk` | `https://fandaws.com/ontology/bfo/valuenet-folk.owl` | `.owl` | `https://fandaws.com/ontology/bfo/valuenet-folk#` |
+| `valuenet-mappings` | `https://fandaws.com/ontology/bfo/valuenet-mappings.owl` | `.owl` | `https://fandaws.com/ontology/bfo/valuenet-mappings#` |
+| `valuenet-moral-epistemics` | `https://fandaws.com/ontology/bfo/valuenet-moral-epistemics.owl` | `.owl` | `https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#` |
+| `valuenet-moral-foundations` | `https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl` | `.owl` | `https://fandaws.com/ontology/bfo/valuenet-moral-foundations#` |
+| `valuenet-schwartz-values` | `https://fandaws.com/ontology/bfo/valuenet-schwartz-values.owl` | `.owl` | `https://fandaws.com/ontology/bfo/valuenet-schwartz-values#` |
+| `valuenet-core-shapes` | `https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl` | `.ttl` | `https://fandaws.com/ontology/bfo/valuenet-core-shapes#` |
+| `valuenet-moral-epistemics-scenario` | `https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario.ttl` | `.ttl` | `https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#` |
+| `valuenet-moral-epistemics-shapes` | `https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes.ttl` | `.ttl` | `https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-shapes#` |
+| `vcvf-triggers-semantics` | `https://fandaws.com/ontology/valuenet/triggers-semantics#` | `#` | `https://fandaws.com/ontology/valuenet/triggers-semantics#` |
+| `vcvf-triggers-shapes` | `https://fandaws.com/ontology/valuenet/triggers-shapes#` | `#` | `https://fandaws.com/ontology/valuenet/triggers-shapes#` |
+
+### Why it matters beyond tidiness
+
+Three consequences, and the third is the one that made this a finding
+rather than an observation.
+
+The ontology IRI is not the term namespace. `valuenet-core` is identified
+as `...valuenet-core.owl` while its classes live in `...valuenet-core#`.
+Anything needing the namespace has to derive it, and a derivation has to
+handle all three forms or silently produce a namespace nothing is in.
+
+A `.ttl` ontology IRI names a serialization. The same ontology published
+as RDF/XML would either keep an IRI claiming to be Turtle or change
+identity, and neither is what an ontology IRI is for.
+
+For the two modules whose IRI ends `#`, the header falls inside its own
+namespace. Counting terms by namespace therefore counted the header as a
+term, which made one number mean "terms" for nine files and "terms plus
+one" for two, and turned two genuinely term-less files into files with
+one. That was found by comparing the count against the catalog's own
+statement that those modules declare nothing.
+
+### What adoption requires
+
+1. One form for the whole suite. A version-bearing IRI without a
+   serialization suffix is the usual answer, but that is the decision,
+   not the default.
+2. A rule for whether the term namespace is the ontology IRI plus `#` or
+   an independently declared value.
+3. Only then the RDF edit. Changing an `owl:Ontology` IRI changes the
+   subject of every header annotation, so it moves the ground digest and
+   the class-index content digest. The blank-node fingerprint should not
+   move: header annotations are ground triples. If it does, the edit
+   reached a restriction or a shape and should be rejected until
+   understood.
+4. Anything importing these IRIs -- `owl:imports` inside the suite, and
+   any external consumer -- has to move with them. This is a breaking
+   change to identifiers, which is why it is recorded rather than done.
+
+### Reopen when
+
+- a publication or registry requires resolvable, uniform ontology IRIs; or
+- a second serialization is published, which the `.ttl` forms cannot
+  survive; or
+- a consumer reports that a namespace derived from the header did not
+  match the terms it found.
+

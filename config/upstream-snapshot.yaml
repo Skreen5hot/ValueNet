@@ -1,0 +1,25 @@
+# The upstream state this repository's licensing decisions were reviewed
+# against.
+#
+# A commit, deliberately, and not `upstream/main`.
+#
+# A remote-tracking branch moves when somebody else pushes. Deriving
+# licensing through one means the disposition of a file here could change
+# with no commit in this repository, that two clones could disagree about
+# the same file, and that reproducing a past classification would need the
+# remote to be in the state it was in that day. None of those are
+# properties a licensing record can have.
+#
+# The snapshot is an ancestor of this repository's `main`, so any full
+# clone already contains the commit object. No `upstream` remote is
+# needed; adding one, removing it, or pointing it at a different fork
+# changes nothing. A shallow clone does not have it, which is why CI must
+# check out with fetch-depth: 0.
+#
+# `paths` is recorded so a snapshot that reads back with a different file
+# count is a refusal rather than a silently different answer.
+
+commit: caebd329fc23713dfbcfa4f8bb3f1cdf6d83f7a8
+repository: https://github.com/StenDoipanni/ValueNet
+reviewed: 2026-09-02
+paths: 214

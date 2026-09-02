@@ -153,18 +153,63 @@ def manifest_origins() -> dict[str, str]:
     return origins
 
 
-def upstream_paths() -> set[str]:
-    """Everything the upstream remote tracks, if it is reachable.
+#: Tracked record of the upstream state licensing was reviewed against.
+SNAPSHOT_CONFIG = "config/upstream-snapshot.yaml"
 
-    Absence of the remote is not treated as evidence that a file is
-    fork-authored: `classify` refuses instead, because the check is the
-    only thing separating "we wrote this" from "we did not look".
+
+def upstream_snapshot() -> dict:
+    """The reviewed upstream commit, from tracked configuration."""
+    import yaml
+
+    path = _root / SNAPSHOT_CONFIG
+    if not path.is_file():
+        raise SystemExit(
+            SNAPSHOT_CONFIG + " is missing. It records the upstream commit "
+            "this repository's licensing was reviewed against, and nothing "
+            "else establishes which files are fork-authored.")
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    for key in ("commit", "paths"):
+        if key not in data:
+            raise SystemExit("%s records no %r" % (SNAPSHOT_CONFIG, key))
+    return data
+
+
+def upstream_paths() -> set[str]:
+    """Everything the reviewed upstream snapshot tracks.
+
+    Read from a recorded commit, not from `upstream/main`.
+
+    A remote-tracking branch moves when somebody else pushes, so reading
+    licensing through one meant the disposition of a file here could
+    change with no commit in this repository -- and that an origin-only
+    clone could not reproduce the answer at all. The authority is now
+    something this repository versions.
+
+    The snapshot is an ancestor of `main`, so a full clone has the commit
+    object and no `upstream` remote is required. A shallow clone does not
+    have it, and that is a refusal rather than an empty set: absence of
+    the check is not evidence that a file is fork-authored.
     """
-    refs = git("for-each-ref", "--format=%(refname)", "refs/remotes/upstream")
-    if not refs:
-        return set()
-    head = "upstream/main"
-    return set(git("ls-tree", "-r", "--name-only", head))
+    snapshot = upstream_snapshot()
+    commit = snapshot["commit"]
+    probe = subprocess.run(["git", "cat-file", "-e", commit + "^{commit}"],
+                           cwd=str(_root), capture_output=True)
+    if probe.returncode:
+        raise SystemExit(
+            "the reviewed upstream snapshot %s is not present in this "
+            "repository, so no file can be confirmed as fork-authored. It "
+            "is an ancestor of main, so a full clone contains it and a "
+            "shallow one does not -- fetch the full history (in Actions, "
+            "fetch-depth: 0). Recorded in %s."
+            % (commit[:12], SNAPSHOT_CONFIG))
+    paths = set(git("ls-tree", "-r", "--name-only", commit))
+    if len(paths) != snapshot["paths"]:
+        raise SystemExit(
+            "%s records %d upstream paths but %s lists %d. One of the two "
+            "is wrong, and a licensing record cannot be derived from a "
+            "disputed one."
+            % (SNAPSHOT_CONFIG, snapshot["paths"], commit[:12], len(paths)))
+    return paths
 
 
 def rules(path: str, origin: str) -> list[tuple[str, str | None, str]]:
@@ -262,10 +307,9 @@ def classify(strict: bool = True) -> list[Disposition]:
     upstream = upstream_paths()
     if strict and not upstream:
         raise SystemExit(
-            "the upstream remote is not available, so a file missing from "
-            "the manifest cannot be confirmed as fork-authored. Fetch "
-            "upstream, or pass strict=False and treat the result as "
-            "provisional.")
+            "the reviewed upstream snapshot listed no paths, so a file "
+            "missing from the manifest cannot be confirmed as fork-authored. "
+            "Pass strict=False only to treat the result as provisional.")
 
     out, problems = [], []
     for path in git("ls-files"):
@@ -307,9 +351,14 @@ def divergence() -> list[tuple[str, int, int, int]]:
     judgement, not a measurement, and automating it would relicense
     somebody else's work on a heuristic.
     """
+    # The same recorded commit the classification uses. A report drawn
+    # from a moving branch would not be reproducible either, and the two
+    # disagreeing about which upstream they mean would be worse than
+    # either being wrong on its own.
+    snapshot_commit = upstream_snapshot()["commit"]
     upstream_blobs = {
         line.split(chr(9))[-1]
-        for line in git("ls-tree", "-r", "--name-only", "upstream/main")}
+        for line in git("ls-tree", "-r", "--name-only", snapshot_commit)}
     out = []
     for row in classify():
         if row.origin != "upstream-valuenet":
@@ -318,7 +367,8 @@ def divergence() -> list[tuple[str, int, int, int]]:
             continue
         try:
             was = subprocess.run(
-                ["git", "cat-file", "blob", "upstream/main:" + row.path],
+                ["git", "cat-file", "blob",
+                 snapshot_commit + ":" + row.path],
                 cwd=str(_root), capture_output=True
             ).stdout.decode("utf-8", "replace")
             now = (_root / row.path).read_text(encoding="utf-8",

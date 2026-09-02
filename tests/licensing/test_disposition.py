@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import subprocess
 
 import pytest
@@ -312,17 +313,122 @@ def test_the_governance_files_exist_and_cross_reference():
             + "; a generic AI-assisted note is what this replaces")
 
 
-def test_the_classifier_refuses_without_upstream(monkeypatch):
-    """Absence of the remote must not read as evidence of fork authorship.
+def test_the_classifier_refuses_an_empty_upstream(monkeypatch):
+    """Absence of the check must not read as evidence of fork authorship.
 
-    The upstream check is the only thing separating "we wrote this" from
-    "we did not look", so losing it has to stop the classification rather
-    than quietly widen it.
+    The upstream comparison is the only thing separating "we wrote this"
+    from "we did not look", so losing it has to stop the classification
+    rather than quietly widen it.
     """
     monkeypatch.setattr(D, "upstream_paths", lambda: set())
     with pytest.raises(SystemExit) as exc:
         D.classify()
     assert "upstream" in str(exc.value)
+
+
+# ======================================================================
+# the upstream authority is a recorded commit, not a moving branch
+# ======================================================================
+
+
+def test_licensing_never_reads_a_remote_tracking_branch():
+    """The defect this replaced: classification read `upstream/main`.
+
+    A remote-tracking branch moves when somebody else pushes, so the
+    licence of a file here could change with no commit in this repository,
+    two clones could disagree, and an origin-only clone could not run the
+    suite at all. None of those are properties a licensing record can
+    have.
+    """
+    source = (REPO / "tools/licensing/disposition.py").read_text(
+        encoding="utf-8")
+
+    # Docstrings and comments stripped. The first version of this test
+    # failed on the docstring saying the branch is no longer read -- the
+    # third time in this project that a substring scan has reported on
+    # prose about code instead of on the code.
+    code = re.sub('"""' + ".*?" + '"""', "", source, flags=re.S)
+    code = re.sub("(?m)#.*$", "", code)
+
+    for forbidden in ("upstream/main", "refs/remotes"):
+        assert forbidden not in code, (
+            "licensing still reads %r, which moves without a commit here"
+            % forbidden)
+    assert D.SNAPSHOT_CONFIG in source
+
+
+def test_the_recorded_snapshot_is_reachable_without_any_remote():
+    """It is an ancestor of this repository's main, so a full clone has
+    the object. That is what lets CI drop the upstream remote entirely."""
+    snapshot = D.upstream_snapshot()
+    commit = snapshot["commit"]
+    assert len(commit) == 40 and all(c in "0123456789abcdef" for c in commit)
+
+    kind = subprocess.run(["git", "cat-file", "-t", commit],
+                          cwd=str(REPO), capture_output=True, text=True)
+    assert kind.stdout.strip() == "commit", kind.stderr[-200:]
+
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", commit, "HEAD"],
+        cwd=str(REPO), capture_output=True)
+    assert ancestor.returncode == 0, (
+        "the recorded snapshot is not an ancestor of main, so a clone of "
+        "this repository alone would not contain it")
+
+
+def test_the_recorded_path_count_matches_the_commit():
+    """A snapshot that reads back with a different file count is a
+    refusal, not a quietly different answer."""
+    snapshot = D.upstream_snapshot()
+    listed = subprocess.run(
+        ["git", "ls-tree", "-r", "--name-only", snapshot["commit"]],
+        cwd=str(REPO), capture_output=True, text=True)
+    assert len(listed.stdout.splitlines()) == snapshot["paths"]
+    assert len(D.upstream_paths()) == snapshot["paths"]
+
+
+def test_a_missing_snapshot_object_says_what_to_do(monkeypatch):
+    """A shallow clone is the case that will actually happen, and the
+    message has to name the fix rather than surfacing a git error."""
+    monkeypatch.setattr(D, "upstream_snapshot",
+                        lambda: {"commit": "0" * 40, "paths": 214})
+    with pytest.raises(SystemExit) as exc:
+        D.upstream_paths()
+    message = str(exc.value)
+    assert "fetch-depth: 0" in message, message
+    assert D.SNAPSHOT_CONFIG in message
+
+
+def test_a_disagreeing_path_count_is_refused(monkeypatch):
+    real = D.upstream_snapshot()
+    monkeypatch.setattr(D, "upstream_snapshot",
+                        lambda: dict(real, paths=real["paths"] + 1))
+    with pytest.raises(SystemExit) as exc:
+        D.upstream_paths()
+    assert "disputed" in str(exc.value)
+
+
+def test_any_workflow_running_the_suite_checks_out_full_history():
+    """Forward guard, inert until .github/workflows/ exists.
+
+    actions/checkout is shallow by default, and a shallow clone does not
+    contain the snapshot, so the licensing tests would fail in CI with a
+    message about git objects rather than about configuration.
+    """
+    workflows = REPO / ".github/workflows"
+    if not workflows.is_dir():
+        assert not workflows.exists()
+        return
+    offenders = []
+    for path in sorted(workflows.glob("*.y*ml")):
+        text = path.read_text(encoding="utf-8")
+        if "pytest" not in text:
+            continue
+        if "fetch-depth: 0" not in text:
+            offenders.append(path.name)
+    assert not offenders, (
+        "%s run the suite on a shallow checkout; the reviewed upstream "
+        "snapshot would be absent" % offenders)
 
 
 def test_the_pinned_site_requirements_name_only_what_is_used():

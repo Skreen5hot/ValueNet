@@ -78,8 +78,15 @@ Each file's origin is read from `config/move-manifest.yaml`, a
 provenance record frozen and reviewed before this licensing work began,
 which classifies every file as `fork`, `upstream-valuenet`,
 `external-bfo`, or `external-cco`. A tracked file absent from that
-manifest is confirmed absent from the upstream remote before it is
-treated as fork-authored.
+manifest is confirmed absent from a recorded upstream snapshot before it
+is treated as fork-authored.
+
+The snapshot is a commit named in `config/upstream-snapshot.yaml`, not a
+remote branch, so the classification does not depend on the state of
+anybody else's repository at the moment it runs. It is an ancestor of
+this repository's history: a full clone contains it and needs no
+`upstream` remote, while a shallow clone does not and is refused rather
+than answered.
 
 Where recorded descent and current authorship diverge, the owner rules
 on the named file and the ruling is recorded with its evidence. One such

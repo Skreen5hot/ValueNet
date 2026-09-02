@@ -88,7 +88,15 @@ From **recorded provenance plus explicit owner adjudications**.
 Provenance does most of the work: `config/move-manifest.yaml` records
 each file's origin, frozen and reviewed before this licensing work
 began. A tracked file the manifest does not mention is confirmed absent
-from the upstream remote before it is treated as fork-authored.
+from a recorded upstream snapshot before it is treated as fork-authored.
+
+That snapshot is a specific commit, named in
+`config/upstream-snapshot.yaml`, and never a branch. A remote-tracking
+branch moves when somebody else pushes, which would let the licence of a
+file here change with no commit in this repository and let two clones
+disagree about the same file. The snapshot is an ancestor of this
+repository's history, so any full clone can reproduce the classification
+with no remote configured.
 
 Provenance answers where a file came from. A licence question asks who
 wrote what is there now, and occasionally those diverge. Where they do,

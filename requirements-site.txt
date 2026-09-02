@@ -30,6 +30,20 @@
 #
 # This file describes what the suite imports. It said otherwise for one
 # commit, and the requirements-only gate is what found it.
+#
+# It is not, on its own, enough to run the suite. The class explorer's
+# ranking ships as JavaScript, and tests/site/test_explorer.py tests it by
+# running the file the browser loads rather than by re-implementing it in
+# Python. That needs node, pinned in .nvmrc at the repository root -- the
+# file nvm and actions/setup-node both read, so there is one version and
+# not two.
+#
+# Node is a test dependency only. The site itself installs nothing: no
+# npm packages, no build step, no bundler. Nothing here is a runtime
+# dependency of the published pages.
+#
+# Absence of node fails the suite; it used to skip it, which is
+# indistinguishable from a pass in every summary line.
 pytest==9.1.1
 PyYAML==6.0.3
 jsonschema==4.26.0

@@ -22,11 +22,59 @@
   </header>
   <main id="main">
     <h1>Explore classes</h1>
-    <p class="lead">Search the authored ValueNet classes by label, identifier, IRI, definition, and module.</p>
-    <section class="placeholder">
-      <h2>Not built yet</h2>
-      <p>This page is a Phase 2 shell. The class index and search arrive in Phases 3 and 4.</p>
-    </section>
+    <p class="lead">Search the authored ValueNet classes by label, identifier,
+      IRI, definition, and synonym. Every field shown is extracted from the
+      ontology.</p>
+
+    <noscript>
+      <section class="notice-block">
+        <h2>Search needs JavaScript</h2>
+        <p>This page searches a generated index in your browser, so the search
+          itself does not work with scripting disabled. Nothing else on the
+          site depends on it.</p>
+        <ul>
+          <li><a href="../modules/">Modules</a> — what each module covers,
+            with its class count.</li>
+          <li><a href="../downloads/">Downloads</a> — the canonical Turtle
+            files, which are the authoritative source.</li>
+          <li><a href="../data/class-index.json">The class index itself</a> —
+            the same JSON this page reads, if you would rather query it
+            directly.</li>
+        </ul>
+      </section>
+    </noscript>
+
+    <form class="explorer-controls" id="explorer-controls" hidden
+          onsubmit="return false;">
+      <div class="field">
+        <label for="q">Search</label>
+        <input type="search" id="q" name="q" autocomplete="off"
+               placeholder="label, identifier, IRI, definition, synonym">
+      </div>
+      <div class="field">
+        <label for="module">Module</label>
+        <select id="module" name="module"></select>
+      </div>
+      <div class="field">
+        <label for="category">Category</label>
+        <select id="category" name="category"></select>
+      </div>
+      <button type="button" id="clear">Clear</button>
+    </form>
+
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+
+    <div class="explorer-panes">
+      <section aria-labelledby="results-heading" class="results-pane">
+        <h2 id="results-heading" class="visually-hidden">Results</h2>
+        <ol class="results" id="results"></ol>
+      </section>
+      <section aria-labelledby="detail-heading" class="detail-pane"
+               id="detail" tabindex="-1" hidden>
+        <h2 id="detail-heading">Class detail</h2>
+        <div id="detail-body"></div>
+      </section>
+    </div>
   </main>
   <footer class="footer">
     <p class="notice"><strong>Canonical ValueNet IRIs identify ontology
@@ -44,5 +92,7 @@
     <p class="build">Built from commit <code data-build="commit">unknown</code>
       &middot; <span data-build="label">latest from main</span></p>
   </footer>
+  <script src="../assets/js/ranking.js"></script>
+  <script src="../assets/js/explorer.js"></script>
 </body>
 </html>

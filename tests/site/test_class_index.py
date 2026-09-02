@@ -279,6 +279,79 @@ def test_two_builds_produce_identical_bytes(tmp_path):
     assert digests[0] == digests[1]
 
 
+# The digest of everything the index says about the ontology, with
+# provenance removed. Recomputed by the test below from the normalisation
+# written beside it -- not a figure copied out of a report. An earlier
+# revision of this project cited a class-index digest that nothing in the
+# tree could reproduce, which is how a number nobody can check survives.
+NORMALISED_CONTENT = (
+    "3e54f08bfaebd1e49798aac6982738f9dc345e47cdc2a8eddd09276737a3942c")
+
+PROVENANCE_KEYS = {"source_commit"}
+CONTENT_KEYS = {"classes", "format_version", "generated_by", "modules"}
+
+
+def _normalised(index):
+    """The index minus the fields that change without the corpus changing.
+
+    source_commit moves every commit, so a digest including it measures
+    the repository's history rather than what was extracted.
+    """
+    kept = {k: v for k, v in index.items() if k not in PROVENANCE_KEYS}
+    return json.dumps(kept, sort_keys=True, separators=(",", ":"),
+                      ensure_ascii=False)
+
+
+def test_no_field_escapes_the_content_or_provenance_split(built):
+    """Guards the digest below.
+
+    If a build timestamp were added, the pin would start failing on every
+    run and the obvious repair would be to loosen it. Naming both sets
+    means a new field is a decision about which side it falls on.
+    """
+    index, _coverage = built
+    assert set(index) == CONTENT_KEYS | PROVENANCE_KEYS, (
+        "the index gained or lost a top-level field; classify it as content "
+        "or provenance before the digest below can mean anything")
+
+
+def test_the_extracted_content_is_unchanged(built):
+    """A pin, so that a change to the corpus or to the extractor is
+    something somebody decided rather than something that happened.
+
+    This is the measure the publication plan calls the normalised
+    class-index content digest. It is expected to change when the
+    ontology changes -- that is the point -- but only deliberately.
+    """
+    import hashlib
+
+    index, _coverage = built
+    digest = hashlib.sha256(_normalised(index).encode("utf-8")).hexdigest()
+    assert digest == NORMALISED_CONTENT, (
+        "the extracted class content changed. If that was intended, set "
+        "NORMALISED_CONTENT to %s and say in the commit what changed and "
+        "why." % digest)
+
+
+def test_the_pin_ignores_provenance_but_not_content(built):
+    """Falsifies the normalisation itself: a digest that ignored too much
+    would pass this file's other tests without measuring anything."""
+    import hashlib
+
+    index, _coverage = built
+    moved = dict(index, source_commit="0" * 40)
+    assert _normalised(moved) == _normalised(index), (
+        "the digest tracks the commit, so it would change on every commit")
+
+    edited = json.loads(json.dumps(index))
+    edited["classes"][0]["definition"] += " altered"
+    assert _normalised(edited) != _normalised(index), (
+        "the digest does not track definitions, so it is not measuring the "
+        "content it claims to")
+    assert (hashlib.sha256(_normalised(edited).encode("utf-8")).hexdigest()
+            != NORMALISED_CONTENT)
+
+
 def test_module_metadata_is_extracted_not_curated(built):
     """Each module's title, description and licence come from its own
     ontology header. site.json holds none of them."""

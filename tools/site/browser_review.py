@@ -40,6 +40,7 @@ import http.server
 import json
 import os
 import platform
+import re
 import socketserver
 import threading
 from pathlib import Path
@@ -375,14 +376,30 @@ def review_one(engine, name: str, base: str, channel: str | None) -> dict:
     return record
 
 
+#: The build stamp, which every page carries and which changes on every
+#: commit. Normalised out of the review digest for the same reason the
+#: class index excludes provenance: a record committed alongside the
+#: site it measures can never match a build of the commit it lands in,
+#: so a digest including the stamp is stale the instant it is written.
+STAMP = re.compile(r'(<code data-build="commit">)[0-9a-f]*(</code>)')
+
+
 def tree_digest(out: Path) -> str:
-    """What was reviewed, so a stale record is detectable."""
+    """What was reviewed, so a stale record is detectable.
+
+    Content only. A page differing solely in its build stamp is the
+    same page as far as anything this review checked.
+    """
     rows = []
     for path in sorted(out.rglob("*")):
-        if path.is_file():
-            rows.append("%s %s" % (path.relative_to(out).as_posix(),
-                                   hashlib.sha256(
-                                       path.read_bytes()).hexdigest()))
+        if not path.is_file():
+            continue
+        data = path.read_bytes()
+        if path.suffix == ".html":
+            data = STAMP.sub(r"\1STAMP\2",
+                             data.decode("utf-8")).encode("utf-8")
+        rows.append("%s %s" % (path.relative_to(out).as_posix(),
+                               hashlib.sha256(data).hexdigest()))
     return hashlib.sha256("\n".join(rows).encode("utf-8")).hexdigest()
 
 

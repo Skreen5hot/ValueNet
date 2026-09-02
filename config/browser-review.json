@@ -669,7 +669,7 @@
   },
   "operating_system": "Windows-10-10.0.19045-SP0",
   "passed": true,
-  "site_tree_sha256": "cd57140c14c7e32674ddf15c91a7bb0d8912b970c3f36a0a926090cc44851d73",
+  "site_tree_sha256": "806edc93c58e5875c93618b86b9136339c58586023243a18b6bd2d5947d79a40",
   "viewports": {
     "high-zoom-400pct": {
       "height": 256,

@@ -13,6 +13,14 @@ addition unless somebody writes down that they are the same test. Each
 one is recorded with the commit that made it and what changed, and both
 halves are checked: the old name must be gone and the new one must exist,
 so a rename entry cannot quietly cover a genuine loss.
+
+It lives under tests/integration rather than tests/site because it asks
+about the whole repository's inventory, and because it needs the whole
+environment to ask. Several test modules use `pytest.importorskip`, which
+removes them at collection when an optional dependency is absent -- 45 of
+them vanish without pyshacl. The requirements-only gate legitimately has
+no pyshacl, and running this check there compared the pre-site set
+against a truncated one and reported 45 losses that had not happened.
 """
 
 from __future__ import annotations
@@ -36,8 +44,38 @@ def baseline():
     return json.loads(BASELINE.read_text(encoding="utf-8"))
 
 
+#: Optional dependencies whose absence silently removes whole modules
+#: from collection. Named so the failure says which one is missing rather
+#: than listing the tests that disappeared with it.
+COLLECTION_DEPENDENCIES = ("rdflib", "pyshacl", "owlrl", "yaml", "jsonschema")
+
+
 @pytest.fixture(scope="module")
-def current():
+def complete_environment():
+    """Refuse to compare against a truncated collection.
+
+    `pytest.importorskip` at module scope removes a module before its
+    tests are ever named, so a missing dependency does not fail -- it
+    quietly shrinks the set this test is comparing. Checking the
+    dependencies directly turns that into one legible failure.
+    """
+    import importlib
+
+    missing = []
+    for name in COLLECTION_DEPENDENCIES:
+        try:
+            importlib.import_module(name)
+        except ImportError:
+            missing.append(name)
+    assert not missing, (
+        "this environment cannot collect the full suite: %s missing. "
+        "Modules using pytest.importorskip disappear at collection, so "
+        "the identity comparison would report them as losses. Run the "
+        "identity gate in the full environment." % ", ".join(missing))
+
+
+@pytest.fixture(scope="module")
+def current(complete_environment):
     """The identity set of the tree as it stands, same reduction."""
     # sys.executable, not "python": the requirements-only gate runs the
     # suite from a virtual environment whose interpreter is not the one

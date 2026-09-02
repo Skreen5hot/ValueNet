@@ -219,58 +219,75 @@ def test_the_written_description_covers_every_pair_in_diagram_two():
     assert len([i for i in items if "contravenes" in i]) == 6, len(items)
 
 
-def _asserted_pairs():
-    """(process, disposition) from the OWL restrictions."""
+CONTRAVENES = "https://fandaws.com/ontology/bfo/valuenet-core#contravenes"
+
+
+def _asserted_triples():
+    """(process, predicate, disposition) from the OWL restrictions."""
     from rdflib.namespace import OWL, RDFS
 
     graph = rdflib.Graph()
     for component in ("bfo.module.core", "bfo.module.moral-foundations"):
         onto.parse_source(graph, layout.component(component).resolve(), REPO)
-    contravenes = rdflib.URIRef(
-        "https://fandaws.com/ontology/bfo/valuenet-core#contravenes")
+    predicate = rdflib.URIRef(CONTRAVENES)
     found = set()
-    for restriction in graph.subjects(OWL.onProperty, contravenes):
+    for restriction in graph.subjects(OWL.onProperty, predicate):
         targets = list(graph.objects(restriction, OWL.someValuesFrom))
         for owner in graph.subjects(RDFS.subClassOf, restriction):
             if targets:
-                found.add((local(str(owner)), local(str(targets[0]))))
+                found.add((local(str(owner)), local(CONTRAVENES),
+                           local(str(targets[0]))))
     return found
 
 
-def _drawn_pairs():
-    """(source, target) from the diagram's edge metadata."""
-    return {(local(a), local(b)) for a, b in re.findall(
-        r'data-source="([^"]+)"\s+data-target="([^"]+)"', PAGE)}
+def _drawn_triples():
+    """(source, predicate, target) from the diagram's edge metadata.
+
+    The predicate is read from the edge, not assumed. Comparing only
+    source and target left the relation unchecked: redrawing the six
+    edges with any other declared property would have kept both sets
+    equal and passed the existence check, because the replacement exists.
+    """
+    return {(local(source), local(predicate), local(target))
+            for predicate, source, target in re.findall(
+                r'data-property="([^"]+)"\s+data-source="([^"]+)"'
+                r'\s+data-target="([^"]+)"', PAGE)}
 
 
-def _written_pairs():
-    """(first link, second link) from each item of the alternative.
+def _written_triples():
+    """(first link, marked predicate, second link) per item.
 
-    Order inside the item matters: the sentence runs process contravenes
-    disposition, which is the direction the property is asserted in.
+    Order inside the item matters: the sentence runs process, predicate,
+    disposition, which is the direction the restriction is asserted in.
+    The predicate is marked up rather than inferred from the prose, so
+    rewording the sentence cannot silently change what it claims.
     """
     section = PAGE[PAGE.index("<h3>Description of diagram 2</h3>"):
                    PAGE.index('<h2 id="m3">')]
     found = set()
     for item in re.findall(r"<li>(.*?)</li>", section, re.S):
         linked = re.findall(r'\.\./explore/\?class=([^"&]+)', item)
-        if len(linked) == 2:
-            found.add((local(linked[0]), local(linked[1])))
+        predicates = re.findall(r'data-property="([^"]+)"', item)
+        if len(linked) == 2 and len(predicates) == 1:
+            found.add((local(linked[0]), local(predicates[0]),
+                       local(linked[1])))
     return found
 
 
 def test_the_three_accounts_of_the_pairs_are_the_same_set():
-    """Exact sets, in both directions, across all three.
+    """Exact triples, in both directions, across all three accounts.
 
-    The previous version asserted `A before B, or A is present`, whose
-    right branch is true whenever the process is named anywhere. Swapping
-    the Care and Fairness targets passed it, because every name still
-    appeared somewhere in the section. A vacuous check on a diagram is
-    worse than none: it reads as coverage.
+    Two rounds of this check were weaker than they looked. The first
+    asserted `A before B, or A is present`, whose right branch is true
+    whenever the process is named anywhere. The second compared ordered
+    pairs and caught a swapped target, but omitted the predicate: the six
+    edges could have been relabelled with any other declared property and
+    both sets would still have matched.
     """
-    asserted, drawn, written = (_asserted_pairs(), _drawn_pairs(),
-                                _written_pairs())
+    asserted, drawn, written = (_asserted_triples(), _drawn_triples(),
+                                _written_triples())
     assert len(asserted) == 6, asserted
+    assert all(t[1] == "contravenes" for t in asserted), asserted
     assert drawn == asserted, (
         "the diagram and the ontology disagree; drawn only: %s; asserted "
         "only: %s" % (sorted(drawn - asserted), sorted(asserted - drawn)))
@@ -280,18 +297,29 @@ def test_the_three_accounts_of_the_pairs_are_the_same_set():
         % (sorted(written - asserted), sorted(asserted - written)))
 
 
-def test_swapping_two_targets_would_be_caught():
-    """Guards the comparison above against becoming order-insensitive.
+def test_a_different_real_property_would_be_caught():
+    """Guards the comparison against dropping the predicate again.
 
-    A set of pairs catches a swap only while the pairs stay ordered; if
-    the parsing ever returned unordered pairs this would still pass on
-    correct data and stop catching anything.
+    Substituting a property that genuinely exists is the case the pair
+    comparison could not see, so it is exercised here directly rather
+    than trusted.
     """
-    asserted = _asserted_pairs()
+    asserted = _asserted_triples()
+    other = "dyadicOppositeOf"
+    relabelled = {(s, other, t) for s, _p, t in asserted}
+    assert relabelled != asserted, (
+        "the comparison ignores the predicate, so relabelling every edge "
+        "with another declared property would pass")
+
+
+def test_swapping_two_targets_would_be_caught():
+    """The earlier guard, kept: a set of triples catches a swap only
+    while the components stay ordered."""
+    asserted = _asserted_triples()
     swapped = set(asserted)
-    (p1, d1), (p2, d2) = sorted(asserted)[:2]
-    swapped -= {(p1, d1), (p2, d2)}
-    swapped |= {(p1, d2), (p2, d1)}
+    (p1, r1, d1), (p2, r2, d2) = sorted(asserted)[:2]
+    swapped -= {(p1, r1, d1), (p2, r2, d2)}
+    swapped |= {(p1, r1, d2), (p2, r2, d1)}
     assert swapped != asserted, "a swap is invisible to this comparison"
 
 

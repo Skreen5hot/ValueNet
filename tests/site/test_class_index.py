@@ -840,6 +840,8 @@ def test_the_label_style_record_authorises_no_edit(built):
     if "## M-002" in doc:
         doc = doc[:doc.index("## M-002")]
     assert "**Status:** Open" in doc, (
-        "M-001 is no longer open; a label edit moves the ground digest, the "
-        "blank-node fingerprint and the pinned class-index digest, and needs "
-        "its own commit and evidence run")
+        "M-001 is no longer open; a label edit moves the ground digest "
+        "and the pinned class-index digest, and needs its own commit and "
+        "evidence run. The blank-node fingerprint must not move -- a "
+        "label is a ground triple -- and if it does the edit reached "
+        "something other than labels")

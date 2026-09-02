@@ -152,13 +152,45 @@ statement that those modules declare nothing.
    not the default.
 2. A rule for whether the term namespace is the ontology IRI plus `#` or
    an independently declared value.
-3. Only then the RDF edit. Changing an `owl:Ontology` IRI changes the
-   subject of every header annotation, so it moves the ground digest and
-   the class-index content digest. The blank-node fingerprint should not
-   move: header annotations are ground triples. If it does, the edit
-   reached a restriction or a shape and should be rejected until
-   understood.
-4. Anything importing these IRIs -- `owl:imports` inside the suite, and
+3. Only then the RDF edit, and its blast radius is narrower than it
+   first appears. Changing an `owl:Ontology` subject changes the subject
+   of every header annotation, so it moves the **ground digest**. It also
+   moves the **download manifest**, which records `ontology_iri` and
+   derives each module's namespace from it.
+
+   It does **not** move the normalized class-index digest. The index
+   derives namespace from class IRIs and never publishes the header IRI,
+   so a header rename leaves every indexed record identical. An earlier
+   revision of this record said otherwise; the index was checked and
+   contains the string nowhere.
+
+   The **blank-node fingerprint** should not move either: header
+   annotations are ground triples. If it does, the edit reached a
+   restriction or a shape and should be rejected until understood.
+
+   Whether anything else moves depends on the shape of the rename, and
+   both shapes were measured rather than reasoned about:
+
+   | Rename | `ontology_iri` | Derived namespace | Namespace-agreement control |
+   | --- | --- | --- | --- |
+   | `valuenet-core.owl` &rarr; `valuenet-core` | moves | unchanged | passes |
+   | `valuenet-core.owl` &rarr; `valuenet-core-v2.owl` | moves | moves | fails |
+
+   The manifest derives each namespace from the header IRI while the index
+   derives it from class IRIs, and a control requires the two to agree.
+   Dropping the suffix leaves the derived namespace identical, so the
+   likely remedy is namespace-preserving and the control stays quiet.
+   Changing the stem moves the namespace away from where the classes
+   actually are, and the control fails -- which is the signal that the
+   rename has become a term-IRI migration wearing a header rename's
+   clothes.
+
+4. A **term-IRI migration** -- changing the namespace the classes
+   themselves live in -- is the larger change, and that one does move the
+   class-index content digest, every mapping target pointing into this
+   suite, and any external consumer's IRIs. It is out of scope here and
+   would need its own record.
+5. Anything importing these IRIs -- `owl:imports` inside the suite, and
    any external consumer -- has to move with them. This is a breaking
    change to identifiers, which is why it is recorded rather than done.
 

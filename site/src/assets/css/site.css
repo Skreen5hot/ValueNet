@@ -18,6 +18,10 @@
   --accent-ink: #ffffff;
   --notice-bg: #f4f1e8;
   --focus: #1b4d89;
+  /* --rule draws decorative separators, which WCAG exempts. The edge of a
+   * text input is not decorative: it is what tells a sighted user where the
+   * control is, so 1.4.11 asks 3:1 of it. --rule gives 1.43. */
+  --field-edge: #84867d;
   --measure: 42rem;
 }
 
@@ -32,6 +36,7 @@
     --accent-ink: #16171a;
     --notice-bg: #232529;
     --focus: #8ab4f8;
+    --field-edge: #767880;
   }
 }
 
@@ -172,7 +177,11 @@ code {
   align-items: flex-end;
   margin: 1.25rem 0 0.5rem;
 }
-.explorer-controls .field { display: flex; flex-direction: column; }
+/* min-width: 0 lets the field shrink past its content. Without it a flex
+ * item refuses to go below its intrinsic width and the row overflows the
+ * body instead of wrapping. */
+.explorer-controls .field { display: flex; flex-direction: column;
+  min-width: 0; }
 .explorer-controls label {
   font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.15rem;
 }
@@ -181,12 +190,16 @@ code {
 .explorer-controls button {
   font: inherit;
   padding: 0.4rem 0.55rem;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--field-edge);
   border-radius: 4px;
   background: var(--surface);
   color: var(--ink);
 }
-.explorer-controls input { min-width: 20rem; max-width: 100%; }
+/* width, not min-width: min-width beats max-width when they disagree, so
+ * `min-width: 20rem; max-width: 100%` held the input at 320px inside a
+ * 280px column and scrolled the whole page sideways below a 360px
+ * viewport. */
+.explorer-controls input { width: 20rem; max-width: 100%; }
 .explorer-controls button { cursor: pointer; }
 
 .status { color: var(--ink-soft); font-size: 0.9rem; margin: 0.25rem 0; }
@@ -238,7 +251,7 @@ a.result:hover { background: var(--notice-bg); }
   user-select: all;
 }
 .copy { font: inherit; padding: 0.2rem 0.5rem; cursor: pointer;
-  border: 1px solid var(--rule); border-radius: 4px;
+  border: 1px solid var(--field-edge); border-radius: 4px;
   background: var(--surface); color: var(--ink); }
 .copy-result { font-size: 0.8rem; color: var(--ink-soft); }
 .map-predicate { font-weight: 600; margin-right: 0.4rem; }

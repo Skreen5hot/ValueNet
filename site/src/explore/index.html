@@ -20,7 +20,7 @@
       <a href="../about/">About</a>
     </nav>
   </header>
-  <main id="main">
+  <main id="main" tabindex="-1">
     <h1>Explore classes</h1>
     <p class="lead">Search the authored ValueNet classes by label, identifier,
       IRI, definition, and synonym. Every field shown is extracted from the
@@ -44,8 +44,7 @@
       </section>
     </noscript>
 
-    <form class="explorer-controls" id="explorer-controls" hidden
-          onsubmit="return false;">
+    <form class="explorer-controls" id="explorer-controls" hidden>
       <div class="field">
         <label for="q">Search</label>
         <input type="search" id="q" name="q" autocomplete="off"

@@ -503,15 +503,37 @@ def test_without_javascript_the_page_says_so_and_offers_routes():
 
 
 def test_no_form_appears_functional_without_javascript():
-    """A form that submits would reload the page and look broken rather
-    than unavailable."""
-    assert 'onsubmit="return false;"' in EXPLORE_HTML
+    """A form that submits would reload the page and look broken
+    rather than unavailable.
+
+    Three independent reasons it cannot, so no single one carries the
+    claim alone: the form ships hidden and is revealed only after the
+    index loads, it names no action and carries no submit control, and
+    the script cancels submission on the same synchronous line that
+    reveals it.
+
+    This test used to assert the literal string onsubmit="return
+    false;", which writes the fix down rather than checking it. The
+    attribute has since become a bound listener -- strictly better,
+    being the only inline script on the site -- and the old assertion
+    failed while every property it existed to protect still held.
+    """
     assert "<form" in EXPLORE_HTML
-    assert 'action=' not in EXPLORE_HTML
+    assert "action=" not in EXPLORE_HTML
     assert 'type="submit"' not in EXPLORE_HTML
-    # Controls are hidden until the index loads, so nothing offers a
-    # search box that cannot search.
-    assert re.search(r'<form[^>]*\bhidden\b', EXPLORE_HTML)
+    form_tag = EXPLORE_HTML[EXPLORE_HTML.index("<form"):]
+    form_tag = form_tag[:form_tag.index(">") + 1]
+    assert " hidden" in form_tag, form_tag
+    assert re.search(r'addEventListener\(\s*"submit"', EXPLORER_JS), (
+        "nothing cancels form submission")
+    assert "preventDefault" in EXPLORER_JS
+
+
+def test_the_page_carries_no_inline_event_handler():
+    """An inline handler is script inside the markup: the one thing a
+    content-security policy cannot permit without permitting all of
+    it, and invisible to every check that reads the .js files."""
+    assert not re.findall(r"\son[a-z]+\s*=", EXPLORE_HTML)
 
 
 def test_the_explorer_is_the_only_page_that_needs_a_script():

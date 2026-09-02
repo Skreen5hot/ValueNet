@@ -133,8 +133,13 @@
     var wrap = el("div", "iri-row");
     wrap.appendChild(el("span", "iri-label", label));
     var text = el("code", "iri-value", value);
-    /* Selectable text, never an anchor: these do not resolve. */
-    text.setAttribute("tabindex", "0");
+    /* Selectable text, never an anchor: these do not resolve.
+     *
+     * No tabindex. It was focusable, which put a stop in the tab order at
+     * something that does nothing when focused -- focus does not select
+     * the text, so it bought a keyboard user an extra Tab per IRI and no
+     * capability. Selection is `user-select: all` plus the copy button
+     * beside it, which is a real control and is in the tab order. */
     wrap.appendChild(text);
 
     var button = el("button", "copy", "Copy");
@@ -289,6 +294,12 @@
   function start(index) {
     state.index = index;
     $("explorer-controls").hidden = false;
+    /* Bound here rather than as an onsubmit attribute: the attribute was
+     * the only inline script on the site, and a form whose controls all
+     * act on input has nothing to submit. */
+    $("explorer-controls").addEventListener("submit", function (event) {
+      event.preventDefault();
+    });
 
     var modules = index.modules.map(function (m) { return m.key; }).sort();
     var categories = [];

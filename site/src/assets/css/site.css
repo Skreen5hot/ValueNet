@@ -264,3 +264,54 @@ a.result:hover { background: var(--notice-bg); }
 .muted { color: var(--ink-soft); }
 .empty, .error { padding: 0.75rem 0.5rem; color: var(--ink-soft); }
 .error { color: var(--ink); }
+
+/* ---- Diagrams and generated cards ----------------------------- */
+
+/* Diagrams scale with the column and inherit the theme. No fixed pixel
+ * width: the viewBox does the scaling, so one drawing serves a phone and
+ * a wide screen without a second asset. */
+.diagram {
+  width: 100%; height: auto;
+  max-width: 48rem;
+  margin: 1rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.dg-box { fill: var(--surface); stroke: var(--field-edge); stroke-width: 1.5; }
+.dg-upstream { stroke-dasharray: 5 3; }
+.dg-label { fill: var(--ink); font-size: 14px; text-anchor: middle;
+  font-family: inherit; }
+.dg-sub, .dg-edge-label, .dg-col {
+  fill: var(--ink-soft); font-size: 11px; text-anchor: middle;
+  font-family: inherit;
+}
+.dg-col { font-size: 12px; font-weight: 600; }
+.dg-edge { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.dg-dashed { stroke-dasharray: 6 4; }
+.dg-head { fill: var(--ink-soft); }
+
+.alt-text li { margin-bottom: 0.4rem; }
+
+.module-group { margin-bottom: 2.5rem; }
+.lead-small { color: var(--ink-soft); margin-top: 0; }
+.module-card {
+  border: 1px solid var(--rule); border-radius: 6px;
+  padding: 1rem 1.1rem; margin: 1rem 0; background: var(--surface);
+}
+.module-card h3 { margin-top: 0; }
+.module-facts { display: grid; grid-template-columns: max-content 1fr;
+  gap: 0.2rem 1rem; margin: 0.75rem 0; }
+.module-facts dt { color: var(--ink-soft); }
+.module-facts dd { margin: 0; overflow-wrap: anywhere; }
+.module-actions { margin-bottom: 0; }
+
+table.downloads { border-collapse: collapse; width: 100%; }
+table.downloads caption { text-align: left; color: var(--ink-soft);
+  font-size: 0.9rem; margin-bottom: 0.4rem; }
+table.downloads th, table.downloads td {
+  border-bottom: 1px solid var(--rule); padding: 0.4rem 0.6rem;
+  text-align: left; vertical-align: top;
+}
+table.downloads td.num, table.downloads th:nth-child(2) { text-align: right; }
+.digest { font-size: 0.8em; word-break: break-all; }

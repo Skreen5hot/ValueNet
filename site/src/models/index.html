@@ -22,10 +22,370 @@
   </header>
   <main id="main" tabindex="-1">
     <h1>Models</h1>
-    <p class="lead">Diagrams of the core realization pattern, the moral-foundation pattern, and the interoperability path.</p>
-    <section class="placeholder">
-      <h2>Not built yet</h2>
-      <p>This page is a Phase 2 shell. The diagrams arrive in Phase 5.</p>
+    <p class="lead">Three patterns that say how this suite uses BFO. Every
+      class and property drawn here is declared by the module named beside
+      it, and a test checks that before the site is published.</p>
+
+    <p class="muted">Each diagram is followed by a written description
+      giving the same nodes and the same relations, so nothing is only
+      available as a picture. Class names link into the explorer.</p>
+
+    <!-- ============================================ 1 -->
+    <section aria-labelledby="m1">
+      <h2 id="m1">1. The realization pattern</h2>
+
+      <p>A value is not a belief, a label, or a concept. In this suite a
+        value is a <strong>realizable entity</strong> that an agent bears
+        and that processes realize. That single commitment is what makes
+        the rest of the vocabulary BFO-shaped rather than BFO-flavoured.</p>
+
+      <p>The split below is the consequence. A value held by an agent is a
+        <strong>disposition</strong>: it is grounded in how that agent is.
+        A value borne because of a position an agent occupies is a
+        <strong>role</strong>: it is grounded in a social context and would
+        end if the context did. Both are realizable, so both are realized
+        in processes rather than being processes themselves.</p>
+
+      <svg class="diagram" viewBox="0 0 760 330" role="img"
+           aria-labelledby="d1t d1d" xmlns="http://www.w3.org/2000/svg">
+        <title id="d1t">The value realization pattern</title>
+        <desc id="d1d">Value-related realizable entity specialises the BFO
+          realizable entity, and divides into value disposition and value
+          role. An agent bears a value disposition. A value realization
+          process realizes a value role or a value disposition.</desc>
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" class="dg-head"/>
+          </marker>
+        </defs>
+
+        <g data-iri="http://purl.obolibrary.org/obo/BFO_0000017">
+          <rect class="dg-box dg-upstream" x="270" y="8" width="220" height="38" rx="5"/>
+          <text class="dg-label" x="380" y="27">Realizable entity</text>
+          <text class="dg-sub" x="380" y="40">BFO_0000017 &middot; upstream</text>
+        </g>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity">
+          <rect class="dg-box" x="250" y="86" width="260" height="38" rx="5"/>
+          <text class="dg-label" x="380" y="105">Value-related realizable entity</text>
+          <text class="dg-sub" x="380" y="118">valuenet-core</text>
+        </g>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#ValueDisposition">
+          <rect class="dg-box" x="30" y="164" width="230" height="44" rx="5"/>
+          <text class="dg-label" x="145" y="183">Value disposition</text>
+          <text class="dg-sub" x="145" y="197">also BFO_0000016 disposition</text>
+        </g>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#ValueRole">
+          <rect class="dg-box" x="500" y="164" width="230" height="44" rx="5"/>
+          <text class="dg-label" x="615" y="183">Value role</text>
+          <text class="dg-sub" x="615" y="197">also BFO_0000023 role</text>
+        </g>
+
+        <g data-iri="https://www.commoncoreontologies.org/ont00001017">
+          <rect class="dg-box dg-upstream" x="30" y="266" width="230" height="44" rx="5"/>
+          <text class="dg-label" x="145" y="285">Agent</text>
+          <text class="dg-sub" x="145" y="299">CCO ont00001017 &middot; upstream</text>
+        </g>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#ValueRealizationProcess">
+          <rect class="dg-box" x="470" y="266" width="260" height="44" rx="5"/>
+          <text class="dg-label" x="600" y="285">Value realization process</text>
+          <text class="dg-sub" x="600" y="299">also BFO_0000015 process</text>
+        </g>
+
+        <path class="dg-edge" marker-end="url(#ar)" d="M 380 86 L 380 50"/>
+        <path class="dg-edge" marker-end="url(#ar)" d="M 145 164 L 145 140 L 300 140 L 300 128"/>
+        <path class="dg-edge" marker-end="url(#ar)" d="M 615 164 L 615 140 L 460 140 L 460 128"/>
+        <path class="dg-edge" marker-end="url(#ar)" d="M 145 266 L 145 212"/>
+        <path class="dg-edge" marker-end="url(#ar)" d="M 600 266 L 600 212"/>
+
+        <text class="dg-edge-label" x="392" y="70" data-property="http://www.w3.org/2000/01/rdf-schema#subClassOf">is a</text>
+        <text class="dg-edge-label" x="196" y="134" data-property="http://www.w3.org/2000/01/rdf-schema#subClassOf">is a</text>
+        <text class="dg-edge-label" x="556" y="134" data-property="http://www.w3.org/2000/01/rdf-schema#subClassOf">is a</text>
+        <text class="dg-edge-label" x="152" y="243" data-property="http://purl.obolibrary.org/obo/BFO_0000196">bearer of</text>
+        <text class="dg-edge-label" x="607" y="243" data-property="http://purl.obolibrary.org/obo/BFO_0000055">realizes</text>
+      </svg>
+
+      <h3>Description of diagram 1</h3>
+      <ul class="alt-text">
+        <li><a href="../explore/?class=core:ValueRelatedRealizableEntity">Value-related
+          realizable entity</a> (<code>valuenet-core</code>) is a kind of
+          BFO <code>BFO_0000017</code> realizable entity, which is upstream
+          BFO and not authored here.</li>
+        <li><a href="../explore/?class=core:ValueDisposition">Value
+          disposition</a> is a kind of value-related realizable entity and
+          also a kind of BFO <code>BFO_0000016</code> disposition.</li>
+        <li><a href="../explore/?class=core:ValueRole">Value role</a> is a
+          kind of value-related realizable entity and also a kind of BFO
+          <code>BFO_0000023</code> role.</li>
+        <li>An <strong>agent</strong> (CCO <code>ont00001017</code>,
+          upstream) is <code>bearer of</code> (BFO_0000196) a value
+          disposition.</li>
+        <li><a href="../explore/?class=core:ValueRealizationProcess">Value
+          realization process</a> is a kind of BFO <code>BFO_0000015</code>
+          process, and realizes a value role or a value disposition.</li>
+      </ul>
+    </section>
+
+    <!-- ============================================ 2 -->
+    <section aria-labelledby="m2">
+      <h2 id="m2">2. Foundations and the processes that contravene them</h2>
+
+      <p>The moral-foundations module pairs each foundation with the
+        process that runs against it. The pairing is asserted in the
+        ontology as a restriction on the process: a harm process
+        <code>contravenes</code> some care disposition. It is not inferred
+        from the names, and the six pairs below are read out of the file
+        rather than typed here.</p>
+
+      <p>Both halves stay inside the realization pattern above. A
+        foundation is a moral value disposition, so it is realizable and
+        borne; a contravening process is a value violation process, so it
+        is a process. Nothing is both.</p>
+
+      <svg class="diagram" viewBox="0 0 760 340" role="img"
+           aria-labelledby="d2t d2d" xmlns="http://www.w3.org/2000/svg">
+        <title id="d2t">Moral foundations and their contravening processes</title>
+        <desc id="d2d">Six pairs. Each violation process on the right
+          contravenes the foundation disposition on the left: harm and
+          care, cheating and fairness, betrayal and loyalty, subversion and
+          authority, degradation and sanctity, oppression and liberty.</desc>
+
+        <text class="dg-col" x="150" y="18">Foundation dispositions</text>
+        <text class="dg-col" x="610" y="18">Value violation processes</text>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition">
+          <rect class="dg-box" x="20" y="30" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="150" y="52">Care disposition</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#HarmProcess">
+          <rect class="dg-box" x="480" y="30" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="610" y="52">Harm process</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar2)" d="M 480 47 L 284 47"/>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition">
+          <rect class="dg-box" x="20" y="80" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="150" y="102">Fairness disposition</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CheatingProcess">
+          <rect class="dg-box" x="480" y="80" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="610" y="102">Cheating process</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar2)" d="M 480 97 L 284 97"/>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition">
+          <rect class="dg-box" x="20" y="130" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="150" y="152">Loyalty disposition</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#BetrayalProcess">
+          <rect class="dg-box" x="480" y="130" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="610" y="152">Betrayal process</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar2)" d="M 480 147 L 284 147"/>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition">
+          <rect class="dg-box" x="20" y="180" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="150" y="202">Authority disposition</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SubversionProcess">
+          <rect class="dg-box" x="480" y="180" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="610" y="202">Subversion process</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar2)" d="M 480 197 L 284 197"/>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition">
+          <rect class="dg-box" x="20" y="230" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="150" y="252">Sanctity disposition</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#DegradationProcess">
+          <rect class="dg-box" x="480" y="230" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="610" y="252">Degradation process</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar2)" d="M 480 247 L 284 247"/>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition">
+          <rect class="dg-box" x="20" y="280" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="150" y="302">Liberty disposition</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#OppressionProcess">
+          <rect class="dg-box" x="480" y="280" width="260" height="34" rx="5"/>
+          <text class="dg-label" x="610" y="302">Oppression process</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar2)" d="M 480 297 L 284 297"/>
+
+        <text class="dg-edge-label" x="382" y="40" data-property="https://fandaws.com/ontology/bfo/valuenet-core#contravenes">contravenes</text>
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" class="dg-head"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <h3>Description of diagram 2</h3>
+      <p>Six pairs, drawn left to right as
+        <em>process</em> <code>contravenes</code> <em>disposition</em>. Every
+        disposition named here is a
+        <a href="../explore/?class=core:MoralValueDisposition">moral value
+        disposition</a>; every process is a
+        <a href="../explore/?class=core:ValueViolationProcess">value
+        violation process</a>.</p>
+      <ul class="alt-text">
+        <li><a href="../explore/?class=moral-foundations:HarmProcess">Harm
+          process</a> contravenes
+          <a href="../explore/?class=moral-foundations:CareDisposition">care
+          disposition</a>.</li>
+        <li><a href="../explore/?class=moral-foundations:CheatingProcess">Cheating
+          process</a> contravenes
+          <a href="../explore/?class=moral-foundations:FairnessDisposition">fairness
+          disposition</a>.</li>
+        <li><a href="../explore/?class=moral-foundations:BetrayalProcess">Betrayal
+          process</a> contravenes
+          <a href="../explore/?class=moral-foundations:LoyaltyDisposition">loyalty
+          disposition</a>.</li>
+        <li><a href="../explore/?class=moral-foundations:SubversionProcess">Subversion
+          process</a> contravenes
+          <a href="../explore/?class=moral-foundations:AuthorityDisposition">authority
+          disposition</a>.</li>
+        <li><a href="../explore/?class=moral-foundations:DegradationProcess">Degradation
+          process</a> contravenes
+          <a href="../explore/?class=moral-foundations:SanctityDisposition">sanctity
+          disposition</a>.</li>
+        <li><a href="../explore/?class=moral-foundations:OppressionProcess">Oppression
+          process</a> contravenes
+          <a href="../explore/?class=moral-foundations:LibertyDisposition">liberty
+          disposition</a>.</li>
+      </ul>
+    </section>
+
+    <!-- ============================================ 3 -->
+    <section aria-labelledby="m3">
+      <h2 id="m3">3. From original ValueNet to a BFO-aligned value</h2>
+
+      <p>This suite does not replace the original ValueNet. It provides a
+        BFO-aligned vocabulary and records, as annotations, how the two
+        line up. The path below is how a piece of text becomes evidence
+        about a value without any of those steps being collapsed into the
+        others.</p>
+
+      <p>The mapping annotations are deliberately weak. They say a term
+        historically corresponds to, or conceptually matches, another term.
+        They are not equivalences and no reasoner is asked to treat them as
+        such: asserting <code>owl:equivalentClass</code> across two
+        vocabularies with different commitments would import the other
+        vocabulary's consequences wholesale.</p>
+
+      <svg class="diagram" viewBox="0 0 760 300" role="img"
+           aria-labelledby="d3t d3d" xmlns="http://www.w3.org/2000/svg">
+        <title id="d3t">The interoperability and evidence path</title>
+        <desc id="d3d">The original ValueNet term HaidtValues#Care
+          historically corresponds to the BFO-aligned care disposition.
+          Separately, a textual
+          representation contains a text span, selected by a text span
+          selector; a value evidence annotation has that text span as its
+          evidence source; and an evidence source is evidence for a value
+          realization process.</desc>
+
+        <text class="dg-col" x="380" y="18">Mapping, recorded as annotation</text>
+
+        <g data-iri="https://w3id.org/spice/SON/HaidtValues#Care">
+          <rect class="dg-box dg-upstream" x="20" y="30" width="250" height="42" rx="5"/>
+          <text class="dg-label" x="145" y="49">HaidtValues#Care</text>
+          <text class="dg-sub" x="145" y="63">original ValueNet &middot; upstream</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition">
+          <rect class="dg-box" x="490" y="30" width="250" height="42" rx="5"/>
+          <text class="dg-label" x="615" y="49">Care disposition</text>
+          <text class="dg-sub" x="615" y="63">valuenet-moral-foundations</text>
+        </g>
+        <path class="dg-edge dg-dashed" marker-end="url(#ar3)" d="M 274 51 L 486 51"/>
+        <text class="dg-edge-label" x="380" y="45" data-property="https://fandaws.com/ontology/bfo/valuenet-core#historicallyCorrespondsTo">historicallyCorrespondsTo</text>
+
+        <text class="dg-col" x="380" y="112">Evidence, asserted in the ontology</text>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation">
+          <rect class="dg-box" x="20" y="126" width="220" height="40" rx="5"/>
+          <text class="dg-label" x="130" y="151">Textual representation</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#TextSpan">
+          <rect class="dg-box" x="290" y="126" width="180" height="40" rx="5"/>
+          <text class="dg-label" x="380" y="151">Text span</text>
+        </g>
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector">
+          <rect class="dg-box" x="520" y="126" width="220" height="40" rx="5"/>
+          <text class="dg-label" x="630" y="151">Text span selector</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar3)" d="M 290 146 L 244 146"/>
+        <text class="dg-edge-label" x="267" y="140" data-property="https://fandaws.com/ontology/bfo/valuenet-core#isTextSpanOf">isTextSpanOf</text>
+        <path class="dg-edge" marker-end="url(#ar3)" d="M 520 146 L 474 146"/>
+        <text class="dg-edge-label" x="497" y="140" data-property="https://fandaws.com/ontology/bfo/valuenet-core#selectsTextSpan">selectsTextSpan</text>
+
+        <g data-iri="https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation">
+          <rect class="dg-box" x="290" y="212" width="260" height="40" rx="5"/>
+          <text class="dg-label" x="420" y="237">Value evidence annotation</text>
+        </g>
+        <path class="dg-edge" marker-end="url(#ar3)" d="M 380 212 L 380 170"/>
+        <text class="dg-edge-label" x="386" y="194" data-property="https://fandaws.com/ontology/bfo/valuenet-core#hasEvidenceSource">hasEvidenceSource</text>
+        <path class="dg-edge" marker-end="url(#ar3)" d="M 550 232 L 630 232 L 630 170"/>
+        <text class="dg-edge-label" x="600" y="248" data-property="https://fandaws.com/ontology/bfo/valuenet-core#hasSelector">hasSelector</text>
+
+        <defs>
+          <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" class="dg-head"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <h3>Description of diagram 3</h3>
+      <p>Two groups, drawn one above the other because they are separate
+        claims and not one chain.</p>
+      <ul class="alt-text">
+        <li><strong>Mapping.</strong> The original ValueNet term
+          <code>HaidtValues#Care</code> (upstream)
+          <code>historicallyCorrespondsTo</code>
+          <a href="../explore/?class=moral-foundations:CareDisposition">care
+          disposition</a>. This is one of 67 such assertions, drawn here
+          because it is the shortest complete example. The arrow is dashed
+          because a mapping is an annotation and carries no logical
+          consequence.</li>
+        <li><strong>Evidence.</strong> A
+          <a href="../explore/?class=core:TextSpan">text span</a>
+          <code>isTextSpanOf</code> a
+          <a href="../explore/?class=core:TextualRepresentation">textual
+          representation</a>.</li>
+        <li>A <a href="../explore/?class=core:TextSpanSelector">text span
+          selector</a> <code>selectsTextSpan</code> a text span, and records
+          its start and end offsets.</li>
+        <li>A <a href="../explore/?class=core:ValueEvidenceAnnotation">value
+          evidence annotation</a> <code>hasEvidenceSource</code> a text
+          span and <code>hasSelector</code> a text span selector.</li>
+      </ul>
+
+      <p>Two further steps are part of this path and are not drawn, so the
+        figure stays readable. Both are asserted in
+        <code>valuenet-core</code>: an
+        <a href="../explore/?class=core:EvidenceSource">evidence source</a>
+        <code>isEvidenceFor</code> a BFO <code>BFO_0000015</code> process
+        &mdash; in this suite a
+        <a href="../explore/?class=core:ValueRealizationProcess">value
+        realization process</a> &mdash; and a text span
+        <code>evokesFrame</code> the frame a lexical trigger names. Trigger
+        data reaches the path through <code>vcvf:triggers</code>, an
+        upstream property whose annotation semantics are supplied by the
+        <a href="../modules/">trigger-semantics module</a>.</p>
+    </section>
+
+    <section class="notice-block">
+      <h2>Original ValueNet diagrams</h2>
+      <p>Diagrams from the original ValueNet work are not reproduced here.
+        That material's licence has not been identified, so this site
+        grants no rights over it and does not redistribute it. The
+        <a href="../about/">notices</a> record what is and is not covered.</p>
     </section>
   </main>
   <footer class="footer">

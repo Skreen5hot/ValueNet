@@ -776,3 +776,45 @@ def test_an_ontology_declared_only_on_a_blank_node_is_refused(monkeypatch):
     with pytest.raises(SystemExit) as exc:
         _run(monkeypatch, [("probe", module)])
     assert "blank node" in str(exc.value)
+
+
+# ======================================================================
+# the label-style record, kept honest against the corpus
+# ======================================================================
+
+RECORD = REPO / "docs/bfo/ONTOLOGY_METADATA_DECISIONS.md"
+
+
+def test_the_label_style_record_matches_the_corpus(built):
+    """M-001 lists 18 classes whose labels are not title case.
+
+    An inventory written once is a claim about the day it was written. This
+    derives the set again and requires the document to agree, so the record
+    either stays true or fails loudly -- the alternative is a decision
+    document quietly describing a corpus that has moved on.
+    """
+    index, _coverage = built
+    doc = RECORD.read_text(encoding="utf-8")
+
+    listed = {line.split("`")[1] for line in doc.splitlines()
+              if line.startswith("| `")}
+    actual = {r["id"] for r in index["classes"]
+              if r["label"] and not r["label"][0].isupper()}
+
+    assert listed == actual, (
+        "the record and the corpus disagree; only in the record: %s; only "
+        "in the corpus: %s" % (sorted(listed - actual), sorted(actual - listed)))
+    assert "%d of the %d" % (len(actual), len(index["classes"])) in doc, (
+        "the record's counts no longer match the index")
+
+
+def test_the_label_style_record_authorises_no_edit(built):
+    """The record exists so the question is written down, not so it is
+    answered. If it ever reads as adopted, the RDF edit it would authorise
+    needs its own evidence cycle, and this test should be the thing that
+    makes somebody say so out loud."""
+    doc = RECORD.read_text(encoding="utf-8")
+    assert "**Status:** Open" in doc, (
+        "M-001 is no longer open; a label edit moves the ground digest, the "
+        "blank-node fingerprint and the pinned class-index digest, and needs "
+        "its own commit and evidence run")

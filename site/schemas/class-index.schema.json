@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://skreen5hot.github.io/ValueNet/schemas/class-index.schema.json",
+  "title": "BFO-Aligned ValueNet class index",
+  "description": "Generated from the authored ontology modules. Never edited by hand: every field is extracted from RDF, and a value the ontology does not assert is absent rather than invented.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format_version", "generated_by", "source_commit", "modules", "classes"],
+  "properties": {
+    "format_version": {"type": "integer", "const": 1},
+    "generated_by": {"type": "string"},
+    "source_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$",
+      "description": "The commit the ontology was read from, so a reader can fetch exactly what was indexed."
+    },
+    "modules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "component", "source", "namespace", "title",
+                     "description", "license", "classes"],
+        "properties": {
+          "key": {"type": "string"},
+          "component": {"type": "string"},
+          "source": {"type": "string"},
+          "namespace": {"type": "string"},
+          "title": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "license": {"type": "string"},
+          "classes": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "iri", "label", "definition", "module", "source",
+                     "category", "parents", "mappings", "synonyms"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9_-]+$",
+            "description": "Stable compact identifier: module token plus local name. Unique across the index."
+          },
+          "iri": {"type": "string"},
+          "label": {"type": "string", "minLength": 1},
+          "definition": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The ontology's own skos:definition. Never generated from the label and never null; a class without one fails the build."
+          },
+          "module": {"type": "string"},
+          "source": {"type": "string"},
+          "category": {
+            "type": "string",
+            "enum": ["disposition", "role", "process", "information", "other"],
+            "description": "Derived by transitive closure over named rdfs:subClassOf edges to four declared roots. Never from the IRI, the label or the filename."
+          },
+          "parents": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string"},
+            "description": "Named direct parents, sorted. Every one resolves within the authored or support graphs."
+          },
+          "mappings": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["predicate", "target"],
+              "properties": {
+                "predicate": {
+                  "type": "string",
+                  "description": "One of the four ValueNet mapping annotation properties, as asserted. Never translated into a SKOS relation."
+                },
+                "target": {
+                  "type": "string",
+                  "description": "The IRI actually asserted. Need not be an indexed class: mapping targets sit in other vocabularies."
+                }
+              }
+            }
+          },
+          "synonyms": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1},
+            "description": "Ontology-supplied skos:altLabel values, sorted."
+          }
+        }
+      }
+    }
+  }
+}

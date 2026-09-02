@@ -357,6 +357,26 @@ components:
       clock, output removed and rewritten so a deleted file cannot
       survive, and bytes copied rather than re-encoded.
 
+  - id: tool.build-class-index
+    path: tools/site/build_class_index.py
+    moves_to: null
+    role: generator
+    description: >-
+      Extracts the class index from the five class-producing modules,
+      with valuenet-mappings as a mapping overlay and the vendored BFO
+      and CCO as classification support whose classes never become
+      records. Refuses rather than choosing where the ontology is
+      ambiguous, and derives category by transitive closure to four
+      declared roots rather than from any name.
+
+  - id: site.schemas
+    path: site/schemas
+    moves_to: null
+    role: configuration
+    description: >-
+      JSON Schemas the generated site data is validated against, so a
+      shape change fails the build rather than reaching a consumer.
+
   - id: tool.check-site
     path: tools/site/check_site.py
     moves_to: null

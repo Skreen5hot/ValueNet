@@ -201,4 +201,3 @@ statement that those modules declare nothing.
   survive; or
 - a consumer reports that a namespace derived from the header did not
   match the terms it found.
-

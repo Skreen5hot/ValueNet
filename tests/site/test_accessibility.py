@@ -148,7 +148,16 @@ def test_a_deep_linked_class_can_be_reached_without_crossing_the_results():
     """
     html = (SRC / "explore/index.html").read_text(encoding="utf-8")
     assert 'id="jump-wrap"' in html, "no bypass to the detail pane"
-    assert 'href="#detail"' in html, "the bypass is not a link to the detail"
+
+    # A button, not a link. WebKit's default keyboard model puts no anchor
+    # in the tab order, so the bypass was unreachable by Tab there while
+    # working in Chromium, Chrome and Firefox. It also moves focus rather
+    # than navigating, which is a button's job; it had been a link with
+    # preventDefault, which is the same thing wearing the wrong element.
+    assert '<button class="jump"' in html, (
+        "the bypass is not a button; as an anchor it is not a tab stop in "
+        "WebKit")
+    assert 'type="button"' in html
     assert html.index('id="jump-wrap"') < html.index('id="results"'), (
         "the bypass comes after the result list, so it bypasses nothing")
 

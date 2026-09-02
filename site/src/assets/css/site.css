@@ -208,7 +208,12 @@ code {
  * reveal-on-focus: on a narrow viewport the detail is below the whole
  * result list for everyone, not only for keyboard users. */
 .jump-wrap { margin: 0.25rem 0 0.75rem; }
-.jump { font-size: 0.9rem; color: var(--focus); }
+.jump {
+  font: inherit; font-size: 0.9rem;
+  color: var(--ink); background: var(--surface);
+  border: 1px solid var(--field-edge); border-radius: 4px;
+  padding: 0.3rem 0.6rem; cursor: pointer;
+}
 
 .explorer-panes { display: grid; gap: 1.5rem; }
 @media (min-width: 60rem) {

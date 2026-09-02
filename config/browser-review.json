@@ -1,0 +1,687 @@
+{
+  "browsers": [
+    {
+      "channel": "playwright bundled build",
+      "checks": {
+        "deep_link_keyboard": {
+          "anchors_in_tab_order": 35,
+          "detail_heading": "value disposition",
+          "detail_visible": true,
+          "focus_after_activation": "detail",
+          "focus_before_activation": "jump",
+          "passed": true,
+          "results_rendered": 187,
+          "tab_order_prefix": [
+            "a.skip",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "input#q",
+            "select#module",
+            "select#category",
+            "button#clear",
+            "button#jump.jump",
+            "a.result",
+            "a.result"
+          ],
+          "tab_stops_to_bypass": 14,
+          "tab_stops_to_detail_without_bypass": 201,
+          "url": "/explore/?class=core:ValueDisposition"
+        },
+        "diagrams": {
+          "high-zoom-400pct": {
+            "boxes": [
+              {
+                "height": 122.7,
+                "index": 0,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 126.4,
+                "index": 1,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 111.7,
+                "index": 2,
+                "visible": true,
+                "width": 280
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
+          "narrow": {
+            "boxes": [
+              {
+                "height": 140.1,
+                "index": 0,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 144.2,
+                "index": 1,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 127.5,
+                "index": 2,
+                "visible": true,
+                "width": 320
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 360,
+            "document_scroll_width": 360,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 780,
+              "width": 360
+            },
+            "widest_overflowing_element": null
+          },
+          "wide": {
+            "boxes": [
+              {
+                "height": 334.6,
+                "index": 0,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 344.7,
+                "index": 1,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 304.4,
+                "index": 2,
+                "visible": true,
+                "width": 768
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 1440,
+            "document_scroll_width": 1440,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            },
+            "widest_overflowing_element": null
+          }
+        },
+        "hostile_ontology_text": {
+          "definition_rendered_as_text": "</p><script>window.__pwned=1</script><p>ok",
+          "dialogs_raised": [],
+          "elements_injected": {
+            "img": 0,
+            "script": 0,
+            "svg": 0
+          },
+          "label_rendered_as_text": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+          "passed": true,
+          "payloads": {
+            "definition": "</p><script>window.__pwned=1</script><p>ok",
+            "label": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+            "synonym": "\"><svg onload=\"window.__pwned=1\">"
+          },
+          "window_flag_set": null
+        },
+        "live_regions": {
+          "chromium_accessibility_node": {
+            "live": "polite",
+            "name": "",
+            "role": "status"
+          },
+          "exposed_as_status_role": true,
+          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "passed": true,
+          "screen_reader_used": null,
+          "status_aria_live": "polite",
+          "status_role": "status",
+          "text_after_typing": "1 class",
+          "text_before": "187 classes",
+          "text_changed": true
+        }
+      },
+      "engine": "chromium",
+      "passed": true,
+      "version": "151.0.7922.34"
+    },
+    {
+      "channel": "chrome",
+      "checks": {
+        "deep_link_keyboard": {
+          "anchors_in_tab_order": 35,
+          "detail_heading": "value disposition",
+          "detail_visible": true,
+          "focus_after_activation": "detail",
+          "focus_before_activation": "jump",
+          "passed": true,
+          "results_rendered": 187,
+          "tab_order_prefix": [
+            "a.skip",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "input#q",
+            "select#module",
+            "select#category",
+            "button#clear",
+            "button#jump.jump",
+            "a.result",
+            "a.result"
+          ],
+          "tab_stops_to_bypass": 14,
+          "tab_stops_to_detail_without_bypass": 201,
+          "url": "/explore/?class=core:ValueDisposition"
+        },
+        "diagrams": {
+          "high-zoom-400pct": {
+            "boxes": [
+              {
+                "height": 122.7,
+                "index": 0,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 126.4,
+                "index": 1,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 111.7,
+                "index": 2,
+                "visible": true,
+                "width": 280
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
+          "narrow": {
+            "boxes": [
+              {
+                "height": 140.1,
+                "index": 0,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 144.2,
+                "index": 1,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 127.5,
+                "index": 2,
+                "visible": true,
+                "width": 320
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 360,
+            "document_scroll_width": 360,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 780,
+              "width": 360
+            },
+            "widest_overflowing_element": null
+          },
+          "wide": {
+            "boxes": [
+              {
+                "height": 334.6,
+                "index": 0,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 344.7,
+                "index": 1,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 304.4,
+                "index": 2,
+                "visible": true,
+                "width": 768
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 1440,
+            "document_scroll_width": 1440,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            },
+            "widest_overflowing_element": null
+          }
+        },
+        "hostile_ontology_text": {
+          "definition_rendered_as_text": "</p><script>window.__pwned=1</script><p>ok",
+          "dialogs_raised": [],
+          "elements_injected": {
+            "img": 0,
+            "script": 0,
+            "svg": 0
+          },
+          "label_rendered_as_text": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+          "passed": true,
+          "payloads": {
+            "definition": "</p><script>window.__pwned=1</script><p>ok",
+            "label": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+            "synonym": "\"><svg onload=\"window.__pwned=1\">"
+          },
+          "window_flag_set": null
+        },
+        "live_regions": {
+          "chromium_accessibility_node": {
+            "live": "polite",
+            "name": "",
+            "role": "status"
+          },
+          "exposed_as_status_role": true,
+          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "passed": true,
+          "screen_reader_used": null,
+          "status_aria_live": "polite",
+          "status_role": "status",
+          "text_after_typing": "1 class",
+          "text_before": "187 classes",
+          "text_changed": true
+        }
+      },
+      "engine": "chrome",
+      "passed": true,
+      "version": "152.0.7977.65"
+    },
+    {
+      "channel": "playwright bundled build",
+      "checks": {
+        "deep_link_keyboard": {
+          "anchors_in_tab_order": 35,
+          "detail_heading": "value disposition",
+          "detail_visible": true,
+          "focus_after_activation": "detail",
+          "focus_before_activation": "jump",
+          "passed": true,
+          "results_rendered": 187,
+          "tab_order_prefix": [
+            "a.skip",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "input#q",
+            "select#module",
+            "select#category",
+            "button#clear",
+            "button#jump.jump",
+            "a.result",
+            "a.result"
+          ],
+          "tab_stops_to_bypass": 14,
+          "tab_stops_to_detail_without_bypass": 201,
+          "url": "/explore/?class=core:ValueDisposition"
+        },
+        "diagrams": {
+          "high-zoom-400pct": {
+            "boxes": [
+              {
+                "height": 122.7,
+                "index": 0,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 126.4,
+                "index": 1,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 111.7,
+                "index": 2,
+                "visible": true,
+                "width": 280
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
+          "narrow": {
+            "boxes": [
+              {
+                "height": 140.1,
+                "index": 0,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 144.3,
+                "index": 1,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 127.5,
+                "index": 2,
+                "visible": true,
+                "width": 320
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 360,
+            "document_scroll_width": 360,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 780,
+              "width": 360
+            },
+            "widest_overflowing_element": null
+          },
+          "wide": {
+            "boxes": [
+              {
+                "height": 334.6,
+                "index": 0,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 344.7,
+                "index": 1,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 304.4,
+                "index": 2,
+                "visible": true,
+                "width": 768
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 1440,
+            "document_scroll_width": 1440,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            },
+            "widest_overflowing_element": null
+          }
+        },
+        "hostile_ontology_text": {
+          "definition_rendered_as_text": "</p><script>window.__pwned=1</script><p>ok",
+          "dialogs_raised": [],
+          "elements_injected": {
+            "img": 0,
+            "script": 0,
+            "svg": 0
+          },
+          "label_rendered_as_text": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+          "passed": true,
+          "payloads": {
+            "definition": "</p><script>window.__pwned=1</script><p>ok",
+            "label": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+            "synonym": "\"><svg onload=\"window.__pwned=1\">"
+          },
+          "window_flag_set": null
+        },
+        "live_regions": {
+          "chromium_accessibility_node": null,
+          "exposed_as_status_role": true,
+          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "passed": true,
+          "screen_reader_used": null,
+          "status_aria_live": "polite",
+          "status_role": "status",
+          "text_after_typing": "1 class",
+          "text_before": "187 classes",
+          "text_changed": true
+        }
+      },
+      "engine": "firefox",
+      "passed": true,
+      "version": "153.0"
+    },
+    {
+      "channel": "playwright bundled build",
+      "checks": {
+        "deep_link_keyboard": {
+          "anchors_in_tab_order": 0,
+          "detail_heading": "value disposition",
+          "detail_visible": true,
+          "focus_after_activation": "detail",
+          "focus_before_activation": "jump",
+          "passed": true,
+          "results_rendered": 187,
+          "tab_order_prefix": [
+            "input#q",
+            "select#module",
+            "select#category",
+            "button#clear",
+            "button#jump.jump",
+            "button.copy",
+            "body"
+          ],
+          "tab_stops_to_bypass": 5,
+          "tab_stops_to_detail_without_bypass": 192,
+          "url": "/explore/?class=core:ValueDisposition"
+        },
+        "diagrams": {
+          "high-zoom-400pct": {
+            "boxes": [
+              {
+                "height": 122.7,
+                "index": 0,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 126.4,
+                "index": 1,
+                "visible": true,
+                "width": 280
+              },
+              {
+                "height": 111.7,
+                "index": 2,
+                "visible": true,
+                "width": 280
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
+          "narrow": {
+            "boxes": [
+              {
+                "height": 140.1,
+                "index": 0,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 144.2,
+                "index": 1,
+                "visible": true,
+                "width": 320
+              },
+              {
+                "height": 127.5,
+                "index": 2,
+                "visible": true,
+                "width": 320
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 360,
+            "document_scroll_width": 360,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 780,
+              "width": 360
+            },
+            "widest_overflowing_element": null
+          },
+          "wide": {
+            "boxes": [
+              {
+                "height": 334.6,
+                "index": 0,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 344.7,
+                "index": 1,
+                "visible": true,
+                "width": 768
+              },
+              {
+                "height": 304.4,
+                "index": 2,
+                "visible": true,
+                "width": 768
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 1440,
+            "document_scroll_width": 1440,
+            "horizontal_scroll": false,
+            "passed": true,
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            },
+            "widest_overflowing_element": null
+          }
+        },
+        "hostile_ontology_text": {
+          "definition_rendered_as_text": "</p><script>window.__pwned=1</script><p>ok",
+          "dialogs_raised": [],
+          "elements_injected": {
+            "img": 0,
+            "script": 0,
+            "svg": 0
+          },
+          "label_rendered_as_text": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+          "passed": true,
+          "payloads": {
+            "definition": "</p><script>window.__pwned=1</script><p>ok",
+            "label": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+            "synonym": "\"><svg onload=\"window.__pwned=1\">"
+          },
+          "window_flag_set": null
+        },
+        "live_regions": {
+          "chromium_accessibility_node": null,
+          "exposed_as_status_role": true,
+          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "passed": true,
+          "screen_reader_used": null,
+          "status_aria_live": "polite",
+          "status_role": "status",
+          "text_after_typing": "1 class",
+          "text_before": "187 classes",
+          "text_changed": true
+        }
+      },
+      "engine": "playwright-webkit",
+      "passed": true,
+      "version": "26.5"
+    }
+  ],
+  "deep_link_class": "core:ValueDisposition",
+  "format_version": 1,
+  "generated_by": "tools/site/browser_review.py",
+  "not_covered": {
+    "safari": "not tested. This machine runs Windows, Safari has had no Windows build since 2012, and Playwright's WebKit is a different browser sharing an engine lineage. It is recorded as playwright-webkit.",
+    "screen_reader": "not run. The live-region checks read the accessibility tree, which is what a screen reader consumes; whether NVDA, JAWS or VoiceOver announce it at the right moment is a listening test and remains open."
+  },
+  "operating_system": "Windows-10-10.0.19045-SP0",
+  "passed": true,
+  "site_tree_sha256": "cd57140c14c7e32674ddf15c91a7bb0d8912b970c3f36a0a926090cc44851d73",
+  "viewports": {
+    "high-zoom-400pct": {
+      "height": 256,
+      "width": 320
+    },
+    "narrow": {
+      "height": 780,
+      "width": 360
+    },
+    "wide": {
+      "height": 900,
+      "width": 1440
+    }
+  }
+}

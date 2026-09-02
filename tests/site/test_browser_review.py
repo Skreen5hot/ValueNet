@@ -1,0 +1,175 @@
+# SPDX-License-Identifier: Apache-2.0
+"""The browser review record, held to what it claims.
+
+The review itself needs four browsers and a few hundred megabytes of
+them, so it is run deliberately and its result committed, the way the
+evidence artifacts are. These tests run every time and check the record:
+that it covers what it must, that every observed result passed, that it
+describes the site currently in the tree rather than an older one, and
+that it does not claim coverage it does not have.
+
+The last is the reason this file exists. A review record is a document
+asserting that somebody looked, and the cheapest failure mode in the
+whole project is a document that says a thing was checked when it was
+not. Two gaps are real here -- Safari and a screen reader -- and the
+record is required to keep naming them.
+"""
+
+from __future__ import annotations
+
+import importlib.util
+import json
+
+import pytest
+
+from marep import layout
+
+REPO = layout.repository_root()
+RECORD_PATH = REPO / "config/browser-review.json"
+
+REQUIRED_CHECKS = {"deep_link_keyboard", "live_regions",
+                   "hostile_ontology_text", "diagrams"}
+REQUIRED_VIEWPORTS = {"narrow", "wide", "high-zoom-400pct"}
+REQUIRED_ENGINES = {"chromium", "chrome", "firefox", "playwright-webkit"}
+
+
+@pytest.fixture(scope="module")
+def record():
+    assert RECORD_PATH.is_file(), (
+        "no browser review record. Run tools/site/browser_review.py; the "
+        "browser gate cannot be satisfied by the source-level tests.")
+    return json.loads(RECORD_PATH.read_text(encoding="utf-8"))
+
+
+def test_the_record_describes_the_site_in_the_tree(record, tmp_path):
+    """Freshness. A record measured against an older build certifies a
+    site nobody is shipping, and nothing about it looks stale."""
+    spec = importlib.util.spec_from_file_location(
+        "review_build_site", REPO / "tools/site/build_site.py")
+    build = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(build)
+
+    out = tmp_path / "_site"
+    assert build.main(["-o", str(out)]) == 0
+
+    spec = importlib.util.spec_from_file_location(
+        "review_tool", REPO / "tools/site/browser_review.py")
+    review = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(review)
+
+    assert review.tree_digest(out) == record["site_tree_sha256"], (
+        "the browser review was measured against a different build. Re-run "
+        "tools/site/browser_review.py after changing the site.")
+
+
+def test_every_engine_was_exercised(record):
+    engines = {b["engine"] for b in record["browsers"]}
+    assert engines == REQUIRED_ENGINES, sorted(engines ^ REQUIRED_ENGINES)
+    for browser in record["browsers"]:
+        assert browser.get("version"), browser["engine"]
+        assert "error" not in browser, browser.get("error")
+
+
+def test_every_required_check_ran_in_every_engine(record):
+    for browser in record["browsers"]:
+        assert set(browser["checks"]) == REQUIRED_CHECKS, browser["engine"]
+        viewports = set(browser["checks"]["diagrams"])
+        assert viewports == REQUIRED_VIEWPORTS, browser["engine"]
+
+
+def test_every_observed_result_passed(record):
+    failures = []
+    for browser in record["browsers"]:
+        for name, check in browser["checks"].items():
+            if name == "diagrams":
+                for viewport, result in check.items():
+                    if not result["passed"]:
+                        failures.append("%s/%s/%s" % (browser["engine"],
+                                                      name, viewport))
+            elif not check["passed"]:
+                failures.append("%s/%s" % (browser["engine"], name))
+    assert not failures, failures
+    assert record["passed"]
+
+
+def test_the_environment_is_recorded(record):
+    """A review nobody can reproduce is an anecdote."""
+    assert record["operating_system"]
+    assert record["deep_link_class"]
+    for viewport in REQUIRED_VIEWPORTS:
+        box = record["viewports"][viewport]
+        assert box["width"] > 0 and box["height"] > 0
+
+
+def test_the_hostile_text_was_actually_hostile(record):
+    """Guards the payload: a check that injected nothing would pass."""
+    for browser in record["browsers"]:
+        hostile = browser["checks"]["hostile_ontology_text"]
+        payloads = hostile["payloads"]
+        assert any("<script" in v for v in payloads.values())
+        assert any("onerror" in v for v in payloads.values())
+        assert any("onload" in v for v in payloads.values())
+        # The payload must have reached the page as text, or the check
+        # proved only that an absent string cannot execute.
+        assert hostile["label_rendered_as_text"] == payloads["label"]
+        assert hostile["window_flag_set"] is None
+        assert hostile["elements_injected"] == {"img": 0, "svg": 0,
+                                                "script": 0}
+
+
+def test_the_deep_link_check_had_a_list_to_cross(record):
+    """The bypass matters because the list is long. A run that rendered
+    two results would pass while proving nothing."""
+    for browser in record["browsers"]:
+        keyboard = browser["checks"]["deep_link_keyboard"]
+        assert keyboard["results_rendered"] >= 100, keyboard
+        assert keyboard["tab_stops_to_bypass"] is not None
+        assert keyboard["focus_after_activation"] == "detail"
+
+
+def test_webkit_reaches_the_bypass_despite_skipping_anchors(record):
+    """The finding this phase turned up.
+
+    WebKit's default keyboard model puts no anchor in the tab order, so
+    the bypass was unreachable by Tab there while working in the other
+    three engines. It is a button now. The measurement is kept because
+    the same platform behaviour still applies to the skip link and to
+    every result link, which is a property of the browser rather than
+    something this site can fix.
+    """
+    by_engine = {b["engine"]: b["checks"]["deep_link_keyboard"]
+                 for b in record["browsers"]}
+    webkit = by_engine["playwright-webkit"]
+    assert webkit["anchors_in_tab_order"] == 0, (
+        "WebKit now tabs to anchors; the bypass no longer needs to be a "
+        "button for that reason, though it is still the right element")
+    assert webkit["tab_stops_to_bypass"] is not None
+    for engine in ("chromium", "chrome", "firefox"):
+        assert by_engine[engine]["anchors_in_tab_order"] > 0, engine
+
+
+def test_the_record_does_not_claim_safari(record):
+    """Playwright's WebKit is not Safari, and a record saying otherwise
+    would be worse than one admitting the gap."""
+    blob = json.dumps(record).lower()
+    engines = {b["engine"] for b in record["browsers"]}
+    assert "safari" not in engines
+    assert "safari" in record["not_covered"], (
+        "the record must say Safari was not tested")
+    assert "not tested" in record["not_covered"]["safari"].lower()
+    # The word may appear only inside the not-covered explanation.
+    outside = json.dumps({k: v for k, v in record.items()
+                          if k != "not_covered"}).lower()
+    assert "safari" not in outside, "Safari is named as if it were covered"
+    assert blob.count("playwright-webkit") >= 1
+
+
+def test_the_record_does_not_claim_a_screen_reader(record):
+    """The live-region checks read the accessibility tree. A screen
+    reader consuming it is a different, unrun test."""
+    assert "screen_reader" in record["not_covered"]
+    assert "not run" in record["not_covered"]["screen_reader"].lower()
+    for browser in record["browsers"]:
+        live = browser["checks"]["live_regions"]
+        assert live["screen_reader_used"] is None
+        assert "no screen reader" in live["note"].lower()

@@ -1,0 +1,29 @@
+# Pinned dependency for the browser review, which is not part of the
+# default test run.
+#
+# tools/site/browser_review.py drives the built site in four engines and
+# writes config/browser-review.json. That record is committed and
+# tests/site/test_browser_review.py checks it on every run, so the gate is
+# always enforced while the several hundred megabytes of browsers are only
+# needed by whoever regenerates the record.
+#
+# Kept out of requirements-site.txt deliberately. Putting it there would
+# make every contributor download four browsers to run a suite that does
+# not use them, and would make the site tests fail on a machine that had
+# not. The record is the artifact; this file says how to remake it.
+#
+# After installing, fetch the engines:
+#
+#     python -m playwright install chromium firefox webkit
+#
+# The engine builds are pinned by the Playwright version rather than
+# separately: `playwright install` fetches the revisions that version was
+# built against. The versions actually exercised are recorded in
+# config/browser-review.json, which is the reproducible statement -- this
+# file only makes another run possible.
+#
+# Safari is not among them and cannot be. It has had no Windows build
+# since 2012, and Playwright's WebKit is a different browser sharing an
+# engine lineage. The record names it playwright-webkit for that reason.
+
+playwright==1.62.0

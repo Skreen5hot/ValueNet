@@ -285,10 +285,22 @@ def test_two_builds_produce_identical_bytes(tmp_path):
 # revision of this project cited a class-index digest that nothing in the
 # tree could reproduce, which is how a number nobody can check survives.
 NORMALISED_CONTENT = (
-    "3e54f08bfaebd1e49798aac6982738f9dc345e47cdc2a8eddd09276737a3942c")
+    "ec45903177df45524e9b91daffe4ca0d9b4708313c5982da42681b07841fe9f7")
 
-PROVENANCE_KEYS = {"source_commit"}
-CONTENT_KEYS = {"classes", "format_version", "generated_by", "modules"}
+#: Fields that move without the ontology moving.
+#:
+#: generated_by joined this set after review. It names the producing tool,
+#: so relocating or renaming the generator would have changed a digest
+#: described as measuring extracted content -- a measure that reports on
+#: the toolchain while claiming to report on the corpus. The first version
+#: of this pin hashed it, and the value it produced, 3e54f08b, is not
+#: comparable with the one above.
+PROVENANCE_KEYS = {"source_commit", "generated_by"}
+
+#: format_version stays content: it describes the shape of what is
+#: published, so a bump changes what a consumer reads even when the
+#: classes are identical.
+CONTENT_KEYS = {"classes", "format_version", "modules"}
 
 
 def _normalised(index):
@@ -339,9 +351,12 @@ def test_the_pin_ignores_provenance_but_not_content(built):
     import hashlib
 
     index, _coverage = built
-    moved = dict(index, source_commit="0" * 40)
-    assert _normalised(moved) == _normalised(index), (
-        "the digest tracks the commit, so it would change on every commit")
+    for key in sorted(PROVENANCE_KEYS):
+        moved = dict(index, **{key: "tampered"})
+        assert moved[key] != index[key], "the tamper did not apply to " + key
+        assert _normalised(moved) == _normalised(index), (
+            "%s reaches the digest, so a change to it would read as a change "
+            "to the ontology" % key)
 
     edited = json.loads(json.dumps(index))
     edited["classes"][0]["definition"] += " altered"

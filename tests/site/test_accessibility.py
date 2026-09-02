@@ -69,6 +69,9 @@ TEXT_PAIRS = [
     ("muted text on a card", "ink-soft", "surface"),
     ("muted text in a notice", "ink-soft", "notice-bg"),
     ("the skip link", "accent-ink", "accent"),
+    # --focus began as a ring colour and is now also the bypass link's
+    # text, which asks 4.5 of it rather than 3.
+    ("the bypass link", "focus", "bg"),
 ]
 
 #: Boundaries that identify a control. 1.4.11 asks 3:1 of these. The
@@ -131,6 +134,36 @@ def test_every_page_has_a_skip_link_that_can_receive_focus():
         elif '<main id="main" tabindex="-1">' not in html:
             broken.append(path + ": #main cannot take focus")
     assert not broken, broken
+
+
+def test_a_deep_linked_class_can_be_reached_without_crossing_the_results():
+    """The defect: arriving on a shared ?class= URL rendered the detail
+    after as many as 187 result links, focused nothing, and offered no way
+    past. Following a result link moved focus; arriving at one did not,
+    and arriving at one is what a shared URL is.
+
+    Focus is not moved on load -- that would wrench it from someone who
+    came to read -- so the bypass has to be offered instead, which means a
+    link, and it only helps if it comes before the list.
+    """
+    html = (SRC / "explore/index.html").read_text(encoding="utf-8")
+    assert 'id="jump-wrap"' in html, "no bypass to the detail pane"
+    assert 'href="#detail"' in html, "the bypass is not a link to the detail"
+    assert html.index('id="jump-wrap"') < html.index('id="results"'), (
+        "the bypass comes after the result list, so it bypasses nothing")
+
+    #: Hidden in the markup so it is not a tab stop with nothing selected.
+    wrap = html[html.index('id="jump-wrap"'):]
+    assert "hidden" in wrap[:wrap.index(">")], (
+        "the bypass ships visible, so it is a tab stop that leads nowhere")
+
+    js = code_only(EXPLORER_JS)
+    assert js.count("jump-wrap") == 2, (
+        "the bypass should be shown and hidden, once each")
+    assert 'hidden = true' in js and 'hidden = false' in js
+    jump = js[js.index('$("jump").addEventListener'):]
+    assert '$("detail").focus()' in jump[:400], (
+        "activating the bypass does not move focus")
 
 
 def test_no_page_carries_an_inline_event_handler():

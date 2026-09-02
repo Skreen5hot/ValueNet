@@ -36,6 +36,11 @@ NODE = shutil.which("node")
 #: The tested JavaScript engine. Node is a build-test dependency of this
 #: repository, not a convenience: the ranking that ships is JavaScript,
 #: and the only way to test what ships is to run it.
+#:
+#: A supported LTS line. This pinned 25.2.1 for one commit, which Node
+#: lists as end-of-life -- a release that receives no security fix, chosen
+#: because it was the one already installed. What is on a machine is not
+#: an argument for what a project should depend on.
 NODE_PIN = (REPO / ".nvmrc").read_text(encoding="utf-8").strip()
 
 
@@ -53,9 +58,10 @@ def require_node():
     this file reported success while running none of the shipped code --
     the same fail-open shape as a checker that reads the wrong files.
 
-    The major version is what is pinned. Patch releases do not change
-    string comparison, Array.prototype.sort stability, or URLSearchParams,
-    which is the whole surface this module uses; a major does.
+    The complete version is what is pinned, not the major. .nvmrc names an
+    exact release and actions/setup-node installs exactly that, so a check
+    that accepted any 25.x would have been claiming results for releases
+    nothing here had ever run.
     """
     assert NODE is not None, (
         "node is not on PATH. It is required to test the shipped ranking "
@@ -63,9 +69,9 @@ def require_node():
         "rather than skipping -- a skip here hides the entire behavioural "
         "half of this file." % NODE_PIN)
     running = node_version()
-    assert running.split(".")[0] == NODE_PIN.split(".")[0], (
-        "node %s is on PATH but the tested major version is %s (.nvmrc). "
-        "Ranking results are only claimed for the pinned major."
+    assert running == NODE_PIN, (
+        "node %s is on PATH but the tested version is %s (.nvmrc). Install "
+        "the pinned release; results are only claimed for it."
         % (running, NODE_PIN))
 
 

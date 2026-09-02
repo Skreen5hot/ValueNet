@@ -253,9 +253,17 @@
     renderResults(matches);
 
     if (!state.selected) {
+      $("jump-wrap").hidden = true;
       renderDetail(null);
       return;
     }
+    /* From here the detail pane has content, and it sits after every
+     * result in DOM order. Following a result link moves focus there, but
+     * arriving on a shared ?class= URL does not -- moving focus on load
+     * would wrench it from someone who came to read the page. So the
+     * bypass is offered instead of taken: a link ahead of the list, which
+     * is what stops a deep link costing 187 tabs. */
+    $("jump-wrap").hidden = false;
     var record = byId(state.selected);
     if (!record) {
       var pane = $("detail"), body = $("detail-body");
@@ -344,6 +352,14 @@
       apply();
       pushState(state);
       $("q").focus();
+    });
+
+    $("jump").addEventListener("click", function (event) {
+      /* preventDefault so the query string does not collect a #detail
+       * fragment; focus() is the part that matters and the href keeps it
+       * a real link for anyone reading the markup or hovering it. */
+      event.preventDefault();
+      $("detail").focus();
     });
 
     $("results").addEventListener("click", function (event) {

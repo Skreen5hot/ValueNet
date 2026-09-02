@@ -204,6 +204,12 @@ code {
 
 .status { color: var(--ink-soft); font-size: 0.9rem; margin: 0.25rem 0; }
 
+/* Shown only while a class is selected. Visible rather than
+ * reveal-on-focus: on a narrow viewport the detail is below the whole
+ * result list for everyone, not only for keyboard users. */
+.jump-wrap { margin: 0.25rem 0 0.75rem; }
+.jump { font-size: 0.9rem; color: var(--focus); }
+
 .explorer-panes { display: grid; gap: 1.5rem; }
 @media (min-width: 60rem) {
   .explorer-panes { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }

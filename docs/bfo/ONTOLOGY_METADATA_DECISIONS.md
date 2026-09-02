@@ -73,11 +73,22 @@ to whoever owns the ontology's authoring style.
    sentence case, or lower case, and whether it binds every module.
 2. A decision on whether `valuenet-core`'s convention is grandfathered or
    converted.
-3. Only then an RDF edit, which changes the corpus and therefore moves the
-   ground digest, the blank-node fingerprint, and the pinned class-index
-   content digest. Those are evidence-bearing measures: the edit needs its
-   own commit and its own evidence cycle, and must not ride along with
+3. Only then an RDF edit. It moves the ground digest and the pinned
+   class-index content digest, both evidence-bearing, so it needs its own
+   commit and its own evidence cycle and must not ride along with
    unrelated work.
+
+   The blank-node fingerprint should **not** move, and that is a check
+   rather than a footnote. `rdfs:label` on a named class is a ground
+   triple: subject, predicate and object are all named, so no blank node
+   is touched. If the fingerprint moves during a label edit, the edit
+   reached something other than labels -- a restriction, an axiom, a
+   SHACL shape -- and should be rejected until it is understood.
+
+   An earlier revision of this record listed the fingerprint among the
+   measures that would move. That was asserted rather than checked;
+   editing a label in a loaded graph and recomputing both measures shows
+   the ground digest changing and the blank-node shape identical.
 
 ### Reopen when
 

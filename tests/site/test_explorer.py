@@ -186,13 +186,22 @@ def test_no_workflow_states_a_node_version_of_its_own():
         # setting is not the setting.
         document = yaml.safe_load(text) or {}
         setups = []
-        for job in (document.get("jobs") or {}).values():
-            for step in job.get("steps") or []:
-                if "actions/setup-node" in str(step.get("uses", "")):
-                    setups.append((path.name, step.get("with") or {}))
-        if not setups:
-            offenders.append(path.name + ": runs pytest without setting up "
-                                         "the pinned node")
+        # Per job, not per workflow. Aggregating across the file let one
+        # job's setup-node satisfy a different job that ran pytest with
+        # no node at all.
+        for job_name, job in (document.get("jobs") or {}).items():
+            steps = job.get("steps") or []
+            if not any("pytest" in str(step.get("run", "")) for step in steps):
+                continue
+            here = [step for step in steps
+                    if "actions/setup-node" in str(step.get("uses", ""))]
+            if not here:
+                offenders.append(
+                    "%s/%s: runs pytest without setting up the pinned node"
+                    % (path.name, job_name))
+            for step in here:
+                setups.append(("%s/%s" % (path.name, job_name),
+                               step.get("with") or {}))
         for name, options in setups:
             if options.get("node-version") is not None:
                 offenders.append(

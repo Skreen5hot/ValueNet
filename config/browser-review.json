@@ -1632,7 +1632,7 @@
         "open a class and activate the Copy button; confirm the copy result is announced once, at the moment of the click, and that the wording says what happened",
         "record for each region whether it announced, how many times, when, and whether the wording was useful"
       ],
-      "required_before_deployment": "one Chrome plus NVDA listening pass, recorded",
+      "required_before_phase7_sign_off": "one Chrome plus NVDA listening pass, recorded",
       "status": "not run",
       "why": "no screen reader is installed on this machine, and a listening test cannot be performed by a tool. What was checked is that both regions are exposed with role=status and aria-live=polite and that their text changes -- availability for announcement, not an announcement."
     }

@@ -1,0 +1,247 @@
+{
+  "automated_checks_passed": true,
+  "blocked_by": [
+    "chrome_nvda_listening_pass",
+    "safari_on_macos"
+  ],
+  "browser": {
+    "browser": "151.0.7922.34",
+    "classes_rendered": 187,
+    "console_errors": [],
+    "deep_link_heading": "value disposition",
+    "diagrams_rendered": 3,
+    "failed_requests": [],
+    "passed": true,
+    "search_betrayal_results": 1,
+    "search_first_result": "moral-foundations:BetrayalProcess"
+  },
+  "commit": {
+    "commits_behind_measurement_head": 0,
+    "in_this_history": true,
+    "is_head": true,
+    "local_head": "22e54ec33a4da1422f85ddc77aff84bb6c5f585b",
+    "stamped_on_the_site": "22e54ec33a4d"
+  },
+  "deployment_status": "provisional",
+  "downloads": {
+    "bundle": {
+      "bytes": 43903,
+      "sha256_matches": true,
+      "status": 200
+    },
+    "mismatched": [],
+    "modules": [
+      {
+        "bytes_in_repository": 22050,
+        "bytes_served": 22050,
+        "filename": "valuenet-core.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 4965,
+        "bytes_served": 4965,
+        "filename": "valuenet-schwartz-values.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 68755,
+        "bytes_served": 68755,
+        "filename": "valuenet-folk.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 11486,
+        "bytes_served": 11486,
+        "filename": "valuenet-moral-foundations.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 25321,
+        "bytes_served": 25321,
+        "filename": "valuenet-moral-epistemics.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 3251,
+        "bytes_served": 3251,
+        "filename": "valuenet-mappings.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 4447,
+        "bytes_served": 4447,
+        "filename": "vcvf-triggers-semantics.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 14236,
+        "bytes_served": 14236,
+        "filename": "valuenet-core-shapes.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 6385,
+        "bytes_served": 6385,
+        "filename": "valuenet-moral-epistemics-shapes.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 7510,
+        "bytes_served": 7510,
+        "filename": "vcvf-triggers-shapes.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      },
+      {
+        "bytes_in_repository": 7153,
+        "bytes_served": 7153,
+        "filename": "valuenet-moral-epistemics-scenario.ttl",
+        "matches_manifest_sha256": true,
+        "matches_repository": true,
+        "status": 200
+      }
+    ],
+    "passed": true,
+    "published_checksums": {
+      "entries": 12,
+      "expected_entries": 12,
+      "missing": [],
+      "status": 200,
+      "unexpected": [],
+      "unverified": []
+    }
+  },
+  "format_version": 1,
+  "generated_by": "tools/site/verify_deployment.py",
+  "manual_checks": {
+    "chrome_nvda_listening_pass": {
+      "required_before_phase7_sign_off": "one Chrome plus NVDA pass over the production site covering the result-count region and the copy-result region, recording for each whether it announced, how many times, when, and whether the wording was useful",
+      "status": "not performed",
+      "why": "no screen reader is installed on this machine and a listening test cannot be performed by a tool. Both live regions are exposed with the right role and their text changes, which is availability for announcement and not an announcement."
+    },
+    "safari_on_macos": {
+      "required_before_phase7_sign_off": "load the production URL in Safari on macOS: the explorer, a deep link, the models page, and one download",
+      "status": "not performed",
+      "why": "Safari has had no Windows build since 2012 and this verification runs on Windows. Playwright's WebKit is a different browser sharing an engine lineage and is recorded under its own name in the browser review."
+    }
+  },
+  "operating_system": "Windows-10-10.0.19045-SP0",
+  "pages": {
+    "pages": [
+      {
+        "bytes": 2823,
+        "is_html": true,
+        "path": "/",
+        "status": 200
+      },
+      {
+        "bytes": 4281,
+        "is_html": true,
+        "path": "/explore/",
+        "status": 200
+      },
+      {
+        "bytes": 25462,
+        "is_html": true,
+        "path": "/models/",
+        "status": 200
+      },
+      {
+        "bytes": 16875,
+        "is_html": true,
+        "path": "/modules/",
+        "status": 200
+      },
+      {
+        "bytes": 8091,
+        "is_html": true,
+        "path": "/downloads/",
+        "status": 200
+      },
+      {
+        "bytes": 2199,
+        "is_html": true,
+        "path": "/documentation/",
+        "status": 200
+      },
+      {
+        "bytes": 3827,
+        "is_html": true,
+        "path": "/about/",
+        "status": 200
+      }
+    ],
+    "passed": true
+  },
+  "passed": false,
+  "public_url": "https://skreen5hot.github.io/ValueNet/",
+  "relative_paths": {
+    "pages_scanned": 7,
+    "passed": true,
+    "per_page": [
+      {
+        "path": "/",
+        "references": 10,
+        "root_absolute": [],
+        "status": 200
+      },
+      {
+        "path": "/explore/",
+        "references": 16,
+        "root_absolute": [],
+        "status": 200
+      },
+      {
+        "path": "/models/",
+        "references": 38,
+        "root_absolute": [],
+        "status": 200
+      },
+      {
+        "path": "/modules/",
+        "references": 28,
+        "root_absolute": [],
+        "status": 200
+      },
+      {
+        "path": "/downloads/",
+        "references": 26,
+        "root_absolute": [],
+        "status": 200
+      },
+      {
+        "path": "/documentation/",
+        "references": 11,
+        "root_absolute": [],
+        "status": 200
+      },
+      {
+        "path": "/about/",
+        "references": 11,
+        "root_absolute": [],
+        "status": 200
+      }
+    ],
+    "root_absolute_references": []
+  },
+  "verifier_sha256": "70c91d5c6b1117f1aa48e90f264db662f291e805b01590cb2edcb11eb2bf17b3"
+}

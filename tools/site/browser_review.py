@@ -705,7 +705,7 @@ def main(argv=None) -> int:
                         "exposed with role=status and aria-live=polite "
                         "and that their text changes -- availability for "
                         "announcement, not an announcement."),
-                "required_before_deployment": (
+                "required_before_phase7_sign_off": (
                     "one Chrome plus NVDA listening pass, recorded"),
                 "procedure": [
                     "open /explore/ with NVDA running",

@@ -184,7 +184,9 @@ def test_the_record_does_not_claim_a_screen_reader(record):
     reader consuming it is a different, unrun test."""
     reader = record["not_covered"]["screen_reader"]
     assert reader["status"] == "not run"
-    assert reader["required_before_deployment"], (
+    # Named for a site that is already serving: this is what remains
+    # before Phase 7 can be signed off, not before deployment.
+    assert reader["required_before_phase7_sign_off"], (
         "the record must name what would close this, not just note it")
     assert len(reader["procedure"]) >= 4, reader["procedure"]
     assert reader["accepted_risk"] is None, (

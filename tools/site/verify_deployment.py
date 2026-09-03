@@ -39,34 +39,56 @@ _root = next(p for p in (_here, *_here.parents)
 FORMAT_VERSION = 1
 GENERATOR = "tools/site/verify_deployment.py"
 
-#: The two checks a tool cannot make. Recorded here rather than in prose
-#: so the verdict below can depend on them, and so neither can be
-#: forgotten by a run that happened to look green.
-MANUAL_CHECKS = {
-    "safari_on_macos": {
-        "status": "not performed",
-        "why": ("Safari has had no Windows build since 2012 and this "
-                "verification runs on Windows. Playwright's WebKit is a "
-                "different browser sharing an engine lineage and is "
-                "recorded under its own name in the browser review."),
-        "required_before_phase7_sign_off": (
-            "load the production URL in Safari on macOS: the explorer, a "
-            "deep link, the models page, and one download"),
-    },
-    "chrome_nvda_listening_pass": {
-        "status": "not performed",
-        "why": ("no screen reader is installed on this machine and a "
-                "listening test cannot be performed by a tool. Both live "
-                "regions are exposed with the right role and their text "
-                "changes, which is availability for announcement and not "
-                "an announcement."),
-        "required_before_phase7_sign_off": (
-            "one Chrome plus NVDA pass over the production site covering "
-            "the result-count region and the copy-result region, "
-            "recording for each whether it announced, how many times, "
-            "when, and whether the wording was useful"),
-    },
-}
+#: Where the person who performed the manual checks records what they
+#: did. Read rather than hardcoded: with the statuses in this file,
+#: closing Phase 7 meant editing Python, which is a strange way to record
+#: that somebody listened to a screen reader -- and it made "performed" a
+#: one-word change with no evidence attached.
+MANUAL_CHECKS_PATH = "config/manual-checks.yaml"
+MANUAL_CHECKS_SCHEMA = "config/manual-checks.schema.json"
+
+
+def manual_checks() -> dict:
+    """The recorded evidence, validated before it is believed."""
+    import yaml
+    from jsonschema import Draft7Validator
+
+    path = _root / MANUAL_CHECKS_PATH
+    if not path.is_file():
+        raise SystemExit(
+            MANUAL_CHECKS_PATH + " is missing. It records the checks a tool "
+            "cannot make, and without it their status is unknown rather "
+            "than passed.")
+    document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+    # YAML parses an unquoted 2026-09-03 into a date object, so a
+    # correctly filled form failed a schema asking for a string. Dates
+    # are normalised to ISO text rather than requiring the person filling
+    # this in to remember quotation marks.
+    import datetime
+
+    def as_text(node):
+        if isinstance(node, dict):
+            return {k: as_text(v) for k, v in node.items()}
+        if isinstance(node, list):
+            return [as_text(v) for v in node]
+        if isinstance(node, (datetime.date, datetime.datetime)):
+            return node.isoformat()[:10]
+        return node
+
+    document = as_text(document)
+    schema = json.loads((_root / MANUAL_CHECKS_SCHEMA)
+                        .read_text(encoding="utf-8"))
+    errors = sorted(Draft7Validator(schema).iter_errors(document),
+                    key=lambda e: list(e.path))
+    if errors:
+        raise SystemExit(
+            "%s does not satisfy its schema: %s" % (
+                MANUAL_CHECKS_PATH, "; ".join(
+                    "%s: %s" % ("/".join(str(x) for x in e.path) or "(root)",
+                                e.message[:140]) for e in errors[:4])))
+    return document["checks"]
+
 
 #: Every page the site publishes, so a missing one is a finding rather
 #: than a page nobody happened to open.
@@ -76,6 +98,46 @@ PAGES = ("", "explore/", "models/", "modules/", "downloads/",
 DATA = ("data/class-index.json", "data/coverage.json", "data/downloads.json",
         "schemas/class-index.schema.json", "schemas/coverage.schema.json",
         "schemas/downloads.schema.json")
+
+
+def verifier_identity(allow_uncommitted: bool) -> dict:
+    """Which bytes asked the questions, bound to something checkable.
+
+    A bare digest in a record is unfalsifiable: any 64 hex characters
+    satisfy a length check, and nothing ties them to a file anybody can
+    read. So the commit is recorded too, and the digest is required to be
+    the digest of this file *as committed there* -- which a test can
+    recompute from git.
+
+    That also enforces the sequence this phase learned the hard way: the
+    first record was produced by a tool absent from the commit it
+    measured. Running an uncommitted verifier is still possible for
+    development, and says so in the record rather than passing quietly.
+    """
+    own = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    relative = Path(__file__).resolve().relative_to(_root).as_posix()
+    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=str(_root),
+                          capture_output=True, text=True).stdout.strip()
+    blob = subprocess.run(["git", "cat-file", "blob",
+                           "%s:%s" % (head, relative)],
+                          cwd=str(_root), capture_output=True)
+    committed = (hashlib.sha256(blob.stdout).hexdigest()
+                 if blob.returncode == 0 else None)
+    matches = own == committed
+
+    if not matches and not allow_uncommitted:
+        raise SystemExit(
+            "the verifier differs from %s:%s, so the record would name a "
+            "digest nobody can recompute. Commit it first, or pass "
+            "--allow-uncommitted-verifier and accept that the record says "
+            "so." % (head[:12], relative))
+
+    return {
+        "verifier_path": relative,
+        "verifier_sha256": own,
+        "verifier_commit": head,
+        "verifier_matches_commit": matches,
+    }
 
 
 def public_url() -> str:
@@ -338,6 +400,9 @@ def main(argv=None) -> int:
     ap.add_argument("-o", "--out", default="config/deployment-record.json")
     ap.add_argument("--url", default=None)
     ap.add_argument("--skip-browser", action="store_true")
+    ap.add_argument("--allow-uncommitted-verifier", action="store_true",
+                    help="record a run made with a modified verifier. The "
+                         "record says so, and the automated verdict fails.")
     args = ap.parse_args(argv)
 
     base = args.url or public_url()
@@ -347,11 +412,7 @@ def main(argv=None) -> int:
     record = {
         "format_version": FORMAT_VERSION,
         "generated_by": GENERATOR,
-        # Which verifier produced this. The tool can postdate the commit
-        # it measures -- it did here, on the first run -- so the record
-        # says which bytes asked the questions.
-        "verifier_sha256": hashlib.sha256(
-            Path(__file__).read_bytes()).hexdigest(),
+        **verifier_identity(args.allow_uncommitted_verifier),
         "public_url": base,
         "operating_system": platform.platform(),
         "commit": deployed_commit(base),
@@ -373,14 +434,17 @@ def main(argv=None) -> int:
     record["automated_checks_passed"] = (
         all(record[s]["passed"] for s in sections)
         and record["commit"]["in_this_history"]
-        and record["commit"]["is_head"])
+        and record["commit"]["is_head"]
+        and record["verifier_matches_commit"])
 
     # Two checks need a person, and neither has been done. Reporting the
     # phase as passed over them would be the same overclaim the browser
     # record was corrected for -- and the site is already serving, so the
     # deployment is described as provisional rather than verified.
-    record["manual_checks"] = MANUAL_CHECKS
-    blockers = sorted(name for name, check in MANUAL_CHECKS.items()
+    checks = manual_checks()
+    record["manual_checks"] = checks
+    record["manual_checks_source"] = MANUAL_CHECKS_PATH
+    blockers = sorted(name for name, check in checks.items()
                       if check["status"] != "performed")
     record["blocked_by"] = blockers
     record["deployment_status"] = ("provisional" if blockers else "verified")

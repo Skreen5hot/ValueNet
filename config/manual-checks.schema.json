@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://skreen5hot.github.io/ValueNet/schemas/manual-checks.schema.json",
+  "title": "Evidence for checks a tool cannot make",
+  "description": "Two checks need a person: a screen-reader listening pass and Safari on macOS. This file is where the person records what they did and what happened. Marking a check performed requires the evidence, so a status cannot be changed without saying who did it, when, on what, and what they observed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format_version", "note", "checks"],
+  "properties": {
+    "format_version": {"type": "integer", "minimum": 1},
+    "note": {"type": "string", "minLength": 1},
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chrome_nvda_listening_pass", "safari_on_macos"],
+      "properties": {
+        "chrome_nvda_listening_pass": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "why", "required_before_phase7_sign_off"],
+          "properties": {
+            "status": {"enum": ["not performed", "performed"]},
+            "why": {"type": "string", "minLength": 1},
+            "required_before_phase7_sign_off": {"type": "string", "minLength": 1},
+            "tester": {"type": "string", "minLength": 1},
+            "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+            "url": {"type": "string", "minLength": 1},
+            "platform": {"type": "string", "minLength": 1},
+            "browser": {"type": "string", "minLength": 1},
+            "screen_reader": {"type": "string", "minLength": 1},
+            "regions": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["result_count", "copy_result"],
+              "properties": {
+                "result_count": {"$ref": "#/definitions/region"},
+                "copy_result": {"$ref": "#/definitions/region"}
+              }
+            },
+            "notes": {"type": "string"}
+          },
+          "if": {"properties": {"status": {"const": "performed"}}},
+          "then": {
+            "required": ["status", "tester", "date", "url", "platform",
+                         "browser", "screen_reader", "regions"]
+          }
+        },
+        "safari_on_macos": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "why", "required_before_phase7_sign_off"],
+          "properties": {
+            "status": {"enum": ["not performed", "performed"]},
+            "why": {"type": "string", "minLength": 1},
+            "required_before_phase7_sign_off": {"type": "string", "minLength": 1},
+            "tester": {"type": "string", "minLength": 1},
+            "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+            "url": {"type": "string", "minLength": 1},
+            "platform": {"type": "string", "minLength": 1},
+            "browser": {"type": "string", "minLength": 1},
+            "observations": {
+              "type": "array",
+              "minItems": 4,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["what", "outcome"],
+                "properties": {
+                  "what": {"type": "string", "minLength": 1},
+                  "outcome": {"enum": ["as expected", "problem"]},
+                  "detail": {"type": "string"}
+                }
+              }
+            },
+            "notes": {"type": "string"}
+          },
+          "if": {"properties": {"status": {"const": "performed"}}},
+          "then": {
+            "required": ["status", "tester", "date", "url", "platform",
+                         "browser", "observations"]
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "region": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["announced", "times", "timing", "wording"],
+      "properties": {
+        "announced": {"type": "boolean"},
+        "times": {"type": "integer", "minimum": 0},
+        "timing": {"type": "string", "minLength": 1},
+        "wording": {"type": "string", "minLength": 1},
+        "useful": {"type": "boolean"}
+      }
+    }
+  }
+}

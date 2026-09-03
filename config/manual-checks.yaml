@@ -1,0 +1,85 @@
+# Evidence for the two checks a tool cannot make.
+#
+# Everything else in this repository is measured. These two are not,
+# because one needs ears and the other needs a machine this project has
+# no access to. So they are recorded here by the person who did them, and
+# tools/site/verify_deployment.py derives their status from this file
+# rather than carrying it in source.
+#
+# That matters for a reason worth stating: with the statuses hardcoded,
+# closing Phase 7 would have meant editing a Python file, which is a
+# strange way to record that somebody listened to a screen reader. It
+# also made "performed" a one-word change with no evidence attached.
+#
+# Marking a check `performed` requires its evidence. The schema beside
+# this file refuses a performed check that does not say who did it, when,
+# on what, and what happened; `config/manual-checks.schema.json` is the
+# contract and a test validates this file against it.
+#
+# Record what was observed, including anything that went wrong. A check
+# recorded as performed with a problem noted is far more useful than one
+# quietly left at `not performed`, and much more useful than one marked
+# clean because the tester did not want to write the problem down.
+
+format_version: 1
+
+note: >-
+  Two checks outside what automation can reach. The browser review
+  establishes that both live regions are exposed with role=status and
+  aria-live=polite and that their text changes, which is availability for
+  announcement rather than an announcement. Whether a screen reader
+  speaks it, once, at the right moment, with useful wording, is a
+  listening test. Safari has had no Windows build since 2012, and
+  Playwright's WebKit is a different browser sharing an engine lineage.
+
+checks:
+
+  chrome_nvda_listening_pass:
+    status: not performed
+    why: >-
+      No screen reader is installed on the machine this project is
+      developed on, and a listening test cannot be performed by a tool.
+    required_before_phase7_sign_off: >-
+      One Chrome plus NVDA pass over the production site covering the
+      result-count region and the copy-result region, recording for each
+      whether it announced, how many times, when, and whether the wording
+      was useful.
+    # When performed, add: tester, date, url, platform, browser,
+    # screen_reader, and a regions block of the shape
+    #
+    #   regions:
+    #     result_count:
+    #       announced: true
+    #       times: 1
+    #       timing: after typing settled, not per keystroke
+    #       wording: "42 classes"
+    #       useful: true
+    #     copy_result:
+    #       announced: true
+    #       times: 1
+    #       timing: on the click
+    #       wording: "Copied."
+    #       useful: true
+
+  safari_on_macos:
+    status: not performed
+    why: >-
+      Safari has had no Windows build since 2012 and this project is
+      developed on Windows. Playwright's WebKit is a different browser
+      sharing an engine lineage and is recorded under its own name in the
+      browser review.
+    required_before_phase7_sign_off: >-
+      Load the production URL in Safari on macOS: the explorer, a deep
+      link to a class, the models page, and one download.
+    # When performed, add: tester, date, url, platform, browser, and an
+    # observations list with at least four entries of the shape
+    #
+    #   observations:
+    #     - what: the explorer lists classes and search narrows them
+    #       outcome: as expected
+    #     - what: a ?class= deep link opens its detail pane
+    #       outcome: as expected
+    #     - what: the three diagrams render on the models page
+    #       outcome: as expected
+    #     - what: a Turtle download arrives intact
+    #       outcome: as expected

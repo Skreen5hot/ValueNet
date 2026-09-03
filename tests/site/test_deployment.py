@@ -212,3 +212,104 @@ def test_a_console_error_would_have_failed_the_check(record):
                   and browser["classes_rendered"] >= 180)
     assert recomputed == browser["passed"], (
         "the browser verdict does not follow from what was observed")
+
+
+# ================================= evidence for what a tool cannot do
+
+
+MANUAL_PATH = REPO / "config/manual-checks.yaml"
+
+
+def _tool():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "vd_manual", REPO / "tools/site/verify_deployment.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_the_manual_evidence_file_validates():
+    """It is read, not hardcoded, so it has to be well formed."""
+    checks = _tool().manual_checks()
+    assert set(checks) == {"chrome_nvda_listening_pass", "safari_on_macos"}
+    for name, check in checks.items():
+        assert check["status"] in ("not performed", "performed"), name
+        assert check["why"], name
+        assert check["required_before_phase7_sign_off"], name
+
+
+def test_marking_a_check_performed_requires_its_evidence(tmp_path):
+    """The control this file exists for.
+
+    With the statuses hardcoded in Python, closing Phase 7 meant editing
+    source, and `performed` was a one-word change with nothing attached.
+    Here it is a claim the schema will not accept without who did it,
+    when, on what, and what happened.
+    """
+    import pytest as _pytest
+
+    tool = _tool()
+    original = MANUAL_PATH.read_text(encoding="utf-8")
+    flipped = original.replace(
+        "  chrome_nvda_listening_pass:" + chr(10) + "    status: not performed",
+        "  chrome_nvda_listening_pass:" + chr(10) + "    status: performed", 1)
+    assert flipped != original, "the mutation did not apply"
+
+    MANUAL_PATH.write_text(flipped, encoding="utf-8", newline="")
+    try:
+        with _pytest.raises(SystemExit) as exc:
+            tool.manual_checks()
+        assert "required property" in str(exc.value), str(exc.value)[:200]
+    finally:
+        MANUAL_PATH.write_text(original, encoding="utf-8", newline="")
+
+
+def test_a_complete_record_of_a_performed_check_is_accepted():
+    """The other direction. A form nobody can fill in is not a form.
+
+    An unquoted YAML date parses to a date object, which an earlier
+    version of the schema rejected -- so a correctly completed pass would
+    have been refused and the person filling it in would have had no idea
+    why.
+    """
+    tool = _tool()
+    original = MANUAL_PATH.read_text(encoding="utf-8")
+    filled = original.replace(
+        "  safari_on_macos:" + chr(10) + "    status: not performed",
+        "  safari_on_macos:" + chr(10) + "    status: performed" + chr(10)
+        + "    tester: Test Person" + chr(10)
+        + "    date: 2026-09-03" + chr(10)
+        + "    url: https://skreen5hot.github.io/ValueNet/" + chr(10)
+        + "    platform: macOS 15.3" + chr(10)
+        + "    browser: Safari 18.3" + chr(10)
+        + "    observations:" + chr(10)
+        + "      - what: the explorer lists classes" + chr(10)
+        + "        outcome: as expected" + chr(10)
+        + "      - what: a deep link opens its detail" + chr(10)
+        + "        outcome: as expected" + chr(10)
+        + "      - what: three diagrams render" + chr(10)
+        + "        outcome: as expected" + chr(10)
+        + "      - what: a download arrives intact" + chr(10)
+        + "        outcome: as expected", 1)
+    assert filled != original, "the mutation did not apply"
+
+    MANUAL_PATH.write_text(filled, encoding="utf-8", newline="")
+    try:
+        checks = tool.manual_checks()
+        assert checks["safari_on_macos"]["status"] == "performed"
+        assert checks["safari_on_macos"]["date"] == "2026-09-03"
+    finally:
+        MANUAL_PATH.write_text(original, encoding="utf-8", newline="")
+
+
+def test_the_statuses_are_not_hardcoded_in_the_verifier():
+    """Derived from the evidence file, so closing a check is a record
+    somebody wrote rather than a source edit."""
+    source = (REPO / "tools/site/verify_deployment.py").read_text(
+        encoding="utf-8")
+    assert "MANUAL_CHECKS_PATH" in source
+    assert "config/manual-checks.yaml" in source
+    assert "MANUAL_CHECKS = {" not in source, (
+        "the statuses are hardcoded again")

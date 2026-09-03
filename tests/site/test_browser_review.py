@@ -57,7 +57,18 @@ def test_the_record_describes_the_site_in_the_tree(record, tmp_path):
     review = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(review)
 
-    assert review.tree_digest(out) == record["site_tree_sha256"], (
+    assert tuple(record["reviewed_files"]) == review.REVIEWED_FILES, (
+        "the record covers a different set of files than the review loads")
+    assert set(record["reviewed_files"]) == {
+        p.relative_to(out).as_posix() for p in review.reviewed_files(out)}
+
+    # The set is small and named, so it is pinned: silently shrinking it
+    # would leave a stable digest describing less than it claims.
+    assert "explore/index.html" in record["reviewed_files"]
+    assert "models/index.html" in record["reviewed_files"]
+    assert "data/class-index.json" in record["reviewed_files"]
+
+    assert review.tree_digest(out) == record["reviewed_files_sha256"], (
         "the browser review was measured against a different build. Re-run "
         "tools/site/browser_review.py after changing the site.")
 

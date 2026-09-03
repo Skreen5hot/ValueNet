@@ -384,23 +384,87 @@ def review_one(engine, name: str, base: str, channel: str | None) -> dict:
 STAMP = re.compile(r'(<code data-build="commit">)[0-9a-f]*(</code>)')
 
 
+def normalise(path: Path) -> bytes:
+    """A file's content with provenance removed.
+
+    Two kinds carry it. Every page carries the build stamp, and the
+    generated JSON carries `source_commit` -- in downloads.json, once at
+    the top and once per module. Normalising only the pages left the
+    digest still moving with every commit, which the first clone to
+    rebuild it reported as a stale record.
+    """
+    data = path.read_bytes()
+    if path.suffix == ".html":
+        return STAMP.sub(r"\1STAMP\2",
+                         data.decode("utf-8")).encode("utf-8")
+    if path.suffix == ".json":
+        def strip(node):
+            if isinstance(node, dict):
+                return {k: ("PROVENANCE" if k == "source_commit"
+                            else strip(v)) for k, v in node.items()}
+            if isinstance(node, list):
+                return [strip(v) for v in node]
+            return node
+        try:
+            loaded = json.loads(data.decode("utf-8"))
+        except ValueError:
+            return data
+        return json.dumps(strip(loaded), sort_keys=True,
+                          separators=(",", ":")).encode("utf-8")
+    return data
+
+
+#: What a browser actually loads. The digest is scoped to these because
+#: the archive's timestamp comes from the commit, so it changes on every
+#: commit by design -- a freshness check including it would call the
+#: record stale for a reason the review never observed, on a file no
+#: browser fetches. The archive's integrity is Phase 5's and has its own
+#: tests.
+#: Named, not matched by suffix, because the set has to be exactly what
+#: the checks below load. Matching *.html swept in downloads/index.html,
+#: which publishes the bundle's checksum -- and the bundle's timestamp
+#: comes from the commit, so that page changes on every commit and made
+#: the record stale for a reason no browser check had observed.
+REVIEWED_FILES = (
+    "explore/index.html",
+    "models/index.html",
+    "assets/css/site.css",
+    "assets/js/explorer.js",
+    "assets/js/ranking.js",
+    "data/class-index.json",
+)
+
+
+def reviewed_files(out: Path) -> list:
+    """The files the checks fetch, in a fixed order.
+
+    Missing is fatal rather than skipped: a digest over five of six files
+    would be a perfectly stable number describing less than it claims.
+    """
+    found = []
+    for relative in REVIEWED_FILES:
+        path = out / relative
+        if not path.is_file():
+            raise SystemExit(
+                "%s is not in the build, so the review would cover less "
+                "than it records" % relative)
+        found.append(path)
+    return found
+
+
 def tree_digest(out: Path) -> str:
     """What was reviewed, so a stale record is detectable.
 
-    Content only. A page differing solely in its build stamp is the
-    same page as far as anything this review checked.
+    Content only, over the files a browser loads. A page differing solely
+    in its build stamp is the same page as far as anything this review
+    checked.
     """
     rows = []
-    for path in sorted(out.rglob("*")):
-        if not path.is_file():
-            continue
-        data = path.read_bytes()
-        if path.suffix == ".html":
-            data = STAMP.sub(r"\1STAMP\2",
-                             data.decode("utf-8")).encode("utf-8")
+    for path in reviewed_files(out):
+        data = normalise(path)
         rows.append("%s %s" % (path.relative_to(out).as_posix(),
                                hashlib.sha256(data).hexdigest()))
-    return hashlib.sha256("\n".join(rows).encode("utf-8")).hexdigest()
+    return hashlib.sha256(chr(10).join(rows).encode("utf-8")).hexdigest()
 
 
 def main(argv=None) -> int:
@@ -437,7 +501,9 @@ def main(argv=None) -> int:
     record = {
         "format_version": FORMAT_VERSION,
         "generated_by": GENERATOR,
-        "site_tree_sha256": tree_digest(site),
+        "reviewed_files_sha256": tree_digest(site),
+        "reviewed_files": [p.relative_to(site).as_posix()
+                           for p in reviewed_files(site)],
         "operating_system": platform.platform(),
         "deep_link_class": DEEP_LINK_CLASS,
         "viewports": VIEWPORTS,

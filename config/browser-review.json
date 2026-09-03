@@ -669,7 +669,15 @@
   },
   "operating_system": "Windows-10-10.0.19045-SP0",
   "passed": true,
-  "site_tree_sha256": "806edc93c58e5875c93618b86b9136339c58586023243a18b6bd2d5947d79a40",
+  "reviewed_files": [
+    "explore/index.html",
+    "models/index.html",
+    "assets/css/site.css",
+    "assets/js/explorer.js",
+    "assets/js/ranking.js",
+    "data/class-index.json"
+  ],
+  "reviewed_files_sha256": "7aaf25320c4577c012dd7e280ff740143084ed4dd621a265ee194fe4c42c691e",
   "viewports": {
     "high-zoom-400pct": {
       "height": 256,

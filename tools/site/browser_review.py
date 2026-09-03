@@ -10,10 +10,10 @@ text once a browser has parsed it, and whether three diagrams survive a
 320-pixel viewport. None of that can be decided from source.
 
 The output is a record, not a pass/fail exit. Every check writes what it
-observed -- the focused element, the announced text, the measured
-overflow -- so a reviewer can see the result rather than a green tick, and
-so a later run can be compared with this one. `tests/site` holds the
-record to its claims.
+observed -- the focused element, the updated live-region text, the
+measured overflow -- so a reviewer can see the result rather than a green
+tick, and so a later run can be compared with this one. `tests/site`
+holds the record to its claims.
 
 WHAT THIS CANNOT DO, AND SAYS SO
 

@@ -61,6 +61,12 @@ def git(*args: str, cwd: Path | None = None) -> str:
 
 # ------------------------------------------------------------- links
 
+#: Fragments this report is allowed to leave unverified, each of which
+#: would need a reason. Empty: every fragment on this site lands on an
+#: HTML page, so an unverifiable one is a finding rather than a fact of
+#: life. A non-empty entry here is a decision somebody has to defend.
+ALLOWED_UNVERIFIABLE_FRAGMENTS: tuple = ()
+
 
 class Links(html.parser.HTMLParser):
     """Every href and src, and every id, with the page that carried it."""
@@ -100,7 +106,7 @@ def link_report(artifact) -> dict:
         parser.feed(page.read_text(encoding="utf-8"))
         pages[page.resolve()] = parser
 
-    rows, broken, external = [], [], []
+    rows, broken, external, unverifiable = [], [], [], []
     fragments_checked = 0
     for page, parser in pages.items():
         here = page.relative_to(artifact).as_posix()
@@ -133,10 +139,15 @@ def link_report(artifact) -> dict:
                 owner = pages.get(resolved)
                 if owner is None:
                     # A fragment into something that is not an HTML page
-                    # cannot be checked, and claiming otherwise would be
-                    # the same overclaim this replaced.
+                    # cannot be checked here. Recording it as neither
+                    # broken nor verified made it invisible: it counted
+                    # towards fragments_checked while resolving nothing.
+                    # It is now listed, and listed is failing unless the
+                    # allowance below names it.
                     row["fragment_resolves"] = None
                     row["note"] = "target is not an HTML page"
+                    if target not in ALLOWED_UNVERIFIABLE_FRAGMENTS:
+                        unverifiable.append(row)
                 else:
                     row["fragment_resolves"] = fragment in owner.ids
                     if not row["fragment_resolves"]:
@@ -150,13 +161,16 @@ def link_report(artifact) -> dict:
     return {
         "internal_references": len(rows),
         "fragments_checked": fragments_checked,
+        "fragments_verified": sum(1 for r in rows
+                                  if r["fragment_resolves"] is True),
+        "unverifiable_fragments": unverifiable,
         "broken": broken,
         "external_references": external,
         "note": ("Resolved against the built artifact, which is what is "
                  "served. A directory target resolves through its "
                  "index.html, the way a web server would, and a fragment "
                  "must name an id that exists on the page it lands on."),
-        "passed": not broken,
+        "passed": not broken and not unverifiable,
     }
 
 
@@ -324,6 +338,11 @@ def main(argv=None) -> int:
     ap.add_argument("-o", "--out", default="config/quality-report.json")
     ap.add_argument("--site", default="_site")
     ap.add_argument("--fresh-clone", action="store_true")
+    ap.add_argument("--sign", metavar="NAME", default=None,
+                    help="record the owner's public-content sign-off. This "
+                         "is a statement about the published content, not a "
+                         "measurement; it is a flag rather than an edit so "
+                         "that making it is deliberate and dated.")
     args = ap.parse_args(argv)
 
     artifact = Path(args.site)
@@ -367,6 +386,15 @@ def main(argv=None) -> int:
             ],
         },
     }
+    if args.sign:
+        import datetime
+
+        record["public_content_sign_off"].update({
+            "status": "signed",
+            "signed_by": args.sign,
+            "signed_at": datetime.date.today().isoformat(),
+        })
+
     if args.fresh_clone:
         record["fresh_clone"] = fresh_clone_record(sys.executable)
 

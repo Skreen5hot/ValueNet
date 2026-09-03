@@ -58,21 +58,21 @@
     "passed": true,
     "record": "config/browser-review.json"
   },
-  "commit": "3e908625db41c4120579001e8be19ab4e5c4326b",
+  "commit": "083378c186718a408264b0ec63e988457b550d63",
   "format_version": 1,
   "fresh_clone": {
     "build_exit": 0,
-    "bundle_sha256": "d8edf0f24675b172029cca64366c0e70c0d0a9cc4c2c4f7707762abcb01b3169",
+    "bundle_sha256": "eeec945c9d2ce6a8b1dbbc2252ae886686d2ae4946414bcc34e93c67a44f2a2b",
     "clone_root_length": 54,
-    "commit": "3e908625db41c4120579001e8be19ab4e5c4326b",
+    "commit": "083378c186718a408264b0ec63e988457b550d63",
     "passed": true,
     "remotes": [
       "origin"
     ],
     "site_present_before_build": false,
-    "site_tree_digest": "0553b4296c98792a45d41474b4a15a9cf9e5ebb85353face0f022d52daa354bd",
+    "site_tree_digest": "6a4477ee37565d82fff5688e954aafc15d8ddb39909941e17718f6ebf1f7e23d",
     "tests_exit": 0,
-    "tests_summary": "246 passed in 67.43s (0:01:07)"
+    "tests_summary": "246 passed in 72.77s (0:01:12)"
   },
   "gate_blocked_by": "public_content_sign_off is unsigned. Every measured check passed; the gate does not, because the owner has not stated that what the site publishes is what they intend to publish.",
   "generated_by": "tools/site/quality_report.py",
@@ -80,9 +80,11 @@
     "broken": [],
     "external_references": [],
     "fragments_checked": 7,
+    "fragments_verified": 7,
     "internal_references": 140,
     "note": "Resolved against the built artifact, which is what is served. A directory target resolves through its index.html, the way a web server would, and a fragment must name an id that exists on the page it lands on.",
-    "passed": true
+    "passed": true,
+    "unverifiable_fragments": []
   },
   "measured_checks_passed": true,
   "operating_system": "Windows-10-10.0.19045-SP0",
@@ -133,9 +135,9 @@
     "problems": []
   },
   "suite": {
-    "added": 262,
+    "added": 264,
     "collisions": [],
-    "final_collected": 968,
+    "final_collected": 970,
     "missing_unrecorded": [],
     "passed": true,
     "pre_site_collected": 707,

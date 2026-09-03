@@ -215,7 +215,45 @@ def test_a_broken_cross_page_fragment_is_caught(artifact):
 
 def test_no_fragment_is_recorded_as_unverifiable(record):
     """A fragment the report could not check is a fragment nobody
-    checked. Every one on this site lands on an HTML page."""
-    unchecked = [r for r in record["links"].get("rows", [])
-                 if r.get("fragment") and r.get("fragment_resolves") is None]
-    assert not unchecked, unchecked
+    checked. Every one on this site lands on an HTML page.
+
+    This read record["links"]["rows"], which link_report never returned,
+    so it examined an empty list on every run and would have passed with
+    any number of unverifiable fragments. The tool now reports them
+    explicitly and counts them as a failure.
+    """
+    links = record["links"]
+    assert "unverifiable_fragments" in links, (
+        "the report does not say whether any fragment went unverified")
+    assert not links["unverifiable_fragments"], links["unverifiable_fragments"]
+    assert links["fragments_verified"] == links["fragments_checked"], (
+        "%d fragments were counted as checked but only %d resolved"
+        % (links["fragments_checked"], links["fragments_verified"]))
+
+
+def test_a_fragment_on_a_non_html_target_is_reported(artifact):
+    """The case that was counted as checked and left successful: a
+    fragment into a JSON file cannot be resolved, and saying nothing
+    about it is how it stayed invisible."""
+    tool = _load("qr_frag_nonhtml", "tools/site/quality_report.py")
+    page = artifact / "explore/index.html"
+    original = page.read_text(encoding="utf-8")
+    mutated = original.replace('href="../data/class-index.json"',
+                               'href="../data/class-index.json#nope"', 1)
+    assert mutated != original, "the mutation did not apply"
+    page.write_text(mutated, encoding="utf-8", newline="")
+    try:
+        report = tool.link_report(artifact)
+        assert report["unverifiable_fragments"], (
+            "a fragment into a non-HTML file was not reported")
+        assert not report["passed"], (
+            "the link report passed with an unverifiable fragment")
+    finally:
+        page.write_text(original, encoding="utf-8", newline="")
+
+
+def test_the_allowance_list_is_empty_and_policed(record):
+    """An allowance is a decision somebody has to defend. Empty means
+    every fragment on this site is genuinely resolved."""
+    tool = _load("qr_allow", "tools/site/quality_report.py")
+    assert tool.ALLOWED_UNVERIFIABLE_FRAGMENTS == ()

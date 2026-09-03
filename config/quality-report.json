@@ -58,23 +58,22 @@
     "passed": true,
     "record": "config/browser-review.json"
   },
-  "commit": "af88f4284012516e5771880ca7ffcadd823e1f34",
+  "commit": "d9a4cb43aec26be6e8a19d776cd6ddd055dc18b9",
   "format_version": 1,
   "fresh_clone": {
     "build_exit": 0,
-    "bundle_sha256": "95ea8cd9ed7216c191e59910beec1edb5d8eace56f2b9fc06f31b73ebc8d345c",
+    "bundle_sha256": "4b2f25f7196d37f4dacdad5514e5d0269b1cbdcc13544b830b940174c2374012",
     "clone_root_length": 54,
-    "commit": "af88f4284012516e5771880ca7ffcadd823e1f34",
+    "commit": "d9a4cb43aec26be6e8a19d776cd6ddd055dc18b9",
     "passed": true,
     "remotes": [
       "origin"
     ],
     "site_present_before_build": false,
-    "site_tree_digest": "b59a70b8fb7bfef94012307ad5bb8ca1bc2370e25a84167dd2a6f91a41d11730",
+    "site_tree_digest": "e03661a3ffb6fbaee906953a511e50e88a718d95f2755857a0d2ea27c86d79ed",
     "tests_exit": 0,
-    "tests_summary": "248 passed in 93.98s (0:01:33)"
+    "tests_summary": "248 passed in 66.75s (0:01:06)"
   },
-  "gate_blocked_by": "public_content_sign_off is unsigned. Every measured check passed; the gate does not, because the owner has not stated that what the site publishes is what they intend to publish.",
   "generated_by": "tools/site/quality_report.py",
   "links": {
     "broken": [],
@@ -88,7 +87,7 @@
   },
   "measured_checks_passed": true,
   "operating_system": "Windows-10-10.0.19045-SP0",
-  "passed": false,
+  "passed": true,
   "public_content_sign_off": {
     "asserts": [
       "the published Turtle is the authored corpus and nothing else",
@@ -97,7 +96,9 @@
       "the licence statements on the site match LICENSE and THIRD_PARTY_NOTICES.md"
     ],
     "note": "A tool cannot make this statement. It is the owner confirming that what the site publishes is what they intend to publish, and that the licensing, attribution and citation on it are correct. The measured facts it rests on are in this record.",
-    "status": "unsigned",
+    "signed_at": "2026-09-03",
+    "signed_by": "Aaron Damiano",
+    "status": "signed",
     "who": "repository owner"
   },
   "schemas": {

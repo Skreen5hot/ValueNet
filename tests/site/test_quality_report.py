@@ -59,7 +59,24 @@ def test_the_record_is_complete(record):
     assert REQUIRED_SECTIONS <= set(record), sorted(
         REQUIRED_SECTIONS - set(record))
     assert record["operating_system"]
-    assert record["passed"] is True
+    assert record["measured_checks_passed"] is True
+
+
+def test_the_gate_is_not_passed_while_the_sign_off_is_unsigned(record):
+    """Two different questions, and conflating them let the record report
+    `passed: true` over a sign-off nobody had made.
+
+    measured_checks_passed is what the tool can determine. passed is the
+    gate, and the gate includes a statement only the owner can make.
+    """
+    signed = record["public_content_sign_off"]["status"] == "signed"
+    assert record["passed"] == (record["measured_checks_passed"] and signed)
+    if not signed:
+        assert record["passed"] is False, (
+            "the gate reports success over an unsigned sign-off")
+        assert record.get("gate_blocked_by"), (
+            "the record must say why the gate is not passed")
+        assert "sign_off" in record["gate_blocked_by"]
 
 
 def test_the_record_was_made_in_this_history(record):
@@ -79,6 +96,9 @@ def test_the_link_report_still_holds(record, artifact):
     tool = _load("qr_tool", "tools/site/quality_report.py")
     now = tool.link_report(artifact)
     assert not now["broken"], now["broken"]
+    assert now["fragments_checked"] >= 7, (
+        "fragments are being discarded rather than resolved; the skip "
+        "link is the reference whose whole purpose is its fragment")
     assert now["internal_references"] == record["links"]["internal_references"], (
         "the report counted %d internal references and the build now has %d"
         % (record["links"]["internal_references"], now["internal_references"]))
@@ -156,3 +176,46 @@ def test_the_sign_off_is_explicit_about_being_unsigned(record):
             "a signed sign-off must name who signed it")
         assert sign_off.get("signed_at"), (
             "a signed sign-off must say when")
+
+
+def test_a_broken_same_page_fragment_is_caught(artifact):
+    """The skip link, pointed at an id that no longer exists."""
+    tool = _load("qr_frag_same", "tools/site/quality_report.py")
+    page = artifact / "explore/index.html"
+    original = page.read_text(encoding="utf-8")
+    page.write_text(
+        original.replace('<main id="main" tabindex="-1">',
+                         '<main id="renamed" tabindex="-1">', 1),
+        encoding="utf-8", newline="")
+    try:
+        broken = tool.link_report(artifact)["broken"]
+        assert any(b["target"] == "#main" for b in broken), broken
+    finally:
+        page.write_text(original, encoding="utf-8", newline="")
+
+
+def test_a_broken_cross_page_fragment_is_caught(artifact):
+    """The case that was silently unchecked. The page table was keyed by
+    the rglob path while targets resolved to absolute paths, so every
+    cross-page fragment missed the lookup and was recorded as "not an
+    HTML page" instead of being verified."""
+    tool = _load("qr_frag_cross", "tools/site/quality_report.py")
+    page = artifact / "models/index.html"
+    original = page.read_text(encoding="utf-8")
+    mutated = original.replace('href="../about/"',
+                               'href="../about/#no-such-anchor"', 1)
+    assert mutated != original, "the mutation did not apply"
+    page.write_text(mutated, encoding="utf-8", newline="")
+    try:
+        broken = tool.link_report(artifact)["broken"]
+        assert any(b["fragment"] == "no-such-anchor" for b in broken), broken
+    finally:
+        page.write_text(original, encoding="utf-8", newline="")
+
+
+def test_no_fragment_is_recorded_as_unverifiable(record):
+    """A fragment the report could not check is a fragment nobody
+    checked. Every one on this site lands on an HTML page."""
+    unchecked = [r for r in record["links"].get("rows", [])
+                 if r.get("fragment") and r.get("fragment_resolves") is None]
+    assert not unchecked, unchecked

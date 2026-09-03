@@ -29,7 +29,7 @@ RECORD_PATH = REPO / "config/browser-review.json"
 
 REQUIRED_CHECKS = {"deep_link_keyboard", "live_regions",
                    "hostile_ontology_text", "diagrams"}
-REQUIRED_VIEWPORTS = {"narrow", "wide", "high-zoom-400pct"}
+REQUIRED_VIEWPORTS = {"narrow", "wide", "reflow-400pct-equivalent"}
 #: Edge is a distinct product with its own release train even though it
 #: shares Chromium's engine, and the plan names it. Chromium and Chrome
 #: were standing in for it, which is not the same as running it.
@@ -182,8 +182,13 @@ def test_the_record_does_not_claim_safari(record):
 def test_the_record_does_not_claim_a_screen_reader(record):
     """The live-region checks read the accessibility tree. A screen
     reader consuming it is a different, unrun test."""
-    assert "screen_reader" in record["not_covered"]
-    assert "not run" in record["not_covered"]["screen_reader"].lower()
+    reader = record["not_covered"]["screen_reader"]
+    assert reader["status"] == "not run"
+    assert reader["required_before_deployment"], (
+        "the record must name what would close this, not just note it")
+    assert len(reader["procedure"]) >= 4, reader["procedure"]
+    assert reader["accepted_risk"] is None, (
+        "a risk acceptance is the owner's to record, not the tool's")
     for browser in record["browsers"]:
         live = browser["checks"]["live_regions"]
         assert live["screen_reader_used"] is None
@@ -195,18 +200,30 @@ def test_the_record_does_not_claim_a_screen_reader(record):
 
 def test_the_copy_result_region_is_a_live_region_too(record):
     """The one created at runtime, and therefore the one that can be
-    created without its role while nothing static notices."""
+    created without its role while nothing static notices.
+
+    The exposure count must be exactly one and must be scoped to this
+    region. An unscoped role query counted #status, which already
+    exists, so the copy region read as exposed without being looked at.
+    """
     for browser in record["browsers"]:
         copy = browser["checks"]["live_regions"]["copy_result"]
         assert copy["role"] == "status", browser["engine"]
         assert copy["aria_live"] == "polite", browser["engine"]
+        assert copy["status_regions_matching_copy_result"] == 1, (
+            browser["engine"], copy["status_regions_matching_copy_result"])
         assert copy["exposed_as_status_role"], browser["engine"]
 
 
-def test_the_copy_result_region_announced_something(record):
+def test_the_copy_result_region_updated_for_announcement(record):
     """Either outcome is acceptable and one of them must happen. A copy
-    button that silently does nothing is the failure the visible refusal
-    was written to prevent."""
+    button that changes nothing is the failure the visible refusal was
+    written to prevent.
+
+    Named for what was observed: the region's text changed, which is what
+    makes an announcement possible. No screen reader ran, so whether one
+    happened is not something this record can say.
+    """
     for browser in record["browsers"]:
         copy = browser["checks"]["live_regions"]["copy_result"]
         assert copy["text_before_click"] == "", browser["engine"]
@@ -249,13 +266,33 @@ def test_nothing_is_clipped_or_collides_in_any_viewport(record):
 
 def test_the_relation_paths_and_arrowheads_rendered(record):
     """A diagram of boxes with no arrows between them is a different
-    diagram from the one the alternative describes."""
+    diagram from the one the alternative describes.
+
+    Counting markers is not enough: a path can name a marker that does
+    not exist and render as a plain line. Every marker-end reference is
+    resolved against the markers actually in the document.
+    """
     for browser in record["browsers"]:
         for viewport, result in browser["checks"]["diagrams"].items():
             arrows = result["arrowheads"]
             assert arrows["markers"] >= 3, (browser["engine"], viewport)
             assert arrows["paths_with_marker_end"] >= 10, (
                 browser["engine"], viewport, arrows)
+            assert not arrows["dangling_marker_references"], (
+                browser["engine"], viewport,
+                arrows["dangling_marker_references"])
+
+
+def test_relation_paths_were_measured_for_clipping(record):
+    """Paths used to be skipped by an early return that recorded only
+    their length, so the report claimed a clipping check it had not run
+    on the elements most likely to leave the frame."""
+    for browser in record["browsers"]:
+        for viewport, result in browser["checks"]["diagrams"].items():
+            for diagram in result["diagrams"]:
+                assert diagram["paths_measured"] > 0, (
+                    browser["engine"], viewport, diagram["index"])
+                assert diagram["elements"]["path"] == diagram["paths_measured"]
 
 
 def test_a_screenshot_exists_for_every_engine_and_viewport(record):
@@ -275,3 +312,35 @@ def test_a_screenshot_exists_for_every_engine_and_viewport(record):
                 "%s does not match the digest recorded for it" % shot["path"])
             seen.add((browser["engine"], viewport))
     assert len(seen) == len(REQUIRED_ENGINES) * len(REQUIRED_VIEWPORTS), seen
+
+
+def test_the_record_claims_availability_not_announcement(record):
+    """No screen reader ran, so no announcement was observed. Every use
+    of the word has to sit inside a statement saying so."""
+    import re
+
+    live = record["browsers"][0]["checks"]["live_regions"]
+    assert live["observation"] == "live-region content updated in the DOM"
+    assert live["screen_reader_used"] is None
+
+    # Everything except not_covered, whose whole subject is what was not
+    # done -- including a procedure naming the announcements a future
+    # listening test should check for.
+    blob = json.dumps({k: v for k, v in record.items()
+                       if k != "not_covered"})
+    # Context on both sides: a backward-only window cut the word
+    # "possible" off the phrase that made the sentence honest.
+    for match in re.finditer(r".{0,90}announc\w*.{0,40}", blob):
+        window = match.group(0).lower()
+        assert ("no screen reader" in window or "not an announcement" in window
+                or "makes an announcement possible" in window
+                or "listening test" in window), (
+            "an announcement is claimed without saying none was heard: %s"
+            % match.group(0)[-90:])
+
+
+def test_the_third_viewport_is_named_for_what_it_is(record):
+    """It is the CSS viewport 400% zoom produces, not an observed zoom
+    run, and reflow is WCAG 1.4.10 rather than 1.4.4."""
+    assert "reflow-400pct-equivalent" in record["viewports"]
+    assert not any("high-zoom" in v for v in record["viewports"])

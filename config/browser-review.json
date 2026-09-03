@@ -34,85 +34,9 @@
           "url": "/explore/?class=core:ValueDisposition"
         },
         "diagrams": {
-          "high-zoom-400pct": {
-            "arrowheads": {
-              "markers": 3,
-              "paths_with_marker_end": 16
-            },
-            "diagrams": [
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 17
-                },
-                "frame": {
-                  "height": 123,
-                  "width": 280
-                },
-                "index": 0,
-                "labels_measured": 17,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 7,
-                  "rect": 12,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 126,
-                  "width": 280
-                },
-                "index": 1,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 112,
-                  "width": 280
-                },
-                "index": 2,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              }
-            ],
-            "diagrams_found": 3,
-            "document_client_width": 320,
-            "document_scroll_width": 320,
-            "horizontal_scroll": false,
-            "passed": true,
-            "screenshot": {
-              "bytes": 253032,
-              "path": "docs/site/browser-review/models-chromium-high-zoom-400pct.png",
-              "sha256": "e42251d31e660e714315f611f0afac8bdc22abe48c1e143ed80b885b38b87df2"
-            },
-            "viewport": {
-              "height": 256,
-              "width": 320
-            },
-            "widest_overflowing_element": null
-          },
           "narrow": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -132,6 +56,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -150,6 +75,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -168,6 +94,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -178,9 +105,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 258072,
+              "bytes": 257981,
               "path": "docs/site/browser-review/models-chromium-narrow.png",
-              "sha256": "fe4dcdb6e446843993933d0bdf7572febc8788919c78c14de65299af696cb53c"
+              "sha256": "7819c84a07be5c6ae1b98f665f10de2247467df5bfecbb1fd06bb3eba8e727c8"
             },
             "viewport": {
               "height": 780,
@@ -188,8 +115,90 @@
             },
             "widest_overflowing_element": null
           },
+          "reflow-400pct-equivalent": {
+            "arrowheads": {
+              "dangling_marker_references": [],
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 7,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 252958,
+              "path": "docs/site/browser-review/models-chromium-reflow-400pct-equivalent.png",
+              "sha256": "207a834de15f0054a9c4209be27c0905e0ccb2f8dedb57a2298ecc09a5e4ee39"
+            },
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
           "wide": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -209,6 +218,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -227,6 +237,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -245,6 +256,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -255,9 +267,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 299499,
+              "bytes": 299403,
               "path": "docs/site/browser-review/models-chromium-wide.png",
-              "sha256": "22e67eef54e306776761b9bb275166705465fd62caa3470210d91a5880a30231"
+              "sha256": "dfc3edd2aed9e2c5ce4d9525b5ba406974c849c6daaf84fa4da181e8d8cfb7c8"
             },
             "viewport": {
               "height": 900,
@@ -292,14 +304,16 @@
           "copy_result": {
             "aria_live": "polite",
             "exposed_as_status_role": true,
-            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must put text in the region, and the text recorded above is what the region held afterwards. No screen reader ran, so this is availability for announcement, not an announcement",
             "role": "status",
+            "status_regions_matching_copy_result": 1,
             "text_after_click": "Copy refused by the browser — select the text.",
             "text_before_click": "",
             "text_changed": true
           },
           "exposed_as_status_role": true,
-          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "note": "accessibility tree and DOM only. No screen reader ran, so nothing here is an observed announcement: what is recorded is that the region is exposed with the right role and that its text changed, which is what makes an announcement possible. Whether one happens, once, at the right moment and with useful wording, is a listening test.",
+          "observation": "live-region content updated in the DOM",
           "passed": true,
           "screen_reader_used": null,
           "status_aria_live": "polite",
@@ -347,85 +361,9 @@
           "url": "/explore/?class=core:ValueDisposition"
         },
         "diagrams": {
-          "high-zoom-400pct": {
-            "arrowheads": {
-              "markers": 3,
-              "paths_with_marker_end": 16
-            },
-            "diagrams": [
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 17
-                },
-                "frame": {
-                  "height": 123,
-                  "width": 280
-                },
-                "index": 0,
-                "labels_measured": 17,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 7,
-                  "rect": 12,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 126,
-                  "width": 280
-                },
-                "index": 1,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 112,
-                  "width": 280
-                },
-                "index": 2,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              }
-            ],
-            "diagrams_found": 3,
-            "document_client_width": 320,
-            "document_scroll_width": 320,
-            "horizontal_scroll": false,
-            "passed": true,
-            "screenshot": {
-              "bytes": 260674,
-              "path": "docs/site/browser-review/models-chrome-high-zoom-400pct.png",
-              "sha256": "614229afd710615b892aaeaedee6e48927e7fd2e0ee5c9febf79abf052bd2ebe"
-            },
-            "viewport": {
-              "height": 256,
-              "width": 320
-            },
-            "widest_overflowing_element": null
-          },
           "narrow": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -445,6 +383,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -463,6 +402,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -481,6 +421,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -491,9 +432,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 264845,
+              "bytes": 264758,
               "path": "docs/site/browser-review/models-chrome-narrow.png",
-              "sha256": "cfe628aa00bfdef6b575ebb5c8b4c8075976ced0be30a3a696183904d2610e05"
+              "sha256": "b6b70e60915dd7ec8a524e28ac7c961c09e2636683fbd5b233e6de87956d9550"
             },
             "viewport": {
               "height": 780,
@@ -501,8 +442,90 @@
             },
             "widest_overflowing_element": null
           },
+          "reflow-400pct-equivalent": {
+            "arrowheads": {
+              "dangling_marker_references": [],
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 7,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 260589,
+              "path": "docs/site/browser-review/models-chrome-reflow-400pct-equivalent.png",
+              "sha256": "0c6c7c609dc1fb8a331b489131b97a7b073eb3c63e49dd098fce270f89d006a7"
+            },
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
           "wide": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -522,6 +545,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -540,6 +564,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -558,6 +583,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -568,9 +594,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 306167,
+              "bytes": 306075,
               "path": "docs/site/browser-review/models-chrome-wide.png",
-              "sha256": "7fb6de898c56c8f91af876c062d82fb77003953af4b2ff6e5a66860e8dba6dbf"
+              "sha256": "a5dc8ed374bb4af52d95b65615c20e56fa520a36e1ee3696bb506ef1f9eff93b"
             },
             "viewport": {
               "height": 900,
@@ -605,14 +631,16 @@
           "copy_result": {
             "aria_live": "polite",
             "exposed_as_status_role": true,
-            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must put text in the region, and the text recorded above is what the region held afterwards. No screen reader ran, so this is availability for announcement, not an announcement",
             "role": "status",
+            "status_regions_matching_copy_result": 1,
             "text_after_click": "Copied.",
             "text_before_click": "",
             "text_changed": true
           },
           "exposed_as_status_role": true,
-          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "note": "accessibility tree and DOM only. No screen reader ran, so nothing here is an observed announcement: what is recorded is that the region is exposed with the right role and that its text changed, which is what makes an announcement possible. Whether one happens, once, at the right moment and with useful wording, is a listening test.",
+          "observation": "live-region content updated in the DOM",
           "passed": true,
           "screen_reader_used": null,
           "status_aria_live": "polite",
@@ -660,85 +688,9 @@
           "url": "/explore/?class=core:ValueDisposition"
         },
         "diagrams": {
-          "high-zoom-400pct": {
-            "arrowheads": {
-              "markers": 3,
-              "paths_with_marker_end": 16
-            },
-            "diagrams": [
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 17
-                },
-                "frame": {
-                  "height": 123,
-                  "width": 280
-                },
-                "index": 0,
-                "labels_measured": 17,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 7,
-                  "rect": 12,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 126,
-                  "width": 280
-                },
-                "index": 1,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 112,
-                  "width": 280
-                },
-                "index": 2,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              }
-            ],
-            "diagrams_found": 3,
-            "document_client_width": 320,
-            "document_scroll_width": 320,
-            "horizontal_scroll": false,
-            "passed": true,
-            "screenshot": {
-              "bytes": 260674,
-              "path": "docs/site/browser-review/models-edge-high-zoom-400pct.png",
-              "sha256": "614229afd710615b892aaeaedee6e48927e7fd2e0ee5c9febf79abf052bd2ebe"
-            },
-            "viewport": {
-              "height": 256,
-              "width": 320
-            },
-            "widest_overflowing_element": null
-          },
           "narrow": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -758,6 +710,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -776,6 +729,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -794,6 +748,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -804,9 +759,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 264845,
+              "bytes": 264758,
               "path": "docs/site/browser-review/models-edge-narrow.png",
-              "sha256": "cfe628aa00bfdef6b575ebb5c8b4c8075976ced0be30a3a696183904d2610e05"
+              "sha256": "b6b70e60915dd7ec8a524e28ac7c961c09e2636683fbd5b233e6de87956d9550"
             },
             "viewport": {
               "height": 780,
@@ -814,8 +769,90 @@
             },
             "widest_overflowing_element": null
           },
+          "reflow-400pct-equivalent": {
+            "arrowheads": {
+              "dangling_marker_references": [],
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 7,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 260589,
+              "path": "docs/site/browser-review/models-edge-reflow-400pct-equivalent.png",
+              "sha256": "0c6c7c609dc1fb8a331b489131b97a7b073eb3c63e49dd098fce270f89d006a7"
+            },
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
           "wide": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -835,6 +872,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -853,6 +891,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -871,6 +910,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -881,9 +921,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 306167,
+              "bytes": 306075,
               "path": "docs/site/browser-review/models-edge-wide.png",
-              "sha256": "7fb6de898c56c8f91af876c062d82fb77003953af4b2ff6e5a66860e8dba6dbf"
+              "sha256": "a5dc8ed374bb4af52d95b65615c20e56fa520a36e1ee3696bb506ef1f9eff93b"
             },
             "viewport": {
               "height": 900,
@@ -918,14 +958,16 @@
           "copy_result": {
             "aria_live": "polite",
             "exposed_as_status_role": true,
-            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must put text in the region, and the text recorded above is what the region held afterwards. No screen reader ran, so this is availability for announcement, not an announcement",
             "role": "status",
+            "status_regions_matching_copy_result": 1,
             "text_after_click": "Copied.",
             "text_before_click": "",
             "text_changed": true
           },
           "exposed_as_status_role": true,
-          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "note": "accessibility tree and DOM only. No screen reader ran, so nothing here is an observed announcement: what is recorded is that the region is exposed with the right role and that its text changed, which is what makes an announcement possible. Whether one happens, once, at the right moment and with useful wording, is a listening test.",
+          "observation": "live-region content updated in the DOM",
           "passed": true,
           "screen_reader_used": null,
           "status_aria_live": "polite",
@@ -973,85 +1015,9 @@
           "url": "/explore/?class=core:ValueDisposition"
         },
         "diagrams": {
-          "high-zoom-400pct": {
-            "arrowheads": {
-              "markers": 3,
-              "paths_with_marker_end": 16
-            },
-            "diagrams": [
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 17
-                },
-                "frame": {
-                  "height": 123,
-                  "width": 280
-                },
-                "index": 0,
-                "labels_measured": 17,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 7,
-                  "rect": 12,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 126,
-                  "width": 280
-                },
-                "index": 1,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 112,
-                  "width": 280
-                },
-                "index": 2,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              }
-            ],
-            "diagrams_found": 3,
-            "document_client_width": 320,
-            "document_scroll_width": 320,
-            "horizontal_scroll": false,
-            "passed": true,
-            "screenshot": {
-              "bytes": 250565,
-              "path": "docs/site/browser-review/models-firefox-high-zoom-400pct.png",
-              "sha256": "b531bab38cd1cb36ea4716e3f0013622bf88bb92c8e99ad31de709b12ae0ac7e"
-            },
-            "viewport": {
-              "height": 256,
-              "width": 320
-            },
-            "widest_overflowing_element": null
-          },
           "narrow": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -1071,6 +1037,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1089,6 +1056,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1107,6 +1075,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -1117,9 +1086,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 256279,
+              "bytes": 256254,
               "path": "docs/site/browser-review/models-firefox-narrow.png",
-              "sha256": "181158b0042780c4bb88eea52ebeb66a9e92f31b236aaa19ddd67560598dedc2"
+              "sha256": "6e5478e119f4946c9dc59018b1755fdab39ec90b2461e0018c913b517f3d8e7a"
             },
             "viewport": {
               "height": 780,
@@ -1127,8 +1096,90 @@
             },
             "widest_overflowing_element": null
           },
+          "reflow-400pct-equivalent": {
+            "arrowheads": {
+              "dangling_marker_references": [],
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 7,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 250560,
+              "path": "docs/site/browser-review/models-firefox-reflow-400pct-equivalent.png",
+              "sha256": "941d05f6f406400256f8328e5787fcf28a55814090508405a414956fca05cd16"
+            },
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
           "wide": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -1148,6 +1199,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1166,6 +1218,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1184,6 +1237,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -1194,9 +1248,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 310644,
+              "bytes": 310663,
               "path": "docs/site/browser-review/models-firefox-wide.png",
-              "sha256": "8658ca53d6e9ae2cf787241468a65695d0d35615137a907a0253c07b556cae66"
+              "sha256": "69e2db3a4fc07065e22dfc6f8f09c0294a85617a0e65b82e9634d112c7c61411"
             },
             "viewport": {
               "height": 900,
@@ -1227,14 +1281,16 @@
           "copy_result": {
             "aria_live": "polite",
             "exposed_as_status_role": true,
-            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must put text in the region, and the text recorded above is what the region held afterwards. No screen reader ran, so this is availability for announcement, not an announcement",
             "role": "status",
+            "status_regions_matching_copy_result": 1,
             "text_after_click": "Copied.",
             "text_before_click": "",
             "text_changed": true
           },
           "exposed_as_status_role": true,
-          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "note": "accessibility tree and DOM only. No screen reader ran, so nothing here is an observed announcement: what is recorded is that the region is exposed with the right role and that its text changed, which is what makes an announcement possible. Whether one happens, once, at the right moment and with useful wording, is a listening test.",
+          "observation": "live-region content updated in the DOM",
           "passed": true,
           "screen_reader_used": null,
           "status_aria_live": "polite",
@@ -1273,85 +1329,9 @@
           "url": "/explore/?class=core:ValueDisposition"
         },
         "diagrams": {
-          "high-zoom-400pct": {
-            "arrowheads": {
-              "markers": 3,
-              "paths_with_marker_end": 16
-            },
-            "diagrams": [
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 17
-                },
-                "frame": {
-                  "height": 123,
-                  "width": 280
-                },
-                "index": 0,
-                "labels_measured": 17,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 7,
-                  "rect": 12,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 126,
-                  "width": 280
-                },
-                "index": 1,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              },
-              {
-                "clipped": [],
-                "elements": {
-                  "marker": 1,
-                  "path": 6,
-                  "rect": 6,
-                  "text": 15
-                },
-                "frame": {
-                  "height": 112,
-                  "width": 280
-                },
-                "index": 2,
-                "labels_measured": 15,
-                "overlapping_labels": [],
-                "visible": true,
-                "zero_length_paths": []
-              }
-            ],
-            "diagrams_found": 3,
-            "document_client_width": 320,
-            "document_scroll_width": 320,
-            "horizontal_scroll": false,
-            "passed": true,
-            "screenshot": {
-              "bytes": 239348,
-              "path": "docs/site/browser-review/models-playwright-webkit-high-zoom-400pct.png",
-              "sha256": "52b4f3bc5f4babb315705d283a751f58d692bfa880bf28e754be995a8be3975c"
-            },
-            "viewport": {
-              "height": 256,
-              "width": 320
-            },
-            "widest_overflowing_element": null
-          },
           "narrow": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -1371,6 +1351,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1389,6 +1370,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1407,6 +1389,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -1417,9 +1400,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 249137,
+              "bytes": 249150,
               "path": "docs/site/browser-review/models-playwright-webkit-narrow.png",
-              "sha256": "7dc01e61a284b6bc8172c43762597b9c3e9f1a98419cd9abab0a4f23cac209cf"
+              "sha256": "f8cbf28b1621f5cef11e782e77f421aacc2802948c8fab97e02f922a8ac8810c"
             },
             "viewport": {
               "height": 780,
@@ -1427,8 +1410,90 @@
             },
             "widest_overflowing_element": null
           },
+          "reflow-400pct-equivalent": {
+            "arrowheads": {
+              "dangling_marker_references": [],
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 7,
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "paths_measured": 6,
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 239329,
+              "path": "docs/site/browser-review/models-playwright-webkit-reflow-400pct-equivalent.png",
+              "sha256": "6ea061c9863d8bc06be6b50a8b180eecdcd87900ce9fa5ca892ddb7d027adefb"
+            },
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
           "wide": {
             "arrowheads": {
+              "dangling_marker_references": [],
               "markers": 3,
               "paths_with_marker_end": 16
             },
@@ -1448,6 +1513,7 @@
                 "index": 0,
                 "labels_measured": 17,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1466,6 +1532,7 @@
                 "index": 1,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 7,
                 "visible": true,
                 "zero_length_paths": []
               },
@@ -1484,6 +1551,7 @@
                 "index": 2,
                 "labels_measured": 15,
                 "overlapping_labels": [],
+                "paths_measured": 6,
                 "visible": true,
                 "zero_length_paths": []
               }
@@ -1494,9 +1562,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 270823,
+              "bytes": 270802,
               "path": "docs/site/browser-review/models-playwright-webkit-wide.png",
-              "sha256": "3f3fe99d25a5ac9ae48bd675f4fcb9f755c6907496630b302ea94af7e3af23d6"
+              "sha256": "36ab601166e0df4e4857c3dc7f8d37f61a74e49fd5307d5864785edee77fb539"
             },
             "viewport": {
               "height": 900,
@@ -1527,14 +1595,16 @@
           "copy_result": {
             "aria_live": "polite",
             "exposed_as_status_role": true,
-            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must put text in the region, and the text recorded above is what the region held afterwards. No screen reader ran, so this is availability for announcement, not an announcement",
             "role": "status",
+            "status_regions_matching_copy_result": 1,
             "text_after_click": "Copied.",
             "text_before_click": "",
             "text_changed": true
           },
           "exposed_as_status_role": true,
-          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "note": "accessibility tree and DOM only. No screen reader ran, so nothing here is an observed announcement: what is recorded is that the region is exposed with the right role and that its text changed, which is what makes an announcement possible. Whether one happens, once, at the right moment and with useful wording, is a listening test.",
+          "observation": "live-region content updated in the DOM",
           "passed": true,
           "screen_reader_used": null,
           "status_aria_live": "polite",
@@ -1554,7 +1624,18 @@
   "generated_by": "tools/site/browser_review.py",
   "not_covered": {
     "safari": "not tested. This machine runs Windows, Safari has had no Windows build since 2012, and Playwright's WebKit is a different browser sharing an engine lineage. It is recorded as playwright-webkit.",
-    "screen_reader": "not run. The live-region checks read the accessibility tree, which is what a screen reader consumes; whether NVDA, JAWS or VoiceOver announce it at the right moment is a listening test and remains open."
+    "screen_reader": {
+      "accepted_risk": null,
+      "procedure": [
+        "open /explore/ with NVDA running",
+        "type into the search field and confirm the result count is announced once, after typing settles, and not on every keystroke",
+        "open a class and activate the Copy button; confirm the copy result is announced once, at the moment of the click, and that the wording says what happened",
+        "record for each region whether it announced, how many times, when, and whether the wording was useful"
+      ],
+      "required_before_deployment": "one Chrome plus NVDA listening pass, recorded",
+      "status": "not run",
+      "why": "no screen reader is installed on this machine, and a listening test cannot be performed by a tool. What was checked is that both regions are exposed with role=status and aria-live=polite and that their text changes -- availability for announcement, not an announcement."
+    }
   },
   "operating_system": "Windows-10-10.0.19045-SP0",
   "passed": true,
@@ -1569,13 +1650,13 @@
   "reviewed_files_sha256": "7aaf25320c4577c012dd7e280ff740143084ed4dd621a265ee194fe4c42c691e",
   "screenshots_at": "docs/site/browser-review",
   "viewports": {
-    "high-zoom-400pct": {
-      "height": 256,
-      "width": 320
-    },
     "narrow": {
       "height": 780,
       "width": 360
+    },
+    "reflow-400pct-equivalent": {
+      "height": 256,
+      "width": 320
     },
     "wide": {
       "height": 900,

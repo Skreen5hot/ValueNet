@@ -23,11 +23,13 @@ shares an engine lineage. It is recorded as `playwright-webkit`, never as
 Safari, because a record claiming Safari coverage would be worse than one
 admitting the gap.
 
-No screen reader is run. The live-region checks read the accessibility
-tree the browser exposes, which is what a screen reader consumes, but
-consuming it is not the same as announcing it. Whether NVDA, JAWS or
-VoiceOver actually speak the text at the right moment is a listening test
-and remains open.
+No screen reader is run, so nothing here observes an announcement. The
+live-region checks read the accessibility tree and the DOM: that a region
+is exposed with the right role, and that its text changed. That is
+availability for announcement. Whether NVDA, JAWS or VoiceOver speak it,
+once, at the right moment and with useful wording, is a listening test
+and remains open. The record says "available for announcement" rather
+than "announced" for that reason.
 """
 
 from __future__ import annotations
@@ -56,14 +58,19 @@ GENERATOR = "tools/site/browser_review.py"
 #: the record says which record was exercised.
 DEEP_LINK_CLASS = "core:ValueDisposition"
 
-#: narrow is a phone. wide is a laptop. high-zoom is what a 1280x1024
-#: screen becomes at 400% browser zoom, which is the WCAG 1.4.4 limit and
-#: the case that actually breaks layouts -- the viewport loses height as
-#: well as width, and a fixed-width control has nowhere to go.
+#: narrow is a phone. wide is a laptop. The third is the CSS viewport a
+#: 1280x1024 screen presents at 400% browser zoom, which is how WCAG
+#: 1.4.10 reflow is normally exercised -- the viewport loses height as
+#: well as width and a fixed-width control has nowhere to go.
+#:
+#: It is named for what it is. No zoom was applied: the browser ran at
+#: 100% with a small viewport, which is equivalent for reflow and is not
+#: the same thing as an observed zoom run. 1.4.4 is text resizing to
+#: 200%, a different success criterion, and is not covered here.
 VIEWPORTS = {
     "narrow": {"width": 360, "height": 780},
     "wide": {"width": 1440, "height": 900},
-    "high-zoom-400pct": {"width": 320, "height": 256},
+    "reflow-400pct-equivalent": {"width": 320, "height": 256},
 }
 
 #: Payloads placed in ontology-derived fields. Each would do something
@@ -233,7 +240,12 @@ def check_live_regions(page, base: str) -> dict:
     page.locator("button.copy").first.click()
     page.wait_for_timeout(300)
     copy_after = page.locator(".copy-result").inner_text()
-    copy_exposed = page.get_by_role("status").count() >= 1
+
+    # Scoped to the element under test. get_by_role("status") alone
+    # counted any status region, and #status already exists, so this
+    # reported the copy region as exposed without ever looking at it.
+    copy_exposed = page.get_by_role("status").and_(
+        page.locator(".copy-result")).count()
 
     return {
         "status_role": attrs["role"],
@@ -249,21 +261,31 @@ def check_live_regions(page, base: str) -> dict:
             "text_before_click": copy_before,
             "text_after_click": copy_after,
             "text_changed": copy_before != copy_after,
-            "exposed_as_status_role": copy_exposed,
+            "exposed_as_status_role": copy_exposed == 1,
+            "status_regions_matching_copy_result": copy_exposed,
             "note": ("the clipboard is commonly refused without a user "
                      "gesture the browser recognises; either outcome must "
-                     "announce, and the text recorded above is what it "
-                     "said"),
+                     "put text in the region, and the text recorded above "
+                     "is what the region held afterwards. No screen "
+                     "reader ran, so this is availability for "
+                     "announcement, not an announcement"),
         },
         "screen_reader_used": None,
-        "note": ("accessibility tree only; no screen reader was run, so "
-                 "announcement timing and verbosity are unverified"),
+        "observation": "live-region content updated in the DOM",
+        "note": ("accessibility tree and DOM only. No screen reader ran, "
+                 "so nothing here is an observed announcement: what is "
+                 "recorded is that the region is exposed with the right "
+                 "role and that its text changed, which is what makes an "
+                 "announcement possible. Whether one happens, once, at "
+                 "the right moment and with useful wording, is a "
+                 "listening test."),
         "passed": (attrs["role"] == "status"
                    and attrs["live"] == "polite"
                    and exposed
                    and before != after
                    and copy_attrs["role"] == "status"
                    and copy_attrs["live"] == "polite"
+                   and copy_exposed == 1
                    and copy_before == ""
                    and copy_after != ""),
     }
@@ -330,32 +352,31 @@ MEASURE_JS = r"""() => {
             const frame = svg.getBoundingClientRect();
             const parts = {rect: 0, text: 0, path: 0, marker: 0};
             const clipped = [], empty = [], texts = [];
+            const slack = 1.5;
             svg.querySelectorAll('rect, text, path, marker').forEach(el => {
                 const tag = el.tagName.toLowerCase();
                 parts[tag] = (parts[tag] || 0) + 1;
                 if (tag === 'marker') { return; }
-                const r = el.getBoundingClientRect();
-                if (tag === 'path') {
-                    if (el.getTotalLength && el.getTotalLength() < 1) {
-                        empty.push(el.getAttribute('d') || 'no d');
-                    }
-                    return;
+
+                if (tag === 'path' && el.getTotalLength
+                    && el.getTotalLength() < 1) {
+                    empty.push(el.getAttribute('d') || 'no d');
                 }
+
+                const r = el.getBoundingClientRect();
                 if (r.width === 0 && r.height === 0) { return; }
-                const slack = 1.5;
                 if (r.left < frame.left - slack || r.top < frame.top - slack
                     || r.right > frame.right + slack
                     || r.bottom > frame.bottom + slack) {
                     clipped.push({tag: tag,
                                   text: (el.textContent || '').slice(0, 30),
+                                  d: tag === 'path'
+                                     ? (el.getAttribute('d') || '').slice(0, 40)
+                                     : null,
                                   left: Math.round(r.left - frame.left),
                                   right: Math.round(r.right - frame.left)});
                 }
                 if (tag === 'text') {
-                    // Grouped by the <g> that wraps a node, because a
-                    // label and its caption are two lines of one label
-                    // and are meant to sit together. Comparing them
-                    // reported every box in the suite as a collision.
                     const g = el.closest('g');
                     texts.push({t: (el.textContent || '').slice(0, 30),
                                 g: g ? (g.getAttribute('data-iri') || 'g')
@@ -364,6 +385,7 @@ MEASURE_JS = r"""() => {
                                 w: r.width, h: r.height});
                 }
             });
+
             const overlaps = [];
             for (let a = 0; a < texts.length; a += 1) {
                 for (let b = a + 1; b < texts.length; b += 1) {
@@ -386,6 +408,7 @@ MEASURE_JS = r"""() => {
                 visible: frame.width > 0 && frame.height > 0,
                 elements: parts,
                 labels_measured: texts.length,
+                paths_measured: parts.path,
                 clipped: clipped,
                 zero_length_paths: empty,
                 overlapping_labels: overlaps
@@ -396,11 +419,19 @@ MEASURE_JS = r"""() => {
 
 ARROWS_JS = r"""() => {
         const markers = document.querySelectorAll('svg.diagram marker').length;
-        let referencing = 0;
+        const referencing = [], dangling = [];
         document.querySelectorAll('svg.diagram path').forEach(p => {
-            if (p.getAttribute('marker-end')) { referencing += 1; }
+            const ref = p.getAttribute('marker-end');
+            if (!ref) { return; }
+            referencing.push(ref);
+            const id = (ref.match(/url\(#([^)]+)\)/) || [])[1];
+            const target = id ? p.ownerSVGElement.querySelector(
+                'marker#' + CSS.escape(id)) : null;
+            if (!target) { dangling.push(ref); }
         });
-        return {markers: markers, paths_with_marker_end: referencing};
+        return {markers: markers,
+                paths_with_marker_end: referencing.length,
+                dangling_marker_references: dangling};
     }"""
 
 OVERFLOW_JS = r"""() => ({
@@ -472,6 +503,7 @@ def check_diagrams(page, base: str, viewport: str, shots: Path,
                     for d in measured)
             and arrowheads["markers"] >= 3
             and arrowheads["paths_with_marker_end"] >= 10
+            and not arrowheads["dangling_marker_references"]
             and not horizontal),
     }
 
@@ -665,11 +697,30 @@ def main(argv=None) -> int:
                        "had no Windows build since 2012, and Playwright's "
                        "WebKit is a different browser sharing an engine "
                        "lineage. It is recorded as playwright-webkit."),
-            "screen_reader": ("not run. The live-region checks read the "
-                              "accessibility tree, which is what a screen "
-                              "reader consumes; whether NVDA, JAWS or "
-                              "VoiceOver announce it at the right moment "
-                              "is a listening test and remains open."),
+            "screen_reader": {
+                "status": "not run",
+                "why": ("no screen reader is installed on this machine, "
+                        "and a listening test cannot be performed by a "
+                        "tool. What was checked is that both regions are "
+                        "exposed with role=status and aria-live=polite "
+                        "and that their text changes -- availability for "
+                        "announcement, not an announcement."),
+                "required_before_deployment": (
+                    "one Chrome plus NVDA listening pass, recorded"),
+                "procedure": [
+                    "open /explore/ with NVDA running",
+                    "type into the search field and confirm the result "
+                    "count is announced once, after typing settles, and "
+                    "not on every keystroke",
+                    "open a class and activate the Copy button; confirm "
+                    "the copy result is announced once, at the moment of "
+                    "the click, and that the wording says what happened",
+                    "record for each region whether it announced, how "
+                    "many times, when, and whether the wording was "
+                    "useful",
+                ],
+                "accepted_risk": None,
+            },
         },
         "passed": all(b.get("passed") for b in reviewed),
     }

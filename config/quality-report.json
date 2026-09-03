@@ -58,32 +58,35 @@
     "passed": true,
     "record": "config/browser-review.json"
   },
-  "commit": "5302e0b554f010c56574ade8d6894f8942d54bb1",
+  "commit": "4851e65e888d5b2d339b928073e62c892ff47a58",
   "format_version": 1,
   "fresh_clone": {
     "build_exit": 0,
-    "bundle_sha256": "726ab090dbc035feec74ea51f484ce7a924bcca83584089bbd2b86747be1746f",
+    "bundle_sha256": "2bf3b95e4f470bfe50d99b72df737f745a2d7f244c59d7f7abf3367ac3a1673d",
     "clone_root_length": 54,
-    "commit": "5302e0b554f010c56574ade8d6894f8942d54bb1",
+    "commit": "4851e65e888d5b2d339b928073e62c892ff47a58",
     "passed": true,
     "remotes": [
       "origin"
     ],
     "site_present_before_build": false,
-    "site_tree_digest": "034a8667feba6e617905d8ba39058ef7058d666bb783a106305d414c53f86a3b",
+    "site_tree_digest": "8e53d3854ca4e5b6f91dbd4f87158c587beaa7a6f5c4d890a541a0f351894373",
     "tests_exit": 0,
-    "tests_summary": "239 passed in 45.08s"
+    "tests_summary": "239 passed in 59.06s"
   },
+  "gate_blocked_by": "public_content_sign_off is unsigned. Every measured check passed; the gate does not, because the owner has not stated that what the site publishes is what they intend to publish.",
   "generated_by": "tools/site/quality_report.py",
   "links": {
     "broken": [],
     "external_references": [],
-    "internal_references": 133,
-    "note": "Resolved against the built artifact, which is what is served. A directory target resolves through its index.html, the way a web server would.",
+    "fragments_checked": 7,
+    "internal_references": 140,
+    "note": "Resolved against the built artifact, which is what is served. A directory target resolves through its index.html, the way a web server would, and a fragment must name an id that exists on the page it lands on.",
     "passed": true
   },
+  "measured_checks_passed": true,
   "operating_system": "Windows-10-10.0.19045-SP0",
-  "passed": true,
+  "passed": false,
   "public_content_sign_off": {
     "asserts": [
       "the published Turtle is the authored corpus and nothing else",
@@ -130,9 +133,9 @@
     "problems": []
   },
   "suite": {
-    "added": 255,
+    "added": 262,
     "collisions": [],
-    "final_collected": 961,
+    "final_collected": 968,
     "missing_unrecorded": [],
     "passed": true,
     "pre_site_collected": 707,

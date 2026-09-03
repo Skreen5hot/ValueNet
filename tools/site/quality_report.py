@@ -63,48 +63,99 @@ def git(*args: str, cwd: Path | None = None) -> str:
 
 
 class Links(html.parser.HTMLParser):
-    """Every href and src, with the page that carried it."""
+    """Every href and src, and every id, with the page that carried it."""
 
     def __init__(self):
         super().__init__()
-        self.found: list[tuple[str, str]] = []
+        self.found: list = []
+        self.ids: set = set()
 
     def handle_starttag(self, tag, attrs):
         for name, value in attrs:
             if name in ("href", "src") and value:
                 self.found.append((tag, value))
+            if name == "id" and value:
+                self.ids.add(value)
 
 
-def link_report(artifact: Path) -> dict:
-    """Every internal reference, and whether the build serves it."""
-    rows, broken, external = [], [], []
+def link_report(artifact) -> dict:
+    """Every internal reference, and whether the build serves it.
+
+    Fragments are resolved rather than stripped. The first version
+    discarded same-page fragments entirely and cut the fragment off
+    cross-page ones, so a skip link pointing at an element that no longer
+    existed produced "0 broken links" -- and the skip link is the single
+    reference on this site whose whole purpose is the fragment.
+    """
+    # Resolved once, so page paths and reference targets are comparable.
+    artifact = artifact.resolve()
+
+    # Keyed by resolved absolute path. Keyed by the rglob path, every
+    # cross-page fragment looked up an absolute path in a table of
+    # relative ones, missed, and was recorded as "not an HTML page"
+    # rather than checked -- so an invented anchor produced no finding.
+    pages = {}
     for page in sorted(artifact.rglob("*.html")):
         parser = Links()
         parser.feed(page.read_text(encoding="utf-8"))
+        pages[page.resolve()] = parser
+
+    rows, broken, external = [], [], []
+    fragments_checked = 0
+    for page, parser in pages.items():
+        here = page.relative_to(artifact).as_posix()
         for tag, target in parser.found:
             if target.startswith(("http://", "https://", "mailto:")):
-                external.append({"page": page.relative_to(artifact).as_posix(),
-                                 "target": target})
+                external.append({"page": here, "target": target})
                 continue
-            if target.startswith("#"):
+
+            path_part, _, fragment = target.partition("#")
+            path_part = path_part.split("?", 1)[0]
+
+            if not path_part and not fragment:
                 continue
-            clean = target.split("#", 1)[0].split("?", 1)[0]
-            if not clean:
-                continue
-            resolved = (page.parent / clean).resolve()
-            ok = resolved.is_file() or (resolved / "index.html").is_file()
-            row = {"page": page.relative_to(artifact).as_posix(),
-                   "tag": tag, "target": target, "resolves": ok}
+
+            if path_part:
+                resolved = (page.parent / path_part).resolve()
+                if resolved.is_dir() or path_part.endswith("/"):
+                    resolved = resolved / "index.html"
+                serves = resolved.is_file()
+            else:
+                resolved = page.resolve()   # same-page fragment
+                serves = True
+
+            row = {"page": here, "tag": tag, "target": target,
+                   "resolves": serves, "fragment": fragment or None,
+                   "fragment_resolves": None}
+
+            if serves and fragment:
+                fragments_checked += 1
+                owner = pages.get(resolved)
+                if owner is None:
+                    # A fragment into something that is not an HTML page
+                    # cannot be checked, and claiming otherwise would be
+                    # the same overclaim this replaced.
+                    row["fragment_resolves"] = None
+                    row["note"] = "target is not an HTML page"
+                else:
+                    row["fragment_resolves"] = fragment in owner.ids
+                    if not row["fragment_resolves"]:
+                        serves = False
+                        row["resolves"] = False
+
             rows.append(row)
-            if not ok:
+            if not serves:
                 broken.append(row)
+
     return {
         "internal_references": len(rows),
+        "fragments_checked": fragments_checked,
         "broken": broken,
         "external_references": external,
         "note": ("Resolved against the built artifact, which is what is "
                  "served. A directory target resolves through its "
-                 "index.html, the way a web server would."),
+                 "index.html, the way a web server would, and a fragment "
+                 "must name an id that exists on the page it lands on."),
         "passed": not broken,
     }
 
@@ -319,20 +370,36 @@ def main(argv=None) -> int:
     if args.fresh_clone:
         record["fresh_clone"] = fresh_clone_record(sys.executable)
 
+    # Two different questions, and conflating them let the record say
+    # `passed: true` while the sign-off it requires was unsigned.
+    #
+    # measured_checks_passed is what this tool can determine. passed is
+    # the gate, and the gate includes a statement only the owner can
+    # make. An unsigned block is a true description of where the work
+    # stands; a gate reporting success over one is not.
     sections = ["links", "schemas", "suite"]
-    record["passed"] = (
+    record["measured_checks_passed"] = (
         all(record[s]["passed"] for s in sections)
         and record["browser_review"]["passed"]
         and record.get("fresh_clone", {"passed": True})["passed"])
+
+    signed = record["public_content_sign_off"]["status"] == "signed"
+    record["passed"] = record["measured_checks_passed"] and signed
+    if not signed:
+        record["gate_blocked_by"] = (
+            "public_content_sign_off is unsigned. Every measured check "
+            "passed; the gate does not, because the owner has not stated "
+            "that what the site publishes is what they intend to publish.")
 
     out = Path(args.out)
     out = out if out.is_absolute() else _root / out
     out.write_bytes(json.dumps(record, indent=2, sort_keys=True,
                                ensure_ascii=False).encode("utf-8") + b"\n")
 
-    print("  links    %s  (%d internal, %d broken)"
+    print("  links    %s  (%d internal, %d fragment, %d broken)"
           % ("ok  " if record["links"]["passed"] else "FAIL",
              record["links"]["internal_references"],
+             record["links"]["fragments_checked"],
              len(record["links"]["broken"])))
     print("  schemas  %s  (%d document(s))"
           % ("ok  " if record["schemas"]["passed"] else "FAIL",
@@ -349,9 +416,15 @@ def main(argv=None) -> int:
           % ("ok  " if record["browser_review"]["passed"] else "FAIL",
              ", ".join(record["browser_review"]["engines"])))
     print()
-    print("  sign-off %s" % record["public_content_sign_off"]["status"])
+    print("  measured checks: %s"
+          % ("all passed" if record["measured_checks_passed"] else "FAILED"))
+    print("  sign-off       : %s"
+          % record["public_content_sign_off"]["status"])
+    print("  gate           : %s"
+          % ("passed" if record["passed"]
+             else "blocked -- " + record.get("gate_blocked_by", "")[:60]))
     print("  wrote %s" % args.out)
-    return 0 if record["passed"] else 1
+    return 0 if record["measured_checks_passed"] else 1
 
 
 if __name__ == "__main__":

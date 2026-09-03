@@ -58,21 +58,21 @@
     "passed": true,
     "record": "config/browser-review.json"
   },
-  "commit": "d0bc294c4d434c14bd26d9e80fdeb4eb60d46871",
+  "commit": "5302e0b554f010c56574ade8d6894f8942d54bb1",
   "format_version": 1,
   "fresh_clone": {
     "build_exit": 0,
-    "bundle_sha256": "5bea242da7db462fdf1a5892e9deeaffeab29f49c890f8d358bd7872c8e7474d",
+    "bundle_sha256": "726ab090dbc035feec74ea51f484ce7a924bcca83584089bbd2b86747be1746f",
     "clone_root_length": 54,
-    "commit": "d0bc294c4d434c14bd26d9e80fdeb4eb60d46871",
+    "commit": "5302e0b554f010c56574ade8d6894f8942d54bb1",
     "passed": true,
     "remotes": [
       "origin"
     ],
     "site_present_before_build": false,
-    "site_tree_digest": "56b3c423fcc38d67a1b64cab9184f16805edf331f6ad7453c8a7280f18cecb2f",
+    "site_tree_digest": "034a8667feba6e617905d8ba39058ef7058d666bb783a106305d414c53f86a3b",
     "tests_exit": 0,
-    "tests_summary": "216 passed in 47.26s"
+    "tests_summary": "239 passed in 45.08s"
   },
   "generated_by": "tools/site/quality_report.py",
   "links": {

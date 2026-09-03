@@ -58,21 +58,21 @@
     "passed": true,
     "record": "config/browser-review.json"
   },
-  "commit": "4851e65e888d5b2d339b928073e62c892ff47a58",
+  "commit": "3e908625db41c4120579001e8be19ab4e5c4326b",
   "format_version": 1,
   "fresh_clone": {
     "build_exit": 0,
-    "bundle_sha256": "2bf3b95e4f470bfe50d99b72df737f745a2d7f244c59d7f7abf3367ac3a1673d",
+    "bundle_sha256": "d8edf0f24675b172029cca64366c0e70c0d0a9cc4c2c4f7707762abcb01b3169",
     "clone_root_length": 54,
-    "commit": "4851e65e888d5b2d339b928073e62c892ff47a58",
+    "commit": "3e908625db41c4120579001e8be19ab4e5c4326b",
     "passed": true,
     "remotes": [
       "origin"
     ],
     "site_present_before_build": false,
-    "site_tree_digest": "8e53d3854ca4e5b6f91dbd4f87158c587beaa7a6f5c4d890a541a0f351894373",
+    "site_tree_digest": "0553b4296c98792a45d41474b4a15a9cf9e5ebb85353face0f022d52daa354bd",
     "tests_exit": 0,
-    "tests_summary": "239 passed in 59.06s"
+    "tests_summary": "246 passed in 67.43s (0:01:07)"
   },
   "gate_blocked_by": "public_content_sign_off is unsigned. Every measured check passed; the gate does not, because the owner has not stated that what the site publishes is what they intend to publish.",
   "generated_by": "tools/site/quality_report.py",

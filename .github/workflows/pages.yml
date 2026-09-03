@@ -1,0 +1,172 @@
+# Build the site, check it, and publish it to GitHub Pages.
+#
+# A custom workflow rather than publishing docs/ directly, because the
+# site has a build: the class index, the download manifest and the
+# bundle are generated, and serving a committed copy of them would let
+# the pages and the data they describe come from different commits.
+#
+# Pull requests build and check without deploying. main builds, checks,
+# and deploys the artifact it just built -- not a rebuild, so what is
+# served is the thing the checks ran against.
+#
+# WHY THE CHECKOUT IS DEEP
+#
+# Licensing classification reads a recorded upstream commit that is an
+# ancestor of main. A shallow clone does not contain it and the suite
+# refuses rather than guessing, so fetch-depth: 0 is load-bearing here
+# and not a habit. A test in tests/licensing enforces it.
+#
+# WHY NODE IS NOT NAMED HERE
+#
+# The version lives in .nvmrc and is read from it. Naming it inline
+# would create a second pin free to drift from the one the tests use,
+# and drift between two pins is invisible from either. A test in
+# tests/site enforces that too.
+#
+# Actions are pinned to commit SHAs. A tag can be moved; a commit
+# cannot, and the rest of this repository pins exactly for the same
+# reason.
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Least privilege by default. The deploy job widens this for itself and
+# nothing else does.
+permissions:
+  contents: read
+
+# One deployment at a time, and never cancel one in flight: a cancelled
+# deploy can leave Pages serving a half-published artifact.
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the full history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Confirm the reviewed upstream snapshot is present
+        run: |
+          commit=$(python -c "import yaml,sys; print(yaml.safe_load(open('config/upstream-snapshot.yaml'))['commit'])" 2>/dev/null || sed -n 's/^commit: //p' config/upstream-snapshot.yaml)
+          echo "recorded snapshot: $commit"
+          git cat-file -e "$commit^{commit}"
+          echo "present in this checkout"
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install the pinned site dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-site.txt
+          python -m pip list
+
+      - name: Set up the pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Report the toolchain
+        run: |
+          python --version
+          node --version
+          echo "pinned by .nvmrc: $(cat .nvmrc)"
+
+      - name: Run the site and licensing suites
+        run: python -m pytest tests/site/ tests/licensing/ -q -p no:randomly
+
+      - name: Build the site
+        run: python tools/site/build_site.py
+
+      - name: Check the built artifact
+        run: python tools/site/check_site.py
+
+      - name: Prove the build is reproducible on this runner
+        run: |
+          python tools/site/build_site.py -o _site_again
+          python - <<'PY'
+          import hashlib, pathlib, sys
+
+          def digest(root):
+              rows = []
+              for path in sorted(pathlib.Path(root).rglob("*")):
+                  if path.is_file():
+                      rows.append("%s %s" % (
+                          path.relative_to(root).as_posix(),
+                          hashlib.sha256(path.read_bytes()).hexdigest()))
+              return hashlib.sha256("\n".join(rows).encode()).hexdigest()
+
+          first, second = digest("_site"), digest("_site_again")
+          print("first  %s" % first)
+          print("second %s" % second)
+          if first != second:
+              sys.exit("two builds of this commit differ on this runner")
+          print("identical")
+          PY
+          rm -rf _site_again
+
+      - name: Record what is being published
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib
+
+          manifest = json.loads(
+              pathlib.Path("_site/data/downloads.json").read_text("utf-8"))
+          bundle = pathlib.Path("_site/downloads") / manifest["bundle"]["filename"]
+          print("source commit :", manifest["source_commit"])
+          print("modules       :", len(manifest["modules"]))
+          print("bundle sha256 :",
+                hashlib.sha256(bundle.read_bytes()).hexdigest())
+          PY
+
+      - name: Configure Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Upload the Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+      - name: Upload a preview artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-preview-${{ github.sha }}
+          path: _site
+          retention-days: 7
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy the artifact the checks ran against
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+      - name: Report the deployment
+        run: |
+          echo "commit ${{ github.sha }}"
+          echo "url    ${{ steps.deployment.outputs.page_url }}"

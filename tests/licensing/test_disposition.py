@@ -415,6 +415,8 @@ def test_any_workflow_running_the_suite_checks_out_full_history():
     contain the snapshot, so the licensing tests would fail in CI with a
     message about git objects rather than about configuration.
     """
+    import yaml
+
     workflows = REPO / ".github/workflows"
     if not workflows.is_dir():
         assert not workflows.exists()
@@ -424,8 +426,25 @@ def test_any_workflow_running_the_suite_checks_out_full_history():
         text = path.read_text(encoding="utf-8")
         if "pytest" not in text:
             continue
-        if "fetch-depth: 0" not in text:
-            offenders.append(path.name)
+        # Parsed, not scanned. A substring check found "fetch-depth: 0"
+        # in this workflow's own comment explaining why it is required,
+        # and passed while the step said fetch-depth: 1.
+        document = yaml.safe_load(text) or {}
+        for job in (document.get("jobs") or {}).values():
+            steps = job.get("steps") or []
+            if not any("pytest" in str(step.get("run", "")) for step in steps):
+                continue
+            checkouts = [step for step in steps
+                         if "actions/checkout" in str(step.get("uses", ""))]
+            if not checkouts:
+                offenders.append(path.name + ": runs pytest without checking "
+                                             "out")
+            for step in checkouts:
+                if (step.get("with") or {}).get("fetch-depth") != 0:
+                    offenders.append(
+                        "%s: checkout depth %r" % (
+                            path.name,
+                            (step.get("with") or {}).get("fetch-depth")))
     assert not offenders, (
         "%s run the suite on a shallow checkout; the reviewed upstream "
         "snapshot would be absent" % offenders)

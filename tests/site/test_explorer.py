@@ -174,16 +174,34 @@ def test_no_workflow_states_a_node_version_of_its_own():
         assert not workflows.exists(), (
             ".github/workflows exists but is not a directory")
         return
+    import yaml
+
     offenders = []
     for path in sorted(workflows.glob("*.y*ml")):
         text = path.read_text(encoding="utf-8")
         if "pytest" not in text:
             continue
-        if re.search(r"(?m)^\s*node-version:\s*\S", text):
-            offenders.append(path.name + ": states node-version inline")
-        elif "node-version-file" not in text:
+        # Parsed rather than pattern-matched, for the reason the sibling
+        # guard in tests/licensing carries: a comment mentioning the
+        # setting is not the setting.
+        document = yaml.safe_load(text) or {}
+        setups = []
+        for job in (document.get("jobs") or {}).values():
+            for step in job.get("steps") or []:
+                if "actions/setup-node" in str(step.get("uses", "")):
+                    setups.append((path.name, step.get("with") or {}))
+        if not setups:
             offenders.append(path.name + ": runs pytest without setting up "
                                          "the pinned node")
+        for name, options in setups:
+            if options.get("node-version") is not None:
+                offenders.append(
+                    "%s: states node-version %r inline, a second pin free "
+                    "to drift from .nvmrc" % (name, options["node-version"]))
+            if options.get("node-version-file") != ".nvmrc":
+                offenders.append(
+                    "%s: node-version-file is %r, not .nvmrc"
+                    % (name, options.get("node-version-file")))
     assert not offenders, offenders
 
 

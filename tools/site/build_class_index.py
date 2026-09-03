@@ -526,7 +526,7 @@ def build() -> tuple[dict, dict]:
     return index, coverage
 
 
-def validate(index: dict) -> None:
+def validate(index: dict, schema_name: str = "class-index.schema.json") -> None:
     """Against the schema, in the build, before anything is written.
 
     Validating only in the test suite means the shape is checked where it
@@ -538,14 +538,13 @@ def validate(index: dict) -> None:
 
     from marep import layout
 
-    schema_path = (layout.component("site.schemas").resolve()
-                   / "class-index.schema.json")
+    schema_path = layout.component("site.schemas").resolve() / schema_name
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     errors = sorted(Draft7Validator(schema).iter_errors(index),
                     key=lambda e: list(e.path))
     if errors:
         raise Refused(
-            "the generated index does not satisfy %s: %s"
+            "the generated document does not satisfy %s: %s"
             % (schema_path.name, "; ".join(
                 "%s: %s" % ("/".join(str(x) for x in e.path) or "(root)",
                             e.message[:120]) for e in errors[:4])))
@@ -567,6 +566,10 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     index, coverage = build()
+    # Both public documents, both validated here rather than in a test:
+    # a generator change that broke the contract would otherwise ship and
+    # be reported afterwards against an artifact already written.
+    validate(coverage, "coverage.schema.json")
     validate(index)
 
     def target(value):

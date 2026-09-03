@@ -318,6 +318,30 @@ def sha256sums(rows: list[tuple[str, str]]) -> bytes:
     return ("\n".join(lines) + "\n").encode("utf-8")
 
 
+def validate(manifest: dict) -> None:
+    """Against the schema, before the manifest reaches the artifact.
+
+    The manifest carries every published checksum. A shape defect found
+    by a test afterwards would be found against a directory somebody
+    could already have downloaded.
+    """
+    from jsonschema import Draft7Validator
+
+    from marep import layout
+
+    schema_path = (layout.component("site.schemas").resolve()
+                   / "downloads.schema.json")
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    errors = sorted(Draft7Validator(schema).iter_errors(manifest),
+                    key=lambda e: list(e.path))
+    if errors:
+        raise Refused(
+            "the download manifest does not satisfy %s: %s"
+            % (schema_path.name, "; ".join(
+                "%s: %s" % ("/".join(str(x) for x in e.path) or "(root)",
+                            e.message[:120]) for e in errors[:4])))
+
+
 def build(out: Path, commit: str, epoch: int) -> dict:
     records = entries(commit)
 
@@ -405,6 +429,8 @@ def build(out: Path, commit: str, epoch: int) -> dict:
             "refuses if those disagree. Turtle is copied byte for byte and "
             "never re-serialised."),
     }
+    validate(manifest)
+
     data_dir = out / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
     written = json.dumps(manifest, indent=2, sort_keys=True,

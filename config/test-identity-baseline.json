@@ -717,7 +717,8 @@
   "pre_site_commit_subject": "Publication plan, revision 2: the planning baseline before Phase 0",
   "renames": [
     {
-      "adjudicated": "pending review",
+      "adjudicated": "approved",
+      "adjudicated_note": "Reviewer confirmed from the historical diff that 90d3fbe broadened coverage from one never-committed role to the complete role set and fixed the probe, so no test was lost.",
       "commit": "90d3fbe",
       "now": "test_repository_layout_contract.py::test_never_committed_roles_are_exempt_only_because_git_ignores_them",
       "phase": "Phase 2 - deterministic site foundation",

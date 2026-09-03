@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://skreen5hot.github.io/ValueNet/schemas/coverage.schema.json",
+  "title": "BFO-Aligned ValueNet class-index coverage report",
+  "description": "What the class index found, counted. Published alongside the index so a consumer can see the shape of the corpus without reading 187 records, and so a count that moves is visible.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "generated_by",
+    "source_commit",
+    "classes",
+    "modules",
+    "categories",
+    "with_definition",
+    "with_synonym",
+    "with_mapping",
+    "uncategorised",
+    "mappings_on_properties",
+    "mappings_on_properties_note",
+    "note"
+  ],
+  "properties": {
+    "format_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "generated_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "classes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_definition": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_synonym": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "with_mapping": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "note": {
+      "type": "string"
+    },
+    "mappings_on_properties_note": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "modules": {
+      "type": "object",
+      "description": "Per-module counts, keyed by module key. An object rather than an array because the generator builds it by key and a consumer looks up by key.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "classes",
+          "with_definition",
+          "with_label",
+          "with_mapping",
+          "with_named_parent",
+          "with_synonym"
+        ],
+        "properties": {
+          "classes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "with_definition": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "with_label": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "with_mapping": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "with_named_parent": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "with_synonym": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "uncategorised": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "mappings_on_properties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "subject",
+          "predicate",
+          "target"
+        ],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "format": "uri"
+          },
+          "predicate": {
+            "type": "string",
+            "format": "uri"
+          },
+          "target": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    }
+  }
+}

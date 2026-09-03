@@ -1,0 +1,149 @@
+{
+  "artifact": {
+    "by_suffix": {
+      "(none)": 1,
+      ".css": 1,
+      ".html": 7,
+      ".js": 2,
+      ".json": 6,
+      ".ttl": 11,
+      ".zip": 1
+    },
+    "files": 29,
+    "paths": [
+      "about/index.html",
+      "assets/css/site.css",
+      "assets/js/explorer.js",
+      "assets/js/ranking.js",
+      "data/class-index.json",
+      "data/coverage.json",
+      "data/downloads.json",
+      "documentation/index.html",
+      "downloads/bfo-aligned-valuenet.zip",
+      "downloads/index.html",
+      "downloads/SHA256SUMS",
+      "downloads/valuenet-core-shapes.ttl",
+      "downloads/valuenet-core.ttl",
+      "downloads/valuenet-folk.ttl",
+      "downloads/valuenet-mappings.ttl",
+      "downloads/valuenet-moral-epistemics-scenario.ttl",
+      "downloads/valuenet-moral-epistemics-shapes.ttl",
+      "downloads/valuenet-moral-epistemics.ttl",
+      "downloads/valuenet-moral-foundations.ttl",
+      "downloads/valuenet-schwartz-values.ttl",
+      "downloads/vcvf-triggers-semantics.ttl",
+      "downloads/vcvf-triggers-shapes.ttl",
+      "explore/index.html",
+      "index.html",
+      "models/index.html",
+      "modules/index.html",
+      "schemas/class-index.schema.json",
+      "schemas/coverage.schema.json",
+      "schemas/downloads.schema.json"
+    ],
+    "total_bytes": 480337
+  },
+  "browser_review": {
+    "engines": [
+      "chromium 151.0.7922.34",
+      "chrome 152.0.7977.65",
+      "edge 152.0.4191.53",
+      "firefox 153.0",
+      "playwright-webkit 26.5"
+    ],
+    "not_covered": [
+      "safari",
+      "screen_reader"
+    ],
+    "passed": true,
+    "record": "config/browser-review.json"
+  },
+  "commit": "d0bc294c4d434c14bd26d9e80fdeb4eb60d46871",
+  "format_version": 1,
+  "fresh_clone": {
+    "build_exit": 0,
+    "bundle_sha256": "5bea242da7db462fdf1a5892e9deeaffeab29f49c890f8d358bd7872c8e7474d",
+    "clone_root_length": 54,
+    "commit": "d0bc294c4d434c14bd26d9e80fdeb4eb60d46871",
+    "passed": true,
+    "remotes": [
+      "origin"
+    ],
+    "site_present_before_build": false,
+    "site_tree_digest": "56b3c423fcc38d67a1b64cab9184f16805edf331f6ad7453c8a7280f18cecb2f",
+    "tests_exit": 0,
+    "tests_summary": "216 passed in 47.26s"
+  },
+  "generated_by": "tools/site/quality_report.py",
+  "links": {
+    "broken": [],
+    "external_references": [],
+    "internal_references": 133,
+    "note": "Resolved against the built artifact, which is what is served. A directory target resolves through its index.html, the way a web server would.",
+    "passed": true
+  },
+  "operating_system": "Windows-10-10.0.19045-SP0",
+  "passed": true,
+  "public_content_sign_off": {
+    "asserts": [
+      "the published Turtle is the authored corpus and nothing else",
+      "no upstream material of unidentified licence is redistributed",
+      "attribution and citation name the right people",
+      "the licence statements on the site match LICENSE and THIRD_PARTY_NOTICES.md"
+    ],
+    "note": "A tool cannot make this statement. It is the owner confirming that what the site publishes is what they intend to publish, and that the licensing, attribution and citation on it are correct. The measured facts it rests on are in this record.",
+    "status": "unsigned",
+    "who": "repository owner"
+  },
+  "schemas": {
+    "documents": [
+      {
+        "document": "data/class-index.json",
+        "errors": [],
+        "id": "https://skreen5hot.github.io/ValueNet/schemas/class-index.schema.json",
+        "id_matches_path": true,
+        "schema": "schemas/class-index.schema.json",
+        "schema_present": true,
+        "valid": true
+      },
+      {
+        "document": "data/coverage.json",
+        "errors": [],
+        "id": "https://skreen5hot.github.io/ValueNet/schemas/coverage.schema.json",
+        "id_matches_path": true,
+        "schema": "schemas/coverage.schema.json",
+        "schema_present": true,
+        "valid": true
+      },
+      {
+        "document": "data/downloads.json",
+        "errors": [],
+        "id": "https://skreen5hot.github.io/ValueNet/schemas/downloads.schema.json",
+        "id_matches_path": true,
+        "schema": "schemas/downloads.schema.json",
+        "schema_present": true,
+        "valid": true
+      }
+    ],
+    "orphan_schemas": [],
+    "passed": true,
+    "problems": []
+  },
+  "suite": {
+    "added": 255,
+    "collisions": [],
+    "final_collected": 961,
+    "missing_unrecorded": [],
+    "passed": true,
+    "pre_site_collected": 707,
+    "pre_site_commit": "1a4f8bf8ddbf2e585fdeaa4ceaa5df92a934a943",
+    "renames": [
+      {
+        "adjudicated": "approved",
+        "commit": "90d3fbe",
+        "now": "test_repository_layout_contract.py::test_never_committed_roles_are_exempt_only_because_git_ignores_them",
+        "was": "test_repository_layout_contract.py::test_run_state_is_exempt_only_because_git_ignores_it"
+      }
+    ]
+  }
+}

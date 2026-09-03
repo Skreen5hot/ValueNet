@@ -30,7 +30,11 @@ RECORD_PATH = REPO / "config/browser-review.json"
 REQUIRED_CHECKS = {"deep_link_keyboard", "live_regions",
                    "hostile_ontology_text", "diagrams"}
 REQUIRED_VIEWPORTS = {"narrow", "wide", "high-zoom-400pct"}
-REQUIRED_ENGINES = {"chromium", "chrome", "firefox", "playwright-webkit"}
+#: Edge is a distinct product with its own release train even though it
+#: shares Chromium's engine, and the plan names it. Chromium and Chrome
+#: were standing in for it, which is not the same as running it.
+REQUIRED_ENGINES = {"chromium", "chrome", "edge", "firefox",
+                    "playwright-webkit"}
 
 
 @pytest.fixture(scope="module")
@@ -184,3 +188,90 @@ def test_the_record_does_not_claim_a_screen_reader(record):
         live = browser["checks"]["live_regions"]
         assert live["screen_reader_used"] is None
         assert "no screen reader" in live["note"].lower()
+
+
+# ============================================== the second live region
+
+
+def test_the_copy_result_region_is_a_live_region_too(record):
+    """The one created at runtime, and therefore the one that can be
+    created without its role while nothing static notices."""
+    for browser in record["browsers"]:
+        copy = browser["checks"]["live_regions"]["copy_result"]
+        assert copy["role"] == "status", browser["engine"]
+        assert copy["aria_live"] == "polite", browser["engine"]
+        assert copy["exposed_as_status_role"], browser["engine"]
+
+
+def test_the_copy_result_region_announced_something(record):
+    """Either outcome is acceptable and one of them must happen. A copy
+    button that silently does nothing is the failure the visible refusal
+    was written to prevent."""
+    for browser in record["browsers"]:
+        copy = browser["checks"]["live_regions"]["copy_result"]
+        assert copy["text_before_click"] == "", browser["engine"]
+        assert copy["text_after_click"], (
+            "%s: the copy button changed nothing a screen reader could "
+            "announce" % browser["engine"])
+        assert copy["text_changed"]
+        spoken = copy["text_after_click"].lower()
+        assert ("copied" in spoken or "refused" in spoken
+                or "unavailable" in spoken), copy["text_after_click"]
+
+
+# ================================================== diagram internals
+
+
+def test_diagram_internals_were_measured_not_just_the_frame(record):
+    """Whole-SVG visibility says the figure is on the page. It says
+    nothing about what is inside it."""
+    for browser in record["browsers"]:
+        for viewport, result in browser["checks"]["diagrams"].items():
+            assert len(result["diagrams"]) == 3, (browser["engine"], viewport)
+            for diagram in result["diagrams"]:
+                where = (browser["engine"], viewport, diagram["index"])
+                assert diagram["elements"]["rect"] > 0, where
+                assert diagram["elements"]["text"] > 0, where
+                assert diagram["labels_measured"] > 0, where
+
+
+def test_nothing_is_clipped_or_collides_in_any_viewport(record):
+    for browser in record["browsers"]:
+        for viewport, result in browser["checks"]["diagrams"].items():
+            for diagram in result["diagrams"]:
+                where = "%s/%s/diagram %d" % (browser["engine"], viewport,
+                                              diagram["index"])
+                assert not diagram["clipped"], (where, diagram["clipped"])
+                assert not diagram["overlapping_labels"], (
+                    where, diagram["overlapping_labels"])
+                assert not diagram["zero_length_paths"], where
+
+
+def test_the_relation_paths_and_arrowheads_rendered(record):
+    """A diagram of boxes with no arrows between them is a different
+    diagram from the one the alternative describes."""
+    for browser in record["browsers"]:
+        for viewport, result in browser["checks"]["diagrams"].items():
+            arrows = result["arrowheads"]
+            assert arrows["markers"] >= 3, (browser["engine"], viewport)
+            assert arrows["paths_with_marker_end"] >= 10, (
+                browser["engine"], viewport, arrows)
+
+
+def test_a_screenshot_exists_for_every_engine_and_viewport(record):
+    """Reviewed by eye, not by assertion -- but it has to be there, and
+    it has to be the image the record names."""
+    import hashlib
+
+    seen = set()
+    for browser in record["browsers"]:
+        for viewport, result in browser["checks"]["diagrams"].items():
+            shot = result["screenshot"]
+            path = REPO / shot["path"]
+            assert path.is_file(), shot["path"]
+            data = path.read_bytes()
+            assert len(data) == shot["bytes"], shot["path"]
+            assert hashlib.sha256(data).hexdigest() == shot["sha256"], (
+                "%s does not match the digest recorded for it" % shot["path"])
+            seen.add((browser["engine"], viewport))
+    assert len(seen) == len(REQUIRED_ENGINES) * len(REQUIRED_VIEWPORTS), seen

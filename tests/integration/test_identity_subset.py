@@ -140,6 +140,13 @@ def test_each_recorded_rename_is_a_rename_and_not_a_loss(baseline, current):
             % rename["was"])
         for field in ("commit", "why", "phase"):
             assert rename.get(field), (rename["was"], field)
+        # An unadjudicated rename is an open question, not a clearance.
+        # Recording one and moving on would let the gate pass on the
+        # strength of a note nobody had accepted.
+        assert rename.get("adjudicated") == "approved", (
+            "%s is recorded as a rename but its adjudication is %r; the "
+            "identity gate is not satisfied by an unreviewed entry"
+            % (rename["was"], rename.get("adjudicated")))
 
 
 def test_the_rename_commit_actually_made_the_rename(baseline):

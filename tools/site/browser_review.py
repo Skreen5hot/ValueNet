@@ -217,6 +217,24 @@ def check_live_regions(page, base: str) -> dict:
         return {role: s.getAttribute('role'),
                 live: s.getAttribute('aria-live')};
     }""")
+    # The copy-result region, which is created when a detail pane renders
+    # rather than existing in the markup. It was never exercised: a live
+    # region that is built at runtime is exactly the one that can be
+    # built without its role, and nothing static would notice.
+    page.goto("%s/explore/?class=%s" % (base, DEEP_LINK_CLASS))
+    page.wait_for_selector("#detail:not([hidden])")
+    copy_before = page.locator(".copy-result").inner_text()
+    copy_attrs = page.evaluate("""() => {
+        const s = document.querySelector('.copy-result');
+        return {role: s.getAttribute('role'),
+                live: s.getAttribute('aria-live'),
+                present: true};
+    }""")
+    page.locator("button.copy").first.click()
+    page.wait_for_timeout(300)
+    copy_after = page.locator(".copy-result").inner_text()
+    copy_exposed = page.get_by_role("status").count() >= 1
+
     return {
         "status_role": attrs["role"],
         "status_aria_live": attrs["live"],
@@ -225,13 +243,29 @@ def check_live_regions(page, base: str) -> dict:
         "text_before": before,
         "text_after_typing": after,
         "text_changed": before != after,
+        "copy_result": {
+            "role": copy_attrs["role"],
+            "aria_live": copy_attrs["live"],
+            "text_before_click": copy_before,
+            "text_after_click": copy_after,
+            "text_changed": copy_before != copy_after,
+            "exposed_as_status_role": copy_exposed,
+            "note": ("the clipboard is commonly refused without a user "
+                     "gesture the browser recognises; either outcome must "
+                     "announce, and the text recorded above is what it "
+                     "said"),
+        },
         "screen_reader_used": None,
         "note": ("accessibility tree only; no screen reader was run, so "
                  "announcement timing and verbosity are unverified"),
         "passed": (attrs["role"] == "status"
                    and attrs["live"] == "polite"
                    and exposed
-                   and before != after),
+                   and before != after
+                   and copy_attrs["role"] == "status"
+                   and copy_attrs["live"] == "polite"
+                   and copy_before == ""
+                   and copy_after != ""),
     }
 
 
@@ -288,28 +322,93 @@ def check_hostile_text(page, base: str) -> dict:
     }
 
 
-def check_diagrams(page, base: str, viewport: str) -> dict:
-    """Three diagrams, and whether the page scrolls sideways."""
-    page.goto("%s/models/" % base)
-    page.wait_for_selector("svg.diagram")
-    svgs = page.locator("svg.diagram")
-    count = svgs.count()
+#: Read out of the page rather than described. Each returns plain
+#: data so the record holds measurements a reviewer can check.
+MEASURE_JS = r"""() => {
+        const out = [];
+        document.querySelectorAll('svg.diagram').forEach((svg, i) => {
+            const frame = svg.getBoundingClientRect();
+            const parts = {rect: 0, text: 0, path: 0, marker: 0};
+            const clipped = [], empty = [], texts = [];
+            svg.querySelectorAll('rect, text, path, marker').forEach(el => {
+                const tag = el.tagName.toLowerCase();
+                parts[tag] = (parts[tag] || 0) + 1;
+                if (tag === 'marker') { return; }
+                const r = el.getBoundingClientRect();
+                if (tag === 'path') {
+                    if (el.getTotalLength && el.getTotalLength() < 1) {
+                        empty.push(el.getAttribute('d') || 'no d');
+                    }
+                    return;
+                }
+                if (r.width === 0 && r.height === 0) { return; }
+                const slack = 1.5;
+                if (r.left < frame.left - slack || r.top < frame.top - slack
+                    || r.right > frame.right + slack
+                    || r.bottom > frame.bottom + slack) {
+                    clipped.push({tag: tag,
+                                  text: (el.textContent || '').slice(0, 30),
+                                  left: Math.round(r.left - frame.left),
+                                  right: Math.round(r.right - frame.left)});
+                }
+                if (tag === 'text') {
+                    // Grouped by the <g> that wraps a node, because a
+                    // label and its caption are two lines of one label
+                    // and are meant to sit together. Comparing them
+                    // reported every box in the suite as a collision.
+                    const g = el.closest('g');
+                    texts.push({t: (el.textContent || '').slice(0, 30),
+                                g: g ? (g.getAttribute('data-iri') || 'g')
+                                     : 'loose',
+                                x: r.left, y: r.top,
+                                w: r.width, h: r.height});
+                }
+            });
+            const overlaps = [];
+            for (let a = 0; a < texts.length; a += 1) {
+                for (let b = a + 1; b < texts.length; b += 1) {
+                    const p = texts[a], q = texts[b];
+                    if (p.g === q.g && p.g !== 'loose') { continue; }
+                    const dx = Math.min(p.x + p.w, q.x + q.w)
+                             - Math.max(p.x, q.x);
+                    const dy = Math.min(p.y + p.h, q.y + q.h)
+                             - Math.max(p.y, q.y);
+                    if (dx > 1 && dy > 1) {
+                        overlaps.push([p.t, q.t,
+                                       Math.round(dx), Math.round(dy)]);
+                    }
+                }
+            }
+            out.push({
+                index: i,
+                frame: {width: Math.round(frame.width),
+                        height: Math.round(frame.height)},
+                visible: frame.width > 0 && frame.height > 0,
+                elements: parts,
+                labels_measured: texts.length,
+                clipped: clipped,
+                zero_length_paths: empty,
+                overlapping_labels: overlaps
+            });
+        });
+        return out;
+    }"""
 
-    boxes = []
-    for index in range(count):
-        box = svgs.nth(index).bounding_box()
-        boxes.append({"index": index,
-                      "width": round(box["width"], 1) if box else None,
-                      "height": round(box["height"], 1) if box else None,
-                      "visible": svgs.nth(index).is_visible()})
+ARROWS_JS = r"""() => {
+        const markers = document.querySelectorAll('svg.diagram marker').length;
+        let referencing = 0;
+        document.querySelectorAll('svg.diagram path').forEach(p => {
+            if (p.getAttribute('marker-end')) { referencing += 1; }
+        });
+        return {markers: markers, paths_with_marker_end: referencing};
+    }"""
 
-    overflow = page.evaluate("""() => ({
+OVERFLOW_JS = r"""() => ({
         scrollWidth: document.documentElement.scrollWidth,
         clientWidth: document.documentElement.clientWidth
-    })""")
-    horizontal = overflow["scrollWidth"] > overflow["clientWidth"] + 1
+    })"""
 
-    widest = page.evaluate("""() => {
+WIDEST_JS = r"""() => {
         let worst = null;
         for (const el of document.querySelectorAll('main *')) {
             const r = el.getBoundingClientRect();
@@ -322,22 +421,63 @@ def check_diagrams(page, base: str, viewport: str) -> dict:
             }
         }
         return worst;
-    }""")
+    }"""
+
+
+def check_diagrams(page, base: str, viewport: str, shots: Path,
+                   engine: str) -> dict:
+    """Three diagrams, and what is actually inside them.
+
+    Whole-SVG visibility and document overflow say the figure is on the
+    page and the page does not scroll sideways. They say nothing about
+    whether a label sits outside its box, whether two labels collide, or
+    whether a relation path has any length -- which is what a reader
+    notices first and what a viewport change actually breaks.
+    """
+    page.goto("%s/models/" % base)
+    page.wait_for_selector("svg.diagram")
+
+    measured = page.evaluate(MEASURE_JS)
+    arrowheads = page.evaluate(ARROWS_JS)
+    overflow = page.evaluate(OVERFLOW_JS)
+    horizontal = overflow["scrollWidth"] > overflow["clientWidth"] + 1
+    widest = page.evaluate(WIDEST_JS)
+
+    shots.mkdir(parents=True, exist_ok=True)
+    shot = shots / ("models-%s-%s.png" % (engine, viewport))
+    page.screenshot(path=str(shot), full_page=True)
+    image = shot.read_bytes()
 
     return {
         "viewport": VIEWPORTS[viewport],
-        "diagrams_found": count,
-        "boxes": boxes,
+        "diagrams_found": len(measured),
+        "diagrams": measured,
+        "arrowheads": arrowheads,
         "document_scroll_width": overflow["scrollWidth"],
         "document_client_width": overflow["clientWidth"],
         "horizontal_scroll": horizontal,
         "widest_overflowing_element": widest,
-        "passed": (count == 3 and all(b["visible"] for b in boxes)
-                   and not horizontal),
+        "screenshot": {
+            "path": shot.relative_to(_root).as_posix(),
+            "bytes": len(image),
+            "sha256": hashlib.sha256(image).hexdigest(),
+        },
+        "passed": (
+            len(measured) == 3
+            and all(d["visible"] for d in measured)
+            and all(not d["clipped"] for d in measured)
+            and all(not d["overlapping_labels"] for d in measured)
+            and all(not d["zero_length_paths"] for d in measured)
+            and all(d["elements"]["rect"] > 0 and d["elements"]["text"] > 0
+                    for d in measured)
+            and arrowheads["markers"] >= 3
+            and arrowheads["paths_with_marker_end"] >= 10
+            and not horizontal),
     }
 
 
-def review_one(engine, name: str, base: str, channel: str | None) -> dict:
+def review_one(engine, name: str, base: str, channel: str | None,
+               shots: Path) -> dict:
     launch = {"channel": channel} if channel else {}
     browser = engine.launch(**launch)
     version = browser.version
@@ -358,7 +498,8 @@ def review_one(engine, name: str, base: str, channel: str | None) -> dict:
         for viewport in VIEWPORTS:
             context = browser.new_context(viewport=VIEWPORTS[viewport])
             page = context.new_page()
-            diagrams[viewport] = check_diagrams(page, base, viewport)
+            diagrams[viewport] = check_diagrams(page, base, viewport,
+                                                shots, name)
             context.close()
         record["checks"]["diagrams"] = diagrams
     finally:
@@ -471,6 +612,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", "--out", default="config/browser-review.json")
     ap.add_argument("--site", default="_site")
+    ap.add_argument("--shots", default="docs/site/browser-review",
+                    help="where the reviewed screenshots are written")
     args = ap.parse_args(argv)
 
     from playwright.sync_api import sync_playwright
@@ -480,19 +623,27 @@ def main(argv=None) -> int:
     if not (site / "explore/index.html").is_file():
         raise SystemExit("no built site at %s; run build_site.py first" % site)
 
+    # Edge is required by the plan and is a distinct product with its own
+    # release train, even though it shares Chromium's engine. Chromium and
+    # Chrome were standing in for it, which is not the same as running it.
+    shots = Path(args.shots)
+    shots = shots if shots.is_absolute() else _root / shots
+
     engines = [("chromium", None), ("chrome", "chrome"),
-               ("firefox", None), ("playwright-webkit", None)]
+               ("edge", "msedge"), ("firefox", None),
+               ("playwright-webkit", None)]
 
     reviewed = []
     with serve(site) as base:
         with sync_playwright() as pw:
             for name, channel in engines:
                 launcher = {"chromium": pw.chromium, "chrome": pw.chromium,
-                            "firefox": pw.firefox,
+                            "edge": pw.chromium, "firefox": pw.firefox,
                             "playwright-webkit": pw.webkit}[name]
                 print("  %s ..." % name, flush=True)
                 try:
-                    reviewed.append(review_one(launcher, name, base, channel))
+                    reviewed.append(
+                        review_one(launcher, name, base, channel, shots))
                 except Exception as error:                # noqa: BLE001
                     reviewed.append({"engine": name, "channel": channel,
                                      "error": repr(error)[:400],
@@ -507,6 +658,7 @@ def main(argv=None) -> int:
         "operating_system": platform.platform(),
         "deep_link_class": DEEP_LINK_CLASS,
         "viewports": VIEWPORTS,
+        "screenshots_at": Path(args.shots).as_posix(),
         "browsers": reviewed,
         "not_covered": {
             "safari": ("not tested. This machine runs Windows, Safari has "

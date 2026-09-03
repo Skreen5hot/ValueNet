@@ -35,24 +35,64 @@
         },
         "diagrams": {
           "high-zoom-400pct": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 122.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 126.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 111.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -60,6 +100,11 @@
             "document_scroll_width": 320,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 253032,
+              "path": "docs/site/browser-review/models-chromium-high-zoom-400pct.png",
+              "sha256": "e42251d31e660e714315f611f0afac8bdc22abe48c1e143ed80b885b38b87df2"
+            },
             "viewport": {
               "height": 256,
               "width": 320
@@ -67,24 +112,64 @@
             "widest_overflowing_element": null
           },
           "narrow": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 140.1,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 140,
+                  "width": 320
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 144.2,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 144,
+                  "width": 320
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 127.5,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 128,
+                  "width": 320
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -92,6 +177,11 @@
             "document_scroll_width": 360,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 258072,
+              "path": "docs/site/browser-review/models-chromium-narrow.png",
+              "sha256": "fe4dcdb6e446843993933d0bdf7572febc8788919c78c14de65299af696cb53c"
+            },
             "viewport": {
               "height": 780,
               "width": 360
@@ -99,24 +189,64 @@
             "widest_overflowing_element": null
           },
           "wide": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 334.6,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 335,
+                  "width": 768
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 344.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 345,
+                  "width": 768
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 304.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 304,
+                  "width": 768
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -124,6 +254,11 @@
             "document_scroll_width": 1440,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 299499,
+              "path": "docs/site/browser-review/models-chromium-wide.png",
+              "sha256": "22e67eef54e306776761b9bb275166705465fd62caa3470210d91a5880a30231"
+            },
             "viewport": {
               "height": 900,
               "width": 1440
@@ -153,6 +288,15 @@
             "live": "polite",
             "name": "",
             "role": "status"
+          },
+          "copy_result": {
+            "aria_live": "polite",
+            "exposed_as_status_role": true,
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "role": "status",
+            "text_after_click": "Copy refused by the browser — select the text.",
+            "text_before_click": "",
+            "text_changed": true
           },
           "exposed_as_status_role": true,
           "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
@@ -204,24 +348,64 @@
         },
         "diagrams": {
           "high-zoom-400pct": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 122.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 126.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 111.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -229,6 +413,11 @@
             "document_scroll_width": 320,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 260674,
+              "path": "docs/site/browser-review/models-chrome-high-zoom-400pct.png",
+              "sha256": "614229afd710615b892aaeaedee6e48927e7fd2e0ee5c9febf79abf052bd2ebe"
+            },
             "viewport": {
               "height": 256,
               "width": 320
@@ -236,24 +425,64 @@
             "widest_overflowing_element": null
           },
           "narrow": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 140.1,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 140,
+                  "width": 320
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 144.2,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 144,
+                  "width": 320
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 127.5,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 128,
+                  "width": 320
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -261,6 +490,11 @@
             "document_scroll_width": 360,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 264845,
+              "path": "docs/site/browser-review/models-chrome-narrow.png",
+              "sha256": "cfe628aa00bfdef6b575ebb5c8b4c8075976ced0be30a3a696183904d2610e05"
+            },
             "viewport": {
               "height": 780,
               "width": 360
@@ -268,24 +502,64 @@
             "widest_overflowing_element": null
           },
           "wide": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 334.6,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 335,
+                  "width": 768
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 344.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 345,
+                  "width": 768
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 304.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 304,
+                  "width": 768
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -293,6 +567,11 @@
             "document_scroll_width": 1440,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 306167,
+              "path": "docs/site/browser-review/models-chrome-wide.png",
+              "sha256": "7fb6de898c56c8f91af876c062d82fb77003953af4b2ff6e5a66860e8dba6dbf"
+            },
             "viewport": {
               "height": 900,
               "width": 1440
@@ -323,6 +602,15 @@
             "name": "",
             "role": "status"
           },
+          "copy_result": {
+            "aria_live": "polite",
+            "exposed_as_status_role": true,
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "role": "status",
+            "text_after_click": "Copied.",
+            "text_before_click": "",
+            "text_changed": true
+          },
           "exposed_as_status_role": true,
           "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
           "passed": true,
@@ -337,6 +625,319 @@
       "engine": "chrome",
       "passed": true,
       "version": "152.0.7977.65"
+    },
+    {
+      "channel": "msedge",
+      "checks": {
+        "deep_link_keyboard": {
+          "anchors_in_tab_order": 35,
+          "detail_heading": "value disposition",
+          "detail_visible": true,
+          "focus_after_activation": "detail",
+          "focus_before_activation": "jump",
+          "passed": true,
+          "results_rendered": 187,
+          "tab_order_prefix": [
+            "a.skip",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "a",
+            "input#q",
+            "select#module",
+            "select#category",
+            "button#clear",
+            "button#jump.jump",
+            "a.result",
+            "a.result"
+          ],
+          "tab_stops_to_bypass": 14,
+          "tab_stops_to_detail_without_bypass": 201,
+          "url": "/explore/?class=core:ValueDisposition"
+        },
+        "diagrams": {
+          "high-zoom-400pct": {
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 320,
+            "document_scroll_width": 320,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 260674,
+              "path": "docs/site/browser-review/models-edge-high-zoom-400pct.png",
+              "sha256": "614229afd710615b892aaeaedee6e48927e7fd2e0ee5c9febf79abf052bd2ebe"
+            },
+            "viewport": {
+              "height": 256,
+              "width": 320
+            },
+            "widest_overflowing_element": null
+          },
+          "narrow": {
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 140,
+                  "width": 320
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 144,
+                  "width": 320
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 128,
+                  "width": 320
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 360,
+            "document_scroll_width": 360,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 264845,
+              "path": "docs/site/browser-review/models-edge-narrow.png",
+              "sha256": "cfe628aa00bfdef6b575ebb5c8b4c8075976ced0be30a3a696183904d2610e05"
+            },
+            "viewport": {
+              "height": 780,
+              "width": 360
+            },
+            "widest_overflowing_element": null
+          },
+          "wide": {
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 335,
+                  "width": 768
+                },
+                "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 345,
+                  "width": 768
+                },
+                "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              },
+              {
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 304,
+                  "width": 768
+                },
+                "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
+                "visible": true,
+                "zero_length_paths": []
+              }
+            ],
+            "diagrams_found": 3,
+            "document_client_width": 1440,
+            "document_scroll_width": 1440,
+            "horizontal_scroll": false,
+            "passed": true,
+            "screenshot": {
+              "bytes": 306167,
+              "path": "docs/site/browser-review/models-edge-wide.png",
+              "sha256": "7fb6de898c56c8f91af876c062d82fb77003953af4b2ff6e5a66860e8dba6dbf"
+            },
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            },
+            "widest_overflowing_element": null
+          }
+        },
+        "hostile_ontology_text": {
+          "definition_rendered_as_text": "</p><script>window.__pwned=1</script><p>ok",
+          "dialogs_raised": [],
+          "elements_injected": {
+            "img": 0,
+            "script": 0,
+            "svg": 0
+          },
+          "label_rendered_as_text": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+          "passed": true,
+          "payloads": {
+            "definition": "</p><script>window.__pwned=1</script><p>ok",
+            "label": "<img src=x onerror=\"window.__pwned=1\">Hostile Label",
+            "synonym": "\"><svg onload=\"window.__pwned=1\">"
+          },
+          "window_flag_set": null
+        },
+        "live_regions": {
+          "chromium_accessibility_node": {
+            "live": "polite",
+            "name": "",
+            "role": "status"
+          },
+          "copy_result": {
+            "aria_live": "polite",
+            "exposed_as_status_role": true,
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "role": "status",
+            "text_after_click": "Copied.",
+            "text_before_click": "",
+            "text_changed": true
+          },
+          "exposed_as_status_role": true,
+          "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
+          "passed": true,
+          "screen_reader_used": null,
+          "status_aria_live": "polite",
+          "status_role": "status",
+          "text_after_typing": "1 class",
+          "text_before": "187 classes",
+          "text_changed": true
+        }
+      },
+      "engine": "edge",
+      "passed": true,
+      "version": "152.0.4191.53"
     },
     {
       "channel": "playwright bundled build",
@@ -373,24 +974,64 @@
         },
         "diagrams": {
           "high-zoom-400pct": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 122.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 126.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 111.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -398,6 +1039,11 @@
             "document_scroll_width": 320,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 250565,
+              "path": "docs/site/browser-review/models-firefox-high-zoom-400pct.png",
+              "sha256": "b531bab38cd1cb36ea4716e3f0013622bf88bb92c8e99ad31de709b12ae0ac7e"
+            },
             "viewport": {
               "height": 256,
               "width": 320
@@ -405,24 +1051,64 @@
             "widest_overflowing_element": null
           },
           "narrow": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 140.1,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 140,
+                  "width": 320
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 144.3,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 144,
+                  "width": 320
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 127.5,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 128,
+                  "width": 320
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -430,6 +1116,11 @@
             "document_scroll_width": 360,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 256279,
+              "path": "docs/site/browser-review/models-firefox-narrow.png",
+              "sha256": "181158b0042780c4bb88eea52ebeb66a9e92f31b236aaa19ddd67560598dedc2"
+            },
             "viewport": {
               "height": 780,
               "width": 360
@@ -437,24 +1128,64 @@
             "widest_overflowing_element": null
           },
           "wide": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 334.6,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 335,
+                  "width": 768
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 344.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 345,
+                  "width": 768
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 304.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 304,
+                  "width": 768
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -462,6 +1193,11 @@
             "document_scroll_width": 1440,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 310644,
+              "path": "docs/site/browser-review/models-firefox-wide.png",
+              "sha256": "8658ca53d6e9ae2cf787241468a65695d0d35615137a907a0253c07b556cae66"
+            },
             "viewport": {
               "height": 900,
               "width": 1440
@@ -488,6 +1224,15 @@
         },
         "live_regions": {
           "chromium_accessibility_node": null,
+          "copy_result": {
+            "aria_live": "polite",
+            "exposed_as_status_role": true,
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "role": "status",
+            "text_after_click": "Copied.",
+            "text_before_click": "",
+            "text_changed": true
+          },
           "exposed_as_status_role": true,
           "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
           "passed": true,
@@ -529,24 +1274,64 @@
         },
         "diagrams": {
           "high-zoom-400pct": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 122.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 123,
+                  "width": 280
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 126.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 126,
+                  "width": 280
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               },
               {
-                "height": 111.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 112,
+                  "width": 280
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 280
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -554,6 +1339,11 @@
             "document_scroll_width": 320,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 239348,
+              "path": "docs/site/browser-review/models-playwright-webkit-high-zoom-400pct.png",
+              "sha256": "52b4f3bc5f4babb315705d283a751f58d692bfa880bf28e754be995a8be3975c"
+            },
             "viewport": {
               "height": 256,
               "width": 320
@@ -561,24 +1351,64 @@
             "widest_overflowing_element": null
           },
           "narrow": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 140.1,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 140,
+                  "width": 320
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 144.2,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 144,
+                  "width": 320
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               },
               {
-                "height": 127.5,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 128,
+                  "width": 320
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 320
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -586,6 +1416,11 @@
             "document_scroll_width": 360,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 249137,
+              "path": "docs/site/browser-review/models-playwright-webkit-narrow.png",
+              "sha256": "7dc01e61a284b6bc8172c43762597b9c3e9f1a98419cd9abab0a4f23cac209cf"
+            },
             "viewport": {
               "height": 780,
               "width": 360
@@ -593,24 +1428,64 @@
             "widest_overflowing_element": null
           },
           "wide": {
-            "boxes": [
+            "arrowheads": {
+              "markers": 3,
+              "paths_with_marker_end": 16
+            },
+            "diagrams": [
               {
-                "height": 334.6,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 17
+                },
+                "frame": {
+                  "height": 335,
+                  "width": 768
+                },
                 "index": 0,
+                "labels_measured": 17,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 344.7,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 7,
+                  "rect": 12,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 345,
+                  "width": 768
+                },
                 "index": 1,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               },
               {
-                "height": 304.4,
+                "clipped": [],
+                "elements": {
+                  "marker": 1,
+                  "path": 6,
+                  "rect": 6,
+                  "text": 15
+                },
+                "frame": {
+                  "height": 304,
+                  "width": 768
+                },
                 "index": 2,
+                "labels_measured": 15,
+                "overlapping_labels": [],
                 "visible": true,
-                "width": 768
+                "zero_length_paths": []
               }
             ],
             "diagrams_found": 3,
@@ -618,6 +1493,11 @@
             "document_scroll_width": 1440,
             "horizontal_scroll": false,
             "passed": true,
+            "screenshot": {
+              "bytes": 270823,
+              "path": "docs/site/browser-review/models-playwright-webkit-wide.png",
+              "sha256": "3f3fe99d25a5ac9ae48bd675f4fcb9f755c6907496630b302ea94af7e3af23d6"
+            },
             "viewport": {
               "height": 900,
               "width": 1440
@@ -644,6 +1524,15 @@
         },
         "live_regions": {
           "chromium_accessibility_node": null,
+          "copy_result": {
+            "aria_live": "polite",
+            "exposed_as_status_role": true,
+            "note": "the clipboard is commonly refused without a user gesture the browser recognises; either outcome must announce, and the text recorded above is what it said",
+            "role": "status",
+            "text_after_click": "Copied.",
+            "text_before_click": "",
+            "text_changed": true
+          },
           "exposed_as_status_role": true,
           "note": "accessibility tree only; no screen reader was run, so announcement timing and verbosity are unverified",
           "passed": true,
@@ -678,6 +1567,7 @@
     "data/class-index.json"
   ],
   "reviewed_files_sha256": "7aaf25320c4577c012dd7e280ff740143084ed4dd621a265ee194fe4c42c691e",
+  "screenshots_at": "docs/site/browser-review",
   "viewports": {
     "high-zoom-400pct": {
       "height": 256,

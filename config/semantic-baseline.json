@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "dbb9300bb4ff2029905b338671e57f79034b5959",
+  "input_commit": "69be344cb19d45abbb82da4c3e71431135ae55dc",
   "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
@@ -142,10 +142,10 @@
       "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "corpus_repaired_since": {
         "artifact": "config/remediation-record.json",
-        "artifact_sha256": "76530df4bbfa3dd30a78bcd6c2bf35343bab09530b1900e34a2e5f467f6c6e73",
+        "artifact_sha256": "bc7944f7c0d456aedc0a38348dd274c14f31ea4cdb453249194b31c706a8be11",
         "before_tag": "eol-hardened-v1",
         "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-        "after_commit": "dbb9300bb4ff2029905b338671e57f79034b5959",
+        "after_commit": "69be344cb19d45abbb82da4c3e71431135ae55dc",
         "corpus_files_changed": [
           "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
           "ontology/bfo/core/valuenet-core.ttl",
@@ -174,7 +174,7 @@
           },
           {
             "before_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
-            "after_commit": "dbb9300bb4ff2029905b338671e57f79034b5959",
+            "after_commit": "69be344cb19d45abbb82da4c3e71431135ae55dc",
             "files": [
               "ontology/bfo/core/valuenet-core.ttl",
               "ontology/bfo/core/valuenet-folk.ttl",
@@ -314,11 +314,11 @@
     }
   },
   "tests": {
-    "collected": 913,
-    "default_selected": 897,
+    "collected": 938,
+    "default_selected": 922,
     "default_deselected": 16,
-    "canonical_id_sha256": "c98f1d449949b7b151633b5b6fc5b2d397044c4aeac76a85aa91108a5ff2fb82",
-    "default_selected_sha256": "638ac8ed1336cef42501eef6159c711e517eb9a89a704d73efff7aae6dee6f45",
+    "canonical_id_sha256": "149b5a234ca9cc2f69e13f9cd9ce2e85e040b15c372e282ccd654f1a73946f2c",
+    "default_selected_sha256": "314a1b6d03c0860b4ff8f6e6d21b82f21f7e71ac22ec343c2f305207a6468144",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

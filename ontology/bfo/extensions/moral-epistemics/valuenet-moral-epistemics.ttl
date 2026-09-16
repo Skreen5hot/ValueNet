@@ -89,7 +89,7 @@
       owl:onProperty cco:ont00001982 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess>
     ] ;
-  skos:definition "Observational evidence that records the behaviour of an agent as perceived by another agent."@en ;
+  skos:definition "An observational evidence information content entity that records the behaviour of an agent as perceived by another agent."@en ;
   rdfs:label "Behavioral Observation ICE"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#BehavioralObservationICE> .
 
@@ -139,7 +139,7 @@
       owl:onProperty cco:ont00001982 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess>
     ] ;
-  skos:definition "A descriptive information content entity that describes the risk an agent's observed conduct poses to some other agent, and that is warranted by observation of that conduct."@en ;
+  skos:definition "A warranted moral assessment information content entity that describes the risk an agent's observed conduct poses to some other agent, and that is warranted by observation of that conduct."@en ;
   rdfs:label "Safety Assessment ICE"@en ;
   rdfs:comment "The warrant restriction is what makes this the output of discernment rather than of rash judgment. An assessment of risk that is not warranted by observation is not an instance of this class."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#SafetyAssessmentICE> .
@@ -261,7 +261,7 @@
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct> ,
     <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#RashJudgmentAct> ;
-  skos:definition "A moral assessment act that satisfies the discernment pattern while also producing an unwarranted culpability ascription that satisfies the rash-judgment annotation criterion."@en ;
+  skos:definition "A moral discernment act that is also a rash judgment act: it satisfies the discernment pattern while also producing an unwarranted culpability ascription that satisfies the rash-judgment annotation criterion."@en ;
   rdfs:label "Mixed Moral Assessment Act"@en ;
   rdfs:comment "This named overlap class makes the rejected disjointness testable: it must remain satisfiable. It represents a larger or temporally extended act with both warranted and unwarranted assessment outputs."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MixedMoralAssessmentAct> .

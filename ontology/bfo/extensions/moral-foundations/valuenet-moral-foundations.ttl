@@ -16,42 +16,42 @@
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
   rdfs:label "care Disposition"@en ;
   skos:altLabel "care"@en ;
-  skos:definition "A disposition to protect others from harm and to act with compassion."@en .
+  skos:definition "A moral value disposition to protect others from harm and to act with compassion."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
   rdfs:label "fairness Disposition"@en ;
   skos:altLabel "fairness"@en ;
-  skos:definition "A disposition to uphold principles of justice, reciprocity, and equality."@en .
+  skos:definition "A moral value disposition to uphold principles of justice, reciprocity, and equality."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
   rdfs:label "loyalty Disposition"@en ;
   skos:altLabel "loyalty"@en ;
-  skos:definition "A disposition to be loyal to one's ingroup, family, or nation."@en .
+  skos:definition "A moral value disposition to be loyal to one's ingroup, family, or nation."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
   rdfs:label "authority Disposition"@en ;
   skos:altLabel "authority"@en ;
-  skos:definition "A disposition to respect tradition, hierarchy, and legitimate authority."@en .
+  skos:definition "A moral value disposition to respect tradition, hierarchy, and legitimate authority."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
   rdfs:label "sanctity Disposition"@en ;
   skos:altLabel "sanctity"@en ;
-  skos:definition "A disposition to value purity, avoid degradation, and treat certain things as sacred."@en .
+  skos:definition "A moral value disposition to value purity, avoid degradation, and treat certain things as sacred."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
   rdfs:label "liberty Disposition"@en ;
   skos:altLabel "liberty"@en ;
-  skos:definition "A disposition to resist domination and oppression, and to value freedom."@en .
+  skos:definition "A moral value disposition to resist domination and oppression, and to value freedom."@en .
 #################################################################
 #    Dyadic opposition
 #

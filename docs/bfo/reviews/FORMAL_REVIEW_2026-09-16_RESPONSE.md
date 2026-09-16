@@ -481,8 +481,8 @@ were made without breaking anything.
 | R13 | Done. The role is grounded in the agent's conduct; no OWL condition changed, so not breaking | D-009; phase D |
 | R14 | Done. `contravenes` retained, with the alternatives recorded against CQ1 and CQ5; not breaking | D-010; phase D |
 | R15 | **Open — owner decision.** Folk membership | blocks folk definition curation |
-| R16 | Not started. Genus alignment outside folk (Moral Foundations 6, Moral Epistemics 6) and a gate over the recorded baseline | — |
-| R17 | Not started. The disjunction warning is mechanical; splitting `FaithDisposition` and `OpennessDisposition` is a content decision for the owner | — |
+| R16 | Done outside folk; gated. Moral Foundations 12/12 and Moral Epistemics 17/17 open with an asserted parent. Folk's 84 are recorded by name and the gate is equality, so a new misalignment fails and a fixed one must be removed from the record. Moral Epistemics measured 3, not 6: phase D had fixed one, and two were the measure reading "ICE" in a label as different from "information content entity" in the definition | `tests/bfo/test_definition_discipline.py`; phase E |
+| R17 | Check done; splits **open — owner decision**. The warning fires on exactly `FaithDisposition`: a comma, "or", then an article or infinitive. A plain "or" matches 107 definitions, nearly all lists. `OpennessDisposition` conflates by conjunction ("transparent, candid, and open to new experiences"), which no disjunction pattern can see | `tests/bfo/test_definition_discipline.py`; phase E |
 | R18 | Blocked on R2 | — |
 
 **Found during implementation, and recorded in D-005.**

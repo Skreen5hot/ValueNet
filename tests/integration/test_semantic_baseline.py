@@ -1026,6 +1026,9 @@ LEDGER = (
      "formal review phase D: MoralAssessmentAct re-parented (D-008), two "
      "definitions (D-008, D-009), a parent added to MoralDiscernmentAct, "
      "and three comments (D-008 to D-010)"),
+    ("cd9dd3dc", (9, 9), "content-change", True,
+     "formal review phase E: nine definitions in Moral Foundations and Moral "
+     "Epistemics now open with their asserted parent (R16)"),
 )
 
 

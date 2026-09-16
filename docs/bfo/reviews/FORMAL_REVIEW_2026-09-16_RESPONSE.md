@@ -502,16 +502,18 @@ were made without breaking anything.
   positive control failed, which is how that was found.
 
 **Evidence.** HermiT finds the suite consistent with no unsatisfiable named class, with
-and without the scenario, after phases C and D. Every new test was run against the
+and without the scenario, after phases C, D and E. Every new test was run against the
 unchanged ontology first and failed for its stated reason; each check added to a shape or
 a provenance record was falsified by reverting its subject.
 
 **Not yet reconciled, and why each is outside this work.**
 
-- `config/semantic-baseline.json` and `config/remediation-record.json` describe commit
-  3cb752a. The ontology has changed since, so the evidence has to be regenerated from a
-  clean commit with `tools/marep/build_evidence.py --remediation`, as the publication plan
-  prescribes.
+- Evidence is current. `config/semantic-baseline.json` and `config/remediation-record.json`
+  were regenerated from clean commits after phases D and E with
+  `tools/marep/build_evidence.py --remediation`, and the remediation ledger names each
+  phase as an event with its measured size and reason. The one measure that moved
+  unexpectedly, the reasoner's class count (306 to 308), was traced to two anonymous classes
+  phase C added; the named classes net to zero.
 - `config/quality-report.json` counts one internal link fewer than the site now has, and
   regenerating it resets the owner's public-content sign-off. The published ontology has
   changed, so that statement is the owner's to make again.

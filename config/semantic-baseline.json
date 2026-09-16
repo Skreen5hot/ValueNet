@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+  "input_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
   "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
@@ -142,10 +142,10 @@
       "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "corpus_repaired_since": {
         "artifact": "config/remediation-record.json",
-        "artifact_sha256": "d50f0077aeb2abf3e843bf373230e0b61f5a5cfb28f6e7a28b5890f347ebc169",
+        "artifact_sha256": "a903d697e90a6ddfa1b5e0d3333aabcd2f13ffc84fee6b2f465f5efb52579ab5",
         "before_tag": "eol-hardened-v1",
         "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-        "after_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+        "after_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
         "corpus_files_changed": [
           "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
           "ontology/bfo/core/valuenet-core.ttl",
@@ -233,6 +233,18 @@
             "ground_added": 7,
             "ground_removed": 3,
             "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+            "after_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+            "files": [
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+              "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 9,
+            "ground_removed": 9,
+            "blank_node_shape_unchanged": true
           }
         ],
         "not_remediated": {
@@ -286,7 +298,7 @@
       "definition": "distinct objects of vcvf:triggers"
     },
     "merged_ground_sha256": {
-      "value": "25e0121906afc8b631dabcd25008d9a0a6573dbc92d3f80d57ba227fbb6cbdca",
+      "value": "6064d6bc6c78967a0ab1acf18d1d7fad7a3180a1752de16359f87453cbd884b4",
       "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
     },
     "merged_bnode_shape": {
@@ -322,7 +334,7 @@
       "definition": "unsatisfiable named classes"
     },
     "bfo_scope_canonical_sha256": {
-      "value": "64d923529368e2e45a30a670ecdf5b2e9263b0fa448a2a0466cb1730d4fb2f56",
+      "value": "5e5fc10143b7517885471c9c5198e10415a263c087635124e57a7e6287b1dcd5",
       "definition": "SHA-256 over sorted N-Triples of the canonicalized union of layout.reasoner_scope()"
     },
     "bfo_scope_files": {
@@ -355,11 +367,11 @@
     }
   },
   "tests": {
-    "collected": 1042,
-    "default_selected": 1026,
+    "collected": 1051,
+    "default_selected": 1035,
     "default_deselected": 16,
-    "canonical_id_sha256": "a945c21eb8d7df18fd9cc554237709766453145aee4ef8e59acc8143c98e48f3",
-    "default_selected_sha256": "f200b45647e0cde9d8058bdd65722f2051a3bbe96c160c9ec5e973a4a31e7686",
+    "canonical_id_sha256": "7e100d35fbf53ee313148ba93ee13236168a50bb5d33fb5fc440295e98a61dde",
+    "default_selected_sha256": "8521c022de14e27768f806ce20ee93a2e2e5aca60d8c3fbb0c143c13fcdccda5",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

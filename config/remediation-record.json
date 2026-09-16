@@ -1,5 +1,5 @@
 {
-  "after_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+  "after_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -974,6 +974,135 @@
           {
             "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
             "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole> <http://www.w3.org/2004/02/skos/core#definition> \"A role that inheres in an agent because a norm-governed moral appraisal treats that agent as accountable for some conduct, and that can be realized in processes of censure, correction, restitution, forgiveness, or sanction.\"@en"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+      "before_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 34,
+          "component_digest_sha256": "30a0839c259c1fb6b9529771e6a22f9674195d5efbd86f9cd2ee013ade9ae2b4",
+          "components": 31,
+          "largest_component_nodes": 4,
+          "triples_touching": 130
+        },
+        "before": {
+          "blank_nodes": 34,
+          "component_digest_sha256": "30a0839c259c1fb6b9529771e6a22f9674195d5efbd86f9cd2ee013ade9ae2b4",
+          "components": 31,
+          "largest_component_nodes": 4,
+          "triples_touching": 130
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://www.w3.org/2004/02/skos/core#definition"
+        ],
+        "subclass_edges_unchanged": true,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MixedMoralAssessmentAct",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition"
+        ]
+      },
+      "files": [
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+        "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE> <http://www.w3.org/2004/02/skos/core#definition> \"An observational evidence information content entity that records the behaviour of an agent as perceived by another agent.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MixedMoralAssessmentAct> <http://www.w3.org/2004/02/skos/core#definition> \"A moral discernment act that is also a rash judgment act: it satisfies the discernment pattern while also producing an unwarranted culpability ascription that satisfies the rash-judgment annotation criterion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE> <http://www.w3.org/2004/02/skos/core#definition> \"A warranted moral assessment information content entity that describes the risk an agent's observed conduct poses to some other agent, and that is warranted by observation of that conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A moral value disposition to respect tradition, hierarchy, and legitimate authority.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A moral value disposition to protect others from harm and to act with compassion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A moral value disposition to uphold principles of justice, reciprocity, and equality.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A moral value disposition to resist domination and oppression, and to value freedom.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A moral value disposition to be loyal to one's ingroup, family, or nation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A moral value disposition to value purity, avoid degradation, and treat certain things as sacred.\"@en"
+          }
+        ],
+        "count": 18,
+        "removed": [
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE> <http://www.w3.org/2004/02/skos/core#definition> \"Observational evidence that records the behaviour of an agent as perceived by another agent.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MixedMoralAssessmentAct> <http://www.w3.org/2004/02/skos/core#definition> \"A moral assessment act that satisfies the discernment pattern while also producing an unwarranted culpability ascription that satisfies the rash-judgment annotation criterion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE> <http://www.w3.org/2004/02/skos/core#definition> \"A descriptive information content entity that describes the risk an agent's observed conduct poses to some other agent, and that is warranted by observation of that conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A disposition to respect tradition, hierarchy, and legitimate authority.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A disposition to protect others from harm and to act with compassion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A disposition to uphold principles of justice, reciprocity, and equality.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A disposition to resist domination and oppression, and to value freedom.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A disposition to be loyal to one's ingroup, family, or nation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A disposition to value purity, avoid degradation, and treat certain things as sacred.\"@en"
           }
         ],
         "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."

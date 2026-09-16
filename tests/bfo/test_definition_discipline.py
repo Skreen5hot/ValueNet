@@ -163,64 +163,11 @@ FOLK_UNANNOTATED = frozenset({
     "VisionDisposition", "WisdomDisposition"
 })
 
-#: Terms lacking an annotation RULES 2.0 requires, as recorded at adoption
-#: (D-013). Labels and definitions are complete and must stay so.
+#: Terms lacking an annotation RULES 2.0 requires. At adoption (D-013) the
+#: non-folk modules lacked 32 comments and 60 examples; all were written the
+#: same day, so only folk's gap, which waits on R15, remains. Labels and
+#: definitions are complete and must stay so.
 RECORDED_UNANNOTATED = {
-    ("valuenet-core.ttl", "comment"): frozenset({
-        "ValueDisposition", "ValueRole", "hasEndOffset", "hasEvidenceSource",
-        "hasSelector", "hasSourceRepresentation", "hasStartOffset",
-        "isTextSpanOf"
-    }),
-    ("valuenet-core.ttl", "example"): frozenset({
-        "MoralValueDisposition", "PersonalValueDisposition",
-        "TextSpanSelector", "TextualRepresentation",
-        "ValueEvidenceAnnotation", "ValueRelatedRealizableEntity",
-        "contravenes", "evokesFrame", "hasBroaderConceptualMatch",
-        "hasEndOffset", "hasEvidenceSource", "hasRelatedConceptualMatch",
-        "hasSelector", "hasSourceRepresentation", "hasStartOffset",
-        "hasTextualSequenceValue", "historicallyCorrespondsTo",
-        "isEvidenceFor", "isTextSpanOf", "ontologyEntityMapping",
-        "selectsTextSpan"
-    }),
-    ("valuenet-schwartz-values.ttl", "comment"): frozenset({
-        "AchievementDisposition", "BenevolenceDisposition",
-        "ConformityDisposition", "HedonismDisposition", "PowerDisposition",
-        "SecurityDisposition", "SelfDirectionDisposition",
-        "StimulationDisposition", "TraditionDisposition",
-        "UniversalismDisposition"
-    }),
-    ("valuenet-schwartz-values.ttl", "example"): frozenset({
-        "AchievementDisposition", "BenevolenceDisposition",
-        "ConformityDisposition", "HedonismDisposition", "PowerDisposition",
-        "SecurityDisposition", "SelfDirectionDisposition",
-        "StimulationDisposition", "TraditionDisposition",
-        "UniversalismDisposition"
-    }),
-    ("valuenet-moral-foundations.ttl", "comment"): frozenset({
-        "AuthorityDisposition", "BetrayalProcess", "CareDisposition",
-        "CheatingProcess", "DegradationProcess", "FairnessDisposition",
-        "HarmProcess", "LibertyDisposition", "LoyaltyDisposition",
-        "OppressionProcess", "SanctityDisposition", "SubversionProcess"
-    }),
-    ("valuenet-moral-foundations.ttl", "example"): frozenset({
-        "AuthorityDisposition", "BetrayalProcess", "CareDisposition",
-        "CheatingProcess", "DegradationProcess", "FairnessDisposition",
-        "HarmProcess", "LibertyDisposition", "LoyaltyDisposition",
-        "OppressionProcess", "SanctityDisposition", "SubversionProcess",
-        "dyadicOppositeOf"
-    }),
-    ("valuenet-moral-epistemics.ttl", "comment"): frozenset({
-        "BehavioralObservationICE", "ObservationalEvidenceICE"
-    }),
-    ("valuenet-moral-epistemics.ttl", "example"): frozenset({
-        "ActOfBehavioralObservation", "AgentBehaviorProcess",
-        "BehavioralObservationICE", "CulpabilityAscriptionICE",
-        "MixedMoralAssessmentAct", "MoralAssessmentAct", "MoralAssessmentICE",
-        "MoralCulpabilityRole", "MoralDiscernmentAct",
-        "ObservationalEvidenceICE", "ProtectiveAction", "PrudenceDisposition",
-        "RashJudgmentAct", "SafetyAssessmentICE",
-        "WarrantedMoralAssessmentICE", "isWarrantedBy"
-    }),
     ("valuenet-folk.ttl", "comment"): FOLK_UNANNOTATED,
     ("valuenet-folk.ttl", "example"): FOLK_UNANNOTATED,
 }

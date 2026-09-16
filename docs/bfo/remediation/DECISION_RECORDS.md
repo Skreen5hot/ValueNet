@@ -387,7 +387,7 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 
 ## D-013 — RULES 2.0 Is ValueNet's Definition and Annotation Standard
 
-**Status:** Adopted 2026-09-16; being implemented
+**Status:** Adopted 2026-09-16; implemented for the non-folk modules, folk pending R15
 **Finding coverage:** formal review 2026-09-16, finding 13; R2 and R18 of the response
 **Standard:** `docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RULES_2.0.md`
 **Evidence:** `tests/bfo/test_definition_discipline.py`
@@ -430,4 +430,4 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 | D-010 | Adopted and implemented | Documentation only; `contravenes` is retained with its justification recorded |
 | D-011 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are disjoint with CCO Information Content Entity |
 | D-012 | Adopted and implemented | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |
-| D-013 | Adopted; being implemented | Annotations only; comments and examples are added against the recorded gap, non-folk first, folk after R15 |
+| D-013 | Adopted; non-folk implemented, folk after R15 | Annotations only; the non-folk modules are complete, and folk's 134 comments and 134 examples are recorded and gated |

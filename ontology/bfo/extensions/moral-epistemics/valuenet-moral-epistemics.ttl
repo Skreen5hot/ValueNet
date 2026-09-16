@@ -27,7 +27,8 @@
   rdfs:label "is warranted by"@en ;
   skos:definition "A relation from a moral assessment information content entity to an observational evidence information content entity whose recorded content supports that assessment."@en ;
   rdfs:comment "Warrant is modeled as a relation between information content entities rather than as a quality of an assessment. A BFO quality inheres in an independent continuant, whereas an information content entity is a generically dependent continuant. Missing warrant is evaluated by the closed-world SHACL profile."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#isWarrantedBy> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#isWarrantedBy> ;
+  skos:example "Agent A's safety assessment isWarrantedBy Agent A's record of Agent C's conduct."@en .
 
 #################################################################
 #    Realizable entities
@@ -42,7 +43,8 @@
   rdfs:label "Prudence Disposition"@en ;
   skos:altLabel "Prudence"@en ;
   rdfs:comment "Distinguished from folk:WisdomDisposition, which covers the accumulation and application of knowledge generally, and from folk:DiscretionDisposition, which concerns restraint in speech and the handling of private information. Prudence is specifically the fit between the strength of an assessment and the evidence for it."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#PrudenceDisposition> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#PrudenceDisposition> ;
+  skos:example "A parent's standing inclination to act on what they have actually seen of a new carer's conduct, neither ignoring warning signs nor assuming the worst."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ProtectorRole>
   a owl:Class ;
@@ -65,7 +67,8 @@
   rdfs:label "Moral Culpability Role"@en ;
   rdfs:comment "An externally grounded normative status, not an intention, consent act, mental state, or information content entity. A culpability ascription does not entail that its target actually bears this role."@en ,
     "Grounded in what the agent did, not in how anyone appraised it (D-009). An earlier definition grounded the role in an appraisal that treats the agent as accountable; an unwarranted appraisal does that too, so a rash judgment would have conferred the culpability it wrongly ascribes."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralCulpabilityRole> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralCulpabilityRole> ;
+  skos:example "The role a driver bears after knowingly running a red light and injuring a pedestrian, realized when the driver is censured and makes restitution."@en .
 
 #################################################################
 #    Information content entities
@@ -80,7 +83,9 @@
   rdfs:subClassOf cco:ont00000853 ;
   skos:definition "A descriptive information content entity that records what was perceptually available to some agent, and that can serve as the evidential basis of a subsequent claim."@en ;
   rdfs:label "Observational Evidence ICE"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ObservationalEvidenceICE> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ObservationalEvidenceICE> ;
+  rdfs:comment "The range of isWarrantedBy: whatever warrants a moral assessment must be observational evidence. It need not be about behaviour; a record of behaviour specifically is a BehavioralObservationICE."@en ;
+  skos:example "A note, written by the person who found it, that a door was unlocked at 10 p.m."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE>
   a owl:Class ;
@@ -91,7 +96,9 @@
     ] ;
   skos:definition "An observational evidence information content entity that records the behaviour of an agent as perceived by another agent."@en ;
   rdfs:label "Behavioral Observation ICE"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#BehavioralObservationICE> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#BehavioralObservationICE> ;
+  rdfs:comment "The record an act of behavioural observation produces, distinct from the act and from the behaviour. It describes the observed AgentBehaviorProcess through CCO describes, which the moral epistemics shapes require."@en ;
+  skos:example "Agent A's record of what Agent C was seen to do."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralNormICE>
   a owl:Class ;
@@ -108,7 +115,8 @@
   skos:definition "A descriptive information content entity that records an evaluative claim about an agent or the agent's conduct under a moral norm."@en ;
   rdfs:label "Moral Assessment ICE"@en ;
   rdfs:comment "The output of a moral-assessment act. Its existence is distinct from the act that produced it, the entity it describes, and whether its claim is warranted or true."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralAssessmentICE> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralAssessmentICE> ;
+  skos:example "A written finding that an employee's conduct breached a duty of care."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#WarrantedMoralAssessmentICE>
   a owl:Class ;
@@ -126,7 +134,8 @@
   skos:definition "A moral assessment information content entity that is warranted by some observational evidence information content entity."@en ;
   rdfs:label "Warranted Moral Assessment ICE"@en ;
   rdfs:comment "A positive open-world classification: an asserted warrant is sufficient for classification. Failure to record a warrant does not entail membership in a complementary class and is checked by SHACL where required."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#WarrantedMoralAssessmentICE> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#WarrantedMoralAssessmentICE> ;
+  skos:example "An assessment that a colleague acted dishonestly, warranted by a recorded observation of the colleague altering a timesheet."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE>
   a owl:Class ;
@@ -142,7 +151,8 @@
   skos:definition "A warranted moral assessment information content entity that describes the risk an agent's observed conduct poses to some other agent, and that is warranted by observation of that conduct."@en ;
   rdfs:label "Safety Assessment ICE"@en ;
   rdfs:comment "The warrant restriction is what makes this the output of discernment rather than of rash judgment. An assessment of risk that is not warranted by observation is not an instance of this class."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#SafetyAssessmentICE> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#SafetyAssessmentICE> ;
+  skos:example "Agent A's assessment of the risk Agent C's conduct poses to the children, warranted by Agent A's record of that conduct."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#CulpabilityAscriptionICE>
   a owl:Class ;
@@ -154,7 +164,8 @@
   skos:definition "A moral assessment information content entity that describes an agent as bearing moral culpability or another accountability-grounding moral status."@en ;
   rdfs:label "Culpability Ascription ICE"@en ;
   rdfs:comment "The class requires only that the ascription describe an Agent. It does not existentially require a MoralCulpabilityRole: doing so would create a culpability status even for a false or unwarranted ascription. A true ascription may be accompanied by an independently asserted role individual borne by the described agent."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#CulpabilityAscriptionICE> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#CulpabilityAscriptionICE> ;
+  skos:example "Agent B's conclusion that Agent C is malicious and beyond redemption."@en .
 
 #################################################################
 #    Processes
@@ -166,7 +177,8 @@
   skos:definition "A process in which an agent participates as its bearer of action."@en ;
   rdfs:label "Agent Behavior Process"@en ;
   rdfs:comment "Named for what the process is rather than for our epistemic access to it. An earlier draft called this 'observable agent behaviour'; observability is not a feature of the process but of the relation between the process and a perceiver, and is carried here by ActOfBehavioralObservation instead."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#AgentBehaviorProcess> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#AgentBehaviorProcess> ;
+  skos:example "Agent C repeatedly ignoring a stated household rule."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ActOfBehavioralObservation>
   a owl:Class ;
@@ -178,7 +190,8 @@
   skos:definition "An act of observation in which an agent acquires information through perception of another agent's behavior and produces a descriptive record of what was perceived."@en ;
   rdfs:label "Act of Behavioral Observation"@en ;
   rdfs:comment "A reviewed subclass of CCO Act of Observation (ont00000037). The observed AgentBehaviorProcess is not related to this act by has input: CCO has input is a subproperty of has participant and its range excludes processes. The output record instead describes the observed behavior through CCO describes (ont00001982)."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ActOfBehavioralObservation> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ActOfBehavioralObservation> ;
+  skos:example "Agent A watching Agent C repeatedly ignore a stated household rule, and recording what was seen."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct>
   a owl:Class ;
@@ -195,7 +208,8 @@
   rdfs:label "Moral Assessment Act"@en ;
   rdfs:comment "Common occurrent parent of prudent discernment and rash judgment. The act is distinct from its information-content output and from the agent or conduct that output describes."@en ,
     "A CCO Act, not an Act of Appraisal (D-008). Act of Appraisal is a Planned Act through Act of Measuring, and a Planned Act is prescribed by a directive the agent holds; spontaneous moral judgment, of which RashJudgmentAct is the case in point, is in scope. MoralDiscernmentAct, which is deliberate, is asserted under Act of Appraisal directly."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralAssessmentAct> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralAssessmentAct> ;
+  skos:example "Agent B judging Agent C malicious; a committee evaluating whether a member broke its code of conduct."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct>
   a owl:Class ;
@@ -226,7 +240,8 @@
   rdfs:label "Moral Discernment Act"@en ;
   skos:altLabel "Prudent Assessment"@en ;
   rdfs:comment "A narrower MoralAssessmentAct whose output is a warranted safety assessment and whose process realizes a prudence disposition. No equivalence is asserted because other moral-assessment acts may be warranted without having this risk-assessment structure."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralDiscernmentAct> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralDiscernmentAct> ;
+  skos:example "Agent A weighing what was seen of Agent C's conduct against the household rule, and concluding that C poses a risk to the children if left alone with them."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#RashJudgmentAct>
   a owl:Class ;
@@ -255,7 +270,8 @@
   rdfs:comment "The defect is located in the warrant relation on the act's culpability-ascription output, not in a supposed interior-state entity. OWL asserts the positive output type; the annotation profile uses SHACL to require that a recorded RashJudgmentAct have at least one culpability-ascription output with no recorded warrant."@en ,
     "RashJudgmentAct is not disjoint with MoralDiscernmentAct. One larger or temporally extended moral-assessment act can produce both a warranted safety assessment and an unwarranted culpability ascription; class disjointness would incorrectly make that mixed process inconsistent."@en ,
     "Motivating source: Catechism of the Catholic Church 2477-2478, on rash judgment as an offence against the reputation of persons. Recorded as provenance; the axioms above assert only the evidential criterion."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#RashJudgmentAct> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#RashJudgmentAct> ;
+  skos:example "Agent B concluding, with no evidence of intent, that Agent C is malicious and beyond redemption."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MixedMoralAssessmentAct>
   a owl:Class ;
@@ -264,7 +280,8 @@
   skos:definition "A moral discernment act that is also a rash judgment act: it satisfies the discernment pattern while also producing an unwarranted culpability ascription that satisfies the rash-judgment annotation criterion."@en ;
   rdfs:label "Mixed Moral Assessment Act"@en ;
   rdfs:comment "This named overlap class makes the rejected disjointness testable: it must remain satisfiable. It represents a larger or temporally extended act with both warranted and unwarranted assessment outputs."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MixedMoralAssessmentAct> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MixedMoralAssessmentAct> ;
+  skos:example "A review of a childcare incident that concludes, from what was observed, that the arrangement is unsafe, and in the same review declares the carer malicious without evidence of intent."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ProtectiveAction>
   a owl:Class ;
@@ -289,7 +306,8 @@
   skos:definition "A value realization process in which an agent bearing a protector role acts on a safety assessment in order to reduce the risk of harm to a dependent agent, thereby realizing that role together with a care disposition."@en ;
   rdfs:label "Protective Action"@en ;
   rdfs:comment "The dependence on prior discernment is asserted with bfo:preceded by rather than left implicit in the shared assessment, so that the causal chain from behaviour through observation and discernment to action is queryable end to end."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ProtectiveAction> .
+  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#ProtectiveAction> ;
+  skos:example "Agent A limiting Agent C's unsupervised contact with the children."@en .
 
 #################################################################
 #    Agent participation

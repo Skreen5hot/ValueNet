@@ -1,5 +1,5 @@
 {
-  "after_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
+  "after_commit": "cf48895cb018c40290df6e421217b8b476c84e73",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -1254,6 +1254,486 @@
             "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be transparent, candid, and open to new experiences.\"@en"
           }
         ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "cf48895cb018c40290df6e421217b8b476c84e73",
+      "before_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 50,
+          "component_digest_sha256": "65c0426f3bb1a8000f7ebe4baa7e71b0dc0b119d5a9db161e5decc2ab566387e",
+          "components": 37,
+          "largest_component_nodes": 4,
+          "triples_touching": 172
+        },
+        "before": {
+          "blank_nodes": 50,
+          "component_digest_sha256": "65c0426f3bb1a8000f7ebe4baa7e71b0dc0b119d5a9db161e5decc2ab566387e",
+          "components": 37,
+          "largest_component_nodes": 4,
+          "triples_touching": 172
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "http://www.w3.org/2004/02/skos/core#example"
+        ],
+        "subclass_edges_unchanged": true,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector",
+          "https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation",
+          "https://fandaws.com/ontology/bfo/valuenet-core#ValueDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation",
+          "https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity",
+          "https://fandaws.com/ontology/bfo/valuenet-core#ValueRole",
+          "https://fandaws.com/ontology/bfo/valuenet-core#contravenes",
+          "https://fandaws.com/ontology/bfo/valuenet-core#evokesFrame",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasBroaderConceptualMatch",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasEndOffset",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasEvidenceSource",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasSelector",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasSourceRepresentation",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasStartOffset",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue",
+          "https://fandaws.com/ontology/bfo/valuenet-core#historicallyCorrespondsTo",
+          "https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor",
+          "https://fandaws.com/ontology/bfo/valuenet-core#isTextSpanOf",
+          "https://fandaws.com/ontology/bfo/valuenet-core#ontologyEntityMapping",
+          "https://fandaws.com/ontology/bfo/valuenet-core#selectsTextSpan",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ActOfBehavioralObservation",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#CulpabilityAscriptionICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MixedMoralAssessmentAct",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ProtectiveAction",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#RashJudgmentAct",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#WarrantedMoralAssessmentICE",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#isWarrantedBy",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#BetrayalProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CheatingProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#DegradationProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#HarmProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#OppressionProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SubversionProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations#dyadicOppositeOf",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#BenevolenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-core.ttl",
+        "ontology/bfo/core/valuenet-schwartz-values.ttl",
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+        "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A care disposition, realized in judging cruelty to be wrong; a fairness disposition, realized in objecting to an unequal share.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> <http://www.w3.org/2004/02/skos/core#example> \"An achievement disposition, realized in choosing demanding work where competence is recognized; an honesty disposition, realized in telling a friend an unwelcome truth.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> <http://www.w3.org/2004/02/skos/core#example> \"The selector recording that the span 'you could just tell he had bad intentions' begins at code point 67 and ends before code point 108 of version 1 of a family interview transcript.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2004/02/skos/core#example> \"The exact string of version 1 of a family interview transcript, 108 code points long, carried by a file on disk.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"A disposition rather than a role: it is grounded in how its bearer is, and would persist if the bearer's social circumstances changed. Contrast ValueRole. Its two specializations, MoralValueDisposition and PersonalValueDisposition, are not disjoint.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation> <http://www.w3.org/2004/02/skos/core#example> \"The annotation recording that the span 'kept an eye on him and made sure he was never alone with the kids', at code points 0 to 65 of an interview transcript, is evidence for a protective action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueRelatedRealizableEntity> <http://www.w3.org/2004/02/skos/core#example> \"An honesty disposition; a protector role.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueRole> <http://www.w3.org/2000/01/rdf-schema#comment> \"A role rather than a disposition: it exists because of a circumstance its bearer occupies and ends when that circumstance does, though the bearer is otherwise unchanged. Contrast ValueDisposition. One agent may bear both a value disposition and a value role of related content, such as a care disposition and a protector role.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#contravenes> <http://www.w3.org/2004/02/skos/core#example> \"A rash judgment made by an agent contravenes that agent's own justice disposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#evokesFrame> <http://www.w3.org/2004/02/skos/core#example> \"The span 'kept an eye on him and made sure he was never alone with the kids' evokesFrame the FrameNet frame Protecting.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasBroaderConceptualMatch> <http://www.w3.org/2004/02/skos/core#example> \"folk:OpennessDisposition hasBroaderConceptualMatch schwartz-values:StimulationDisposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasEndOffset> <http://www.w3.org/2000/01/rdf-schema#comment> \"Exclusive, so a span's length is its end offset minus its start offset, and a span covering a whole representation ends at that representation's length in code points. The core shapes reject an end offset beyond the source's length.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasEndOffset> <http://www.w3.org/2004/02/skos/core#example> \"65, on the selector for 'kept an eye on him and made sure he was never alone with the kids', a string 65 code points long that begins at 0.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasEvidenceSource> <http://www.w3.org/2000/01/rdf-schema#comment> \"Names the part a span plays for this annotation, not a class of spans: a span is evidence only when an annotation or an isEvidenceFor assertion says so (R10). The core shapes require exactly one named span, and require the annotation's selector to select that same span.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasEvidenceSource> <http://www.w3.org/2004/02/skos/core#example> \"A value evidence annotation hasEvidenceSource the span 'you could just tell he had bad intentions'.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.w3.org/2004/02/skos/core#example> \"moral-epistemics:ProtectiveAction hasRelatedConceptualMatch HaidtValues#Care.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasSelector> <http://www.w3.org/2000/01/rdf-schema#comment> \"The core shapes require exactly one named selector, and require it to select the annotation's evidence span, so the recorded coordinates and the recorded span cannot disagree.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasSelector> <http://www.w3.org/2004/02/skos/core#example> \"A value evidence annotation hasSelector the selector placing its span at code points 67 to 108 of a transcript.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasSourceRepresentation> <http://www.w3.org/2000/01/rdf-schema#comment> \"Names the coordinate space of the selector's offsets. The core shapes require exactly one, and require it to be the representation the selected span is part of.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasSourceRepresentation> <http://www.w3.org/2004/02/skos/core#example> \"A selector hasSourceRepresentation version 1 of a family interview transcript, against whose exact string its offsets are counted.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasStartOffset> <http://www.w3.org/2000/01/rdf-schema#comment> \"Zero-based and inclusive: a representation's first code point is at 0. Recorded on the selector, never on the span. The core shapes require exactly one start and one end offset, with the start less than the end.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasStartOffset> <http://www.w3.org/2004/02/skos/core#example> \"0, on the selector for 'kept an eye on him and made sure he was never alone with the kids' at the start of a transcript.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/2004/02/skos/core#example> \"A text span hasTextualSequenceValue 'you could just tell he had bad intentions'.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#historicallyCorrespondsTo> <http://www.w3.org/2004/02/skos/core#example> \"moral-foundations:CareDisposition historicallyCorrespondsTo HaidtValues#Care.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor> <http://www.w3.org/2004/02/skos/core#example> \"A value evidence annotation isEvidenceFor a rash judgment act.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isTextSpanOf> <http://www.w3.org/2000/01/rdf-schema#comment> \"Specializes BFO continuant part of (BFO_0000176), not a proper-part relation: BFO 2020 core supplies none, and a span may cover its whole representation (D-005). The core shapes require exactly one named representation per span.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isTextSpanOf> <http://www.w3.org/2004/02/skos/core#example> \"The span 'you could just tell he had bad intentions' isTextSpanOf version 1 of a family interview transcript.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ontologyEntityMapping> <http://www.w3.org/2004/02/skos/core#example> \"Never asserted itself. An assertion of one of its three subproperties is an assertion of it, such as folk:OpennessDisposition hasBroaderConceptualMatch schwartz-values:SelfDirectionDisposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#selectsTextSpan> <http://www.w3.org/2004/02/skos/core#example> \"The selector at code points 67 to 108 of a transcript selectsTextSpan the span 'you could just tell he had bad intentions'.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Power under self-enhancement. Achievement is success as competence demonstrated against social standards; Power is status and control over people and resources.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A student's standing inclination to take the harder course because doing well in it is recognized as a sign of ability.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#BenevolenceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Universalism under self-transcendence. Benevolence is concern for people one is in frequent personal contact with; concern for all people and for nature is Universalism.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#BenevolenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to set aside their own plans to help a sibling or a close friend in difficulty.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Tradition and Security under conservation. Conformity restrains conduct in deference to the expectations of the people one interacts with; commitment to the customs of a culture or religion is Tradition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to hold back a sharp remark in a meeting so as not to upset colleagues.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory. It shares elements of both openness to change and self-enhancement, and lies between Stimulation and Achievement. Its object is pleasure for oneself; excitement and novelty are Stimulation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to choose a long, enjoyable meal with friends over an evening of extra work.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Achievement under self-enhancement. Power is status and control over people and resources; success as demonstrated competence is Achievement.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to seek positions that bring authority over budgets and staff.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Conformity and Tradition under conservation. It covers both personal safety and the stability of the society and relationships one belongs to.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to choose a stable job over a better-paid uncertain one, and to keep savings against emergencies.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Stimulation under openness to change. It is independence of thought and action; excitement and novelty sought for their own sake are Stimulation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to work out their own view of a problem rather than adopt the accepted one.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Self-Direction under openness to change. It is excitement, novelty and challenge sought for their own sake; independence of thought and action is Self-Direction.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take up activities they have never tried, such as a sport with real risk or a sudden move to another country.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Conformity and Security under conservation. Its object is the customs and ideas of a culture or religion; deference to the expectations of the people one interacts with is Conformity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep the family and religious customs they were raised in, such as observing holy days.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"One of the ten basic values of Schwartz's theory, grouped with Benevolence under self-transcendence. Its concern extends to all people and to nature; concern for those one is in frequent contact with is Benevolence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-schwartz-values.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to support protecting strangers and the natural environment even at a cost to themselves.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ActOfBehavioralObservation> <http://www.w3.org/2004/02/skos/core#example> \"Agent A watching Agent C repeatedly ignore a stated household rule, and recording what was seen.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess> <http://www.w3.org/2004/02/skos/core#example> \"Agent C repeatedly ignoring a stated household rule.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE> <http://www.w3.org/2000/01/rdf-schema#comment> \"The record an act of behavioural observation produces, distinct from the act and from the behaviour. It describes the observed AgentBehaviorProcess through CCO describes, which the moral epistemics shapes require.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE> <http://www.w3.org/2004/02/skos/core#example> \"Agent A's record of what Agent C was seen to do.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#CulpabilityAscriptionICE> <http://www.w3.org/2004/02/skos/core#example> \"Agent B's conclusion that Agent C is malicious and beyond redemption.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MixedMoralAssessmentAct> <http://www.w3.org/2004/02/skos/core#example> \"A review of a childcare incident that concludes, from what was observed, that the arrangement is unsafe, and in the same review declares the carer malicious without evidence of intent.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> <http://www.w3.org/2004/02/skos/core#example> \"Agent B judging Agent C malicious; a committee evaluating whether a member broke its code of conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE> <http://www.w3.org/2004/02/skos/core#example> \"A written finding that an employee's conduct breached a duty of care.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole> <http://www.w3.org/2004/02/skos/core#example> \"The role a driver bears after knowingly running a red light and injuring a pedestrian, realized when the driver is censured and makes restitution.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct> <http://www.w3.org/2004/02/skos/core#example> \"Agent A weighing what was seen of Agent C's conduct against the household rule, and concluding that C poses a risk to the children if left alone with them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE> <http://www.w3.org/2000/01/rdf-schema#comment> \"The range of isWarrantedBy: whatever warrants a moral assessment must be observational evidence. It need not be about behaviour; a record of behaviour specifically is a BehavioralObservationICE.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ObservationalEvidenceICE> <http://www.w3.org/2004/02/skos/core#example> \"A note, written by the person who found it, that a door was unlocked at 10 p.m.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#ProtectiveAction> <http://www.w3.org/2004/02/skos/core#example> \"Agent A limiting Agent C's unsupervised contact with the children.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A parent's standing inclination to act on what they have actually seen of a new carer's conduct, neither ignoring warning signs nor assuming the worst.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#RashJudgmentAct> <http://www.w3.org/2004/02/skos/core#example> \"Agent B concluding, with no evidence of intent, that Agent C is malicious and beyond redemption.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE> <http://www.w3.org/2004/02/skos/core#example> \"Agent A's assessment of the risk Agent C's conduct poses to the children, warranted by Agent A's record of that conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#WarrantedMoralAssessmentICE> <http://www.w3.org/2004/02/skos/core#example> \"An assessment that a colleague acted dishonestly, warranted by a recorded observation of the colleague altering a timesheet.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#isWarrantedBy> <http://www.w3.org/2004/02/skos/core#example> \"Agent A's safety assessment isWarrantedBy Agent A's record of Agent C's conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The authority foundation of Moral Foundations Theory, paired with SubversionProcess, the violation that contravenes it. Its object is legitimate authority, hierarchy and tradition; obedience to illegitimate power is not what it values.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#AuthorityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to disapprove of players who defy a referee's legitimate ruling.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#BetrayalProcess> <http://www.w3.org/2000/01/rdf-schema#comment> \"The violation paired with LoyaltyDisposition in Moral Foundations Theory. The loyalty disposition it contravenes may be borne by the betraying agent or by another agent (ValueViolationProcess, D-010).\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#BetrayalProcess> <http://www.w3.org/2004/02/skos/core#example> \"Passing a team's plans to a rival team.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The care foundation of Moral Foundations Theory, paired with HarmProcess, the violation that contravenes it. As a moral value disposition it is realized in appraising conduct as right or wrong; folk:CareDisposition, a personal value disposition to provide for others' needs, is a different class.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to comfort a frightened stranger and to object when an animal is mistreated.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CheatingProcess> <http://www.w3.org/2000/01/rdf-schema#comment> \"The violation paired with FairnessDisposition in Moral Foundations Theory. The fairness disposition it contravenes may be borne by the cheating agent or by another agent (ValueViolationProcess, D-010).\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CheatingProcess> <http://www.w3.org/2004/02/skos/core#example> \"Keeping goods received in an exchange and refusing to pay the agreed price.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#DegradationProcess> <http://www.w3.org/2000/01/rdf-schema#comment> \"The violation paired with SanctityDisposition in Moral Foundations Theory. The sanctity disposition it contravenes may be borne by the degrading agent or by another agent (ValueViolationProcess, D-010).\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#DegradationProcess> <http://www.w3.org/2004/02/skos/core#example> \"Spray-painting graffiti on a gravestone.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The fairness foundation of Moral Foundations Theory, paired with CheatingProcess, the violation that contravenes it. folk:FairnessDisposition, a personal value disposition to treat people impartially, is a different class.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#FairnessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to condemn someone who takes more than their share of a common fund.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#HarmProcess> <http://www.w3.org/2000/01/rdf-schema#comment> \"The violation paired with CareDisposition in Moral Foundations Theory. The care disposition it contravenes may be borne by the agent who inflicts the harm or by another agent (ValueViolationProcess, D-010).\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#HarmProcess> <http://www.w3.org/2004/02/skos/core#example> \"Striking a person in anger; mocking a child until the child cries.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The liberty foundation, added to Moral Foundations Theory after the original five, paired with OppressionProcess, the violation that contravenes it. folk:FreedomDisposition, a personal value disposition to value the absence of coercion in one's own choices, is a different class.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LibertyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to condemn a manager who controls employees' private lives.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The loyalty foundation of Moral Foundations Theory, paired with BetrayalProcess, the violation that contravenes it. folk:LoyaltyDisposition, a personal value disposition to be faithful to a person, group or cause, is a different class.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#LoyaltyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to judge a teammate who sells the team's plans to a rival as having done wrong.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#OppressionProcess> <http://www.w3.org/2000/01/rdf-schema#comment> \"The violation paired with LibertyDisposition in Moral Foundations Theory. The liberty disposition it contravenes may be borne by the oppressing agent or by another agent (ValueViolationProcess, D-010).\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#OppressionProcess> <http://www.w3.org/2004/02/skos/core#example> \"Forbidding the members of a group to leave their town without permission.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The sanctity foundation of Moral Foundations Theory, paired with DegradationProcess, the violation that contravenes it. What is treated as sacred or pure varies between bearers; the disposition is to protect whatever that is.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to regard defacing a grave as a wrong, independently of any harm it causes.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SubversionProcess> <http://www.w3.org/2000/01/rdf-schema#comment> \"The violation paired with AuthorityDisposition in Moral Foundations Theory. The authority disposition it contravenes may be borne by the subverting agent or by another agent (ValueViolationProcess, D-010).\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SubversionProcess> <http://www.w3.org/2004/02/skos/core#example> \"Inciting players to ignore a referee's legitimate rulings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#dyadicOppositeOf> <http://www.w3.org/2004/02/skos/core#example> \"moral-foundations:CareDisposition dyadicOppositeOf moral-foundations:HarmProcess, and HarmProcess dyadicOppositeOf CareDisposition.\"@en"
+          }
+        ],
+        "count": 92,
+        "removed": [],
         "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
       }
     }

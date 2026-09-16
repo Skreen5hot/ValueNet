@@ -1034,6 +1034,9 @@ LEDGER = (
      "disjoint with ICE, with their comments (D-011); FaithDisposition and "
      "OpennessDisposition narrowed, ReligionDisposition added, and a comment "
      "and an example on each of the three (D-012)"),
+    ("cf48895c", (92, 0), "content-change", True,
+     "RULES 2.0 adopted (D-013): 32 comments and 60 examples on the non-folk "
+     "classes and properties; the event spans 4e849e4..cf48895"),
 )
 
 #: Named classes declared since the tag, net of those removed, and the

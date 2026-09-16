@@ -354,7 +354,7 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 ### Decision
 
 1. `folk:FaithDisposition` keeps its IRI and one sense: *a personal value disposition to place complete trust or confidence in someone or something without requiring proof.*
-2. `folk:ReligionDisposition` is added for the other: *a personal value disposition to hold a system of religious belief and practice as a guide to living.* Its parent is `core:PersonalValueDisposition`, like Faith's and Spirituality's, and it follows the module's naming pattern, which pairs it with `folk:Religion` in the folk corpus.
+2. `folk:ReligionDisposition` is added for the other: *a personal value disposition to hold a system of religious belief and practice as a guide to living.* Its parent is `core:PersonalValueDisposition`, like Faith's and Spirituality's, and it follows the module's naming pattern, which pairs it with `folk:Religion` in this repository's copy of the folk corpus.
 3. `folk:OpennessDisposition` keeps its IRI and one sense: *a personal value disposition to be receptive to new experiences, including unfamiliar activities, sensations, and ways of living.*
 4. No class is added for Openness's other sense. Being candid and transparent is what the existing `CandorDisposition` and `TransparencyDisposition` define, under `HonestyDisposition`; a third class would duplicate them.
 5. The three classes carry every annotation RULES 2.0 section 5 requires: subclass assertion, label, definition, comment and example. No mapping assertion is added.
@@ -362,7 +362,7 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 ### How the rules were applied
 
 - **Search CCO first.** CCO 2.2 has no value or character dispositions to serve as a parent. It has `Religion` (`ont00000616`), but that is an Information Content Entity — the collection of claims a religion consists of — and a disposition cannot be its subclass. ReligionDisposition's comment names it as what the disposition is directed at. The parents are therefore the ValueNet dispositions the classes already specialized.
-- **Sources.** The folk corpus, not a web search: `folk:Faith`'s own comment describes believing things will work out and letting beliefs guide decisions, with no doctrine in it, and the corpus records `folk:Religion` as a separate value — "holding a system of religious belief and practice as a guide to living" — which had no class. The two senses were already two values there.
+- **Sources.** The folk corpus, not a web search: `folk:Faith`'s own comment describes believing things will work out and letting beliefs guide decisions, with no doctrine in it, and this repository's copy of the corpus records `folk:Religion` as a separate value — "holding a system of religious belief and practice as a guide to living" — which had no class. The two senses were already two values there. *Correction, 2026-09-16:* `folk:Religion` is not in the upstream ThatsAllFolks corpus or any of its source lists; this repository added it (commit d9ee3f1) to hold a 480-trigger religion lexicon. The split stands on the two senses, not on the entry's provenance (see `R15_FOLK_MEMBERSHIP_PROPOSAL.md` §2).
 
 | class | clarity | inclusiveness | exclusiveness |
 |---|---|---|---|
@@ -372,7 +372,7 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 
 ### Why the IRIs stay with these senses
 
-- **Faith** keeps the sense the corpus's own `folk:Faith` has, and the religious sense goes to the corpus's own `folk:Religion`.
+- **Faith** keeps the sense the corpus's own `folk:Faith` has, and the religious sense goes to `folk:Religion`, the entry this repository added to its copy of the corpus.
 - **Openness** keeps the sense its existing broader conceptual matches already described: Schwartz Stimulation and Self-Direction are openness to change, not candour.
 
 ### Consequences

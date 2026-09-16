@@ -1029,7 +1029,19 @@ LEDGER = (
     ("cd9dd3dc", (9, 9), "content-change", True,
      "formal review phase E: nine definitions in Moral Foundations and Moral "
      "Epistemics now open with their asserted parent (R16)"),
+    ("74e7a6f4", (18, 4), "content-change", True,
+     "owner decisions after phase E: TextualRepresentation and TextSpan "
+     "disjoint with ICE, with their comments (D-011); FaithDisposition and "
+     "OpennessDisposition narrowed, ReligionDisposition added, and a comment "
+     "and an example on each of the three (D-012)"),
 )
+
+#: Named classes declared since the tag, net of those removed, and the
+#: decision that added each. Phase C's swap -- Designative ICE in, EvidenceSource
+#: out -- nets to zero and is not listed.
+CLASSES_ADDED_SINCE_TAG = {
+    "https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition": "D-012",
+}
 
 
 @needs_repair_record
@@ -1177,6 +1189,10 @@ def test_only_the_measures_the_repair_touches_have_moved():
     C added two -- the hasTextualSequenceValue union domain and Designative
     ICE's equivalence -- while the named classes netted to zero, Designative
     ICE in and EvidenceSource out.
+
+    D-012 then declared a class, ReligionDisposition, so the corpus's named
+    classes and class declarations each rise by one, and the reasoner's count
+    by one more.
     """
     # Same reader, same hazard: an evidence artifact holding a non-ASCII
     # definition would decode to different characters under the locale
@@ -1207,12 +1223,26 @@ def test_only_the_measures_the_repair_touches_have_moved():
     assert old, "no baseline at " + BEFORE_TAG
 
     # Unchanged: the shape of the ontology, not its size.
-    for key in ("files_discovered", "files_parsing", "named_classes",
-                "class_declarations_summed", "trigger_statements",
+    for key in ("files_discovered", "files_parsing", "trigger_statements",
                 "distinct_trigger_objects"):
         assert BASELINE["corpus"][key]["value"] == old["corpus"][key]["value"], (
-            key + " moved; no event in the ledger declares a class or a "
+            key + " moved; no event in the ledger declares a file or a "
             "trigger")
+    # Classes move only by the ones a decision added, each still declared.
+    added_classes = len(CLASSES_ADDED_SINCE_TAG)
+    for key in ("named_classes", "class_declarations_summed"):
+        assert (BASELINE["corpus"][key]["value"]
+                == old["corpus"][key]["value"] + added_classes), (
+            key + " moved by other than the classes CLASSES_ADDED_SINCE_TAG "
+            "records")
+    import rdflib as _rdflib
+    from rdflib.namespace import OWL as _OWL, RDF as _RDF
+    declared = _rdflib.Graph()
+    for path in layout.component("bfo.ontology-tree").resolve().rglob("*.ttl"):
+        declared.parse(path, format="turtle")
+    for iri, decision in CLASSES_ADDED_SINCE_TAG.items():
+        assert (_rdflib.URIRef(iri), _RDF.type, _OWL.Class) in declared, (
+            "%s, added by %s, is no longer declared" % (iri, decision))
 
     # Every reasoner verdict and count.
     for key in ("bfo_layer_files",
@@ -1221,9 +1251,10 @@ def test_only_the_measures_the_repair_touches_have_moved():
         assert (BASELINE["reasoner"][key]["value"]
                 == old["reasoner"][key]["value"]), key + " moved"
     assert (BASELINE["reasoner"]["bfo_layer_classes"]["value"]
-            == old["reasoner"]["bfo_layer_classes"]["value"] + 2), (
+            == old["reasoner"]["bfo_layer_classes"]["value"] + 2
+            + added_classes), (
         "bfo_layer_classes moved by other than the two anonymous classes "
-        "phase C added")
+        "phase C added and the classes CLASSES_ADDED_SINCE_TAG records")
 
     for name in ("folk_source", "folk_aligned"):
         assert BASELINE["artifacts"][name] == old["artifacts"][name], (

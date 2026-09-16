@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+  "input_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
   "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
@@ -142,10 +142,10 @@
       "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "corpus_repaired_since": {
         "artifact": "config/remediation-record.json",
-        "artifact_sha256": "a903d697e90a6ddfa1b5e0d3333aabcd2f13ffc84fee6b2f465f5efb52579ab5",
+        "artifact_sha256": "d0ccd9cb7db7121fe80217e4de35c1ca092e45ebe812308613c56f687cde192e",
         "before_tag": "eol-hardened-v1",
         "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-        "after_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+        "after_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
         "corpus_files_changed": [
           "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
           "ontology/bfo/core/valuenet-core.ttl",
@@ -245,6 +245,18 @@
             "ground_added": 9,
             "ground_removed": 9,
             "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+            "after_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
+            "files": [
+              "ontology/bfo/core/valuenet-core.ttl",
+              "ontology/bfo/core/valuenet-folk.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 18,
+            "ground_removed": 4,
+            "blank_node_shape_unchanged": true
           }
         ],
         "not_remediated": {
@@ -278,15 +290,15 @@
       "definition": "measure_file(...).parses is True"
     },
     "distinct_triples": {
-      "value": 104820,
+      "value": 104834,
       "definition": "len of the merged graph over all parsing files"
     },
     "named_classes": {
-      "value": 2889,
+      "value": 2890,
       "definition": "owl:Class subjects that are rdflib.URIRef; blank-node restrictions excluded. Counting them gave 3,703 against a true 2,889."
     },
     "class_declarations_summed": {
-      "value": 5402,
+      "value": 5403,
       "definition": "sum of per-file class counts; double-counts a class declared in two files, by design"
     },
     "trigger_statements": {
@@ -298,7 +310,7 @@
       "definition": "distinct objects of vcvf:triggers"
     },
     "merged_ground_sha256": {
-      "value": "6064d6bc6c78967a0ab1acf18d1d7fad7a3180a1752de16359f87453cbd884b4",
+      "value": "3707a775eda66c8e7c4e0ba7113b691e63c80759b02fa44eeb27a72df3afdddf",
       "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
     },
     "merged_bnode_shape": {
@@ -314,7 +326,7 @@
   },
   "reasoner": {
     "bfo_layer_classes": {
-      "value": 308,
+      "value": 309,
       "definition": "named classes in the HermiT scope, including the configured CCO extract"
     },
     "bfo_layer_files": {
@@ -334,7 +346,7 @@
       "definition": "unsatisfiable named classes"
     },
     "bfo_scope_canonical_sha256": {
-      "value": "5e5fc10143b7517885471c9c5198e10415a263c087635124e57a7e6287b1dcd5",
+      "value": "d34dab3264b32f895de2f8403ccd4223e0c127ded2324640fb9fa8d7287b5f19",
       "definition": "SHA-256 over sorted N-Triples of the canonicalized union of layout.reasoner_scope()"
     },
     "bfo_scope_files": {
@@ -367,11 +379,11 @@
     }
   },
   "tests": {
-    "collected": 1051,
-    "default_selected": 1035,
+    "collected": 1060,
+    "default_selected": 1044,
     "default_deselected": 16,
-    "canonical_id_sha256": "7e100d35fbf53ee313148ba93ee13236168a50bb5d33fb5fc440295e98a61dde",
-    "default_selected_sha256": "8521c022de14e27768f806ce20ee93a2e2e5aca60d8c3fbb0c143c13fcdccda5",
+    "canonical_id_sha256": "30bee16ae3bdc917d4cbd2a3c0d236715e7b2954e04c5b63b10947b9d3991a43",
+    "default_selected_sha256": "4afc85f97bc10932754b2e5239004ac2965e7b83ccad4253e5854dc3d4ede346",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

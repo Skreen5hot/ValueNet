@@ -1,5 +1,5 @@
 {
-  "after_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+  "after_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -1103,6 +1103,155 @@
           {
             "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
             "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations#SanctityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A disposition to value purity, avoid degradation, and treat certain things as sacred.\"@en"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
+      "before_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 16,
+          "component_digest_sha256": "1be24c0fc5d2eee0211705a29177814ea0b2a5e3de59b6ab360b63b3b249451a",
+          "components": 6,
+          "largest_component_nodes": 4,
+          "triples_touching": 42
+        },
+        "before": {
+          "blank_nodes": 16,
+          "component_digest_sha256": "1be24c0fc5d2eee0211705a29177814ea0b2a5e3de59b6ab360b63b3b249451a",
+          "components": 6,
+          "largest_component_nodes": 4,
+          "triples_touching": 42
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": false,
+        "predicates_touched": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+          "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+          "http://www.w3.org/2002/07/owl#disjointWith",
+          "http://www.w3.org/2004/02/skos/core#altLabel",
+          "http://www.w3.org/2004/02/skos/core#definition",
+          "http://www.w3.org/2004/02/skos/core#example"
+        ],
+        "subclass_edges_unchanged": false,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-core#TextSpan",
+          "https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-core.ttl",
+        "ontology/bfo/core/valuenet-folk.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2000/01/rdf-schema#comment> \"Individuated by position, not by its string (D-005): the same substring at two positions of one representation is two spans with the same hasTextualSequenceValue, and every selector of one span must give the same offsets. Not a subclass of TextualRepresentation, and not an evidence source by classification: it is evidence when an isEvidenceFor assertion or a ValueEvidenceAnnotation says so. Disjoint with information content entity (D-011): a span may be designated by a selector, but a span that is asserted to be about or to designate something makes the data inconsistent.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2002/07/owl#disjointWith> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2000/01/rdf-schema#comment> \"Form, not content (D-005). CCO subtypes information content entities by what they are about; a representation is individuated by its exact sequence, a level CCO's information model has no class for, so it is placed directly under BFO generically dependent continuant. CCO defines information content entity as equivalent to a generically dependent continuant that is about some entity, and this class is disjoint with information content entity (D-011): asserting that a representation is about something, through cco:is about or any subproperty such as designates or describes, makes the data inconsistent. Relate a representation to what it expresses through a content-level information content entity instead.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2002/07/owl#disjointWith> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Differs from TrustDisposition, a firm belief in the reliability of someone or something, in not resting on evidence of that reliability. The definition formerly joined a second sense, strong belief in a religious doctrine; that sense is ReligionDisposition (R17, D-012). A person may bear both.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to place complete trust or confidence in someone or something without requiring proof.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Staying confident that an estranged friend will make amends, and keeping a place for them, though nothing yet suggests they will.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Receptive rather than seeking: VarietyDisposition and AdventureDisposition seek out change and daring experience, OpenMindednessDisposition is receptive to ideas and opinions, and this class to experience. The definition formerly also covered being transparent and candid (R17, D-012); those senses are CandorDisposition and TransparencyDisposition, under HonestyDisposition. The broader conceptual matches below, Stimulation and Self-Direction, were already those of the sense kept.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be receptive to new experiences, including unfamiliar activities, sensations, and ways of living.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Accepting an invitation to a festival of a culture one knows nothing about, and taking part rather than watching.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The religious sense formerly joined to FaithDisposition's definition (R17, D-012), and the class for folk:Religion in the folk corpus, which places it under Beliefs alongside Faith and Belief in God. The system of belief itself is information content, as CCO Religion (ont00000616) models it; this class is the disposition of an agent who holds one as a guide to living, not the religion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Religion Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#ReligionDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Religion\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to hold a system of religious belief and practice as a guide to living.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Keeping the prayer and dietary observances of one's tradition, and weighing a major decision against its teaching.\"@en"
+          }
+        ],
+        "count": 22,
+        "removed": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2000/01/rdf-schema#comment> \"Individuated by position, not by its string (D-005): the same substring at two positions of one representation is two spans with the same hasTextualSequenceValue, and every selector of one span must give the same offsets. Not a subclass of TextualRepresentation, and not an evidence source by classification: it is evidence when an isEvidenceFor assertion or a ValueEvidenceAnnotation says so.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2000/01/rdf-schema#comment> \"Form, not content (D-005). CCO subtypes information content entities by what they are about; a representation is individuated by its exact sequence, a level CCO's information model has no class for, so it is placed directly under BFO generically dependent continuant. CCO defines information content entity as equivalent to a generically dependent continuant that is about some entity: asserting that a representation is about something, through cco:is about or any subproperty such as designates or describes, re-classifies it as information content. Relate a representation to what it expresses through a content-level information content entity instead.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to have complete trust or confidence in someone or something, or a strong belief in a religious doctrine.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be transparent, candid, and open to new experiences.\"@en"
           }
         ],
         "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."

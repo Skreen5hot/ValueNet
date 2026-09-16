@@ -8,6 +8,8 @@ The user's instruction to start the remediation plan authorizes these recommende
 
 D-005 was provisionally adopted on 2026-09-16, on the project owner's instruction following the formal review of that date, to authorize the ontology change it describes. It amends D-004 item 4 and is adopted when that change is implemented.
 
+D-006 and D-007 were adopted on 2026-09-16, after the reviewer signed off on the review response and the owner instructed that the remediation proceed. D-007 is implemented together with D-005.
+
 ## D-001 — Extension of the Realist Value Model
 
 **Status:** Adopted 2026-08-25  
@@ -182,6 +184,51 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 - a competency question requires one content across different sequences, such as a translation or a revision — answered by adding a content-level ICE related to the representations, not by moving the representation back under ICE; or
 - BFO removes or weakens the disjointness of the continuant categories, which the test's control 02 would detect first.
 
+## D-006 — CCO 2.2 as the Normative Conformance Baseline
+
+**Status:** Adopted 2026-09-16
+**Finding coverage:** formal review 2026-09-16, overall determination and R1 of the response
+**Amends:** the source provenance recorded in `ontology/bfo/vendor/cco/cco-valuenet-extract.manifest.json`
+
+### Decision
+
+1. CCO release **v2.2** is ValueNet's normative conformance baseline: tag `v2.2`, commit `0bc7d33e1bc09fd4693366119ab4e03cb0340042`, merged artifact `CommonCoreOntologiesMerged-2.2.ttl`.
+2. The audit record distinguishes the project's baseline from the reviewer's, in the reviewer's words: *the original external review was conducted against supplied CCO 2.0; ValueNet subsequently verified each implicated term against its normative CCO 2.2 baseline and found no disposition-changing difference.* It is not a certification of the ontology against 2.2 by the reviewer.
+3. The pinned source digest is the release artifact's own: `a9453382b25b40781c181d6ba44981f228abb76d90d548846713adba9baadb42`, as listed in the release's published `SHA256SUMS`.
+
+### Rationale
+
+- ValueNet already pins, extracts, reasons over and tests against 2.2. Declaring 2.0 would describe a target the repository does not have.
+- Every CCO term the review cites was compared across 2.0 (tag `v2.0-2024-11-06`) and 2.2, and no finding's disposition changes; see §4 of the review response. The reviewer accepted that comparison as evidence about the repository.
+- **The previously recorded source digest was not the release's.** The extract manifest recorded `f6d1f7008fb0589b…`. That is the digest of the same file with every line ending converted to CRLF: the release artifact uses LF, digests to `a9453382…`, and converting it to CRLF reproduces the recorded value exactly. The content was right and the recorded provenance could not be checked against the published release. The manifest is corrected when the extract is next regenerated, which D-005 requires.
+
+### Reopen when
+
+- a later CCO release is adopted; or
+- a certification the project needs is only available against a different CCO version.
+
+## D-007 — Informational Input and Output Use CCO Directly
+
+**Status:** Adopted 2026-09-16; implemented with D-005
+**Finding coverage:** formal review 2026-09-16, finding 3; R3 and R11 of the response
+**Supersedes:** the "Retain; the local subproperty narrows the range to ICE" disposition for `hasInformationalInput` and `hasInformationalOutput` in `EXTERNAL_TERM_INVENTORY.md`
+
+### Decision
+
+1. `vn-me:hasInformationalInput` and `vn-me:hasInformationalOutput` are retired.
+2. Class restrictions, SHACL paths, competency queries and instance data use CCO `has input` (`ont00001921`) and `has output` (`ont00001986`) directly, with the information-content filler stated in the restriction.
+3. This is an IRI break with the intended semantics preserved.
+
+### Rationale
+
+- Every use of either property is an existential restriction whose filler is already an information content entity subclass, so the narrowed range supplies no inference the restriction does not.
+- The two local properties duplicated a CCO relation to restate a filler type, which the reuse policy exists to prevent. The reviewer concurred that the earlier "Retain" should be superseded.
+- The CCO parents admit generically dependent continuants in range under both 2.0 (`continuant`) and 2.2 (a union including generically dependent continuant), so no use is lost.
+
+### Reopen when
+
+- a competency question needs to quantify over informational inputs or outputs as such, independently of any filler class.
+
 ## Decision Gate Result
 
 | Decision | Working status | Semantic ontology edits authorized? |
@@ -191,3 +238,5 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 | D-003 | Adopted and implemented | Yes; Phase 5 mapping vocabulary, CCO subclass promotions, and profile controls implemented |
 | D-004 | Adopted and implemented; item 4 amended by D-005 | Yes; Phase 3 carrier/content/representation/selector pattern implemented |
 | D-005 | Provisionally adopted | Yes; authorizes moving `TextualRepresentation` and `TextSpan` to a form-level GDC with the carrier existential, renaming and re-scoping `hasTextValue` as `hasTextualSequenceValue`, and removing `TextSpan ⊑ EvidenceSource`; not yet implemented |
+| D-006 | Adopted | Yes; pins CCO v2.2 at its release digest and corrects the recorded source digest at the next extract regeneration |
+| D-007 | Adopted; implemented with D-005 | Yes; retires `hasInformationalInput` and `hasInformationalOutput` in favour of CCO `has input` and `has output` |

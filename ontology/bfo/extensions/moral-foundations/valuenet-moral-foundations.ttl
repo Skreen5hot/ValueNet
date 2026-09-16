@@ -9,7 +9,7 @@
   owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-moral-foundations.owl> ;
   owl:imports <https://fandaws.com/ontology/bfo/valuenet-core.owl> ;
   dc:title "ValueNet Moral Foundations Module"@en ;
-  dc:description "An ontology of Haidt's Moral Foundations (Care, Fairness, Loyalty, Authority, Sanctity) modeled as BFO dispositions."@en .
+  dc:description "An ontology of Haidt's six moral foundations (Care, Fairness, Loyalty, Authority, Sanctity, Liberty) modeled as BFO dispositions, together with the processes that contravene them (Harm, Cheating, Betrayal, Subversion, Degradation, Oppression)."@en .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition>
   a owl:Class ;

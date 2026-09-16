@@ -306,8 +306,8 @@
       <svg class="diagram" viewBox="0 0 760 300" role="img"
            aria-labelledby="d3t d3d" xmlns="http://www.w3.org/2000/svg">
         <title id="d3t">The interoperability and evidence path</title>
-        <desc id="d3d">The original ValueNet term HaidtValues#Care
-          historically corresponds to the BFO-aligned care disposition.
+        <desc id="d3d">The BFO-aligned care disposition historically
+          corresponds to the original ValueNet term HaidtValues#Care.
           Separately, a textual
           representation contains a text span, selected by a text span
           selector; a value evidence annotation has that text span as its
@@ -326,7 +326,7 @@
           <text class="dg-label" x="615" y="49">Care disposition</text>
           <text class="dg-sub" x="615" y="63">valuenet-moral-foundations</text>
         </g>
-        <path class="dg-edge dg-dashed" marker-end="url(#ar3)" d="M 274 51 L 486 51"/>
+        <path class="dg-edge dg-dashed" marker-end="url(#ar3)" d="M 486 51 L 274 51"/>
         <text class="dg-edge-label" x="380" y="45" data-property="https://fandaws.com/ontology/bfo/valuenet-core#historicallyCorrespondsTo">historicallyCorrespondsTo</text>
 
         <text class="dg-col" x="380" y="112">Evidence, asserted in the ontology</text>
@@ -369,11 +369,11 @@
       <p>Two groups, drawn one above the other because they are separate
         claims and not one chain.</p>
       <ul class="alt-text">
-        <li><strong>Mapping.</strong> The original ValueNet term
-          <code>HaidtValues#Care</code> (upstream)
-          <code>historicallyCorrespondsTo</code>
+        <li><strong>Mapping.</strong> The
           <a href="../explore/?class=moral-foundations:CareDisposition">care
-          disposition</a>. This is one of 67 such assertions, drawn here
+          disposition</a> <code>historicallyCorrespondsTo</code> the original
+          ValueNet term <code>HaidtValues#Care</code> (upstream). It is one of
+          17 such assertions, and of 67 mapping assertions overall, drawn here
           because it is the shortest complete example. The arrow is dashed
           because a mapping is an annotation and carries no logical
           consequence.</li>

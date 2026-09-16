@@ -16,6 +16,7 @@ already says.
 from __future__ import annotations
 
 import json
+import re
 
 import pytest
 import rdflib
@@ -196,3 +197,36 @@ def test_the_catalog_covers_every_authored_turtle_deliverable():
     assert bound == authored, (
         "catalog and authored deliverables differ: "
         + str(sorted(bound ^ authored)))
+
+
+def test_the_moral_foundations_description_names_what_the_module_declares():
+    """A module description is copied to the Modules page, so a wrong one is
+    wrong in public.
+
+    This one said "Haidt's Moral Foundations (Care, Fairness, Loyalty,
+    Authority, Sanctity) modeled as BFO dispositions" while the module
+    declared six foundations and, beside each disposition, the process that
+    contravenes it. The formal review of 2026-09-16 found it. The names are
+    read out of the description and compared with the classes, in both
+    directions, so neither can move without the other.
+    """
+    cid = "bfo.module.moral-foundations"
+    graph, subjects = header(cid)
+    description = str(graph.value(subjects[0], DCTERMS.description))
+    lists = re.findall(r"\(([^)]*)\)", description)
+    assert len(lists) == 2, (
+        "expected the foundations and their contravening processes as two "
+        "parenthesised lists: %r" % description)
+    named_dispositions = {n.strip() + "Disposition" for n in lists[0].split(",")}
+    named_processes = {n.strip() + "Process" for n in lists[1].split(",")}
+
+    declared = {str(s).rsplit("#", 1)[-1]
+                for s in graph.subjects(RDF.type, OWL.Class)
+                if isinstance(s, rdflib.URIRef)}
+    assert named_dispositions == {c for c in declared if c.endswith("Disposition")}
+    assert named_processes == {c for c in declared if c.endswith("Process")}
+    count = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
+             7: "seven", 8: "eight"}[len(named_dispositions)]
+    assert count in description, (
+        "the description does not state the number of foundations, %d"
+        % len(named_dispositions))

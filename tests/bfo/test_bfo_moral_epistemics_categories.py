@@ -13,7 +13,7 @@ owlrl = pytest.importorskip("owlrl")
 
 from owlrl import DeductiveClosure, OWLRL_Semantics
 from rdflib import BNode, Graph, Namespace, URIRef
-from rdflib.namespace import OWL, RDF, RDFS
+from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
 
 # The repository root comes from the layout contract, not from counting
@@ -108,6 +108,24 @@ def test_acts_outputs_targets_and_status_have_distinct_categories(ontology_graph
     assert (VN_ME.hasInformationalInput, RDFS.range, CCO.ont00000958) in ontology_graph
     assert (VN_ME.hasInformationalOutput, RDFS.range, CCO.ont00000958) in ontology_graph
     assert (VN_ME.isWarrantedBy, RDFS.domain, VN_ME.MoralAssessmentICE) in ontology_graph
+
+
+def test_agent_behavior_is_defined_by_participation_not_by_being_observed(ontology_graph):
+    """The definition said the process "is available to the senses of other
+    agents"; the comment beside it says observability is not a feature of the
+    process, and ActOfBehavioralObservation carries it. The formal review of
+    2026-09-16 found the contradiction. What does define the class is the
+    participation of an agent, and that is an axiom, not only prose."""
+    assert any(
+        (node, OWL.onProperty, BFO.BFO_0000057) in ontology_graph
+        and (node, OWL.someValuesFrom, CCO.ont00001017) in ontology_graph
+        for node in restrictions(ontology_graph, VN_ME.AgentBehaviorProcess)
+    )
+    definition = str(ontology_graph.value(VN_ME.AgentBehaviorProcess, SKOS.definition)).lower()
+    for word in ("sense", "observ", "perceiv"):
+        assert word not in definition, (
+            "the definition of AgentBehaviorProcess ascribes %r to the process "
+            "again: %s" % (word, definition))
 
 
 def test_culpability_ascription_describes_an_agent_without_entailing_status(ontology_graph):

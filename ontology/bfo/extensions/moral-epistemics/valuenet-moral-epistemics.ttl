@@ -182,7 +182,7 @@
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess>
   a owl:Class ;
   rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> ;
-  skos:definition "A process in which an agent participates as its bearer of action, and which is available to the senses of other agents."@en ;
+  skos:definition "A process in which an agent participates as its bearer of action."@en ;
   rdfs:label "Agent Behavior Process"@en ;
   rdfs:comment "Named for what the process is rather than for our epistemic access to it. An earlier draft called this 'observable agent behaviour'; observability is not a feature of the process but of the relation between the process and a perceiver, and is carried here by ActOfBehavioralObservation instead."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#AgentBehaviorProcess> .

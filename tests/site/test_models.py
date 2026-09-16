@@ -11,9 +11,16 @@ This caught two errors while the page was being written: a term drawn as
 edge labelled with a BFO property number that the vendored extract does
 not contain.
 
-Rendering is not tested here. Whether the boxes overlap, whether the
-arrowheads point where they appear to, and how a screen reader announces
-the figures are browser questions and belong to the Phase 6 gate.
+Rendering is not tested here. Whether the boxes overlap and how a screen
+reader announces the figures are browser questions and belong to the Phase 6
+gate.
+
+Which way an arrow points is not one of them, although this docstring used to
+say so. It is in the markup -- the box a path starts at and the box it ends
+at, where its marker is -- and the mapping in diagram 3 was drawn backwards
+for as long as nothing read it: HaidtValues#Care pointing at the care
+disposition, when the Turtle asserts the reverse and the property is not
+symmetric. The formal review of 2026-09-16 found it.
 """
 
 from __future__ import annotations
@@ -329,3 +336,107 @@ def test_no_original_valuenet_diagram_is_reproduced():
     assert "Original ValueNet diagrams" in PAGE
     assert "licence has not been identified" in PAGE
     assert "<img" not in PAGE, "the page embeds a raster image"
+
+
+# ============================================ edges point the right way
+
+
+VN_CORE = "https://fandaws.com/ontology/bfo/valuenet-core#"
+
+#: The mapping annotation properties. Their direction is an assertion, not a
+#: layout choice: none of them is symmetric.
+MAPPING_PROPERTIES = (VN_CORE + "historicallyCorrespondsTo",
+                      VN_CORE + "hasBroaderConceptualMatch",
+                      VN_CORE + "hasRelatedConceptualMatch")
+
+
+def svgs() -> list[str]:
+    """One string per diagram, so that boxes are only compared with boxes
+    in the same coordinate space. The care disposition is drawn in two
+    diagrams at two different places."""
+    return re.findall(r"<svg\b.*?</svg>", PAGE, re.S)
+
+
+def boxes(svg: str) -> list[tuple]:
+    return [(iri,) + tuple(map(float, geometry)) for iri, *geometry in
+            re.findall(r'<g data-iri="([^"]+)">\s*<rect[^>]*?\sx="([\d.]+)"'
+                       r'\s+y="([\d.]+)"\s+width="([\d.]+)"'
+                       r'\s+height="([\d.]+)"', svg)]
+
+
+def labelled_edges(svg: str):
+    """(property, first point, last point) for each path followed directly
+    by its label. The arrowhead is on the last point: every edge here uses
+    marker-end."""
+    for d, prop in re.findall(
+            r'<path class="dg-edge[^"]*"[^>]*?\sd="([^"]+)"\s*/>\s*'
+            r'<text class="dg-edge-label"[^>]*?data-property="([^"]+)"', svg):
+        numbers = [float(n) for n in re.findall(r"-?\d+(?:\.\d+)?", d)]
+        yield prop, (numbers[0], numbers[1]), (numbers[-2], numbers[-1])
+
+
+def nearest(drawn: list[tuple], point: tuple) -> str:
+    def distance(box):
+        _iri, x, y, w, h = box
+        dx = max(x - point[0], 0, point[0] - (x + w))
+        dy = max(y - point[1], 0, point[1] - (y + h))
+        return (dx * dx + dy * dy) ** 0.5
+    return min(drawn, key=distance)[0]
+
+
+def asserted_mappings() -> rdflib.Graph:
+    """The published modules, without shapes, scenario data or vendored
+    upstream: the set the Phase 5 audit counted."""
+    graph = rdflib.Graph()
+    tree = layout.component("bfo.ontology-tree").resolve()
+    for path in sorted(tree.rglob("*.ttl")):
+        relative = path.relative_to(tree).as_posix()
+        if ("shapes" in relative or "scenario" in relative
+                or relative.startswith("vendor/")):
+            continue
+        graph.parse(path, format="turtle")
+    return graph
+
+
+def test_every_drawn_mapping_points_the_way_it_is_asserted():
+    """The arrow runs from the entity the mapping is asserted on to the
+    entity it maps to. Reading the source and target from the path's first
+    and last points is the check this page did not have."""
+    graph = asserted_mappings()
+    checked = []
+    for svg in svgs():
+        drawn = boxes(svg)
+        for prop, start, end in labelled_edges(svg):
+            if prop not in MAPPING_PROPERTIES:
+                continue
+            source, target = nearest(drawn, start), nearest(drawn, end)
+            assert (rdflib.URIRef(source), rdflib.URIRef(prop),
+                    rdflib.URIRef(target)) in graph, (
+                "the diagram draws %s %s %s, which is not asserted%s"
+                % (local(source), local(prop), local(target),
+                   " -- the reverse is" if (rdflib.URIRef(target),
+                                            rdflib.URIRef(prop),
+                                            rdflib.URIRef(source)) in graph
+                   else ""))
+            checked.append((local(source), local(target)))
+    assert checked, (
+        "no mapping edge was recognised in any diagram, so this checked "
+        "nothing")
+
+
+def test_the_mapping_counts_written_beside_the_diagram_are_the_ontologys():
+    """Two numbers typed into the page. The first version said "one of 67
+    such assertions" beside a historicallyCorrespondsTo edge; 67 is every
+    mapping assertion, and 17 of them are that property."""
+    section = PAGE[PAGE.index("<h3>Description of diagram 3</h3>"):]
+    match = re.search(r"one of\s+(\d+)\s+such assertions, and of\s+(\d+)\s+"
+                      r"mapping assertions overall", section)
+    assert match, "the mapping counts are no longer where this test reads them"
+    graph = asserted_mappings()
+    historical = len(list(graph.subject_objects(
+        rdflib.URIRef(VN_CORE + "historicallyCorrespondsTo"))))
+    every = sum(len(list(graph.subject_objects(rdflib.URIRef(p))))
+                for p in MAPPING_PROPERTIES)
+    assert (int(match.group(1)), int(match.group(2))) == (historical, every), (
+        "the page says %s and %s; the ontology has %d and %d"
+        % (match.group(1), match.group(2), historical, every))

@@ -10,6 +10,8 @@ D-005 was provisionally adopted on 2026-09-16, on the project owner's instructio
 
 D-006 and D-007 were adopted on 2026-09-16, after the reviewer signed off on the review response and the owner instructed that the remediation proceed. Both were implemented with D-005: D-006's source digest is corrected in the regenerated extract manifest, and D-007's properties are retired.
 
+D-011 and D-012 were adopted and implemented on 2026-09-16 on the owner's instruction after phase E: the disjointness D-005 had left undecided, and the two splits R17 had left to the owner.
+
 D-008, D-009 and D-010 were adopted and implemented on 2026-09-16 under the same instruction. They record R12, R13 and R14 of the review response, following the recommendations the reviewer accepted: `RashJudgmentAct` as the negative fixture for the first two, and conditional acceptance of `contravenes` for the third.
 
 ## D-001 — Extension of the Realist Value Model
@@ -180,7 +182,7 @@ An intentional and narrowly scoped departure from CCO's convention of placing li
 
 - `valuenet-core.ttl` states items 2 to 5 and 8. The definitions and the property declaration are the ones recorded above, and `tests/bfo/test_text_layer_follows_d005.py` reads them out of this record and compares them with the module. The same test runs HermiT over the suite with the worked scenario: consistent, neither class nor any scenario text individual classified as information content, and, as the control in the same run, the selector and the annotation are.
 - **Item 8 decided: `selectsTextSpan` specializes CCO `designates` rather than being replaced by it.** Replacing it would lose the `TextSpan` range, which the selector shapes rely on to find the span whose text the offsets must delimit. As a subproperty, a CCO consumer asking what a selector designates still reaches the span. No competency question needs `designates` itself.
-- **A boundary the implementation surfaced.** CCO 2.2 defines Information Content Entity as *equivalent to* a generically dependent continuant that is about some entity. A representation or span therefore stays out of ICE only while nothing asserts it is about something, directly or through a subproperty of `is about` such as `designates` or `describes`; if something does, the reasoner re-classifies it without any inconsistency to report. The rule is written into the class comments and the annotation guide, and the test pins the behaviour both ways. A disjointness axiom between the form classes and ICE would make such an assertion an error rather than a silent re-classification; it is not asserted, because this record does not decide it.
+- **A boundary the implementation surfaced.** CCO 2.2 defines Information Content Entity as *equivalent to* a generically dependent continuant that is about some entity. A representation or span therefore stays out of ICE only while nothing asserts it is about something, directly or through a subproperty of `is about` such as `designates` or `describes`; if something does, the reasoner re-classifies it without any inconsistency to report. The rule is written into the class comments and the annotation guide, and the test pins the behaviour both ways. A disjointness axiom between the form classes and ICE would make such an assertion an error rather than a silent re-classification. This record did not decide one; D-011 does, and asserts it.
 - **A shape item 4 implies.** A span individuated by its position has one position, so every selector of a span must give the same offsets. Nothing enforced that: two selectors at different offsets could select one span whenever both positions held the same string, and each would pass the substring check. `valuenet-core-shapes.ttl` now rejects it; the fixture with the same substring twice, as two spans, conforms.
 - `vn-core:isEvidenceFor`'s documentary domain is removed rather than re-pointed (R10). The two approved subjects share no named parent short of generically dependent continuant, and OWL 2 DL permits only a named class as an annotation property's domain. SHACL, which already named both classes, is unchanged.
 - The CCO extract was regenerated with Designative ICE and `designates` as roots, under version IRI `.../2.2-2026-09-16-d005`, from the release artifact whose digest D-006 pins. Before changing the roots, the unmodified generator was run on that artifact and reproduced the previous extract byte for byte.
@@ -318,6 +320,69 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 - CCO or BFO introduces a relation from a process to a realizable entity that is not realization; or
 - the competency questions change so that CQ1 and CQ5 no longer need a process-to-value relation.
 
+## D-011 — Form-Level Text Is Disjoint With Information Content
+
+**Status:** Adopted and implemented 2026-09-16
+**Finding coverage:** D-005 implementation note on aboutness
+**Amends:** D-005, which left the question open
+**Evidence:** `tests/bfo/test_text_layer_follows_d005.py`
+
+### Decision
+
+1. `vn-core:TextualRepresentation` and `vn-core:TextSpan` are each `owl:disjointWith` CCO Information Content Entity (`ont00000958`).
+2. No disjointness is asserted between `TextualRepresentation` and `TextSpan`. D-005 distinguishes them by how they are individuated and does not decide whether a span covering its whole representation is a different entity; this record does not either.
+
+### Rationale
+
+- CCO 2.2 defines Information Content Entity as *equivalent to* a generically dependent continuant that is about some entity. Both form classes are generically dependent continuants, so any aboutness asserted of one — through `is about`, or a subproperty such as `designates` or `describes` — entailed that it was information content. Nothing was inconsistent, so nothing reported it, and D-005 was undone for that individual without trace.
+- With the disjointness the same assertion is an inconsistency a reasoner reports. The test holds both routes there: a representation asserted to be about a process, and a span asserted to designate one.
+- It costs nothing D-005 permits. A selector designating a span is aboutness *of* the span, not *by* it, and stays consistent; that case is in the same test. HermiT finds the suite with the worked scenario consistent with the axioms asserted.
+
+### Reopen when
+
+- a competency question needs text that is at once form and content — which D-005's own reopen condition already answers with a content-level ICE related to the representation, not by relaxing this.
+
+## D-012 — Faith and Openness Each Define One Disposition
+
+**Status:** Adopted and implemented 2026-09-16
+**Finding coverage:** formal review 2026-09-16, finding 13; R17 of the response
+**Evidence:** `tests/bfo/test_folk_sense_splits.py`; `tests/bfo/test_definition_discipline.py`
+**Method:** RULES 2.0, the reviewer's rules (`docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RULES_2.0.md`), applied to the classes touched
+
+### Decision
+
+1. `folk:FaithDisposition` keeps its IRI and one sense: *a personal value disposition to place complete trust or confidence in someone or something without requiring proof.*
+2. `folk:ReligionDisposition` is added for the other: *a personal value disposition to hold a system of religious belief and practice as a guide to living.* Its parent is `core:PersonalValueDisposition`, like Faith's and Spirituality's, and it follows the module's naming pattern, which pairs it with `folk:Religion` in the folk corpus.
+3. `folk:OpennessDisposition` keeps its IRI and one sense: *a personal value disposition to be receptive to new experiences, including unfamiliar activities, sensations, and ways of living.*
+4. No class is added for Openness's other sense. Being candid and transparent is what the existing `CandorDisposition` and `TransparencyDisposition` define, under `HonestyDisposition`; a third class would duplicate them.
+5. The three classes carry every annotation RULES 2.0 section 5 requires: subclass assertion, label, definition, comment and example. No mapping assertion is added.
+
+### How the rules were applied
+
+- **Search CCO first.** CCO 2.2 has no value or character dispositions to serve as a parent. It has `Religion` (`ont00000616`), but that is an Information Content Entity — the collection of claims a religion consists of — and a disposition cannot be its subclass. ReligionDisposition's comment names it as what the disposition is directed at. The parents are therefore the ValueNet dispositions the classes already specialized.
+- **Sources.** The folk corpus, not a web search: `folk:Faith`'s own comment describes believing things will work out and letting beliefs guide decisions, with no doctrine in it, and the corpus records `folk:Religion` as a separate value — "holding a system of religious belief and practice as a guide to living" — which had no class. The two senses were already two values there.
+
+| class | clarity | inclusiveness | exclusiveness |
+|---|---|---|---|
+| Faith | one disposition, stated without "or" | trust in a person, in an outcome, in providence | trust that rests on evidence of reliability (TrustDisposition); holding a religious system (ReligionDisposition) |
+| Religion | one disposition; the religion itself is named as content | any tradition's belief and practice held as a guide | spiritual concern without a system of belief and practice (SpiritualityDisposition); the belief system itself (CCO Religion) |
+| Openness | one disposition, receptive rather than seeking | unfamiliar activities, sensations, ways of living | seeking change or daring experience (Variety, Adventure); receptiveness to ideas (OpenMindedness); candour (Candor, Transparency) |
+
+### Why the IRIs stay with these senses
+
+- **Faith** keeps the sense the corpus's own `folk:Faith` has, and the religious sense goes to the corpus's own `folk:Religion`.
+- **Openness** keeps the sense its existing broader conceptual matches already described: Schwartz Stimulation and Self-Direction are openness to change, not candour.
+
+### Consequences
+
+- Folk coverage rises from 91 to 92 of 278 corpus values: `folk:Religion` now has a class.
+- The disjunction check in `test_definition_discipline.py` fires on no definition.
+- Authored classes rise from 186 to 187.
+
+### Reopen when
+
+- R15 decides folk membership. The corpus gives "openness" as an alternative label of `folk:Open-mindedness` and has no `folk:Openness`, so membership may merge OpennessDisposition into OpenMindednessDisposition rather than keep both; and `folk:Belief_in_God`, narrower than Religion, has no class.
+
 ## Decision Gate Result
 
 | Decision | Working status | Semantic ontology edits authorized? |
@@ -332,3 +397,5 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 | D-008 | Adopted and implemented | Yes; `MoralAssessmentAct` is a CCO Act and `MoralDiscernmentAct` an Act of Appraisal |
 | D-009 | Adopted and implemented | Yes; `MoralCulpabilityRole` is defined by the agent's conduct; no OWL condition changes |
 | D-010 | Adopted and implemented | Documentation only; `contravenes` is retained with its justification recorded |
+| D-011 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are disjoint with CCO Information Content Entity |
+| D-012 | Adopted and implemented | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |

@@ -101,7 +101,7 @@ disposition to seek…") use their asserted parent as genus; they differ from th
 supplied rule only in phrasing the differentia with *to* rather than *that*.
 
 This also matters for what "nonconformance" means here. **RULES 2.0 is not in this
-repository.** ValueNet's own remediation plan committed to genus-differentia for
+repository** (it was recorded later; see §11). ValueNet's own remediation plan committed to genus-differentia for
 *core* definitions (Objective 3, ALN-004) — a commitment that is met — and did not
 adopt the comment-and-example requirement at all. Against the user-supplied rules the
 review is right; against the repository's own standard, the comment and example gap is
@@ -384,7 +384,8 @@ number of foundations today, and correcting that costs an hour.
   records a recommendation, not a verification.
 - **The genus measure is a heuristic.** It checks that a definition opens with an
   asserted named parent's label. It says nothing about the quality of the differentia.
-- **RULES 2.0 itself.** Not in the repository, so not read.
+- **RULES 2.0 itself.** Not in the repository when this was written, so not read. It
+  has since been recorded; see §11.
 - **Out of the table.** The trigger-semantics module and the moral-epistemics scenario
   were not measured for definition discipline.
 
@@ -467,7 +468,7 @@ were made without breaking anything.
 | rec. | status | where |
 |---|---|---|
 | R1 | Done. CCO 2.2 is the baseline; the extract manifest records the release digest | D-006; phase A, digest corrected in phase C |
-| R2 | **Open — owner decision.** Whether RULES 2.0 is the standard | blocks R18 |
+| R2 | **Open — owner decision.** RULES 2.0 is now recorded verbatim, and turns out to be the operating rules of the reviewing tool, OntoRefiner GPT, rather than a standard written for ValueNet. Measured against its two checkable requirements across 187 classes: 160 lack an `rdfs:comment` and 177 a `skos:example`; and 148 definitions read "a … disposition *to* …" rather than "a … *that* …", which is the usual BFO idiom for a disposition, so whether it breaches "b is a c that d's" is itself a reading of the rule. Its process — CCO first, the immediate parent as genus, the clarity, inclusiveness and exclusiveness checks, all five annotations — is what D-012 used | `FORMAL_REVIEW_2026-09-16_RULES_2.0.md`; blocks R18 |
 | R3 | Done. "Retain" superseded | D-007; phase A |
 | R4 | Done. The mapping arrow points the way it is asserted, checked from the markup | phase B |
 | R5 | Done. Six foundations, with their processes, checked against the declared classes | phase B |
@@ -480,9 +481,9 @@ were made without breaking anything.
 | R12 | Done. `MoralAssessmentAct` is a CCO Act; discernment is an Act of Appraisal; a rash judgment is not entailed to be planned | D-008; phase D |
 | R13 | Done. The role is grounded in the agent's conduct; no OWL condition changed, so not breaking | D-009; phase D |
 | R14 | Done. `contravenes` retained, with the alternatives recorded against CQ1 and CQ5; not breaking | D-010; phase D |
-| R15 | **Open — owner decision.** Folk membership | blocks folk definition curation |
+| R15 | **Open — owner decision.** Folk membership. The owner notes that RULES 2.0 informs it: the curation it unblocks would follow the process D-012 applied | blocks folk definition curation |
 | R16 | Done outside folk; gated. Moral Foundations 12/12 and Moral Epistemics 17/17 open with an asserted parent. Folk's 84 are recorded by name and the gate is equality, so a new misalignment fails and a fixed one must be removed from the record. Moral Epistemics measured 3, not 6: phase D had fixed one, and two were the measure reading "ICE" in a label as different from "information content entity" in the definition | `tests/bfo/test_definition_discipline.py`; phase E |
-| R17 | Check done; splits **open — owner decision**. The warning fires on exactly `FaithDisposition`: a comma, "or", then an article or infinitive. A plain "or" matches 107 definitions, nearly all lists. `OpennessDisposition` conflates by conjunction ("transparent, candid, and open to new experiences"), which no disjunction pattern can see | `tests/bfo/test_definition_discipline.py`; phase E |
+| R17 | Done. The warning check fired on exactly `FaithDisposition` (a comma, "or", then an article or infinitive; a plain "or" matches 107 definitions, nearly all lists) and now fires on none. The owner decided both splits: Faith keeps trust without proof and `ReligionDisposition` takes the religious sense, which is `folk:Religion` in the corpus; Openness keeps openness to experience, and its candour sense is the existing `CandorDisposition` and `TransparencyDisposition`. Openness had conflated by conjunction, which no disjunction pattern could have caught | D-012; `tests/bfo/test_definition_discipline.py`, `tests/bfo/test_folk_sense_splits.py` |
 | R18 | Blocked on R2 | — |
 
 **Found during implementation, and recorded in D-005.**
@@ -492,8 +493,9 @@ were made without breaking anything.
   nothing asserts it is about something; if something does, directly or through
   `designates` or `describes`, the reasoner re-classifies it and reports nothing. The rule
   is in the class comments and the annotation guide and is pinned by a test in both
-  directions. A disjointness axiom would turn such an assertion into an error; D-005 does
-  not decide one, and it is not asserted.
+  directions. The owner then decided the disjointness this left open: both form classes
+  are disjoint with Information Content Entity (D-011), so such an assertion is now an
+  inconsistency a reasoner reports.
 - A span individuated by its position has one position, but two selectors at different
   offsets could select one span whenever both positions held the same string, and each
   passed the substring check. A shape now rejects it.

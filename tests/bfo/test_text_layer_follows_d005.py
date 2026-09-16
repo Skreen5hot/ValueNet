@@ -21,10 +21,13 @@ does, in three ways.
 
 One boundary is pinned as well, because nothing else would show it. CCO 2.2
 defines Information Content Entity as *equivalent to* a generically dependent
-continuant that is about some entity. A form-level representation stays out of
-ICE only while nobody asserts that it is about something. Assert that, directly
-or through `designates` or `describes`, and the reasoner re-classifies it --
-consistently, so nothing reports it.
+continuant that is about some entity, so asserting that a representation or a
+span is about something -- directly, or through `designates` or `describes` --
+would re-classify it as information content, consistently, with nothing to
+report it. D-011 makes both classes disjoint with ICE, which turns that
+assertion into an inconsistency. The boundary test holds it there, and holds a
+selector designating a span consistent, so the disjointness is shown to bite
+only where it should.
 
 Like the placement test this starts a JVM per reasoning run and is left in the
 default run for the same reason.
@@ -154,6 +157,15 @@ def test_representation_and_span_are_form_level_not_information_content(core):
         restrictions(core, VN_CORE.TextualRepresentation)), (
         "TextualRepresentation has lost its existential carrier restriction")
     assert named_superclasses(core, VN_CORE.TextSpan) == {GDC}
+
+
+def test_representation_and_span_are_disjoint_with_information_content(core):
+    """D-011. Without these two axioms an aboutness assertion re-classifies
+    form as content silently; with them it is an error a reasoner reports."""
+    for cls in (VN_CORE.TextualRepresentation, VN_CORE.TextSpan):
+        assert (cls, OWL.disjointWith, ICE) in core, (
+            "%s is not disjoint with information content entity"
+            % cls.split("#")[-1])
 
 
 def test_selector_designates_and_evidence_annotation_describes(core):
@@ -305,20 +317,33 @@ ex:conduct a obo:BFO_0000015 .
 """
 
 
-@pytest.mark.parametrize("about, becomes_ice", [
-    ("", False),
-    ("ex:representation cco:ont00001808 ex:conduct .", True),
-], ids=["no-aboutness", "aboutness-asserted"])
-def test_asserting_aboutness_of_a_representation_makes_it_information_content(
-        about, becomes_ice):
-    """Why the form level holds only while nobody asserts aboutness on it.
+SPAN = """
+ex:span a vn-core:TextSpan ; vn-core:isTextSpanOf ex:representation ;
+    vn-core:hasTextualSequenceValue "Honesty" .
+"""
+
+
+@pytest.mark.parametrize("extra, consistent", [
+    ("", True),
+    ("ex:representation cco:ont00001808 ex:conduct .", False),
+    (SPAN + "ex:span cco:ont00001916 ex:conduct .", False),
+    (SPAN + "ex:selector a vn-core:TextSpanSelector ; "
+            "cco:ont00001916 ex:span .", True),
+], ids=["no-aboutness", "representation-is-about-something",
+        "span-designates-something", "selector-designates-the-span"])
+def test_aboutness_asserted_of_form_is_inconsistent(extra, consistent):
+    """D-011. Aboutness of a representation, or designation by a span through
+    a subproperty of is about, contradicts the disjointness. Aboutness *of*
+    a span, by a selector, is what selectors are for and stays consistent.
     Reasoned over BFO, the extract and core alone, so the result is about
     those axioms and not about anything the other modules add."""
     graph = load((bfo_artifact("bfo-core.ttl"),
                   bfo_artifact("cco-valuenet-extract.ttl"), CORE))
-    graph.parse(data=BOUNDARY + about, format="turtle")
+    graph.parse(data=BOUNDARY + extra, format="turtle")
     world = reason(graph)
-    assert world is not None
-    got = str(ICE) in types(
-        world, URIRef("https://example.invalid/boundary#representation"))
-    assert got is becomes_ice
+    assert (world is not None) is consistent, (
+        "HermiT found this %s" % ("inconsistent" if world is None
+                                  else "consistent"))
+    if world is not None:
+        assert str(ICE) not in types(
+            world, URIRef("https://example.invalid/boundary#representation"))

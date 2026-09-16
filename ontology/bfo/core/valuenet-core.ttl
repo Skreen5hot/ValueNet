@@ -146,20 +146,22 @@ skos:definition
       owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000084> ;
       owl:someValuesFrom <https://www.commoncoreontologies.org/ont00000253>
     ] ;
+  owl:disjointWith <https://www.commoncoreontologies.org/ont00000958> ;
   rdfs:label "textual representation"@en ;
   skos:definition "A generically dependent continuant that is one exact sequence of Unicode code points and that generically depends on at least one information bearing entity."@en ;
   rdfs:comment "A changed string is a different TextualRepresentation. Its information-bearing carrier is a distinct individual linked to it by BFO_0000101 (is carrier of), and one representation may have several carriers. Text-span selector offsets are measured against it."@en ,
-    "Form, not content (D-005). CCO subtypes information content entities by what they are about; a representation is individuated by its exact sequence, a level CCO's information model has no class for, so it is placed directly under BFO generically dependent continuant. CCO defines information content entity as equivalent to a generically dependent continuant that is about some entity: asserting that a representation is about something, through cco:is about or any subproperty such as designates or describes, re-classifies it as information content. Relate a representation to what it expresses through a content-level information content entity instead."@en ;
+    "Form, not content (D-005). CCO subtypes information content entities by what they are about; a representation is individuated by its exact sequence, a level CCO's information model has no class for, so it is placed directly under BFO generically dependent continuant. CCO defines information content entity as equivalent to a generically dependent continuant that is about some entity, and this class is disjoint with information content entity (D-011): asserting that a representation is about something, through cco:is about or any subproperty such as designates or describes, makes the data inconsistent. Relate a representation to what it expresses through a content-level information content entity instead."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#TextualRepresentation> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan>
   a owl:Class ;
   rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ;
+  owl:disjointWith <https://www.commoncoreontologies.org/ont00000958> ;
   rdfs:label "text span"@en ;
   skos:definition "A generically dependent continuant that is a continuant part of exactly one textual representation and is individuated by a contiguous interval of code-point positions in that representation."@en ;
   skos:example "The span 'published the story to expose the corruption' within a news article."@en ;
   rdfs:comment "A TextSpan is form, not its carrier and not its numeric selector. Record offsets on a TextSpanSelector whose source is the exact TextualRepresentation."@en ,
-    "Individuated by position, not by its string (D-005): the same substring at two positions of one representation is two spans with the same hasTextualSequenceValue, and every selector of one span must give the same offsets. Not a subclass of TextualRepresentation, and not an evidence source by classification: it is evidence when an isEvidenceFor assertion or a ValueEvidenceAnnotation says so."@en ;
+    "Individuated by position, not by its string (D-005): the same substring at two positions of one representation is two spans with the same hasTextualSequenceValue, and every selector of one span must give the same offsets. Not a subclass of TextualRepresentation, and not an evidence source by classification: it is evidence when an isEvidenceFor assertion or a ValueEvidenceAnnotation says so. Disjoint with information content entity (D-011): a span may be designated by a selector, but a span that is asserted to be about or to designate something makes the data inconsistent."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#TextSpan> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector>

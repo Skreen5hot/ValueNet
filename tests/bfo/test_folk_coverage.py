@@ -167,7 +167,8 @@ def test_check_mode_exits_non_zero_only_on_a_finding(tool):
 #: Pinned so the gap can close visibly and cannot widen quietly. These are
 #: findings about the ontology, not about the tool.
 FOLK_VALUES = 278
-COVERED = 91
+#: 91 until D-012 added ReligionDisposition, the class for folk:Religion.
+COVERED = 92
 DANGLING_BACK_LINKS = 45
 FRAGMENT_WITHOUT_A_CLASS = 37
 

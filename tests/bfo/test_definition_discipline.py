@@ -25,6 +25,8 @@ article or an infinitive -- because 107 definitions contain "or" and nearly all
 of them are lists, and a check that fires on every list is one nobody reads.
 It is a warning: a reviewed hit is reported, not failed, because splitting a
 definition is a content decision. An unreviewed hit fails until someone looks.
+When it was written it fired on exactly one definition, FaithDisposition, which
+D-012 split; it fires on none now.
 """
 
 from __future__ import annotations
@@ -94,12 +96,9 @@ RECORDED_MISALIGNED = {
 
 DISJUNCTION = re.compile(r",\s+or\s+(?:a|an|the|to)\b|;\s+or\b", re.I)
 
-#: Reviewed disjunctive definitions, and why each is still there.
-REVIEWED_DISJUNCTIONS = {
-    "FaithDisposition": (
-        "trust in someone or something, or belief in a religious doctrine: "
-        "two senses in one class. Splitting it is R17, an owner decision."),
-}
+#: Reviewed disjunctive definitions, and why each is still there. Empty since
+#: D-012 split FaithDisposition, the only one there was.
+REVIEWED_DISJUNCTIONS: dict[str, str] = {}
 
 
 def normalise(text: str) -> str:

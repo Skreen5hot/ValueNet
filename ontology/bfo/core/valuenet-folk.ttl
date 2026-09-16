@@ -654,9 +654,11 @@
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
   vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> ;
-  skos:definition "A personal value disposition to be transparent, candid, and open to new experiences."@en ;
+  skos:definition "A personal value disposition to be receptive to new experiences, including unfamiliar activities, sensations, and ways of living."@en ;
   rdfs:label "Openness Disposition"@en ;
   skos:altLabel "Openness"@en ;
+  rdfs:comment "Receptive rather than seeking: VarietyDisposition and AdventureDisposition seek out change and daring experience, OpenMindednessDisposition is receptive to ideas and opinions, and this class to experience. The definition formerly also covered being transparent and candid (R17, D-012); those senses are CandorDisposition and TransparencyDisposition, under HonestyDisposition. The broader conceptual matches below, Stimulation and Self-Direction, were already those of the sense kept."@en ;
+  skos:example "Accepting an invitation to a festival of a culture one knows nothing about, and taking part rather than watching."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#OpennessDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition>
@@ -826,10 +828,22 @@
 <https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
-  skos:definition "A personal value disposition to have complete trust or confidence in someone or something, or a strong belief in a religious doctrine."@en ;
+  skos:definition "A personal value disposition to place complete trust or confidence in someone or something without requiring proof."@en ;
   rdfs:label "Faith Disposition"@en ;
   skos:altLabel "Faith"@en ;
+  rdfs:comment "Differs from TrustDisposition, a firm belief in the reliability of someone or something, in not resting on evidence of that reliability. The definition formerly joined a second sense, strong belief in a religious doctrine; that sense is ReligionDisposition (R17, D-012). A person may bear both."@en ;
+  skos:example "Staying confident that an estranged friend will make amends, and keeping a place for them, though nothing yet suggests they will."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#FaithDisposition> .
+
+<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  skos:definition "A personal value disposition to hold a system of religious belief and practice as a guide to living."@en ;
+  rdfs:label "Religion Disposition"@en ;
+  skos:altLabel "Religion"@en ;
+  rdfs:comment "The religious sense formerly joined to FaithDisposition's definition (R17, D-012), and the class for folk:Religion in the folk corpus, which places it under Beliefs alongside Faith and Belief in God. The system of belief itself is information content, as CCO Religion (ont00000616) models it; this class is the disposition of an agent who holds one as a guide to living, not the religion."@en ;
+  skos:example "Keeping the prayer and dietary observances of one's tradition, and weighing a major decision against its teaching."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/folk#ReligionDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#HonorDisposition>
   a owl:Class ;

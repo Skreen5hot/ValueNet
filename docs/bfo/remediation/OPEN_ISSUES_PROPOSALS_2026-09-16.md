@@ -46,7 +46,7 @@ Then commit `config/quality-report.json`. Only the owner can make this statement
 - **D-013** adopts the reviewer's RULES 2.0 with two readings they did not state:
   - "a … disposition *to* …" conforms to "b is a c that d's";
   - web search is optional.
-- **The R15 proposal** answers the reviewer's folk-membership concern, and would retire three or four folk IRIs.
+- **The R15 proposal** answers the reviewer's folk-membership concern. Revision 2 incorporates the owner's review, and could retire up to nine folk IRIs, depending on the decisions: the three Schwartz copies, Openness, Impact, Discretion, Equity, Resourcefulness and Decisiveness.
 
 **Proposal.** Send the reviewer:
 

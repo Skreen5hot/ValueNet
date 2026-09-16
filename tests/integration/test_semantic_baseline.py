@@ -1004,6 +1004,31 @@ def test_the_archive_really_is_outside_the_corpus():
         "the one member that IS measured has left the corpus")
 
 
+#: Every event the remediation ledger holds, in order: the commit it lands
+#: at, its measured (added, removed) ground triples, its change class, whether
+#: the blank-node shape held, and why it exists. An event that arrives without
+#: an entry here fails rather than hiding inside a total.
+LEDGER = (
+    ("49d40511", (2, 2), "content-change", True,
+     "the source-data repair"),
+    ("43e22201", (18, 1), "publication-metadata", True,
+     "the metadata pass"),
+    ("4677c55e", (2, 2), "content-change", True,
+     "formal review phase B: the Moral Foundations description (R5) and "
+     "the AgentBehaviorProcess definition (R7)"),
+    ("d57388a7", (65, 56), "content-change", False,
+     "formal review phase C: the D-005 text layer, EvidenceSource and the "
+     "informational input/output properties retired, the CCO extract "
+     "regenerated. The shape changed because the hasTextualSequenceValue "
+     "union domain and the representation's carrier restriction are new "
+     "blank nodes, and the extract gained Designative ICE's equivalence"),
+    ("90f5b6f0", (7, 3), "content-change", True,
+     "formal review phase D: MoralAssessmentAct re-parented (D-008), two "
+     "definitions (D-008, D-009), a parent added to MoralDiscernmentAct, "
+     "and three comments (D-008 to D-010)"),
+)
+
+
 @needs_repair_record
 def test_the_recorded_substitutions_are_the_ones_git_shows():
     """Recomputed per event, rather than read.
@@ -1063,14 +1088,16 @@ def test_the_recorded_substitutions_are_the_ones_git_shows():
         total_added += len(added)
         total_removed += len(removed)
 
-    # The two events this span holds, by their measured size. A third
-    # would need its own justification rather than arriving unnoticed
-    # inside one of these.
-    sizes = sorted((len(e["substitutions"]["added"]),
-                    len(e["substitutions"]["removed"]))
-                   for e in RECORD["events"])
-    assert sizes == [(2, 2), (18, 1)], sizes
-    assert (total_added, total_removed) == (20, 3)
+    # The events this span holds, by their measured size, each named in
+    # LEDGER with its reason. Another would need its own entry rather than
+    # arriving unnoticed inside one of these.
+    sizes = [(e["after_commit"][:8], (len(e["substitutions"]["added"]),
+                                      len(e["substitutions"]["removed"])))
+             for e in RECORD["events"]]
+    assert sizes == [(c, size) for c, size, *_rest in LEDGER], sizes
+    assert (total_added, total_removed) == (
+        sum(size[0] for _c, size, *_r in LEDGER),
+        sum(size[1] for _c, size, *_r in LEDGER))
 
 
 @needs_repair_record
@@ -1098,10 +1125,12 @@ def test_the_baseline_says_which_corpus_the_matrix_described():
     repaired = m["corpus_repaired_since"]
     assert repaired["before_tag"] == BEFORE_TAG
     # The ledger, not a single interval: each event carries its own
-    # verdict, and the span holds one of each kind.
-    classes = [e["change_class"] for e in repaired["events"]]
-    assert classes == ["content-change", "publication-metadata"], classes
-    assert all(e["blank_node_shape_unchanged"] for e in repaired["events"])
+    # verdict, and each verdict is the one LEDGER records for it.
+    verdicts = [(e["after_commit"][:8], e["change_class"],
+                 e["blank_node_shape_unchanged"])
+                for e in repaired["events"]]
+    assert verdicts == [(c, kind, shape)
+                        for c, _size, kind, shape, _why in LEDGER], verdicts
     # The tag and the commit its matrix measured are not the same commit:
     # evidence is committed after the input it describes. Citing the tag
     # is accurate only because no Turtle file differs between the two, so
@@ -1125,7 +1154,7 @@ def test_the_baseline_says_which_corpus_the_matrix_described():
 
 @needs_repair_record
 def test_only_the_measures_the_repair_touches_have_moved():
-    """Two events have landed since the tag, and they move different things.
+    """The events since the tag move different things.
 
     The repair substituted triples and added none. The metadata pass
     added seventeen net. So cardinality is no longer invariant, and
@@ -1136,6 +1165,15 @@ def test_only_the_measures_the_repair_touches_have_moved():
     digest does not, and cannot: it is a fingerprint over the content
     reasoned about, and that content gained seventeen triples. It is a
     fingerprint of the input, not a result.
+
+    The formal-review phases (LEDGER) move two more things, each for a
+    reason checked here rather than accepted. Phase C regenerated the CCO
+    extract under D-005, so its digests are the ones its manifest records.
+    And the reasoner's class count rose by exactly two: that count includes
+    anonymous owl:Class nodes, although its definition says named, and phase
+    C added two -- the hasTextualSequenceValue union domain and Designative
+    ICE's equivalence -- while the named classes netted to zero, Designative
+    ICE in and EvidenceSource out.
     """
     # Same reader, same hazard: an evidence artifact holding a non-ASCII
     # definition would decode to different characters under the locale
@@ -1174,22 +1212,48 @@ def test_only_the_measures_the_repair_touches_have_moved():
             "trigger")
 
     # Every reasoner verdict and count.
-    for key in ("bfo_layer_classes", "bfo_layer_files",
+    for key in ("bfo_layer_files",
                 "bfo_layer_imports_unresolved", "bfo_layer_consistent",
                 "bfo_layer_unsatisfiable", "bfo_scope_files"):
         assert (BASELINE["reasoner"][key]["value"]
                 == old["reasoner"][key]["value"]), key + " moved"
+    assert (BASELINE["reasoner"]["bfo_layer_classes"]["value"]
+            == old["reasoner"]["bfo_layer_classes"]["value"] + 2), (
+        "bfo_layer_classes moved by other than the two anonymous classes "
+        "phase C added")
 
-    assert BASELINE["artifacts"] == old["artifacts"], (
-        "an artifact digest moved; no event touches those three files")
+    for name in ("folk_source", "folk_aligned"):
+        assert BASELINE["artifacts"][name] == old["artifacts"][name], (
+            name + " moved; no event touches it")
+    manifest = json.loads(
+        (layout.component("bfo.vendor-cco").resolve()
+         / "cco-valuenet-extract.manifest.json").read_text(encoding="utf-8"))
+    extract = BASELINE["artifacts"]["cco_extract"]
+    assert (extract["canonical_sha256"], extract["byte_sha256"]) == (
+        manifest["extract_canonical_sha256"], manifest["extract_sha256"]), (
+        "the CCO extract's recorded digests are not the D-005 regeneration's")
+    assert extract["canonical_sha256"] != old["artifacts"]["cco_extract"][
+        "canonical_sha256"], (
+        "the extract digest did not move, so the regeneration phase C "
+        "records did not happen")
 
     # Moved, and each for a reason the ledger names.
     added = sum(len(e["substitutions"]["added"]) for e in RECORD["events"])
     removed = sum(len(e["substitutions"]["removed"]) for e in RECORD["events"])
+    # Ground substitutions account for every triple with no blank node. The
+    # rest are the triples touching one, which only an event whose
+    # blank-node shape changed may move -- phase C, alone in LEDGER.
+    touching = (BASELINE["corpus"]["merged_bnode_shape"]["value"]["triples_touching"]
+                - old["corpus"]["merged_bnode_shape"]["value"]["triples_touching"])
+    if all(shape for _c, _size, _kind, shape, _why in LEDGER):
+        assert touching == 0, (
+            "triples touching a blank node moved, but every event says the "
+            "blank-node shape held")
     assert (BASELINE["corpus"]["distinct_triples"]["value"]
-            - old["corpus"]["distinct_triples"]["value"]) == added - removed, (
+            - old["corpus"]["distinct_triples"]["value"]) == (
+        added - removed + touching), (
         "the triple count moved by something other than the enumerated "
-        "difference")
+        "difference and the blank-node triples")
 
     assert (BASELINE["corpus"]["merged_ground_sha256"]["value"]
             != old["corpus"]["merged_ground_sha256"]["value"])
@@ -1198,15 +1262,25 @@ def test_only_the_measures_the_repair_touches_have_moved():
         "the reasoner scope digest is unchanged although triples were "
         "added to files inside the scope")
 
-    # The blank-node fingerprint must NOT move: every changed triple in
-    # both events is ground, and the ledger says so for each of them.
-    assert (BASELINE["corpus"]["merged_bnode_shape"]["value"]
-            == old["corpus"]["merged_bnode_shape"]["value"])
+    # The blank-node fingerprint may move only if some event says its shape
+    # changed, and each event's flag must be the one LEDGER records. Until
+    # phase C every changed triple was ground and the fingerprint held; phase
+    # C added blank nodes, and says so.
+    expected = [shape for _c, _size, _kind, shape, _why in LEDGER]
     # In the raw record the flag lives under classification; only the
     # baseline's verified summary lifts it to the top level.
-    assert all(e["classification"]["blank_node_shape_unchanged"]
-               for e in RECORD["events"])
-    assert all(e["blank_node_shape"]["unchanged"] for e in RECORD["events"])
+    assert [e["classification"]["blank_node_shape_unchanged"]
+            for e in RECORD["events"]] == expected
+    assert [e["blank_node_shape"]["unchanged"]
+            for e in RECORD["events"]] == expected
+    if all(expected):
+        assert (BASELINE["corpus"]["merged_bnode_shape"]["value"]
+                == old["corpus"]["merged_bnode_shape"]["value"])
+    else:
+        assert (BASELINE["corpus"]["merged_bnode_shape"]["value"]
+                != old["corpus"]["merged_bnode_shape"]["value"]), (
+            "an event says the blank-node shape changed, but the fingerprint "
+            "did not move")
 
 
 @needs_repair_record

@@ -1,5 +1,5 @@
 {
-  "after_commit": "3cb752aacd225a4cea4129c538c4f3fa609f3dd7",
+  "after_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -16,7 +16,8 @@
     "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
     "ontology/bfo/shapes/valuenet-core-shapes.ttl",
     "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
-    "ontology/bfo/shapes/vcvf-triggers-shapes.ttl"
+    "ontology/bfo/shapes/vcvf-triggers-shapes.ttl",
+    "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl"
   ],
   "events": [
     {
@@ -86,7 +87,7 @@
       }
     },
     {
-      "after_commit": "3cb752aacd225a4cea4129c538c4f3fa609f3dd7",
+      "after_commit": "43e222010d67e0949fc0bc7fee0dc4ab4354a214",
       "before_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
       "blank_node_shape": {
         "after": {
@@ -227,6 +228,752 @@
           {
             "file": "ontology/bfo/core/valuenet-core.ttl",
             "triple": "<https://fandaws.com/ontology/bfo/valuenet-core.owl> <http://www.w3.org/2000/01/rdf-schema#comment> \"Namespace policy: https://fandaws.com/ontology/bfo/valuenet-<module># is the canonical, resolvable namespace for every entity in this suite. The https://w3id.org/valuenet/<module># IRIs that appear throughout as rdfs:seeAlso are reserved aliases and are not currently registered; nothing should be declared under them, and no query should rely on them.\"@en"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "4677c55e7cb35ae8358416c6a125c7cdad46cd36",
+      "before_commit": "43e222010d67e0949fc0bc7fee0dc4ab4354a214",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 34,
+          "component_digest_sha256": "287b37fd53bb90b3bac1cde460c84bc2b33b4114390a49bc8eabf7192c10d1fc",
+          "components": 31,
+          "largest_component_nodes": 4,
+          "triples_touching": 130
+        },
+        "before": {
+          "blank_nodes": 34,
+          "component_digest_sha256": "287b37fd53bb90b3bac1cde460c84bc2b33b4114390a49bc8eabf7192c10d1fc",
+          "components": 31,
+          "largest_component_nodes": 4,
+          "triples_touching": 130
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://purl.org/dc/terms/description",
+          "http://www.w3.org/2004/02/skos/core#definition"
+        ],
+        "subclass_edges_unchanged": true,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl"
+        ]
+      },
+      "files": [
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+        "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess> <http://www.w3.org/2004/02/skos/core#definition> \"A process in which an agent participates as its bearer of action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> <http://purl.org/dc/terms/description> \"An ontology of Haidt's six moral foundations (Care, Fairness, Loyalty, Authority, Sanctity, Liberty) modeled as BFO dispositions, together with the processes that contravene them (Harm, Cheating, Betrayal, Subversion, Degradation, Oppression).\"@en"
+          }
+        ],
+        "count": 4,
+        "removed": [
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#AgentBehaviorProcess> <http://www.w3.org/2004/02/skos/core#definition> \"A process in which an agent participates as its bearer of action, and which is available to the senses of other agents.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-foundations.owl> <http://purl.org/dc/terms/description> \"An ontology of Haidt's Moral Foundations (Care, Fairness, Loyalty, Authority, Sanctity) modeled as BFO dispositions.\"@en"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "d57388a7c26e19b7a2e3ee1672b68ebdd1e2e5f4",
+      "before_commit": "4677c55e7cb35ae8358416c6a125c7cdad46cd36",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 162,
+          "component_digest_sha256": "8ab5820f9852b19c1354e50a199d27222b06155a4343091c53551aafce7e6f5b",
+          "components": 87,
+          "largest_component_nodes": 11,
+          "triples_touching": 537
+        },
+        "before": {
+          "blank_nodes": 152,
+          "component_digest_sha256": "1a4a99248808f2558b30a83685b19e17cc9123688ab4b1cabbf82260a98dc7e6",
+          "components": 83,
+          "largest_component_nodes": 11,
+          "triples_touching": 510
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": false
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": false,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": false,
+        "predicates_touched": [
+          "http://purl.org/dc/terms/created",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "http://www.w3.org/2000/01/rdf-schema#domain",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://www.w3.org/2000/01/rdf-schema#range",
+          "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+          "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+          "http://www.w3.org/2000/01/rdf-schema#subPropertyOf",
+          "http://www.w3.org/2002/07/owl#disjointWith",
+          "http://www.w3.org/2002/07/owl#imports",
+          "http://www.w3.org/2002/07/owl#inverseOf",
+          "http://www.w3.org/2002/07/owl#versionIRI",
+          "http://www.w3.org/2002/07/owl#versionInfo",
+          "http://www.w3.org/2004/02/skos/core#altLabel",
+          "http://www.w3.org/2004/02/skos/core#definition",
+          "http://www.w3.org/2004/02/skos/core#example",
+          "http://www.w3.org/2004/02/skos/core#scopeNote",
+          "http://www.w3.org/ns/shacl#message",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput",
+          "https://www.commoncoreontologies.org/ont00001760",
+          "https://www.commoncoreontologies.org/ont00001921",
+          "https://www.commoncoreontologies.org/ont00001986"
+        ],
+        "subclass_edges_unchanged": false,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource",
+          "https://fandaws.com/ontology/bfo/valuenet-core#TextSpan",
+          "https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector",
+          "https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation",
+          "https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue",
+          "https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor",
+          "https://fandaws.com/ontology/bfo/valuenet-core#selectsTextSpan",
+          "https://fandaws.com/ontology/bfo/valuenet-core-shapes#TextualRepresentationShape",
+          "https://fandaws.com/ontology/bfo/valuenet-core.owl",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#discernmentByA",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#observationByA",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#protectiveActionByA",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#rashJudgmentByB",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#textSpan1",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#textSpan2",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#transcriptRepresentation1",
+          "https://fandaws.com/ontology/imports/cco-valuenet-extract",
+          "https://www.commoncoreontologies.org/ont00000686",
+          "https://www.commoncoreontologies.org/ont00001879",
+          "https://www.commoncoreontologies.org/ont00001916"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-core.ttl",
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+        "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+        "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
+        "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2000/01/rdf-schema#comment> \"A TextSpan is form, not its carrier and not its numeric selector. Record offsets on a TextSpanSelector whose source is the exact TextualRepresentation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2000/01/rdf-schema#comment> \"Individuated by position, not by its string (D-005): the same substring at two positions of one representation is two spans with the same hasTextualSequenceValue, and every selector of one span must give the same offsets. Not a subclass of TextualRepresentation, and not an evidence source by classification: it is evidence when an isEvidenceFor assertion or a ValueEvidenceAnnotation says so.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/BFO_0000031>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2004/02/skos/core#definition> \"A generically dependent continuant that is a continuant part of exactly one textual representation and is individuated by a contiguous interval of code-point positions in that representation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> <http://www.w3.org/2000/01/rdf-schema#comment> \"Offsets are interpreted against the exact xsd:string carried by vn-core:hasTextualSequenceValue on the selected TextualRepresentation. No Unicode normalization or line-ending transformation is implicit.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000686>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> <http://www.w3.org/2004/02/skos/core#definition> \"A designative information content entity that identifies one text span within one exact textual representation by a zero-based, end-exclusive pair of Unicode code-point offsets.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2000/01/rdf-schema#comment> \"Form, not content (D-005). CCO subtypes information content entities by what they are about; a representation is individuated by its exact sequence, a level CCO's information model has no class for, so it is placed directly under BFO generically dependent continuant. CCO defines information content entity as equivalent to a generically dependent continuant that is about some entity: asserting that a representation is about something, through cco:is about or any subproperty such as designates or describes, re-classifies it as information content. Relate a representation to what it expresses through a content-level information content entity instead.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2000/01/rdf-schema#comment> \"A changed string is a different TextualRepresentation. Its information-bearing carrier is a distinct individual linked to it by BFO_0000101 (is carrier of), and one representation may have several carriers. Text-span selector offsets are measured against it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/BFO_0000031>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2004/02/skos/core#definition> \"A generically dependent continuant that is one exact sequence of Unicode code points and that generically depends on at least one information bearing entity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000853>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation> <http://www.w3.org/2004/02/skos/core#definition> \"A descriptive information content entity that records an annotation assertion connecting one text span, one selector of that span, and one process for which the span supplies evidence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/2000/01/rdf-schema#comment> \"Not a duplicate of CCO has text value (ont00001765), whose domain is information bearing entity: that property places strings on carriers, and applied to a form-level representation or span it is inconsistent, because BFO makes independent and generically dependent continuants disjoint (D-005). Where a consumer needs CCO's bearer-level strings, derive them by query through BFO_0000101 (is carrier of) rather than authoring them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/2000/01/rdf-schema#comment> \"Use this rather than rdfs:label to carry span content. A label names an entity for a reader; the text value is the datum being annotated.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/2000/01/rdf-schema#label> \"has textual sequence value\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/core#hasTextualSequenceValue>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> <http://www.w3.org/2004/02/skos/core#definition> \"Relates a textual representation or a text span to the string that expresses its exact sequence of Unicode code points.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor> <http://www.w3.org/2000/01/rdf-schema#comment> \"A relation that links an approved ValueNet evidence subject\u2014currently a TextSpan or ValueEvidenceAnnotation\u2014to a BFO process for which it provides evidence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor> <http://www.w3.org/2000/01/rdf-schema#comment> \"The range is stated for documentation. As an annotation property axiom it is not enforced by an OWL reasoner, and the property cannot appear in class restrictions; the SHACL profile enforces the approved subject classes, named-individual identity, and process target. No domain is stated: the approved subjects, TextSpan and ValueEvidenceAnnotation, have no common named parent short of generically dependent continuant, and OWL 2 DL allows only a named class as the domain of an annotation property.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#selectsTextSpan> <http://www.w3.org/2000/01/rdf-schema#comment> \"Specializes CCO designates (ont00001916) rather than being replaced by it (D-005 item 8): a CCO consumer asking what a selector designates reaches the span, while the local property keeps the TextSpan range that the shapes and the competency questions rely on.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#selectsTextSpan> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://www.commoncoreontologies.org/ont00001916>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core.owl> <http://www.w3.org/2002/07/owl#imports> <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-09-16-d005>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#discernmentByA> <https://www.commoncoreontologies.org/ont00001921> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#householdRule>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#discernmentByA> <https://www.commoncoreontologies.org/ont00001921> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#obsRecordA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#discernmentByA> <https://www.commoncoreontologies.org/ont00001986> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#assessmentByA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#observationByA> <https://www.commoncoreontologies.org/ont00001986> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#obsRecordA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#protectiveActionByA> <https://www.commoncoreontologies.org/ont00001921> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#assessmentByA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#rashJudgmentByB> <https://www.commoncoreontologies.org/ont00001986> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#verdictByB>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#textSpan1> <https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> \"kept an eye on him and made sure he was never alone with the kids\""
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#textSpan2> <https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> \"you could just tell he had bad intentions\""
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#transcriptRepresentation1> <https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue> \"kept an eye on him and made sure he was never alone with the kids. you could just tell he had bad intentions\""
+          },
+          {
+            "file": "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core-shapes#TextualRepresentationShape> <http://www.w3.org/ns/shacl#message> \"A TextualRepresentation is a form-level generically dependent continuant and must be distinct from its cco:Information Bearing Entity carrier.\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://fandaws.com/ontology/imports/cco-valuenet-extract> <http://purl.org/dc/terms/created> \"2026-09-16\"^^<http://www.w3.org/2001/XMLSchema#date>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://fandaws.com/ontology/imports/cco-valuenet-extract> <http://www.w3.org/2002/07/owl#versionIRI> <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-09-16-d005>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://fandaws.com/ontology/imports/cco-valuenet-extract> <http://www.w3.org/2002/07/owl#versionInfo> \"CCO 2.2 ValueNet extract, D-005 revision 2026-09-16\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <http://www.w3.org/2000/01/rdf-schema#label> \"Designative Information Content Entity\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <http://www.w3.org/2002/07/owl#disjointWith> <https://www.commoncoreontologies.org/ont00000853>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <http://www.w3.org/2002/07/owl#disjointWith> <https://www.commoncoreontologies.org/ont00000965>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <http://www.w3.org/2004/02/skos/core#altLabel> \"Designative ICE\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <http://www.w3.org/2004/02/skos/core#definition> \"An Information Content Entity that consists of a set of symbols that designate some Entity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00000686> <https://www.commoncoreontologies.org/ont00001760> \"https://www.commoncoreontologies.org/InformationEntityOntology\"^^<http://www.w3.org/2001/XMLSchema#anyURI>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <http://www.w3.org/2000/01/rdf-schema#domain> <http://purl.obolibrary.org/obo/BFO_0000001>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <http://www.w3.org/2000/01/rdf-schema#label> \"designated by\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <http://www.w3.org/2000/01/rdf-schema#range> <https://www.commoncoreontologies.org/ont00000686>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://www.commoncoreontologies.org/ont00001801>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <http://www.w3.org/2002/07/owl#inverseOf> <https://www.commoncoreontologies.org/ont00001916>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <http://www.w3.org/2004/02/skos/core#definition> \"x designated by y =Def y designates x.\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001879> <https://www.commoncoreontologies.org/ont00001760> \"https://www.commoncoreontologies.org/InformationEntityOntology\"^^<http://www.w3.org/2001/XMLSchema#anyURI>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2000/01/rdf-schema#domain> <https://www.commoncoreontologies.org/ont00000686>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2000/01/rdf-schema#label> \"designates\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2000/01/rdf-schema#range> <http://purl.obolibrary.org/obo/BFO_0000001>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://www.commoncoreontologies.org/ont00001808>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2004/02/skos/core#definition> \"x designates y iff x is an instance of a Designative Information Content Entity, and y is an instance of an Entity, such that given some context, x uniquely distinguishes y from other entities.\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2004/02/skos/core#example> \"a person's name designates that person\""
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2004/02/skos/core#example> \"a URL designates the location of a Web Page on the internet\""
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2004/02/skos/core#example> \"a vehicle identification number designates some vehicle\""
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <http://www.w3.org/2004/02/skos/core#scopeNote> \"Given a stronger temporal interpretation, this property may be functional. For more info please refer to https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/temporal%20extensions.\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://www.commoncoreontologies.org/ont00001916> <https://www.commoncoreontologies.org/ont00001760> \"https://www.commoncoreontologies.org/InformationEntityOntology\"^^<http://www.w3.org/2001/XMLSchema#anyURI>"
+          }
+        ],
+        "count": 121,
+        "removed": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> <http://www.w3.org/2000/01/rdf-schema#comment> \"The currently approved subclasses are TextSpan and ValueEvidenceAnnotation. The SHACL profile checks those concrete source classes rather than accepting every information content entity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> <http://www.w3.org/2000/01/rdf-schema#label> \"evidence source\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> <http://www.w3.org/2004/02/skos/core#definition> \"An information content entity that is used as the subject of an assertion that it supplies evidence for some process.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2000/01/rdf-schema#comment> \"A TextSpan is content, not its carrier and not its numeric selector. Record offsets on a TextSpanSelector whose source is the exact TextualRepresentation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> <http://www.w3.org/2004/02/skos/core#definition> \"An evidence source that is a continuant part of one textual representation and whose textual content is a substring of that representation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> <http://www.w3.org/2000/01/rdf-schema#comment> \"Offsets are interpreted against the exact xsd:string carried by vn-core:hasTextValue on the selected TextualRepresentation. No Unicode normalization or line-ending transformation is implicit.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> <http://www.w3.org/2004/02/skos/core#definition> \"An information content entity that identifies one text span within one exact textual representation by a zero-based, end-exclusive pair of Unicode code-point offsets.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2000/01/rdf-schema#comment> \"A changed string is a different TextualRepresentation. Its information-bearing carrier is a distinct individual linked to it by BFO_0000101 (is carrier of).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <http://www.w3.org/2004/02/skos/core#definition> \"An information content entity that consists of one exact, version-specific sequence of Unicode code points against which text-span selector offsets are measured.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation> <http://www.w3.org/2004/02/skos/core#definition> \"An evidence source that records an annotation assertion connecting one text span, one selector of that span, and one process for which the span supplies evidence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> <http://www.w3.org/2000/01/rdf-schema#comment> \"Use this rather than rdfs:label to carry span content. A label names an entity for a reader; the text value is the datum being annotated.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> <http://www.w3.org/2000/01/rdf-schema#domain> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> <http://www.w3.org/2000/01/rdf-schema#label> \"has text value\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/core#hasTextValue>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> <http://www.w3.org/2004/02/skos/core#definition> \"A datatype property that assigns an information content entity the xsd:string constituting its literal textual content.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor> <http://www.w3.org/2000/01/rdf-schema#comment> \"A relation that links an approved ValueNet evidence source\u2014currently a TextSpan or ValueEvidenceAnnotation\u2014to a BFO process for which it provides evidence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor> <http://www.w3.org/2000/01/rdf-schema#comment> \"Domain and range are stated for documentation. As annotation property axioms they are not enforced by an OWL reasoner, and the property cannot appear in class restrictions; the SHACL profile enforces the approved concrete source classes, named-individual identity, and process target.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor> <http://www.w3.org/2000/01/rdf-schema#domain> <https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core.owl> <http://www.w3.org/2002/07/owl#imports> <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#discernmentByA> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#householdRule>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#discernmentByA> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#obsRecordA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#discernmentByA> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#assessmentByA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#observationByA> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#obsRecordA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#protectiveActionByA> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#assessmentByA>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#rashJudgmentByB> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#verdictByB>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#textSpan1> <https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> \"kept an eye on him and made sure he was never alone with the kids\""
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#textSpan2> <https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> \"you could just tell he had bad intentions\""
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics-scenario#transcriptRepresentation1> <https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue> \"kept an eye on him and made sure he was never alone with the kids. you could just tell he had bad intentions\""
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/2000/01/rdf-schema#comment> \"Specializes CCO ERO has input (ont00001921) to information-content inputs. The CCO parent is a subproperty of BFO has participant and explicitly permits generically dependent continuants in its range.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/2000/01/rdf-schema#domain> <http://purl.obolibrary.org/obo/BFO_0000015>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/2000/01/rdf-schema#label> \"has informational input\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/2000/01/rdf-schema#range> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/moral-epistemics#hasInformationalInput>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://www.commoncoreontologies.org/ont00001921>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> <http://www.w3.org/2004/02/skos/core#definition> \"A relation between a process and an information content entity that is available to that process at its start and on which the process operates.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/2000/01/rdf-schema#comment> \"Specializes CCO ERO has output (ont00001986) to information-content outputs. The CCO parent is a subproperty of BFO has participant and explicitly permits generically dependent continuants in its range.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/2000/01/rdf-schema#domain> <http://purl.obolibrary.org/obo/BFO_0000015>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/2000/01/rdf-schema#label> \"has informational output\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/2000/01/rdf-schema#range> <https://www.commoncoreontologies.org/ont00000958>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/moral-epistemics#hasInformationalOutput>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://www.commoncoreontologies.org/ont00001986>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> <http://www.w3.org/2004/02/skos/core#definition> \"A relation between a process and an information content entity that comes to exist, or comes to be borne by some new bearer, as a result of that process.\"@en"
+          },
+          {
+            "file": "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core-shapes#TextualRepresentationShape> <http://www.w3.org/ns/shacl#message> \"A TextualRepresentation is information content and must be distinct from its cco:Information Bearing Entity carrier.\"@en"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://fandaws.com/ontology/imports/cco-valuenet-extract> <http://purl.org/dc/terms/created> \"2026-08-25\"^^<http://www.w3.org/2001/XMLSchema#date>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://fandaws.com/ontology/imports/cco-valuenet-extract> <http://www.w3.org/2002/07/owl#versionIRI> <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6>"
+          },
+          {
+            "file": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
+            "triple": "<https://fandaws.com/ontology/imports/cco-valuenet-extract> <http://www.w3.org/2002/07/owl#versionInfo> \"CCO 2.2 ValueNet extract, Phase 6 revision 2026-08-25\"@en"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+      "before_commit": "d57388a7c26e19b7a2e3ee1672b68ebdd1e2e5f4",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 44,
+          "component_digest_sha256": "80772546657e6a31e6c8b2b02c74da3ada029f20d362a9ca6fa29fbac981465f",
+          "components": 31,
+          "largest_component_nodes": 4,
+          "triples_touching": 148
+        },
+        "before": {
+          "blank_nodes": 44,
+          "component_digest_sha256": "80772546657e6a31e6c8b2b02c74da3ada029f20d362a9ca6fa29fbac981465f",
+          "components": 31,
+          "largest_component_nodes": 4,
+          "triples_touching": 148
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+          "http://www.w3.org/2004/02/skos/core#definition"
+        ],
+        "subclass_edges_unchanged": false,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-core#contravenes",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-core.ttl",
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-core.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-core#contravenes> <http://www.w3.org/2000/01/rdf-schema#comment> \"Justified as a project-local extension in D-010, against the CCO alternatives: disrupts (ont00001888) and inhibits (ont00001959) relate two processes, so they need a value-realizing process to act on, and a contravened value need not be realized at all; realization records the opposite relation; and a norm is information content, which no agent bears, so it cannot answer which acts run against a value the acting agent bears. The object is a particular realizable entity borne by some agent, not a norm. Questions about violating a norm are asked of vn-me:MoralNormICE.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> <http://www.w3.org/2000/01/rdf-schema#comment> \"A CCO Act, not an Act of Appraisal (D-008). Act of Appraisal is a Planned Act through Act of Measuring, and a Planned Act is prescribed by a directive the agent holds; spontaneous moral judgment, of which RashJudgmentAct is the case in point, is in scope. MoralDiscernmentAct, which is deliberate, is asserted under Act of Appraisal directly.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000005>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> <http://www.w3.org/2004/02/skos/core#definition> \"An act in which an agent evaluates another agent or that agent's conduct under an actual or purported moral standard and produces a moral assessment information content entity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole> <http://www.w3.org/2000/01/rdf-schema#comment> \"Grounded in what the agent did, not in how anyone appraised it (D-009). An earlier definition grounded the role in an appraisal that treats the agent as accountable; an unwarranted appraisal does that too, so a rash judgment would have conferred the culpability it wrongly ascribes.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole> <http://www.w3.org/2004/02/skos/core#definition> \"A role that inheres in an agent in virtue of that agent's having participated, as a responsible agent, in conduct that violates a moral norm applying to that agent, and that can be realized in processes of censure, correction, restitution, forgiveness, or sanction.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000636>"
+          }
+        ],
+        "count": 10,
+        "removed": [
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000636>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> <http://www.w3.org/2004/02/skos/core#definition> \"An act of appraisal in which an agent evaluates another agent or that agent's conduct under an actual or purported moral standard and produces a moral assessment information content entity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralCulpabilityRole> <http://www.w3.org/2004/02/skos/core#definition> \"A role that inheres in an agent because a norm-governed moral appraisal treats that agent as accountable for some conduct, and that can be realized in processes of censure, correction, restitution, forgiveness, or sanction.\"@en"
           }
         ],
         "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."

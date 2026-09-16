@@ -41,7 +41,8 @@ WHAT THIS DOES NOT TEST
 
 It reasons over small scenario graphs, not over valuenet-core.ttl. It shows
 which placements are logically possible; it does not show that the published
-ontology follows D-005. That check belongs with the ontology change itself.
+ontology follows D-005. tests/bfo/test_text_layer_follows_d005.py does, and
+landed with the ontology change.
 
 Every run starts a JVM per scenario, so this is slow in absolute terms -- it has
 taken between 40 and 107 seconds on the same code -- and it is left in the

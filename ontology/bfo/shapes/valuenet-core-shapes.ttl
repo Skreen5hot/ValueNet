@@ -22,9 +22,9 @@ core-shapes:TextualRepresentationShape
   sh:not [
     sh:class cco:ont00000253 ;
   ] ;
-  sh:message "A TextualRepresentation is information content and must be distinct from its cco:Information Bearing Entity carrier."@en ;
+  sh:message "A TextualRepresentation is a form-level generically dependent continuant and must be distinct from its cco:Information Bearing Entity carrier."@en ;
   sh:property [
-    sh:path vn-core:hasTextValue ;
+    sh:path vn-core:hasTextualSequenceValue ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
     sh:datatype xsd:string ;
@@ -40,17 +40,17 @@ core-shapes:TextualRepresentationShape
     sh:message "A TextualRepresentation must have a distinct named cco:Information Bearing Entity linked by bfo:is_carrier_of (BFO_0000101)."@en ;
   ] .
 
-### 2. A text span is content within one exact textual representation.
+### 2. A text span is a positioned part of one exact textual representation.
 core-shapes:TextSpanContentShape
   a sh:NodeShape ;
   sh:targetClass vn-core:TextSpan ;
   sh:property [
-    sh:path vn-core:hasTextValue ;
+    sh:path vn-core:hasTextualSequenceValue ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
     sh:datatype xsd:string ;
     sh:severity sh:Violation ;
-    sh:message "A TextSpan must carry exactly one vn-core:hasTextValue. A span recorded only as a link cannot be re-read or re-scored, and the annotation becomes unauditable once the source corpus changes."@en ;
+    sh:message "A TextSpan must carry exactly one vn-core:hasTextualSequenceValue. A span recorded only as a link cannot be re-read or re-scored, and the annotation becomes unauditable once the source corpus changes."@en ;
   ] ;
   sh:property [
     sh:path vn-core:isTextSpanOf ;
@@ -65,13 +65,32 @@ core-shapes:TextSpanContentShape
     sh:path vn-core:hasStartOffset ;
     sh:maxCount 0 ;
     sh:severity sh:Violation ;
-    sh:message "Offsets belong on a TextSpanSelector, not on the TextSpan content entity."@en ;
+    sh:message "Offsets belong on a TextSpanSelector, not on the TextSpan."@en ;
   ] ;
   sh:property [
     sh:path vn-core:hasEndOffset ;
     sh:maxCount 0 ;
     sh:severity sh:Violation ;
-    sh:message "Offsets belong on a TextSpanSelector, not on the TextSpan content entity."@en ;
+    sh:message "Offsets belong on a TextSpanSelector, not on the TextSpan."@en ;
+  ] ;
+  sh:sparql [
+    sh:severity sh:Violation ;
+    sh:message "A TextSpan is individuated by its position in its representation (D-005): every TextSpanSelector that selects it must give the same start and end offsets."@en ;
+    sh:prefixes <https://fandaws.com/ontology/bfo/valuenet-core-shapes.ttl> ;
+    sh:select """
+      SELECT $this ?selector
+      WHERE {
+        ?selector vn-core:selectsTextSpan $this ;
+                  vn-core:hasStartOffset ?start ;
+                  vn-core:hasEndOffset ?end .
+        ?other vn-core:selectsTextSpan $this ;
+               vn-core:hasStartOffset ?otherStart ;
+               vn-core:hasEndOffset ?otherEnd .
+        FILTER (?selector != ?other)
+        FILTER (xsd:integer(?start) != xsd:integer(?otherStart)
+                || xsd:integer(?end) != xsd:integer(?otherEnd))
+      }
+    """ ;
   ] .
 
 ### 3. A selector anchors a span to one representation with a complete offset pair.
@@ -143,7 +162,7 @@ core-shapes:TextSpanSelectorShape
       WHERE {
         $this vn-core:hasSourceRepresentation ?source ;
               vn-core:hasEndOffset ?end .
-        ?source vn-core:hasTextValue ?sourceText .
+        ?source vn-core:hasTextualSequenceValue ?sourceText .
         FILTER (xsd:integer(?end) > STRLEN(STR(?sourceText)))
       }
     """ ;
@@ -159,8 +178,8 @@ core-shapes:TextSpanSelectorShape
               vn-core:selectsTextSpan ?span ;
               vn-core:hasStartOffset ?start ;
               vn-core:hasEndOffset ?end .
-        ?source vn-core:hasTextValue ?sourceText .
-        ?span vn-core:hasTextValue ?spanText ;
+        ?source vn-core:hasTextualSequenceValue ?sourceText .
+        ?span vn-core:hasTextualSequenceValue ?spanText ;
               vn-core:isTextSpanOf ?source .
         FILTER (
           SUBSTR(
@@ -173,7 +192,7 @@ core-shapes:TextSpanSelectorShape
     """ ;
   ] .
 
-### 4. Evidence sources and targets must be approved named individuals.
+### 4. Evidence subjects and targets must be approved named individuals.
 core-shapes:EvidenceRelationShape
   a sh:NodeShape ;
   sh:targetSubjectsOf vn-core:isEvidenceFor ;

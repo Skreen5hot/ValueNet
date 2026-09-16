@@ -92,9 +92,9 @@ def test_valid_evidence_pattern_conforms():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "an auditable text span" .
+        vn-core:hasTextualSequenceValue "an auditable text span" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "an auditable text span" ;
+        vn-core:hasTextualSequenceValue "an auditable text span" ;
         vn-core:isTextSpanOf :representation ;
         vn-core:isEvidenceFor :process .
     :process a obo:BFO_0000015 .
@@ -143,9 +143,9 @@ def test_evidence_target_that_is_not_a_process_is_rejected():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "an invalid target" .
+        vn-core:hasTextualSequenceValue "an invalid target" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "an invalid target" ;
+        vn-core:hasTextualSequenceValue "an invalid target" ;
         vn-core:isTextSpanOf :representation ;
         vn-core:isEvidenceFor :agent .
     :agent a cco:ont00001017 .
@@ -168,9 +168,9 @@ def test_valid_reified_evidence_annotation_with_selector_conforms():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha beta" .
+        vn-core:hasTextualSequenceValue "alpha beta" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "beta" ;
+        vn-core:hasTextualSequenceValue "beta" ;
         vn-core:isTextSpanOf :representation .
     :selector a vn-core:TextSpanSelector ;
         vn-core:hasSourceRepresentation :representation ;
@@ -186,14 +186,91 @@ def test_valid_reified_evidence_annotation_with_selector_conforms():
     assert conforms, report
 
 
+def test_the_same_substring_twice_in_one_representation_is_two_valid_spans():
+    """D-005 item 4: a span is individuated by its position in its
+    representation, not by its string. "abc" at code points 2-4 and again at
+    20-22 are two spans, each with its own selector and annotation, and both
+    validate."""
+    conforms, report = validate_core("""
+    :carrier a cco:ont00000253 ;
+        obo:BFO_0000101 :representation .
+    :representation a vn-core:TextualRepresentation ;
+        vn-core:hasTextualSequenceValue "xyabcdefghijklmnopqrabc" .
+    :spanAt2 a vn-core:TextSpan ;
+        vn-core:hasTextualSequenceValue "abc" ;
+        vn-core:isTextSpanOf :representation .
+    :spanAt20 a vn-core:TextSpan ;
+        vn-core:hasTextualSequenceValue "abc" ;
+        vn-core:isTextSpanOf :representation .
+    :selectorAt2 a vn-core:TextSpanSelector ;
+        vn-core:hasSourceRepresentation :representation ;
+        vn-core:selectsTextSpan :spanAt2 ;
+        vn-core:hasStartOffset "2"^^xsd:nonNegativeInteger ;
+        vn-core:hasEndOffset "5"^^xsd:nonNegativeInteger .
+    :annotationAt2 a vn-core:ValueEvidenceAnnotation ;
+        vn-core:hasEvidenceSource :spanAt2 ;
+        vn-core:hasSelector :selectorAt2 ;
+        vn-core:isEvidenceFor :process .
+    :process a obo:BFO_0000015 .
+
+    :selectorAt20 a vn-core:TextSpanSelector ;
+        vn-core:hasSourceRepresentation :representation ;
+        vn-core:selectsTextSpan :spanAt20 ;
+        vn-core:hasStartOffset "20"^^xsd:nonNegativeInteger ;
+        vn-core:hasEndOffset "23"^^xsd:nonNegativeInteger .
+    :annotationAt20 a vn-core:ValueEvidenceAnnotation ;
+        vn-core:hasEvidenceSource :spanAt20 ;
+        vn-core:hasSelector :selectorAt20 ;
+        vn-core:isEvidenceFor :process .
+    """)
+    assert conforms, report
+
+
+def test_one_span_cannot_be_selected_at_two_positions():
+    """The converse, and the case the substring check cannot see: both
+    positions hold "abc", so each selector delimits the span's recorded text.
+    A span individuated by its position has one position, so every selector
+    of it must give the same offsets."""
+    conforms, report = validate_core("""
+    :carrier a cco:ont00000253 ;
+        obo:BFO_0000101 :representation .
+    :representation a vn-core:TextualRepresentation ;
+        vn-core:hasTextualSequenceValue "xyabcdefghijklmnopqrabc" .
+    :spanAt2 a vn-core:TextSpan ;
+        vn-core:hasTextualSequenceValue "abc" ;
+        vn-core:isTextSpanOf :representation .
+    :spanAt20 a vn-core:TextSpan ;
+        vn-core:hasTextualSequenceValue "abc" ;
+        vn-core:isTextSpanOf :representation .
+    :selectorAt2 a vn-core:TextSpanSelector ;
+        vn-core:hasSourceRepresentation :representation ;
+        vn-core:selectsTextSpan :spanAt2 ;
+        vn-core:hasStartOffset "2"^^xsd:nonNegativeInteger ;
+        vn-core:hasEndOffset "5"^^xsd:nonNegativeInteger .
+    :annotationAt2 a vn-core:ValueEvidenceAnnotation ;
+        vn-core:hasEvidenceSource :spanAt2 ;
+        vn-core:hasSelector :selectorAt2 ;
+        vn-core:isEvidenceFor :process .
+    :process a obo:BFO_0000015 .
+
+    :selectorAt20 a vn-core:TextSpanSelector ;
+        vn-core:hasSourceRepresentation :representation ;
+        vn-core:selectsTextSpan :spanAt2 ;
+        vn-core:hasStartOffset "20"^^xsd:nonNegativeInteger ;
+        vn-core:hasEndOffset "23"^^xsd:nonNegativeInteger .
+    """)
+    assert not conforms, report
+    assert "is individuated by its position" in report
+
+
 def test_text_span_offsets_must_be_recorded_on_a_selector():
     conforms, report = validate_core("""
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha" .
+        vn-core:hasTextualSequenceValue "alpha" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         vn-core:isTextSpanOf :representation ;
         vn-core:hasStartOffset "0"^^xsd:nonNegativeInteger ;
         vn-core:hasEndOffset "5"^^xsd:nonNegativeInteger .
@@ -207,9 +284,9 @@ def test_selector_requires_a_complete_offset_pair():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha" .
+        vn-core:hasTextualSequenceValue "alpha" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         vn-core:isTextSpanOf :representation .
     :selector a vn-core:TextSpanSelector ;
         vn-core:hasSourceRepresentation :representation ;
@@ -225,9 +302,9 @@ def test_selector_end_offset_cannot_exceed_source_text_length():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha beta" .
+        vn-core:hasTextualSequenceValue "alpha beta" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "beta" ;
+        vn-core:hasTextualSequenceValue "beta" ;
         vn-core:isTextSpanOf :representation .
     :selector a vn-core:TextSpanSelector ;
         vn-core:hasSourceRepresentation :representation ;
@@ -244,11 +321,11 @@ def test_selector_and_span_must_reference_the_same_representation():
     :carrierA a cco:ont00000253 ; obo:BFO_0000101 :representationA .
     :carrierB a cco:ont00000253 ; obo:BFO_0000101 :representationB .
     :representationA a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha" .
+        vn-core:hasTextualSequenceValue "alpha" .
     :representationB a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha" .
+        vn-core:hasTextualSequenceValue "alpha" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         vn-core:isTextSpanOf :representationA .
     :selector a vn-core:TextSpanSelector ;
         vn-core:hasSourceRepresentation :representationB ;
@@ -263,7 +340,7 @@ def test_selector_and_span_must_reference_the_same_representation():
 def test_textual_representation_and_carrier_must_be_distinct():
     conforms, report = validate_core("""
     :conflated a vn-core:TextualRepresentation, cco:ont00000253 ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         obo:BFO_0000101 :conflated .
     """)
     assert not conforms, report
@@ -275,9 +352,9 @@ def test_blank_node_evidence_source_is_rejected():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha" .
+        vn-core:hasTextualSequenceValue "alpha" .
     [ a vn-core:TextSpan ;
-      vn-core:hasTextValue "alpha" ;
+      vn-core:hasTextualSequenceValue "alpha" ;
       vn-core:isTextSpanOf :representation ;
       vn-core:isEvidenceFor :process ] .
     :process a obo:BFO_0000015 .
@@ -291,9 +368,9 @@ def test_blank_node_evidence_target_is_rejected():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha" .
+        vn-core:hasTextualSequenceValue "alpha" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         vn-core:isTextSpanOf :representation ;
         vn-core:isEvidenceFor [ a obo:BFO_0000015 ] .
     """)
@@ -305,7 +382,7 @@ def test_text_span_source_must_be_an_exact_textual_representation():
     conforms, report = validate_core("""
     :genericContent a obo:BFO_0000031 .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         vn-core:isTextSpanOf :genericContent .
     """)
     assert not conforms, report
@@ -317,9 +394,9 @@ def test_selector_offsets_must_delimit_the_recorded_span_text():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha beta" .
+        vn-core:hasTextualSequenceValue "alpha beta" .
     :span a vn-core:TextSpan ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         vn-core:isTextSpanOf :representation .
     :selector a vn-core:TextSpanSelector ;
         vn-core:hasSourceRepresentation :representation ;
@@ -336,12 +413,12 @@ def test_evidence_annotation_selector_must_select_its_evidence_span():
     :carrier a cco:ont00000253 ;
         obo:BFO_0000101 :representation .
     :representation a vn-core:TextualRepresentation ;
-        vn-core:hasTextValue "alpha beta" .
+        vn-core:hasTextualSequenceValue "alpha beta" .
     :spanA a vn-core:TextSpan ;
-        vn-core:hasTextValue "alpha" ;
+        vn-core:hasTextualSequenceValue "alpha" ;
         vn-core:isTextSpanOf :representation .
     :spanB a vn-core:TextSpan ;
-        vn-core:hasTextValue "beta" ;
+        vn-core:hasTextualSequenceValue "beta" ;
         vn-core:isTextSpanOf :representation .
     :selector a vn-core:TextSpanSelector ;
         vn-core:hasSourceRepresentation :representation ;

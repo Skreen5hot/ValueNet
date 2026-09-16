@@ -5,8 +5,8 @@ maintained suite in this repository — represents a value not as a label
 attached to a thing, but as a *realizable entity* that inheres in an agent and
 is realized in the processes where that agent appraises, chooses, feels, or
 acts. The suite is grounded in the Basic Formal Ontology (BFO) and reuses
-Common Core Ontologies (CCO) terms for the information entities that carry
-textual evidence.
+Common Core Ontologies (CCO) terms for the information entities that select and
+record textual evidence.
 
 **Developed by Aaron Damiano with substantial assistance from Anthropic Claude and OpenAI Codex agents.** See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md).
 
@@ -47,9 +47,10 @@ graph TD
     VD --> MVD["MoralValueDisposition"]
     BFO15["bfo:process"] --> VRP["ValueRealizationProcess"]
     BFO15 --> VVP["ValueViolationProcess"]
-    CCO["cco:information content entity"] --> ES["EvidenceSource"]
-    ES --> TS["TextSpan"]
-    ES --> VEA["ValueEvidenceAnnotation"]
+    BFO31["bfo:generically dependent continuant"] --> TR["TextualRepresentation"]
+    BFO31 --> TS["TextSpan"]
+    DESIG["cco:designative information content entity"] --> TSS["TextSpanSelector"]
+    DESCR["cco:descriptive information content entity"] --> VEA["ValueEvidenceAnnotation"]
 ```
 
 Every class above is declared in

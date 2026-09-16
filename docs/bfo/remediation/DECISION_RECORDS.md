@@ -6,9 +6,9 @@ The four prerequisite decisions were provisionally adopted on 2026-08-24 to auth
 
 The user's instruction to start the remediation plan authorizes these recommended defaults as working assumptions. Any later instruction that changes scope or metaphysical commitments supersedes the corresponding record.
 
-D-005 was provisionally adopted on 2026-09-16, on the project owner's instruction following the formal review of that date, to authorize the ontology change it describes. It amends D-004 item 4 and is adopted when that change is implemented.
+D-005 was provisionally adopted on 2026-09-16, on the project owner's instruction following the formal review of that date, to authorize the ontology change it describes. It amends D-004 item 4. It was adopted and implemented the same day, together with R10 of the review response and D-007.
 
-D-006 and D-007 were adopted on 2026-09-16, after the reviewer signed off on the review response and the owner instructed that the remediation proceed. D-007 is implemented together with D-005.
+D-006 and D-007 were adopted on 2026-09-16, after the reviewer signed off on the review response and the owner instructed that the remediation proceed. Both were implemented with D-005: D-006's source digest is corrected in the regenerated extract manifest, and D-007's properties are retired.
 
 ## D-001 — Extension of the Realist Value Model
 
@@ -123,7 +123,7 @@ Offsets cannot be interpreted without a fixed source string and indexing convent
 
 ## D-005 — Form-Level Textual Representation Outside ICE
 
-**Status:** Provisionally adopted 2026-09-16; ontology implementation pending  
+**Status:** Adopted and implemented 2026-09-16  
 **Finding coverage:** ALN-005; formal review 2026-09-16, finding 4  
 **Amends:** D-004 item 4  
 **Evidence:** `tests/bfo/test_text_value_placement.py`; `docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_REPLY.md`; `docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_REPLY_2.md`
@@ -174,6 +174,15 @@ An intentional and narrowly scoped departure from CCO's convention of placing li
 
 `tests/bfo/test_text_value_placement.py` runs fourteen scenarios through HermiT, with two controls. Among them: the model before this decision is consistent (03); CCO `has text value` on the same individual is inconsistent (04); the reviewer's form-level case with two distinct carriers is consistent (09); the existential does not demand carrier data (10); requiring an IBE concretizer is inconsistent (11); the design exactly as recorded here, spans and the union domain included, is consistent (12); two spans with the same string at different positions are consistent as distinct spans (13); and identifying spans by their string instead — an `owl:hasKey` on the text property — collapses them into one, which contradicts their being different (14). Scenario 13 differs from 14 only by that key, and 14 becomes consistent once the spans are no longer asserted different, so the merge is what fails. On 2026-09-16 the test was falsified twice, each mutation first verified to have changed its input: removing the stated CCO domain axiom turned 04 consistent, and removing BFO's disjointness groups turned control 02 consistent. The CCO axioms relied on were compared across CCO 2.0 and 2.2 and are identical.
 
+### Implementation, 2026-09-16
+
+- `valuenet-core.ttl` states items 2 to 5 and 8. The definitions and the property declaration are the ones recorded above, and `tests/bfo/test_text_layer_follows_d005.py` reads them out of this record and compares them with the module. The same test runs HermiT over the suite with the worked scenario: consistent, neither class nor any scenario text individual classified as information content, and, as the control in the same run, the selector and the annotation are.
+- **Item 8 decided: `selectsTextSpan` specializes CCO `designates` rather than being replaced by it.** Replacing it would lose the `TextSpan` range, which the selector shapes rely on to find the span whose text the offsets must delimit. As a subproperty, a CCO consumer asking what a selector designates still reaches the span. No competency question needs `designates` itself.
+- **A boundary the implementation surfaced.** CCO 2.2 defines Information Content Entity as *equivalent to* a generically dependent continuant that is about some entity. A representation or span therefore stays out of ICE only while nothing asserts it is about something, directly or through a subproperty of `is about` such as `designates` or `describes`; if something does, the reasoner re-classifies it without any inconsistency to report. The rule is written into the class comments and the annotation guide, and the test pins the behaviour both ways. A disjointness axiom between the form classes and ICE would make such an assertion an error rather than a silent re-classification; it is not asserted, because this record does not decide it.
+- **A shape item 4 implies.** A span individuated by its position has one position, so every selector of a span must give the same offsets. Nothing enforced that: two selectors at different offsets could select one span whenever both positions held the same string, and each would pass the substring check. `valuenet-core-shapes.ttl` now rejects it; the fixture with the same substring twice, as two spans, conforms.
+- `vn-core:isEvidenceFor`'s documentary domain is removed rather than re-pointed (R10). The two approved subjects share no named parent short of generically dependent continuant, and OWL 2 DL permits only a named class as an annotation property's domain. SHACL, which already named both classes, is unchanged.
+- The CCO extract was regenerated with Designative ICE and `designates` as roots, under version IRI `.../2.2-2026-09-16-d005`, from the release artifact whose digest D-006 pins. Before changing the roots, the unmodified generator was run on that artifact and reproduced the previous extract byte for byte.
+
 ### Dependency
 
 Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:EvidenceSource`, which is itself an ICE: the span would be classified back under ICE. Removing that subclass axiom is recommendation R10 of the review response, and must land in the same change.
@@ -186,7 +195,7 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 
 ## D-006 — CCO 2.2 as the Normative Conformance Baseline
 
-**Status:** Adopted 2026-09-16
+**Status:** Adopted and implemented 2026-09-16
 **Finding coverage:** formal review 2026-09-16, overall determination and R1 of the response
 **Amends:** the source provenance recorded in `ontology/bfo/vendor/cco/cco-valuenet-extract.manifest.json`
 
@@ -200,7 +209,7 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 
 - ValueNet already pins, extracts, reasons over and tests against 2.2. Declaring 2.0 would describe a target the repository does not have.
 - Every CCO term the review cites was compared across 2.0 (tag `v2.0-2024-11-06`) and 2.2, and no finding's disposition changes; see §4 of the review response. The reviewer accepted that comparison as evidence about the repository.
-- **The previously recorded source digest was not the release's.** The extract manifest recorded `f6d1f7008fb0589b…`. That is the digest of the same file with every line ending converted to CRLF: the release artifact uses LF, digests to `a9453382…`, and converting it to CRLF reproduces the recorded value exactly. The content was right and the recorded provenance could not be checked against the published release. The manifest is corrected when the extract is next regenerated, which D-005 requires.
+- **The previously recorded source digest was not the release's.** The extract manifest recorded `f6d1f7008fb0589b…`. That is the digest of the same file with every line ending converted to CRLF: the release artifact uses LF, digests to `a9453382…`, and converting it to CRLF reproduces the recorded value exactly. The content was right and the recorded provenance could not be checked against the published release. The manifest was corrected when the extract was regenerated for D-005 on 2026-09-16. Before the roots were changed, the unmodified generator was run on the LF release artifact and reproduced the previous extract byte for byte, so the release artifact is shown to be the extract's source, not only a file with the same content.
 
 ### Reopen when
 
@@ -209,7 +218,7 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 
 ## D-007 — Informational Input and Output Use CCO Directly
 
-**Status:** Adopted 2026-09-16; implemented with D-005
+**Status:** Adopted and implemented 2026-09-16, with D-005
 **Finding coverage:** formal review 2026-09-16, finding 3; R3 and R11 of the response
 **Supersedes:** the "Retain; the local subproperty narrows the range to ICE" disposition for `hasInformationalInput` and `hasInformationalOutput` in `EXTERNAL_TERM_INVENTORY.md`
 
@@ -237,6 +246,6 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 | D-002 | Adopted and implemented | Yes; pinned extracts and import closure established in Phase 1 |
 | D-003 | Adopted and implemented | Yes; Phase 5 mapping vocabulary, CCO subclass promotions, and profile controls implemented |
 | D-004 | Adopted and implemented; item 4 amended by D-005 | Yes; Phase 3 carrier/content/representation/selector pattern implemented |
-| D-005 | Provisionally adopted | Yes; authorizes moving `TextualRepresentation` and `TextSpan` to a form-level GDC with the carrier existential, renaming and re-scoping `hasTextValue` as `hasTextualSequenceValue`, and removing `TextSpan ⊑ EvidenceSource`; not yet implemented |
-| D-006 | Adopted | Yes; pins CCO v2.2 at its release digest and corrects the recorded source digest at the next extract regeneration |
-| D-007 | Adopted; implemented with D-005 | Yes; retires `hasInformationalInput` and `hasInformationalOutput` in favour of CCO `has input` and `has output` |
+| D-005 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are form-level GDCs with the carrier existential on the representation, `hasTextValue` is renamed and re-scoped as `hasTextualSequenceValue`, `EvidenceSource` is retired, and `TextSpanSelector` is a Designative ICE |
+| D-006 | Adopted and implemented | Yes; pins CCO v2.2 at its release digest, now recorded in the extract manifest |
+| D-007 | Adopted and implemented | Yes; `hasInformationalInput` and `hasInformationalOutput` are retired in favour of CCO `has input` and `has output` |

@@ -62,14 +62,14 @@ Finally, distinguish the text's content and coordinates from the thing that carr
 | Individual | Type and required links |
 | --- | --- |
 | Carrier | `cco:ont00000253` (CCO Information Bearing Entity); link it to the exact representation with `bfo:0000101` (`is carrier of`) |
-| Exact representation/version | `vn-core:TextualRepresentation`; give it exactly one canonical `vn-core:hasTextValue` string |
-| Span content | `vn-core:TextSpan`; give it its substring and link it to the representation with `vn-core:isTextSpanOf` |
+| Exact representation/version | `vn-core:TextualRepresentation`; give it exactly one canonical `vn-core:hasTextualSequenceValue` string |
+| Span | `vn-core:TextSpan`; give it its substring and link it to the representation with `vn-core:isTextSpanOf` |
 | Coordinate selector | `vn-core:TextSpanSelector`; link it to the representation and span, then record both offsets |
 | Evidence record | `vn-core:ValueEvidenceAnnotation`; link it to the span, selector, and process |
 
-The carrier and representation must not be the same individual. A carrier is an independent continuant; a representation, span, selector, and annotation record are information content entities. `isTextSpanOf` specializes BFO `continuant part of`. Do not use `bfo:concretizes` directly between a carrier and its content: BFO reserves that relation for a process or specifically dependent continuant that concretizes a generically dependent continuant. CCO/BFO `is carrier of` is the verified carrier-to-content relation.
+The carrier and representation must not be the same individual. A carrier is an independent continuant. A representation and its spans are form: generically dependent continuants individuated by their exact sequence and their position, not information content entities (D-005). A selector and an annotation record are information content entities, designative and descriptive respectively. Do not assert that a representation or span is about something, through `cco:is about` or any subproperty such as `designates` or `describes`: CCO defines information content entity as a generically dependent continuant that is about some entity, so the reasoner would re-classify it. The same substring at two positions is two spans, and every selector of one span must give the same offsets. `isTextSpanOf` specializes BFO `continuant part of`. Do not use `bfo:concretizes` directly between a carrier and its content: BFO reserves that relation for a process or specifically dependent continuant that concretizes a generically dependent continuant. CCO/BFO `is carrier of` is the verified carrier-to-content relation.
 
-Offsets are zero-based Unicode code-point indexes into the exact representation's `hasTextValue` string, with the end offset excluded. Both offsets are required on a selector. No Unicode normalization, line-ending conversion, or other text transformation is implicit; mint a new `TextualRepresentation` if the source string changes.
+Offsets are zero-based Unicode code-point indexes into the exact representation's `hasTextualSequenceValue` string, with the end offset excluded. Both offsets are required on a selector. No Unicode normalization, line-ending conversion, or other text transformation is implicit; mint a new `TextualRepresentation` if the source string changes.
 
 Optionally add `vn-core:evokesFrame` pointing at the semantic frame a parser assigns to the span. That is the bridge to the existing MFTriggers data: the frame is the subject of `vcvf:triggers` statements whose objects are Haidt values, which the BFO-aligned dispositions reach by the annotation-only `vn-core:historicallyCorrespondsTo` property. It lets a span reach a value disposition through the 12,338 trigger statements already in the repository, without re-annotating anything or treating OWL classes as SKOS concept individuals.
 
@@ -91,9 +91,9 @@ Optionally add `vn-core:evokesFrame` pointing at the semantic frame a parser ass
 :article42Carrier rdf:type cco:ont00000253 ; # cco:Information Bearing Entity
   bfo:0000101 :article42Version1 .           # is_carrier_of
 :article42Version1 rdf:type vn-core:TextualRepresentation ;
-  vn-core:hasTextValue "Despite the risk, the journalist published the story to expose the corruption." .
+  vn-core:hasTextualSequenceValue "Despite the risk, the journalist published the story to expose the corruption." .
 :textSpan1 rdf:type vn-core:TextSpan ;
-  vn-core:hasTextValue "published the story to expose the corruption" ;
+  vn-core:hasTextualSequenceValue "published the story to expose the corruption" ;
   vn-core:isTextSpanOf :article42Version1 .
 :textSpanSelector1 rdf:type vn-core:TextSpanSelector ;
   vn-core:hasSourceRepresentation :article42Version1 ;
@@ -131,9 +131,9 @@ Optionally add `vn-core:evokesFrame` pointing at the semantic frame a parser ass
 :matchReport7Carrier rdf:type cco:ont00000253 ;
   bfo:0000101 :matchReport7Version1 .
 :matchReport7Version1 rdf:type vn-core:TextualRepresentation ;
-  vn-core:hasTextValue "As the team captain, she took full responsibility for the loss." .
+  vn-core:hasTextualSequenceValue "As the team captain, she took full responsibility for the loss." .
 :textSpan2 rdf:type vn-core:TextSpan ;
-  vn-core:hasTextValue "took full responsibility for the loss" ;
+  vn-core:hasTextualSequenceValue "took full responsibility for the loss" ;
   vn-core:isTextSpanOf :matchReport7Version1 .
 :textSpanSelector2 rdf:type vn-core:TextSpanSelector ;
   vn-core:hasSourceRepresentation :matchReport7Version1 ;

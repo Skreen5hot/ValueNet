@@ -33,11 +33,10 @@ CORE_CLASS_GENUS_PREFIXES = {
     "PersonalValueDisposition": "A value disposition whose",
     "ValueRealizationProcess": "A process that",
     "ValueViolationProcess": "A process that",
-    "EvidenceSource": "An information content entity that",
-    "TextualRepresentation": "An information content entity that",
-    "TextSpan": "An evidence source that",
-    "TextSpanSelector": "An information content entity that",
-    "ValueEvidenceAnnotation": "An evidence source that",
+    "TextualRepresentation": "A generically dependent continuant that",
+    "TextSpan": "A generically dependent continuant that",
+    "TextSpanSelector": "A designative information content entity that",
+    "ValueEvidenceAnnotation": "A descriptive information content entity that",
 }
 
 FORBIDDEN_WEAK_PHRASES = (

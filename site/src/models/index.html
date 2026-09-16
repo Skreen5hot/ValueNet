@@ -311,8 +311,8 @@
           Separately, a textual
           representation contains a text span, selected by a text span
           selector; a value evidence annotation has that text span as its
-          evidence source; and an evidence source is evidence for a value
-          realization process.</desc>
+          evidence source; and a text span or a value evidence annotation is
+          evidence for a value realization process.</desc>
 
         <text class="dg-col" x="380" y="18">Mapping, recorded as annotation</text>
 
@@ -392,8 +392,10 @@
 
       <p>Two further steps are part of this path and are not drawn, so the
         figure stays readable. Both are asserted in
-        <code>valuenet-core</code>: an
-        <a href="../explore/?class=core:EvidenceSource">evidence source</a>
+        <code>valuenet-core</code>: a
+        <a href="../explore/?class=core:TextSpan">text span</a> or a
+        <a href="../explore/?class=core:ValueEvidenceAnnotation">value
+        evidence annotation</a>
         <code>isEvidenceFor</code> a BFO <code>BFO_0000015</code> process
         &mdash; in this suite a
         <a href="../explore/?class=core:ValueRealizationProcess">value

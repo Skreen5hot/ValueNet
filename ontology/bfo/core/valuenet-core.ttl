@@ -9,7 +9,7 @@
   dc:license <https://creativecommons.org/licenses/by/4.0/> ;
   owl:versionIRI <https://fandaws.com/ontology/bfo/1.0/valuenet-core.owl> ;
   owl:imports <http://purl.obolibrary.org/obo/bfo/2020/bfo-core.ttl> ,
-    <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6> ;
+    <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-09-16-d005> ;
   dc:title "ValueNet Core Ontology (BFO-Aligned)"@en ;
   dc:description "The core module of the BFO-aligned ValueNet suite. It defines the top-level entities for modeling human values as BFO realizable entities."@en ;
   rdfs:comment "This ontology refactors the original ValueNet (which used DUL) into a realist framework based on BFO 2020."@en ,
@@ -138,50 +138,49 @@ skos:definition
   rdfs:comment "Deliberately NOT disjoint with ValueRealizationProcess: a single process may realize one value while contravening another, which is the ordinary shape of a moral trade-off. Defined (owl:equivalentClass) so that a reasoner classifies violations automatically from their contravenes axioms."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#ValueViolationProcess> .
 
-<https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource>
-  a owl:Class ;
-  rdfs:subClassOf <https://www.commoncoreontologies.org/ont00000958> ;
-  rdfs:label "evidence source"@en ;
-  skos:definition "An information content entity that is used as the subject of an assertion that it supplies evidence for some process."@en ;
-  rdfs:comment "The currently approved subclasses are TextSpan and ValueEvidenceAnnotation. The SHACL profile checks those concrete source classes rather than accepting every information content entity."@en .
-
 <https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation>
   a owl:Class ;
-  rdfs:subClassOf <https://www.commoncoreontologies.org/ont00000958> ;
+  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ,
+    [ a owl:Restriction ;
+      owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000084> ;
+      owl:someValuesFrom <https://www.commoncoreontologies.org/ont00000253>
+    ] ;
   rdfs:label "textual representation"@en ;
-  skos:definition "An information content entity that consists of one exact, version-specific sequence of Unicode code points against which text-span selector offsets are measured."@en ;
-  rdfs:comment "A changed string is a different TextualRepresentation. Its information-bearing carrier is a distinct individual linked to it by BFO_0000101 (is carrier of)."@en ;
+  skos:definition "A generically dependent continuant that is one exact sequence of Unicode code points and that generically depends on at least one information bearing entity."@en ;
+  rdfs:comment "A changed string is a different TextualRepresentation. Its information-bearing carrier is a distinct individual linked to it by BFO_0000101 (is carrier of), and one representation may have several carriers. Text-span selector offsets are measured against it."@en ,
+    "Form, not content (D-005). CCO subtypes information content entities by what they are about; a representation is individuated by its exact sequence, a level CCO's information model has no class for, so it is placed directly under BFO generically dependent continuant. CCO defines information content entity as equivalent to a generically dependent continuant that is about some entity: asserting that a representation is about something, through cco:is about or any subproperty such as designates or describes, re-classifies it as information content. Relate a representation to what it expresses through a content-level information content entity instead."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#TextualRepresentation> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> ;
+  rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> ;
   rdfs:label "text span"@en ;
-  skos:definition "An evidence source that is a continuant part of one textual representation and whose textual content is a substring of that representation."@en ;
+  skos:definition "A generically dependent continuant that is a continuant part of exactly one textual representation and is individuated by a contiguous interval of code-point positions in that representation."@en ;
   skos:example "The span 'published the story to expose the corruption' within a news article."@en ;
-  rdfs:comment "A TextSpan is content, not its carrier and not its numeric selector. Record offsets on a TextSpanSelector whose source is the exact TextualRepresentation."@en ;
+  rdfs:comment "A TextSpan is form, not its carrier and not its numeric selector. Record offsets on a TextSpanSelector whose source is the exact TextualRepresentation."@en ,
+    "Individuated by position, not by its string (D-005): the same substring at two positions of one representation is two spans with the same hasTextualSequenceValue, and every selector of one span must give the same offsets. Not a subclass of TextualRepresentation, and not an evidence source by classification: it is evidence when an isEvidenceFor assertion or a ValueEvidenceAnnotation says so."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#TextSpan> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector>
   a owl:Class ;
-  rdfs:subClassOf <https://www.commoncoreontologies.org/ont00000958> ;
+  rdfs:subClassOf <https://www.commoncoreontologies.org/ont00000686> ;
   rdfs:label "text span selector"@en ;
-  skos:definition "An information content entity that identifies one text span within one exact textual representation by a zero-based, end-exclusive pair of Unicode code-point offsets."@en ;
-  rdfs:comment "Offsets are interpreted against the exact xsd:string carried by vn-core:hasTextValue on the selected TextualRepresentation. No Unicode normalization or line-ending transformation is implicit."@en ;
+  skos:definition "A designative information content entity that identifies one text span within one exact textual representation by a zero-based, end-exclusive pair of Unicode code-point offsets."@en ;
+  rdfs:comment "Offsets are interpreted against the exact xsd:string carried by vn-core:hasTextualSequenceValue on the selected TextualRepresentation. No Unicode normalization or line-ending transformation is implicit."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#TextSpanSelector> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#ValueEvidenceAnnotation>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> ;
+  rdfs:subClassOf <https://www.commoncoreontologies.org/ont00000853> ;
   rdfs:label "value evidence annotation"@en ;
-  skos:definition "An evidence source that records an annotation assertion connecting one text span, one selector of that span, and one process for which the span supplies evidence."@en ;
+  skos:definition "A descriptive information content entity that records an annotation assertion connecting one text span, one selector of that span, and one process for which the span supplies evidence."@en ;
   rdfs:comment "This annotation record is distinct from the text span, the exact textual representation, and every physical or digital information-bearing carrier."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#ValueEvidenceAnnotation> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor>
   a owl:AnnotationProperty ;
   rdfs:label "is evidence for"@en ;
-  rdfs:comment "A relation that links an approved ValueNet evidence source—currently a TextSpan or ValueEvidenceAnnotation—to a BFO process for which it provides evidence."@en ;
+  rdfs:comment "A relation that links an approved ValueNet evidence subject—currently a TextSpan or ValueEvidenceAnnotation—to a BFO process for which it provides evidence."@en ;
   skos:definition "An annotation property that links a TextSpan or ValueEvidenceAnnotation to a BFO process for which it supplies evidence."@en ;
   rdfs:comment "The BFO-aligned replacement for the original ValueNet vcvf:triggers property. Specified in Phase4_LinguisticGrounding.md; kept an annotation property so that linking linguistic data to reality carries no logical commitment about the text itself."@en ;
   rdfs:isDefinedBy <https://fandaws.com/ontology/bfo/valuenet-core.owl> ;
@@ -195,14 +194,17 @@ skos:definition
 #    reach the existing MFTriggers lexical data.
 #################################################################
 
-<https://fandaws.com/ontology/bfo/valuenet-core#hasTextValue>
+<https://fandaws.com/ontology/bfo/valuenet-core#hasTextualSequenceValue>
   a owl:DatatypeProperty ;
-  rdfs:domain <https://www.commoncoreontologies.org/ont00000958> ;
+  rdfs:domain [ a owl:Class ;
+    owl:unionOf ( <https://fandaws.com/ontology/bfo/valuenet-core#TextualRepresentation> <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> )
+  ] ;
   rdfs:range <http://www.w3.org/2001/XMLSchema#string> ;
-  rdfs:label "has text value"@en ;
-  skos:definition "A datatype property that assigns an information content entity the xsd:string constituting its literal textual content."@en ;
-  rdfs:comment "Use this rather than rdfs:label to carry span content. A label names an entity for a reader; the text value is the datum being annotated."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/core#hasTextValue> .
+  rdfs:label "has textual sequence value"@en ;
+  skos:definition "Relates a textual representation or a text span to the string that expresses its exact sequence of Unicode code points."@en ;
+  rdfs:comment "Use this rather than rdfs:label to carry span content. A label names an entity for a reader; the text value is the datum being annotated."@en ,
+    "Not a duplicate of CCO has text value (ont00001765), whose domain is information bearing entity: that property places strings on carriers, and applied to a form-level representation or span it is inconsistent, because BFO makes independent and generically dependent continuants disjoint (D-005). Where a consumer needs CCO's bearer-level strings, derive them by query through BFO_0000101 (is carrier of) rather than authoring them."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/core#hasTextualSequenceValue> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#isTextSpanOf>
   a owl:ObjectProperty ;
@@ -223,10 +225,12 @@ skos:definition
 
 <https://fandaws.com/ontology/bfo/valuenet-core#selectsTextSpan>
   a owl:ObjectProperty ;
+  rdfs:subPropertyOf <https://www.commoncoreontologies.org/ont00001916> ;
   rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#TextSpanSelector> ;
   rdfs:range <https://fandaws.com/ontology/bfo/valuenet-core#TextSpan> ;
   rdfs:label "selects text span"@en ;
   skos:definition "Relates a text span selector to the text span it identifies."@en ;
+  rdfs:comment "Specializes CCO designates (ont00001916) rather than being replaced by it (D-005 item 8): a CCO consumer asking what a selector designates reaches the span, while the local property keeps the TextSpan range that the shapes and the competency questions rely on."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#selectsTextSpan> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#hasEvidenceSource>
@@ -272,9 +276,8 @@ skos:definition
   rdfs:seeAlso <https://w3id.org/valuenet/core#evokesFrame> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#isEvidenceFor>
-  rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-core#EvidenceSource> ;
   rdfs:range <http://purl.obolibrary.org/obo/BFO_0000015> ;
-  rdfs:comment "Domain and range are stated for documentation. As annotation property axioms they are not enforced by an OWL reasoner, and the property cannot appear in class restrictions; the SHACL profile enforces the approved concrete source classes, named-individual identity, and process target."@en .
+  rdfs:comment "The range is stated for documentation. As an annotation property axiom it is not enforced by an OWL reasoner, and the property cannot appear in class restrictions; the SHACL profile enforces the approved subject classes, named-individual identity, and process target. No domain is stated: the approved subjects, TextSpan and ValueEvidenceAnnotation, have no common named parent short of generically dependent continuant, and OWL 2 DL allows only a named class as the domain of an annotation property."@en .
 
 #################################################################
 #    Agent

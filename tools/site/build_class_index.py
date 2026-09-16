@@ -86,7 +86,15 @@ CATEGORY_ROOTS = {
 #: common superclass of ValueDisposition and ValueRole, so it sits above
 #: the split by design. A new member fails pending review rather than
 #: quietly joining a catch-all.
-REVIEWED_OTHER = {VN_CORE + "ValueRelatedRealizableEntity"}
+#:
+#: TextualRepresentation and TextSpan joined on 2026-09-16, reviewed: D-005
+#: places them directly under BFO generically dependent continuant, as form
+#: rather than information content, so they reach none of the four roots by
+#: design. Rooting generically dependent continuant at "information" would
+#: put them back in the category D-005 took them out of.
+REVIEWED_OTHER = {VN_CORE + "ValueRelatedRealizableEntity",
+                  VN_CORE + "TextualRepresentation",
+                  VN_CORE + "TextSpan"}
 
 #: Contributes mappings, not classes.
 OVERLAY_COMPONENT = "bfo.module.mappings"

@@ -21,11 +21,11 @@ skos:example a owl:AnnotationProperty .
 skos:scopeNote a owl:AnnotationProperty .
 
 <https://fandaws.com/ontology/imports/cco-valuenet-extract> a owl:Ontology ;
-    dcterms:created "2026-08-25"^^xsd:date ;
+    dcterms:created "2026-09-16"^^xsd:date ;
     dcterms:license <https://github.com/CommonCoreOntology/CommonCoreOntologies/blob/v2.2/LICENSE> ;
     dcterms:source <https://github.com/CommonCoreOntology/CommonCoreOntologies/releases/tag/v2.2> ;
-    owl:versionIRI <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6> ;
-    owl:versionInfo "CCO 2.2 ValueNet extract, Phase 6 revision 2026-08-25"@en .
+    owl:versionIRI <https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-09-16-d005> ;
+    owl:versionInfo "CCO 2.2 ValueNet extract, D-005 revision 2026-09-16"@en .
 
 ns1:ont00000037 a owl:Class ;
     rdfs:label "Act of Observation"@en ;
@@ -97,6 +97,15 @@ ns1:ont00001841 a owl:ObjectProperty ;
     owl:inverseOf ns1:ont00001921 ;
     skos:definition "x is input of y =Def x participates in y, x is an Independent Continuant (but not a Spatial Region), y is a Process, and the presence of x at the beginning of y is a necessary condition for the start of y."@en ;
     ns1:ont00001760 "https://www.commoncoreontologies.org/ExtendedRelationOntology"^^xsd:anyURI .
+
+ns1:ont00001879 a owl:ObjectProperty ;
+    rdfs:label "designated by"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:range ns1:ont00000686 ;
+    rdfs:subPropertyOf ns1:ont00001801 ;
+    owl:inverseOf ns1:ont00001916 ;
+    skos:definition "x designated by y =Def y designates x."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
 
 ns1:ont00001917 a owl:ObjectProperty ;
     rdfs:label "described by"@en ;
@@ -198,24 +207,29 @@ ns1:ont00000228 a owl:Class ;
     skos:definition "An Act in which at least one Agent plays a causative role and which is prescribed by some Directive Information Content Entity held by at least one of the Agents."@en ;
     ns1:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
 
-ns1:ont00000853 a owl:Class ;
-    rdfs:label "Descriptive Information Content Entity"@en ;
+ns1:ont00000686 a owl:Class ;
+    rdfs:label "Designative Information Content Entity"@en ;
     rdfs:subClassOf ns1:ont00000958 ;
-    owl:disjointWith ns1:ont00000965 ;
+    owl:disjointWith ns1:ont00000853,
+        ns1:ont00000965 ;
     owl:equivalentClass [ a owl:Class ;
             owl:intersectionOf ( ns1:ont00000958 [ a owl:Restriction ;
-                        owl:onProperty ns1:ont00001982 ;
+                        owl:onProperty ns1:ont00001916 ;
                         owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000001> ] ) ] ;
-    skos:altLabel "Descriptive ICE"@en ;
-    skos:definition "An Information Content Entity that describes some Entity."@en ;
+    skos:altLabel "Designative ICE"@en ;
+    skos:definition "An Information Content Entity that consists of a set of symbols that designate some Entity."@en ;
     ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
 
-ns1:ont00001801 a owl:ObjectProperty ;
-    rdfs:label "is subject of"@en ;
-    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
-    rdfs:range ns1:ont00000958 ;
-    owl:inverseOf ns1:ont00001808 ;
-    skos:definition "x is subject of y =Def y is about x."@en ;
+ns1:ont00001916 a owl:ObjectProperty ;
+    rdfs:label "designates"@en ;
+    rdfs:domain ns1:ont00000686 ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:subPropertyOf ns1:ont00001808 ;
+    skos:definition "x designates y iff x is an instance of a Designative Information Content Entity, and y is an instance of an Entity, such that given some context, x uniquely distinguishes y from other entities."@en ;
+    skos:example "a URL designates the location of a Web Page on the internet",
+        "a person's name designates that person",
+        "a vehicle identification number designates some vehicle" ;
+    skos:scopeNote "Given a stronger temporal interpretation, this property may be functional. For more info please refer to https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/temporal%20extensions."@en ;
     ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
 
 ns1:ont00001942 a owl:ObjectProperty ;
@@ -241,11 +255,33 @@ ns1:ont00001982 a owl:ObjectProperty ;
     skos:scopeNote "It is possible that this relation should be a functional property, that is for all x, y, z if x describes y and x describes z then y = z. For example, if a financial report x describes the quarterly results of a company y and that same financial report describes the quarterly results of a company z, then it should be inferred that companies y and z are the same. We refrained from classifying the relation as a functional property on the concern that descriptions are multifaceted and so consequently it may be that the same report would contain descriptions of multiple entities."@en ;
     ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
 
+ns1:ont00000853 a owl:Class ;
+    rdfs:label "Descriptive Information Content Entity"@en ;
+    rdfs:subClassOf ns1:ont00000958 ;
+    owl:disjointWith ns1:ont00000965 ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:ont00000958 [ a owl:Restriction ;
+                        owl:onProperty ns1:ont00001982 ;
+                        owl:someValuesFrom <http://purl.obolibrary.org/obo/BFO_0000001> ] ) ] ;
+    skos:altLabel "Descriptive ICE"@en ;
+    skos:definition "An Information Content Entity that describes some Entity."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+ns1:ont00001801 a owl:ObjectProperty ;
+    rdfs:label "is subject of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:range ns1:ont00000958 ;
+    owl:inverseOf ns1:ont00001808 ;
+    skos:definition "x is subject of y =Def y is about x."@en ;
+    ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
 <http://purl.obolibrary.org/obo/BFO_0000004> a owl:Class .
 
 <http://purl.obolibrary.org/obo/BFO_0000006> a owl:Class .
 
 <http://purl.obolibrary.org/obo/BFO_0000020> a owl:Class .
+
+<http://purl.obolibrary.org/obo/BFO_0000015> a owl:Class .
 
 ns1:ont00000965 a owl:Class ;
     rdfs:label "Prescriptive Information Content Entity"@en ;
@@ -265,8 +301,6 @@ ns1:ont00001808 a owl:ObjectProperty ;
     skos:definition "x is_about y is a primitive relationship between an instance of Information Content Entity x and an instance of Entity y."@en ;
     ns1:ont00001754 "http://purl.obolibrary.org/obo/IAO_0000136" ;
     ns1:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
-
-<http://purl.obolibrary.org/obo/BFO_0000015> a owl:Class .
 
 <http://purl.obolibrary.org/obo/BFO_0000031> a owl:Class .
 

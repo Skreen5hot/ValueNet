@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -37,6 +38,10 @@ CCO_ACT_OF_OBSERVATION = URIRef("https://www.commoncoreontologies.org/ont0000003
 CCO_ACT_OF_APPRAISAL = URIRef("https://www.commoncoreontologies.org/ont00000636")
 CCO_DESCRIPTIVE_ICE = URIRef("https://www.commoncoreontologies.org/ont00000853")
 CCO_PRESCRIPTIVE_ICE = URIRef("https://www.commoncoreontologies.org/ont00000965")
+CCO_DESIGNATIVE_ICE = URIRef("https://www.commoncoreontologies.org/ont00000686")
+CCO_DESIGNATES = URIRef("https://www.commoncoreontologies.org/ont00001916")
+CCO_DESIGNATED_BY = URIRef("https://www.commoncoreontologies.org/ont00001879")
+CCO_IS_ABOUT = URIRef("https://www.commoncoreontologies.org/ont00001808")
 CCO_HAS_INPUT = URIRef("https://www.commoncoreontologies.org/ont00001921")
 CCO_HAS_OUTPUT = URIRef("https://www.commoncoreontologies.org/ont00001986")
 CCO_INPUT_OF = URIRef("https://www.commoncoreontologies.org/ont00001841")
@@ -77,6 +82,13 @@ def test_extract_contains_canonical_cco_dependencies(extract_graph):
     assert (CCO_DESCRIPTIVE_ICE, OWL.disjointWith, CCO_PRESCRIPTIVE_ICE) in extract_graph
     assert (CCO_DESCRIPTIVE_ICE, RDFS.subClassOf, CCO_INFORMATION_CONTENT_ENTITY) in extract_graph
     assert (CCO_PRESCRIPTIVE_ICE, RDFS.subClassOf, CCO_INFORMATION_CONTENT_ENTITY) in extract_graph
+    # D-005 item 8: the selector is a designative ICE, and selectsTextSpan
+    # specializes designates, whose own parent is is about.
+    assert (CCO_DESIGNATIVE_ICE, RDFS.subClassOf, CCO_INFORMATION_CONTENT_ENTITY) in extract_graph
+    assert (CCO_DESIGNATIVE_ICE, OWL.disjointWith, CCO_DESCRIPTIVE_ICE) in extract_graph
+    assert (CCO_DESIGNATES, RDFS.domain, CCO_DESIGNATIVE_ICE) in extract_graph
+    assert (CCO_DESIGNATES, RDFS.subPropertyOf, CCO_IS_ABOUT) in extract_graph
+    assert (CCO_DESIGNATED_BY, OWL.inverseOf, CCO_DESIGNATES) in extract_graph
     assert (CCO_AGENT, RDFS.subClassOf, BFO_MATERIAL_ENTITY) in extract_graph
     assert (CCO_AGENT_CAPABILITY, RDFS.subClassOf, BFO_REALIZABLE_ENTITY) in extract_graph
     assert (CCO_HAS_INPUT, RDFS.subPropertyOf, BFO_HAS_PARTICIPANT) in extract_graph
@@ -96,6 +108,22 @@ def test_agent_equivalence_and_relation_ranges_are_not_truncated(extract_graph):
     assert list(extract_graph.objects(CCO_HAS_OUTPUT, RDFS.range))
     for node in agent_equivalences + list(extract_graph.objects(CCO_HAS_INPUT, RDFS.range)):
         assert list(extract_graph.triples((node, None, None)))
+
+
+def test_the_manifest_records_the_release_digest_d006_pins():
+    """D-006 item 3. Until the D-005 regeneration the manifest recorded
+    f6d1f700..., the digest of the release file with every line ending
+    converted to CRLF: the right content, under a digest nothing published
+    could be checked against. The pinned digest is read from the decision
+    record, so the record and the manifest cannot disagree silently."""
+    text = (ROOT / "docs/bfo/remediation/DECISION_RECORDS.md").read_text(
+        encoding="utf-8")
+    start = text.index("## D-006")
+    section = text[start:text.index("\n## ", start + 1)]
+    item = re.search(r"^3\. .*?`([0-9a-f]{64})`", section, re.M)
+    assert item, "D-006 item 3 no longer pins a source digest"
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    assert manifest["source_sha256"] == item.group(1)
 
 
 def test_superseded_ro_terms_are_absent(extract_graph):
@@ -173,6 +201,31 @@ def _sandbox_extract(root):
     return root / EXTRACT.resolve().relative_to(ROOT.resolve())
 
 
+#: The extract the reorganization freeze recorded. Regenerating under a new
+#: id is what separates a deliberate change from a drifted file.
+FROZEN_EXTRACT_ID = "cco-valuenet-v2.2-2026-08-25-phase6"
+
+
+def _frozen_extract_bytes() -> bytes:
+    """The extract as the freeze tag holds it, at the path the freeze's own
+    baseline recorded for it -- read from that record rather than written
+    here, because the path predates the move."""
+    import subprocess
+
+    gen = _generator()
+    baseline = subprocess.run(
+        ["git", "cat-file", "blob", gen.FROZEN_TAG + ":" + gen.FROZEN_BASELINE],
+        capture_output=True, cwd=str(ROOT))
+    assert baseline.returncode == 0, baseline.stderr.decode("utf-8", "replace")
+    path = json.loads(baseline.stdout.decode("utf-8"))[
+        "artifacts"]["cco_extract"]["path"]
+    r = subprocess.run(
+        ["git", "cat-file", "blob", gen.FROZEN_TAG + ":" + path],
+        capture_output=True, cwd=str(ROOT))
+    assert r.returncode == 0, r.stderr.decode("utf-8", "replace")
+    return r.stdout
+
+
 def _drop_the_anchor(root):
     """The state the initialisation branch exists to handle."""
     path = _sandbox_manifest(root)
@@ -230,13 +283,35 @@ def test_the_canonical_anchor_comes_from_the_freeze():
     assert set(anchor) <= set("0123456789abcdef")
 
 
-def test_the_anchor_agrees_with_the_manifest_on_disk():
+def test_the_anchor_agrees_with_the_manifest_on_disk(sandbox):
     """Two independently produced values agreeing is a fact worth
     checking rather than assuming: it holds only because this extract
-    contains no relative IRI, so the document base cannot move it."""
+    contains no relative IRI, so the document base cannot move it.
+
+    That agreement is between the freeze and the extract the freeze saw.
+    D-005 regenerated the extract on 2026-09-16 with two more roots, and from
+    then on the manifest describes a different extract by design. So the
+    check splits. The extract the freeze holds must still canonicalize to
+    the anchor -- the original agreement, now read from the tag instead of
+    the working tree. And a manifest under a new id must describe the
+    extract on disk and must not describe the frozen one: an extract
+    relabelled without changing is not a regeneration."""
     gen = _generator()
     recorded = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    assert recorded["extract_canonical_sha256"] == gen.frozen_canonical_anchor()
+    anchor = gen.frozen_canonical_anchor()
+    if recorded["extract_id"] == FROZEN_EXTRACT_ID:
+        assert recorded["extract_canonical_sha256"] == anchor
+        return
+
+    extract = _sandbox_extract(sandbox)
+    assert gen.canonical_sha256(extract) == recorded["extract_canonical_sha256"], (
+        "the manifest does not describe the extract on disk")
+    assert recorded["extract_canonical_sha256"] != anchor, (
+        "the manifest carries a new extract id but describes the frozen "
+        "extract")
+    extract.write_bytes(_frozen_extract_bytes())
+    assert gen.canonical_sha256(extract) == anchor, (
+        "the extract the freeze holds no longer canonicalizes to its anchor")
 
 
 def test_initialisation_is_refused_when_the_freeze_has_no_record(
@@ -262,6 +337,9 @@ def test_initialisation_is_refused_for_an_extract_the_freeze_disowns(sandbox):
     gen = _generator()
     path = _drop_the_anchor(sandbox)
     extract = _sandbox_extract(sandbox)
+    # From the frozen extract, so that the probe triple is the only
+    # difference and is what the refusal is about.
+    extract.write_bytes(_frozen_extract_bytes())
     extract.write_text(
         extract.read_text(encoding="utf-8")
         + chr(10)
@@ -307,6 +385,9 @@ def test_initialisation_writes_the_frozen_value_when_they_agree(sandbox):
     is that the value written is the frozen one."""
     gen = _generator()
     path = _drop_the_anchor(sandbox)
+    # The permitted case is an extract the freeze recognises. Since the
+    # D-005 regeneration that is the frozen extract, not the one in the tree.
+    _sandbox_extract(sandbox).write_bytes(_frozen_extract_bytes())
 
     gen.refresh_provenance()
 

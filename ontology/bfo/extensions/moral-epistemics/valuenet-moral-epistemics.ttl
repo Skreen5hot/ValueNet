@@ -20,26 +20,6 @@
 #    Object properties
 #################################################################
 
-<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput>
-  a owl:ObjectProperty ;
-  rdfs:subPropertyOf cco:ont00001921 ;
-  rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
-  rdfs:range cco:ont00000958 ;
-  rdfs:label "has informational input"@en ;
-  skos:definition "A relation between a process and an information content entity that is available to that process at its start and on which the process operates."@en ;
-  rdfs:comment "Specializes CCO ERO has input (ont00001921) to information-content inputs. The CCO parent is a subproperty of BFO has participant and explicitly permits generically dependent continuants in its range."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#hasInformationalInput> .
-
-<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput>
-  a owl:ObjectProperty ;
-  rdfs:subPropertyOf cco:ont00001986 ;
-  rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
-  rdfs:range cco:ont00000958 ;
-  rdfs:label "has informational output"@en ;
-  skos:definition "A relation between a process and an information content entity that comes to exist, or comes to be borne by some new bearer, as a result of that process."@en ;
-  rdfs:comment "Specializes CCO ERO has output (ont00001986) to information-content outputs. The CCO parent is a subproperty of BFO has participant and explicitly permits generically dependent continuants in its range."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#hasInformationalOutput> .
-
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#isWarrantedBy>
   a owl:ObjectProperty ;
   rdfs:domain <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE> ;
@@ -191,7 +171,7 @@
   a owl:Class ;
   rdfs:subClassOf cco:ont00000037 ,
     [ a owl:Restriction ;
-      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> ;
+      owl:onProperty cco:ont00001986 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE>
     ] ;
   skos:definition "An act of observation in which an agent acquires information through perception of another agent's behavior and produces a descriptive record of what was perceived."@en ;
@@ -203,7 +183,7 @@
   a owl:Class ;
   rdfs:subClassOf cco:ont00000636 ,
     [ a owl:Restriction ;
-      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> ;
+      owl:onProperty cco:ont00001986 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE>
     ] ,
     [ a owl:Restriction ;
@@ -224,15 +204,15 @@
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition>
     ] ,
     [ a owl:Restriction ;
-      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> ;
+      owl:onProperty cco:ont00001921 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#BehavioralObservationICE>
     ] ,
     [ a owl:Restriction ;
-      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> ;
+      owl:onProperty cco:ont00001921 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralNormICE>
     ] ,
     [ a owl:Restriction ;
-      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> ;
+      owl:onProperty cco:ont00001986 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE>
     ] ,
     [ a owl:Restriction ;
@@ -250,7 +230,7 @@
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> ,
     <https://fandaws.com/ontology/bfo/valuenet-core#ValueViolationProcess> ,
     [ a owl:Restriction ;
-      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalOutput> ;
+      owl:onProperty cco:ont00001986 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#CulpabilityAscriptionICE>
     ] ,
     [ a owl:Restriction ;
@@ -295,7 +275,7 @@
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-foundations#CareDisposition>
     ] ,
     [ a owl:Restriction ;
-      owl:onProperty <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#hasInformationalInput> ;
+      owl:onProperty cco:ont00001921 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#SafetyAssessmentICE>
     ] ,
     [ a owl:Restriction ;

@@ -105,9 +105,82 @@ def test_acts_outputs_targets_and_status_have_distinct_categories(ontology_graph
     assert (VN_ME.CulpabilityAscriptionICE, RDFS.subClassOf, VN_ME.MoralAssessmentICE) in ontology_graph
     assert (VN_ME.MoralCulpabilityRole, RDFS.subClassOf, BFO.BFO_0000023) in ontology_graph
     assert (VN_ME.ActOfBehavioralObservation, RDFS.subClassOf, CCO.ont00000037) in ontology_graph
-    assert (VN_ME.hasInformationalInput, RDFS.range, CCO.ont00000958) in ontology_graph
-    assert (VN_ME.hasInformationalOutput, RDFS.range, CCO.ont00000958) in ontology_graph
     assert (VN_ME.isWarrantedBy, RDFS.domain, VN_ME.MoralAssessmentICE) in ontology_graph
+
+
+#: Every informational input and output restriction in the module as it stood
+#: before D-007 retired vn-me:hasInformationalInput and hasInformationalOutput,
+#: read from commit 34afc04: (class, CCO property, filler). D-007 item 3 says
+#: the intended semantics are preserved, and this is what that means -- the
+#: same restrictions, stated on CCO has input and has output.
+INFORMATIONAL_RESTRICTIONS = {
+    ("ActOfBehavioralObservation", CCO.ont00001986, "BehavioralObservationICE"),
+    ("MoralAssessmentAct", CCO.ont00001986, "MoralAssessmentICE"),
+    ("MoralDiscernmentAct", CCO.ont00001921, "BehavioralObservationICE"),
+    ("MoralDiscernmentAct", CCO.ont00001921, "MoralNormICE"),
+    ("MoralDiscernmentAct", CCO.ont00001986, "SafetyAssessmentICE"),
+    ("RashJudgmentAct", CCO.ont00001986, "CulpabilityAscriptionICE"),
+    ("ProtectiveAction", CCO.ont00001921, "SafetyAssessmentICE"),
+}
+
+
+def test_informational_input_and_output_use_cco_directly(ontology_graph):
+    """D-007. The local subproperties are gone from every file in the BFO
+    tree -- a shape path or a scenario triple would keep them alive -- and
+    each restriction that used them is stated on the CCO parent instead, with
+    an information content filler."""
+    retired = (VN_ME.hasInformationalInput, VN_ME.hasInformationalOutput)
+    still = []
+    for path in (ONTOLOGY, SHAPES, SCENARIO,
+                 ROOT / "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md"):
+        text = path.read_text(encoding="utf-8")
+        still += ["%s names %s" % (path.name, term.split("#")[-1])
+                  for term in retired if term.split("#")[-1] in text]
+    assert not still, still
+
+    found = set()
+    for cls, node in ontology_graph.subject_objects(RDFS.subClassOf):
+        prop = ontology_graph.value(node, OWL.onProperty)
+        if isinstance(node, BNode) and prop in (CCO.ont00001921, CCO.ont00001986)                 and str(cls).startswith(str(VN_ME)):
+            filler = ontology_graph.value(node, OWL.someValuesFrom)
+            found.add((cls.split("#")[-1], prop, filler.split("#")[-1]))
+            assert CCO.ont00000958 in set(
+                ontology_graph.transitive_objects(filler, RDFS.subClassOf)), (
+                "%s is not information content" % filler)
+    assert found == INFORMATIONAL_RESTRICTIONS
+
+
+def test_an_assessment_act_may_have_outputs_that_are_not_assessments():
+    """The output shape counts qualified values. With the local property it
+    could require every output to be an assessment, because the property
+    admitted nothing else; CCO has output admits any continuant, and an act
+    that also outputs something else still produces its assessment."""
+    conforms, messages, _severities, report = validate(
+        """
+:agent a cco:ont00001017 .
+:behavior a vn-me:AgentBehaviorProcess .
+:observation a vn-me:BehavioralObservationICE ;
+  cco:ont00001982 :behavior .
+:assessment a vn-me:SafetyAssessmentICE ;
+  cco:ont00001982 :behavior ;
+  vn-me:isWarrantedBy :observation .
+:notes a cco:ont00000253 .
+:act a vn-me:MoralAssessmentAct ;
+  obo:BFO_0000057 :agent ;
+  cco:ont00001986 :assessment , :notes .
+"""
+    )
+    assert conforms, report
+
+    conforms, messages, _severities, _report = validate(
+        """
+:notes a cco:ont00000253 .
+:act a vn-me:MoralAssessmentAct ;
+  cco:ont00001986 :notes .
+"""
+    )
+    assert not conforms
+    assert any("must produce at least one MoralAssessmentICE" in m for m in messages)
 
 
 def test_agent_behavior_is_defined_by_participation_not_by_being_observed(ontology_graph):
@@ -202,7 +275,7 @@ def test_rash_judgment_requires_an_unwarranted_ascription_output():
   vn-me:isWarrantedBy :evidence .
 :value a vn-core:ValueRelatedRealizableEntity .
 :act a vn-me:RashJudgmentAct ;
-  vn-me:hasInformationalOutput :ascription ;
+  cco:ont00001986 :ascription ;
   vn-core:contravenes :value .
 """
     )
@@ -224,7 +297,7 @@ def test_mixed_assessment_with_warranted_and_unwarranted_outputs_is_valid():
   cco:ont00001982 :agent .
 :value a vn-core:ValueRelatedRealizableEntity .
 :mixedAct a vn-me:MixedMoralAssessmentAct ;
-  vn-me:hasInformationalOutput :safetyAssessment, :culpabilityAscription ;
+  cco:ont00001986 :safetyAssessment, :culpabilityAscription ;
   vn-core:contravenes :value .
 """
     )

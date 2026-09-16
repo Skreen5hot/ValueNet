@@ -27,6 +27,13 @@ It is a warning: a reviewed hit is reported, not failed, because splitting a
 definition is a content decision. An unreviewed hit fails until someone looks.
 When it was written it fired on exactly one definition, FaithDisposition, which
 D-012 split; it fires on none now.
+
+ANNOTATIONS (R18, D-013). RULES 2.0, adopted as ValueNet's standard, asks every
+term for a label, a definition, a comment and an example. Every authored class
+and property has the first two. The last two were mostly missing, so the gap is
+recorded by name, per module and annotation, as it stood at adoption, and the
+gate is equality again: a new term without them fails, and so does annotating a
+recorded one without removing it. Folk's gap waits on R15, like its genera.
 """
 
 from __future__ import annotations
@@ -99,6 +106,130 @@ DISJUNCTION = re.compile(r",\s+or\s+(?:a|an|the|to)\b|;\s+or\b", re.I)
 #: Reviewed disjunctive definitions, and why each is still there. Empty since
 #: D-012 split FaithDisposition, the only one there was.
 REVIEWED_DISJUNCTIONS: dict[str, str] = {}
+
+
+#: Every folk term but the three D-012 wrote to RULES 2.0 lacks both a comment
+#: and an example; the two gaps are the same set.
+FOLK_UNANNOTATED = frozenset({
+    "AccountabilityRole", "AdventureDisposition", "AltruismDisposition",
+    "AmbitionDisposition", "AssertivenessDisposition",
+    "AuthenticityDisposition", "AutonomyDisposition", "BalanceDisposition",
+    "BeautyDisposition", "BelongingDisposition", "BoldnessDisposition",
+    "CalmnessDisposition", "CandorDisposition", "CareDisposition",
+    "ChallengeDisposition", "CharityDisposition", "ChastityDisposition",
+    "CleanlinessDisposition", "CollaborationDisposition",
+    "CommitmentDisposition", "CommunityDisposition", "CompassionDisposition",
+    "CompetitionDisposition", "ConnectionDisposition",
+    "ConsistencyDisposition", "ContributionDisposition", "ControlDisposition",
+    "CooperationDisposition", "CourageDisposition", "CourtesyDisposition",
+    "CreativityDisposition", "CuriosityDisposition",
+    "DecisivenessDisposition", "DependabilityDisposition",
+    "DeterminationDisposition", "DignityDisposition", "DiligenceDisposition",
+    "DisciplineDisposition", "DiscoveryDisposition", "DiscretionDisposition",
+    "DutyDisposition", "EmpathyDisposition", "EncouragementDisposition",
+    "EnduranceDisposition", "EnjoymentDisposition", "EnthusiasmDisposition",
+    "EqualityDisposition", "EquityDisposition", "EthicsDisposition",
+    "ExcellenceDisposition", "ExcitementDisposition",
+    "ExplorationDisposition", "ExpressivenessDisposition",
+    "FairnessDisposition", "FamilyDisposition", "FidelityDisposition",
+    "FlexibilityDisposition", "ForgivenessDisposition", "FreedomDisposition",
+    "FriendshipDisposition", "GenerosityDisposition", "GoodCitizenRole",
+    "GratitudeDisposition", "GrowthDisposition", "HarmonyDisposition",
+    "HonestyDisposition", "HonorDisposition", "HopeDisposition",
+    "HumilityDisposition", "HumorDisposition", "ImaginationDisposition",
+    "ImpactDisposition", "InfluenceDisposition", "InnovationDisposition",
+    "IntegrityDisposition", "IntimacyDisposition", "IntuitionDisposition",
+    "JoyDisposition", "JusticeDisposition", "KindnessDisposition",
+    "LeaderRole", "LeadershipDisposition", "LearningDisposition",
+    "LeisureDisposition", "LogicDisposition", "LoveDisposition",
+    "LoyaltyDisposition", "MasteryDisposition", "MaturityDisposition",
+    "MeaningDisposition", "MindfulnessDisposition",
+    "OpenMindednessDisposition", "OptimismDisposition", "OrderDisposition",
+    "PassionDisposition", "PatienceDisposition", "PeaceDisposition",
+    "PowerDisposition", "PrivacyDisposition", "ProfessionalismRole",
+    "PunctualPersonRole", "PunctualityDisposition", "PurposeDisposition",
+    "RecognitionDisposition", "ResilienceDisposition",
+    "ResourcefulnessDisposition", "RespectDisposition",
+    "ResponsibilityDisposition", "SecurityDisposition",
+    "SelfRespectDisposition", "SelflessnessDisposition",
+    "SensitivityDisposition", "SharingDisposition", "SimplicityDisposition",
+    "SpiritualityDisposition", "SpontaneityDisposition",
+    "StabilityDisposition", "StatusDisposition", "StrengthDisposition",
+    "SupportDisposition", "SustainabilityDisposition", "TeamworkDisposition",
+    "ThriftDisposition", "ToleranceDisposition", "TraditionDisposition",
+    "TransparencyDisposition", "TrustDisposition",
+    "TrustworthinessDisposition", "UnderstandingDisposition",
+    "UniquenessDisposition", "UnityDisposition", "VarietyDisposition",
+    "VisionDisposition", "WisdomDisposition"
+})
+
+#: Terms lacking an annotation RULES 2.0 requires, as recorded at adoption
+#: (D-013). Labels and definitions are complete and must stay so.
+RECORDED_UNANNOTATED = {
+    ("valuenet-core.ttl", "comment"): frozenset({
+        "ValueDisposition", "ValueRole", "hasEndOffset", "hasEvidenceSource",
+        "hasSelector", "hasSourceRepresentation", "hasStartOffset",
+        "isTextSpanOf"
+    }),
+    ("valuenet-core.ttl", "example"): frozenset({
+        "MoralValueDisposition", "PersonalValueDisposition",
+        "TextSpanSelector", "TextualRepresentation",
+        "ValueEvidenceAnnotation", "ValueRelatedRealizableEntity",
+        "contravenes", "evokesFrame", "hasBroaderConceptualMatch",
+        "hasEndOffset", "hasEvidenceSource", "hasRelatedConceptualMatch",
+        "hasSelector", "hasSourceRepresentation", "hasStartOffset",
+        "hasTextualSequenceValue", "historicallyCorrespondsTo",
+        "isEvidenceFor", "isTextSpanOf", "ontologyEntityMapping",
+        "selectsTextSpan"
+    }),
+    ("valuenet-schwartz-values.ttl", "comment"): frozenset({
+        "AchievementDisposition", "BenevolenceDisposition",
+        "ConformityDisposition", "HedonismDisposition", "PowerDisposition",
+        "SecurityDisposition", "SelfDirectionDisposition",
+        "StimulationDisposition", "TraditionDisposition",
+        "UniversalismDisposition"
+    }),
+    ("valuenet-schwartz-values.ttl", "example"): frozenset({
+        "AchievementDisposition", "BenevolenceDisposition",
+        "ConformityDisposition", "HedonismDisposition", "PowerDisposition",
+        "SecurityDisposition", "SelfDirectionDisposition",
+        "StimulationDisposition", "TraditionDisposition",
+        "UniversalismDisposition"
+    }),
+    ("valuenet-moral-foundations.ttl", "comment"): frozenset({
+        "AuthorityDisposition", "BetrayalProcess", "CareDisposition",
+        "CheatingProcess", "DegradationProcess", "FairnessDisposition",
+        "HarmProcess", "LibertyDisposition", "LoyaltyDisposition",
+        "OppressionProcess", "SanctityDisposition", "SubversionProcess"
+    }),
+    ("valuenet-moral-foundations.ttl", "example"): frozenset({
+        "AuthorityDisposition", "BetrayalProcess", "CareDisposition",
+        "CheatingProcess", "DegradationProcess", "FairnessDisposition",
+        "HarmProcess", "LibertyDisposition", "LoyaltyDisposition",
+        "OppressionProcess", "SanctityDisposition", "SubversionProcess",
+        "dyadicOppositeOf"
+    }),
+    ("valuenet-moral-epistemics.ttl", "comment"): frozenset({
+        "BehavioralObservationICE", "ObservationalEvidenceICE"
+    }),
+    ("valuenet-moral-epistemics.ttl", "example"): frozenset({
+        "ActOfBehavioralObservation", "AgentBehaviorProcess",
+        "BehavioralObservationICE", "CulpabilityAscriptionICE",
+        "MixedMoralAssessmentAct", "MoralAssessmentAct", "MoralAssessmentICE",
+        "MoralCulpabilityRole", "MoralDiscernmentAct",
+        "ObservationalEvidenceICE", "ProtectiveAction", "PrudenceDisposition",
+        "RashJudgmentAct", "SafetyAssessmentICE",
+        "WarrantedMoralAssessmentICE", "isWarrantedBy"
+    }),
+    ("valuenet-folk.ttl", "comment"): FOLK_UNANNOTATED,
+    ("valuenet-folk.ttl", "example"): FOLK_UNANNOTATED,
+}
+
+ANNOTATIONS = {"label": RDFS.label, "definition": SKOS.definition,
+               "comment": RDFS.comment, "example": SKOS.example}
+TERM_TYPES = (OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty,
+              OWL.AnnotationProperty)
+AUTHORED = "https://fandaws.com/ontology/bfo/"
 
 
 def normalise(text: str) -> str:
@@ -214,3 +345,43 @@ def test_disjunctive_definitions_are_reviewed(graphs):
     for name in sorted(hits):
         warnings.warn("%s is disjunctive and still open. %s"
                       % (name, REVIEWED_DISJUNCTIONS[name]), UserWarning)
+
+
+# ---------------------------------------------------------------- annotations
+
+
+def unannotated(module: Graph, predicate) -> set:
+    terms = {s for kind in TERM_TYPES for s in module.subjects(RDF.type, kind)
+             if isinstance(s, URIRef) and str(s).startswith(AUTHORED)}
+    return {str(s).rsplit("#", 1)[-1] for s in terms
+            if (s, predicate, None) not in module}
+
+
+@pytest.mark.parametrize("name", MODULES)
+@pytest.mark.parametrize("annotation", sorted(ANNOTATIONS))
+def test_missing_annotations_are_exactly_the_recorded_ones(graphs, name,
+                                                           annotation):
+    modules, _labels = graphs
+    found = unannotated(modules[name], ANNOTATIONS[annotation])
+    recorded = RECORDED_UNANNOTATED.get((name, annotation), frozenset())
+    assert not found - recorded, (
+        "%s: terms without an %s, which RULES 2.0 requires (D-013): %s"
+        % (name, annotation, sorted(found - recorded)))
+    assert not recorded - found, (
+        "%s: annotated now, so remove from RECORDED_UNANNOTATED in this "
+        "commit: %s" % (name, sorted(recorded - found)))
+
+
+def test_the_annotation_measure_sees_classes_and_properties():
+    graph = Graph().parse(data="""
+    @prefix owl:  <http://www.w3.org/2002/07/owl#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+    @prefix vn:   <https://fandaws.com/ontology/bfo/probe#> .
+    @prefix ex:   <https://example.invalid/upstream#> .
+    vn:Commented a owl:Class ; rdfs:comment "c" .
+    vn:Bare a owl:Class .
+    vn:bareProperty a owl:ObjectProperty .
+    ex:Upstream a owl:Class .
+    """, format="turtle")
+    assert unannotated(graph, RDFS.comment) == {"Bare", "bareProperty"}

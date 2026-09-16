@@ -10,6 +10,8 @@ D-005 was provisionally adopted on 2026-09-16, on the project owner's instructio
 
 D-006 and D-007 were adopted on 2026-09-16, after the reviewer signed off on the review response and the owner instructed that the remediation proceed. Both were implemented with D-005: D-006's source digest is corrected in the regenerated extract manifest, and D-007's properties are retired.
 
+D-013 was adopted on 2026-09-16 on the owner's instruction, following the recommendation that answered R2: RULES 2.0 becomes the standard, with the readings the record states.
+
 D-011 and D-012 were adopted and implemented on 2026-09-16 on the owner's instruction after phase E: the disjointness D-005 had left undecided, and the two splits R17 had left to the owner.
 
 D-008, D-009 and D-010 were adopted and implemented on 2026-09-16 under the same instruction. They record R12, R13 and R14 of the review response, following the recommendations the reviewer accepted: `RashJudgmentAct` as the negative fixture for the first two, and conditional acceptance of `contravenes` for the third.
@@ -383,6 +385,35 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 
 - R15 decides folk membership. The corpus gives "openness" as an alternative label of `folk:Open-mindedness` and has no `folk:Openness`, so membership may merge OpennessDisposition into OpenMindednessDisposition rather than keep both; and `folk:Belief_in_God`, narrower than Religion, has no class.
 
+## D-013 — RULES 2.0 Is ValueNet's Definition and Annotation Standard
+
+**Status:** Adopted 2026-09-16; being implemented
+**Finding coverage:** formal review 2026-09-16, finding 13; R2 and R18 of the response
+**Standard:** `docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RULES_2.0.md`
+**Evidence:** `tests/bfo/test_definition_discipline.py`
+
+### Decision
+
+1. RULES 2.0, the rules the formal review applied, is adopted as ValueNet's standard for the definitions and annotations of every authored term — class and property — in the five published modules.
+2. **Definition form.** "b is a c that d's" is met when the definition opens with an asserted immediate parent as genus, the measure R16 gates. A disposition's differentia may be phrased "to …" ("a moral value disposition to protect others from harm"), which is how BFO itself phrases dispositions; the 148 definitions phrased that way are conforming and are not rewritten to "that".
+3. **Annotations.** Every term carries `rdfs:label`, `skos:definition`, `rdfs:comment` and `skos:example`, and every class its `rdfs:subClassOf`. From adoption this is required of every term added, and of every term whose definition is changed. The gap that existed at adoption is recorded by name and gated by equality, so it can only shrink, and it is paid down in this order:
+   1. the non-folk modules — 32 comments and 60 examples across 70 classes and properties;
+   2. the folk module's 134 comments and 134 examples, after R15 decides folk membership, in the same pass as its 84 genus corrections, so that nothing is written for a class that is then removed.
+4. **Process.** Section 3, step 1 — search CCO before choosing a parent, and record what the search found — is required, as D-012 did. Step 2, web search with citations, is optional: the sources ValueNet uses are the folk corpus, CCO and BFO, and the theories its modules are named for. Step 3's clarity, inclusiveness and exclusiveness checks are required, and are recorded for any class a decision adds or splits.
+5. Sections 6 and 7 describe the reviewing tool itself, and section 4's equivalence handling applies only on request; neither adds a requirement here.
+
+### Rationale
+
+- It is the standard the reviewer measured ValueNet against. Adopting it means the next review measures something the project agreed to, rather than something only the reviewer holds.
+- The definition-form rule already had its substantive part enforced: genus alignment is gated. Rewriting "to" as "that" would change the wording of 148 definitions and the meaning of none.
+- The annotation gap is a writing programme, not a defect with a single fix. A gate that records it and admits no new debt lets it be paid down in reviewable steps.
+- Folk curation waits on membership, for the same reason its genus corrections do.
+
+### Reopen when
+
+- RULES is revised; or
+- a term category outside classes and properties — individuals, or shapes — is published and needs a standard.
+
 ## Decision Gate Result
 
 | Decision | Working status | Semantic ontology edits authorized? |
@@ -399,3 +430,4 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 | D-010 | Adopted and implemented | Documentation only; `contravenes` is retained with its justification recorded |
 | D-011 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are disjoint with CCO Information Content Entity |
 | D-012 | Adopted and implemented | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |
+| D-013 | Adopted; being implemented | Annotations only; comments and examples are added against the recorded gap, non-folk first, folk after R15 |

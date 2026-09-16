@@ -16,6 +16,8 @@ D-011 and D-012 were adopted and implemented on 2026-09-16 on the owner's instru
 
 D-008, D-009 and D-010 were adopted and implemented on 2026-09-16 under the same instruction. They record R12, R13 and R14 of the review response, following the recommendations the reviewer accepted: `RashJudgmentAct` as the negative fixture for the first two, and conditional acceptance of `contravenes` for the third.
 
+D-014 was adopted on 2026-09-16 on the owner's instruction, closing R15: the folk module's membership criteria, its coverage reported by kind, and a decision on every item the proposal's revision 3 had left pending. It supersedes D-012 item 3. It is not yet implemented.
+
 ## D-001 — Extension of the Realist Value Model
 
 **Status:** Adopted 2026-08-25  
@@ -414,6 +416,116 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 - RULES is revised; or
 - a term category outside classes and properties — individuals, or shapes — is published and needs a standard.
 
+## D-014 — Folk Membership Is Decided by Criteria, and Coverage Is Reported by Kind
+
+**Status:** Adopted 2026-09-16; not yet implemented
+**Finding coverage:** formal review 2026-09-16, finding 13; N6 and R15 of the response
+**Record:** `docs/bfo/remediation/R15_FOLK_MEMBERSHIP_PROPOSAL.md`, revision 4 — the research, and a disposition for each of the 186 corpus values with no class (Table A) and each of the 45 module classes with no corpus value (Table B)
+**Supersedes:** D-012 item 3
+
+### Decision
+
+1. **Membership.** A folk class is a member if its instances are value-related realizable entities borne by an Agent:
+   - a *value disposition*, concerning what the bearer treats as important or normatively significant; or
+   - a *value role*, whose external grounding is value- or norm-relevant, whatever the bearer's own valuation.
+
+   Beliefs, structural dimensions of a theory, category headings, misspellings and culture-level analytical constructs are not members. A word whose surface sense is an act, practice, state or property is excluded only after the source's intended sense has been checked (M1).
+2. **Three relations, three mechanisms** (M2):
+   - a *lexical synonym* becomes `skos:altLabel`, and only if it passes the substitution test — substituting it for the preferred label leaves the referent class unchanged;
+   - a *correspondence* — a word that evokes, indicates or operationalizes a value without naming it — goes in `valuenet-mappings.ttl`, from the class to the corpus value's IRI, never into a label;
+   - a *narrower value* becomes a subclass if it passes M4.
+3. **Evidence is not taxonomy.** A value-survey item is a correspondence to the construct it indicates, not a synonym or subclass on that ground (M3). A source's grouping is evidence for a weak mapping, not for a parent. Emotional states and trait terms are correspondences (M5).
+4. **New classes** need M1, a differentia no existing class covers, and paradigmatic examples that separate them from their siblings. The number of lists naming a word is provenance, not a criterion (M4).
+5. **Classes with no corpus value** are kept only if a named source or value research attests the value, the class is a value role, or a recorded competency question requires it. A differentia alone, or being a ValueNet addition, is not enough (M6). Everything kept is curated under D-013 (M7).
+6. **Coverage is reported by kind.** Over the 278 corpus values:
+
+   | kind | count |
+   |---|---:|
+   | exact class | 98 |
+   | lexical synonym | 9 |
+   | correspondence | 146 |
+   | excluded | 25 |
+   | pending | 0 |
+
+   The ontology names 107 of them. Correspondences are what annotation can reach, and are not reported as ontological coverage.
+7. **Removed:** folk `PowerDisposition`, `SecurityDisposition` and `TraditionDisposition`, which repeat the Schwartz classes without differentia; `OpennessDisposition`, whose word is polysemous and stays in the correspondence layer only; and `ImpactDisposition`, `DiscretionDisposition` and `ResourcefulnessDisposition`, which have no attestation M6 accepts and no recorded competency question. Removal is an IRI break, as D-007's retirements were.
+8. **Re-parented:** `StatusDisposition` under `schwartz-values:PowerDisposition`. `ControlDisposition`, `LeadershipDisposition`, `InfluenceDisposition` and `RecognitionDisposition` go under `core:PersonalValueDisposition`, with correspondences to Schwartz Power (and, for Recognition, Achievement). Control's definition is not narrowed to fit a parent.
+9. **Kept under M6:**
+
+   | class | ground |
+   |---|---|
+   | `CalmnessDisposition` | Scott Jeffrey, "Calm"; DevelopGoodHabits, "Calmness" |
+   | `DecisivenessDisposition` | Scott Jeffrey, "Decisive"; The Mind Fool, "Decisiveness" |
+   | `DutyDisposition` | The Mind Fool, "Dutiful" |
+   | `IntuitionDisposition` | Scott Jeffrey, "Intuitive" |
+   | `MindfulnessDisposition` | Scott Jeffrey: "Presence values emphasize mindfulness, awareness, and inner stillness" |
+   | `EquityDisposition` | Favero, Jensen, Kim and Piatak (2025) measure equity as a core public value; and a competency reason: queries may need to distinguish **equal treatment** from **fair treatment sensitive to materially relevant differences** — the line between Equity and `EqualityDisposition` |
+
+10. **Added:**
+
+    | class | parent | definition |
+    |---|---|---|
+    | `HealthDisposition` | `core:PersonalValueDisposition` | a personal value disposition to protect and maintain bodily and mental health |
+    | `IntelligenceDisposition` | `core:PersonalValueDisposition` | a personal value disposition to seek the development, possession, or exercise of intellectual ability |
+    | `ModerationDisposition` | `core:PersonalValueDisposition` | a personal value disposition to avoid excess and extremes in consumption, feeling and action |
+    | `WealthDisposition` | `core:PersonalValueDisposition` | a personal value disposition to seek the acquisition or retention of financial and material wealth |
+    | `PatriotismDisposition` | `folk:LoyaltyDisposition` | "A Patriotism Disposition is a Loyalty Disposition that concerns commitment to and special concern for the bearer's country or political community." |
+    | `WorkLifeBalanceDisposition` | `folk:BalanceDisposition` | "A Work-Life Balance Disposition is a Balance Disposition that concerns maintaining an appropriate allocation of time, attention, or effort between occupational and non-occupational domains." |
+
+    The last two are the owner's wording. Like every module definition, their `skos:definition` states the definiens: "a loyalty disposition that concerns …", "a balance disposition that concerns …".
+11. **The sixteen corpus values revision 3 left pending:**
+
+    | corpus value | disposition |
+    |---|---|
+    | Responsiveness | correspondence: `RespectDisposition` |
+    | Grace | correspondence: `GratitudeDisposition`, `ForgivenessDisposition` |
+    | Irreverent | correspondence, deliberately weak: `HumorDisposition` |
+    | Inspiration | correspondence: `PassionDisposition` |
+    | Reverence | correspondence: `SpiritualityDisposition`, `RespectDisposition` |
+    | Consent | correspondence: `RespectDisposition`; no `ConsentDisposition` without a competency question |
+    | Empowerment | correspondence: `AutonomyDisposition`, `SupportDisposition` |
+    | Clarity | correspondence: `UnderstandingDisposition` |
+    | Preparedness | correspondence: `VisionDisposition`, `schwartz-values:SecurityDisposition` |
+    | Realism | correspondence: `WisdomDisposition` |
+    | Experience | correspondence: `EnjoymentDisposition` |
+    | Willingness, Management, Risk-management | excluded |
+    | Patriotism, Work-Life Balance | subclasses (item 10) |
+
+### Rationale
+
+- **The corpus has no membership rule to inherit.** Its authors scraped lists of so-called values, deduplicated them and built a taxonomy by hand ([arXiv:2303.00632](https://arxiv.org/abs/2303.00632), §5), and its clusters copy one list author's page headings.
+- **An alternative label asserts identity.** Using one for every word that points roughly at a class would make search return classes the word does not name. Correspondences keep what annotation needs without that claim.
+- **A differentia is necessary, not sufficient.** Impact is distinct from Influence, so merging them would be wrong, but distinctness does not show that anyone holds the value.
+- **The evidence is the corpus's own sources and value research.** Every list attestation in item 9 comes from a list the corpus itself cites: its values carry `prov:wasAttributedTo` Scott Jeffrey, The Mind Fool and DevelopGoodHabits. A class is not rescued by searching further lists once the policy is set.
+- **A dependant is not a reason to keep a class.** Discretion's only support was a related match from `moral-epistemics:PrudenceDisposition`; the match goes, with no replacement forced.
+- **Equity earns its place by the distinction it lets queries draw,** not by the list that names it.
+- **Re-checking corrected the record.** Revision 3 said no attestation had been found for Calmness, Decisiveness, Duty and Intuition. The owner's check found them, and the pages were read again on 2026-09-16 before this record was written.
+
+### Carried into implementation
+
+- `IntuitionDisposition`'s definition must concern valuing or favoring intuitive judgment, not possessing an intuitive faculty; today's is checked against that.
+- `EquityDisposition`'s definition is checked against its competency reason: today it names need, one kind of relevant difference, and ends in "a fair and equal outcome".
+- "Dutiful" attests Duty but stays a correspondence; it fails the substitution test.
+- `PatriotismDisposition`'s differentia makes no claim of national superiority.
+- `ModerationDisposition`'s examples show moderation without an externally imposed rule, which is what separates it from `DisciplineDisposition`.
+- `ReligionDisposition`'s comment, which calls `folk:Religion` a corpus value, is corrected (D-012's provenance correction).
+
+### Consequences, on implementation
+
+- The folk module goes from 137 classes to 136, and authored classes from 187 to 186.
+- Folk coverage is reported as four figures, with 98 exact classes against 92 today.
+- The recorded genus misalignments fall from 84 to 75: five of the removed classes are among them, and Control, Leadership, Influence and Recognition align under the general parent. Status stays misaligned under Schwartz Power until curation.
+- The recorded annotation gap falls from 134 comments and 134 examples to 128 each, since six of the removed classes are in it; the six new classes carry every annotation from the start.
+- These figures come from applying items 7, 8 and 10 to a copy of the folk module and running `test_definition_discipline.py`'s own measures over it, which also found the six new definitions aligned with their parents and none disjunctive. The records in that test change when the implementation lands, not before.
+- Table A2 adds 150 mapping assertions, four corpus values having two targets; §6 of the record adds the Power correspondences; `PrudenceDisposition` loses one. The site's mapping counts and the evidence ledger move with them.
+- The implementation order is §8 of the record, each step with its tests, site pins and evidence.
+
+### Reopen when
+
+- a competency question is recorded that needs a removed class, or a distinction a correspondence does not carry — `ConsentDisposition` is the named case;
+- the reviewer, on seeing M1–M7, disputes a criterion; or
+- the folk corpus is re-imported and its values change.
+
 ## Decision Gate Result
 
 | Decision | Working status | Semantic ontology edits authorized? |
@@ -429,5 +541,6 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 | D-009 | Adopted and implemented | Yes; `MoralCulpabilityRole` is defined by the agent's conduct; no OWL condition changes |
 | D-010 | Adopted and implemented | Documentation only; `contravenes` is retained with its justification recorded |
 | D-011 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are disjoint with CCO Information Content Entity |
-| D-012 | Adopted and implemented | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |
-| D-013 | Adopted; non-folk implemented, folk after R15 | Annotations only; the non-folk modules are complete, and folk's 134 comments and 134 examples are recorded and gated |
+| D-012 | Adopted and implemented; item 3 superseded by D-014 | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |
+| D-013 | Adopted; non-folk implemented, folk after D-014 | Annotations only; the non-folk modules are complete, and folk's 134 comments and 134 examples are recorded and gated |
+| D-014 | Adopted; not yet implemented | Yes, when implemented in the order the R15 record's §8 sets: seven folk classes removed and five re-parented, six added, 9 alternative labels, the correspondences, coverage reported by kind, then folk curation under D-013 |

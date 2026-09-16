@@ -1,12 +1,37 @@
-# R15 — Folk Value Membership: Proposal
+# R15 — Folk Value Membership
 
-**Status:** Proposal, revision 3, 2026-09-16. The owner has signed off on M2–M7 and on separating ontological from correspondence coverage, subject to the corrections this revision makes. Once those are confirmed, R15 is adopted as D-014 in `DECISION_RECORDS.md`, as the governing membership and coverage policy.
+**Status:** Revision 4, final, 2026-09-16. Adopted as **D-014** in `DECISION_RECORDS.md`, the governing membership and coverage policy for the folk module. No decision is pending. Nothing is implemented yet; the ontology changes land under D-014 in the order of §8.
 **Question (R15 of the formal review response):** which folk values belong in `valuenet-folk.ttl`, before its genus corrections and its comments and examples are written (D-013).
 **Evidence:**
 - web research carried out 2026-09-16, with every quotation checked against its source;
 - the repository's folk corpus (`ThatsAllFolks/folk.ttl` and its trigger lexicons);
 - `tools/bfo/folk_coverage.py`;
-- the owner's reviews of revisions 1 and 2.
+- the owner's reviews of revisions 1, 2 and 3, and the source checks in the third, re-verified against the pages.
+
+## Revision 4: the owner's decisions
+
+The owner closed every pending item. The stricter M1 and M2 give enough structure to decide each one without forcing lexical identity.
+
+| item | decision |
+|---|---|
+| 16 pending corpus values | 11 correspondences, 3 exclusions and 2 subclasses (Table A) |
+| `CalmnessDisposition`, `DecisivenessDisposition`, `DutyDisposition`, `IntuitionDisposition`, `MindfulnessDisposition` | kept: directly attested (§7) |
+| `EquityDisposition` | kept: public-values research, and a recorded competency reason (§7) |
+| `ImpactDisposition`, `DiscretionDisposition`, `ResourcefulnessDisposition` | removed: no attestation M6 accepts and no recorded competency question (§7) |
+| `OpennessDisposition` | retired; *openness* stays in the correspondence and trigger layer only |
+| folk `PowerDisposition` | removed; Status under Schwartz Power, Control, Leadership, Influence and Recognition under the general parent (§6) |
+| folk `SecurityDisposition`, `TraditionDisposition` | removed as duplicates; the dependency scan was re-run and is clean (§6) |
+| Health, Intelligence, Moderation, Wealth | added under the general parent, with revision 3's definitions |
+
+The result is **98 exact classes, 9 lexical synonyms, 146 correspondences, 25 excluded, 0 pending** — 278 corpus values — and, of the nine module classes that awaited an M6 decision, **6 kept and 3 removed**.
+
+**Corrections to revision 3.** Revision 3 said no attestation had been found for Calmness, Decisiveness, Duty and Intuition, and that Calmness was "not on Scott Jeffrey's current list". The owner's check showed that was wrong, and the pages were read again on 2026-09-16:
+- Scott Jeffrey lists "Calm" under Presence Values, "Decisive" under Order Values and "Intuitive" under Creativity Values, and says "Presence values emphasize mindfulness, awareness, and inner stillness";
+- DevelopGoodHabits lists "Calmness": "Valuing calmness helps you stay relatively relaxed and think logically during high-pressure situations";
+- The Mind Fool's extended list includes "Decisiveness" and "Dutiful".
+
+Management and Risk-management were pending because their sources' senses were unchecked. The Mind Fool lists both as bare terms, with no description, which is what the exclusions rest on.
+
 
 ## Revision 3: what changed and why
 
@@ -82,8 +107,11 @@ Three further facts about the corpus:
 - *Frugality*: not a survey item in Schwartz, Rokeach or VIA, and a consumer trait in [Lastovicka et al. 1999](https://academic.oup.com/jcr/article-abstract/26/1/85/1916418). It is, however, a dictionary synonym of *thrift*, and `ThriftDisposition` exists without that label; the missing label, not a missing class, is why the search failed.
 - *Openness*: three constructs — the Big Five trait, the VIA strength once called open-mindedness, and Schwartz's openness to change. It is polysemous, so it should not be an unqualified label anywhere.
 - *Belief in God*: from a sentence naming a topic, "a belief, or lack thereof, in God".
+- *Patriotism*: "love of or loyalty to one's country, involving identification with it, and special concern for its well-being and that of compatriots" ([Primoratz, *Stanford Encyclopedia of Philosophy*](https://plato.stanford.edu/entries/patriotism/)). Primoratz distinguishes patriotism from nationalism by their objects — country and nation — rather than by the strength of the attitude, and psychology distinguishes attachment and commitment to one's country from beliefs in national superiority ([APA](https://www.apa.org/topics/politics/patriotism)).
+- *Equity*: measured alongside efficiency, representation and effectiveness as a core public value whose relative importance varies with political ideology and public service motivation ([Favero, Jensen, Kim & Piatak 2025](https://journals.sagepub.com/doi/10.1177/02750740251367718), *American Review of Public Administration*).
+- *Consent*: ValueNet's Phase 6 left consent attitudes unmodelled "until an authoritative mental-functioning ontology and intended identity criteria are supplied" (`docs/bfo/remediation/PHASE6_EXIT_REVIEW.md`).
 
-## 3. Proposed membership criteria
+## 3. Membership criteria
 
 **M1. Membership.** A member is a class whose instances are value-related realizable entities borne by an Agent, of any kind CCO admits:
 - a **value disposition**, concerning what the bearer treats as important or normatively significant; or
@@ -128,17 +156,18 @@ Being a ValueNet addition is not enough. A class that fails all three is removed
 
 ## 4. Coverage, reported by kind
 
-Over the 278 corpus values, if this revision's proposals are adopted:
+Over the 278 corpus values, as decided:
 
 | kind | count | meaning |
 |---|---:|---|
-| exact class | 96 | a class that is the value — 92 today, plus the 4 new classes |
+| exact class | 98 | a class that is the value — 92 today, plus the 4 new classes and the 2 new subclasses |
 | lexical synonym | 9 | passes the substitution test; the corpus term becomes an alternative label |
-| correspondence | 135 | linked through the mapping and trigger layer; 13 to Schwartz classes and 10 to the proposed new classes. Not ontological coverage |
-| excluded | 22 | not a value-related realizable entity under M1 |
-| pending | 16 | 14 owner judgements (including Management, Risk-management and Experience) and 2 narrower-value candidates |
+| correspondence | 146 | linked through the mapping and trigger layer; 14 to Schwartz classes and 10 to new classes, and 4 name two targets. Not ontological coverage |
+| excluded | 25 | not a value-related realizable entity under M1 |
+| pending | 0 | |
+| **total** | **278** | |
 
-The first two rows together, **105**, are the honest measure of how many corpus values the ontology names. Correspondences show what the annotation pipeline can reach, which is a different claim. A tool that reports one blended figure would overstate ontological coverage, so the coverage tool should report these rows separately. Confidence across the 186 decisions: 83 high, 75 medium, 28 low.
+The first two rows together, **107**, are the honest measure of how many corpus values the ontology names. Correspondences show what the annotation pipeline can reach, which is a different claim. A tool that reports one blended figure would overstate ontological coverage, so the coverage tool reports these rows separately. Confidence across the 186 decisions: 83 high, 78 medium, 25 low. For correspondences, confidence is medium where the source's own gloss names the target's content and low where the match is deliberately weak.
 
 ## 5. Two layers: labels and correspondences
 
@@ -148,67 +177,73 @@ The first two rows together, **105**, are the honest measure of how many corpus 
   - `vn-core:hasRelatedConceptualMatch`, otherwise.
 - **Triggers.** The corpus's trigger lexicons stay attached to the corpus value IRIs, so annotation reaches the class through the correspondence. A trigger only has to evoke a value; it does not have to denote the same universal. "Belief in God" can trigger religion-related annotation without becoming a name of `ReligionDisposition`, and "capable" can trigger Achievement without becoming another name for it.
 
-Implementing the correspondences adds mapping assertions, so the site's published mapping counts move with them.
+Implementing the correspondences adds 150 mapping assertions for Table A2, since 4 corpus values correspond to two classes, plus §6's. The site's published mapping counts move with them.
 
 ## 6. Folk Power, Security and Tradition
 
-The three folk classes repeat the Schwartz classes of the same name without differentia. Security and Tradition have no subclasses and nothing refers to them, so they can be removed as they stand. Power has five subclasses. Each is checked against the Schwartz definition, "a personal value disposition to seek social status and prestige, and control or dominance over people and resources":
+The three folk classes repeat the Schwartz classes of the same name without differentia, and all three are removed. Power has five subclasses, each checked against the Schwartz definition, "a personal value disposition to seek social status and prestige, and control or dominance over people and resources":
 
-| subclass | its definition | satisfies Schwartz Power? | proposal |
+| subclass | its definition | satisfies Schwartz Power? | decision |
 |---|---|---|---|
 | `StatusDisposition` | "to seek a high relative social or professional standing" | yes — social status | under `schwartz-values:PowerDisposition` |
-| `ControlDisposition` | "to seek the power to influence or direct people's behavior or the course of events" | only in part: "or the course of events" is not control over people or resources | general parent; correspondence to Power. The definition is not narrowed to fit a parent: the hierarchy follows the concept's meaning, unless independent evidence shows ValueNet intends social or resource control |
+| `ControlDisposition` | "to seek the power to influence or direct people's behavior or the course of events" | only in part: "or the course of events" is not control over people or resources | general parent; correspondence to Power. The definition is not narrowed to fit a parent: the hierarchy follows the concept's meaning |
 | `LeadershipDisposition` | "to guide, direct, or command a group, organization, or country" | no — guiding a group need not seek dominance or status | general parent; correspondence to Power |
 | `InfluenceDisposition` | "to seek the capacity to have an effect on the character, development, or behavior of someone or something" | no — an effect on development is not dominance | general parent |
 | `RecognitionDisposition` | "to seek acknowledgment, appreciation, or validation from others for one's achievements or status" | no — recognition does not entail control | general parent; correspondence to Power and Achievement, since *social recognition* is a secondary survey item for both |
 
-## 7. Module classes that need a decision
+`WealthDisposition` is added under the general parent, not under Power (Table A3).
 
-**Openness.** Recommendation: retire `OpennessDisposition`. It stands on no corpus value and no value item, and its experience sense is a trait whose value side is already carried by Variety, Adventure and Curiosity. The word *openness* goes to the correspondence layer only; it does not become a label of `OpenMindednessDisposition`, because it is polysemous. This reopens D-012 item 3.
+**Dependency scan, re-run 2026-09-16.** Nothing in the repository refers to folk Security or Tradition except its own declaration and the gap records in `tests/bfo/test_definition_discipline.py`, which shrink when a class goes. Neither has a subclass. Folk Power's only dependants are the five subclasses above.
 
-**Impact.** It has a definition of its own:
-- Impact: "to seek to have a strong and marked effect on someone or something";
-- its parent, Influence: "to seek the capacity to have an effect on the character, development, or behavior of someone or something".
+## 7. Module classes decided under M6
 
-Impact values the effect and its size; Influence values a capacity over agents' character or conduct. That is a differentia, so no merge is proposed. Its provenance is ValueNet's Phase 1 term list, which names no source. Under M6 it is removed unless a competency question requires it.
+**Openness: retired.** It stands on no corpus value and no value item, and its experience sense is a trait whose value side is already carried by Variety, Adventure and Curiosity. The word *openness* is polysemous — the Big Five trait, the VIA strength once called open-mindedness, Schwartz's openness to change — so it goes to the correspondence layer only and does not become a label of `OpenMindednessDisposition`. This supersedes D-012 item 3.
 
-**Discretion, Equity, Resourcefulness.** Like Impact, these come from the Phase 1 term list, with no named source and no value item found. Under M6 each needs a competency question, or it is removed. Removing any of them has knock-on effects:
+**Kept: directly attested.** Every list below is one the corpus itself cites: its values carry `prov:wasAttributedTo` Scott Jeffrey, The Mind Fool and DevelopGoodHabits.
 
-| class | depends on it | removal needs |
+| class | attestation | condition |
 |---|---|---|
-| `DiscretionDisposition` | `moral-epistemics:PrudenceDisposition` maps to it (`hasRelatedConceptualMatch`) and names it in its comment | the mapping and comment revised |
-| `EquityDisposition` | `tests/bfo/test_bfo_core_definitions.py` uses it as the leaf for the Justice & Fairness cluster | another leaf chosen |
-| `ResourcefulnessDisposition` | nothing | nothing |
+| `CalmnessDisposition` | Scott Jeffrey, "Calm" (Presence Values); DevelopGoodHabits, "Calmness" | — |
+| `DecisivenessDisposition` | Scott Jeffrey, "Decisive" (Order Values); The Mind Fool, "Decisiveness" | — |
+| `DutyDisposition` | The Mind Fool, "Dutiful" | "Dutiful" attests the concept but stays a correspondence: it fails the substitution test (Table A2) |
+| `IntuitionDisposition` | Scott Jeffrey, "Intuitive" (Creativity Values) | its definition must concern valuing or favoring intuitive judgment, not possessing an intuitive faculty. Today's — "to trust and rely on the ability to understand something immediately, without conscious reasoning" — is checked against that in the curation pass |
+| `MindfulnessDisposition` | Scott Jeffrey: "Presence values emphasize mindfulness, awareness, and inner stillness" | concept-level attestation: the category is defined by the concept, though the word is not a listed item |
 
-Equity is the strongest candidate to keep with a competency question: distribution by need rather than equally is a distinction fairness questions can depend on.
+**Kept: `EquityDisposition`.** Favero, Jensen, Kim and Piatak (2025) measure equity as a core public value alongside efficiency, representation and effectiveness. The class also has a competency reason, recorded here because it, and not the list, is what earns the class its place: queries may need to distinguish **equal treatment** from **fair treatment sensitive to materially relevant differences**. That is the line between Equity and its sibling `EqualityDisposition`, "to ensure that each individual or group is given the same resources or opportunities, regardless of circumstances". Equity's definition today — "to distribute resources and opportunities based on the needs of individuals to reach a fair and equal outcome" — names need, one kind of relevant difference, and ends in "a fair and equal outcome". The curation pass checks it against the competency reason.
 
-**Decisiveness, Mindfulness, Calmness, Duty and Intuition.** No corpus value *names* any of these classes; corpus words only correspond to them. The other module classes in that position were checked directly against the source lists and value research, and are attested (Table B). These five are not:
+**Removed.**
 
-| class | corresponding corpus words | direct attestation |
+| class | reason | removal needs |
 |---|---|---|
-| `DecisivenessDisposition` | Decision making | none found |
-| `MindfulnessDisposition` | Presence, Alertness, Concentration, Consciousness, Self-awareness | none; Scott Jeffrey lists "Present", "Awareness" and "Attentive", related words rather than the concept |
-| `CalmnessDisposition` | Composure, Serenity, Tranquility, Poise | none found; not on Scott Jeffrey's current list |
-| `DutyDisposition` | Dutiful | none found |
-| `IntuitionDisposition` | Intuitive, Intuitiveness, TrustYourGuts | none found |
+| `ImpactDisposition` | its differentia from Influence is real — Impact values the size of an effect, Influence a capacity over agents' character or conduct — so a merge would be wrong. A differentia alone does not satisfy M6, and a class is not rescued by searching further lists once the evidence policy is set | nothing depends on it |
+| `DiscretionDisposition` | a moral-epistemics mapping's dependence on it is no reason to keep a folk value | `moral-epistemics:PrudenceDisposition`'s related match to it, and the clause of its comment naming it, are removed. No replacement mapping is added |
+| `ResourcefulnessDisposition` | commonly treated as an ability, trait or problem-solving capacity; that some organizations call it a core value does not satisfy M6 | nothing depends on it |
 
-Each stays pending under M6 until one of three things is supplied: concept-level evidence that a source instantiates the same value, a recorded competency question, or a decision to remove it. Related words alone do not satisfy M6.
+No recorded competency question requires any of the three. The repository's competency questions — `valuenet-moral-epistemics-CQ.md`, `marep/competency.py` and `tests/integration/test_competency_questions.py` — mention none of them; `docs/bfo/guides/RefactorPlan.md` lists Impact, Discretion and Resourcefulness only as refactoring terms.
 
-## 8. Decisions the owner needs to make
+## 8. What D-014 decides, and implementing it
 
-1. Adopt **M1–M7** and the **coverage model** (§4).
-2. The **two-layer rule** (§5): lexical synonyms as labels, correspondences in `valuenet-mappings.ttl`.
-3. **Folk Power's subclasses** (§6), as proposed there: Status under Schwartz Power, the other four under the general parent. Security and Tradition can be removed now.
-4. **Openness** retired, and **Impact**, **Discretion**, **Equity**, **Resourcefulness**, **Decisiveness**, **Mindfulness**, **Calmness**, **Duty** and **Intuition**: concept-level attestation, a competency question, or removal (§7).
-5. The **four new classes**, with their draft definitions (Table A3), and the **two narrower-value candidates**, Patriotism and Work-Life Balance (Table A3).
-6. The **14 judgement calls** (Table A4), including the unchecked senses of Management, Risk-management and Experience.
+D-014 adopts:
+1. **M1–M7** and the **coverage model** (§4);
+2. the **two-layer rule** (§5): lexical synonyms as labels, correspondences in `valuenet-mappings.ttl`;
+3. the **removal of folk Power, Security and Tradition**, with Power's subclasses placed as in §6;
+4. **Openness** retired, six classes kept and three removed (§7);
+5. the **four new classes and two new subclasses** (Table A3);
+6. a disposition for **every one of the 186** corpus values with no class (Table A).
 
-Nothing is implemented until these are settled; the alternative labels and any re-parenting then land one decision at a time.
+Implementation, in order, each step with its tests, site pins and evidence in the same commit:
+1. **Removals and re-parenting:** the seven classes; Status under Schwartz Power; Control, Leadership, Influence and Recognition under `core:PersonalValueDisposition`; Prudence's mapping and comment.
+2. **New classes:** the six, each with every annotation D-013 requires.
+3. **Alternative labels:** the 9 of Table A1.
+4. **Correspondences:** Table A2 and §6, in `valuenet-mappings.ttl`.
+5. **Coverage tool:** reports exact, synonym, correspondence and excluded separately.
+6. **`ReligionDisposition`'s comment**, which calls `folk:Religion` a corpus value, corrected (§2).
+7. **Folk curation** under D-013: genus corrections, comments and examples, with Intuition's and Equity's definitions checked against §7.
 
 
 ## Table A — the 186 corpus values with no class
 
-*Source* is the corpus's own attribution. *Confidence*: H high, M medium, L low.
+*Source* is the corpus's own attribution. *Confidence*: H high, M medium, L low. A correspondence with two targets lists both.
 
 
 ### A1. Lexical synonyms — pass the substitution test (9)
@@ -225,7 +260,7 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Respect for self | `SelfRespectDisposition` | Respect for self | H | Spall | 'Respect for self Disposition' picks out the same class as its label |
 | Frugality | `ThriftDisposition` | Frugality | H | DevelopGoodHabits | 'Frugality Disposition' picks out the class defined as using 'money and other resources carefully and not wastefully' — the failed demo search |
 
-### A2. Correspondences — mapping and trigger layer (135)
+### A2. Correspondences — mapping and trigger layer (146)
 
 | corpus value | corresponds to | conf. | source | note |
 |---|---|---|---|---|
@@ -234,6 +269,7 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Drive | `AmbitionDisposition` | H | Georgetown |  |
 | Assertion | `AssertivenessDisposition` | H | Scott Jeffrey, DevelopGoodHabits | names an act; the class names the value of being assertive |
 | Congruence | `AuthenticityDisposition` | H | DevelopGoodHabits | corpus comment: true to one's authentic self |
+| Empowerment | `AutonomyDisposition` + `SupportDisposition` | L | Scott Jeffrey, Mind Fool | enabling another's agency and supporting them; neither target alone captures it |
 | Rest | `BalanceDisposition` | L | DevelopGoodHabits |  |
 | Association | `BelongingDisposition` | L | Mind Fool |  |
 | Risk | `BoldnessDisposition` | H | Scott Jeffrey, DevelopGoodHabits | Boldness: 'willing to take risks' |
@@ -263,6 +299,7 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Thoroughfulness | `DiligenceDisposition` | H | Scott Jeffrey |  |
 | Self-control | `DisciplineDisposition` | H | Mind Fool | Discipline: 'control impulses' |
 | Dutiful | `DutyDisposition` | M | Mind Fool | an adjective; the corpus term does not name the duty class |
+| Experience | `EnjoymentDisposition` | L | Scott Jeffrey | Scott Jeffrey groups it under Enjoyment Values; the grouping supports a weak mapping, not a subclass |
 | Fun | `EnjoymentDisposition` | H | Scott Jeffrey | Enjoyment: 'pleasure, fun' |
 | Lively | `EnthusiasmDisposition` | L | Mind Fool | a trait term |
 | Zeal | `EnthusiasmDisposition` | H | Mind Fool |  |
@@ -279,6 +316,7 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Versatility | `FlexibilityDisposition` | M | DevelopGoodHabits |  |
 | Forgiving | `ForgivenessDisposition` | H | Schwartz 1992 | an adjective; no label would be added, so the corpus term does not name the class |
 | Giving | `GenerosityDisposition` | H | Scott Jeffrey |  |
+| Grace | `GratitudeDisposition` + `ForgivenessDisposition` | M | Scott Jeffrey, DevelopGoodHabits | DevelopGoodHabits: grace is 'unconditional love and gratitude' that 'enables you to understand, empathize, and forgive'; a two-target match is more faithful than one |
 | Development | `GrowthDisposition` | H | Scott Jeffrey |  |
 | Evolution | `GrowthDisposition` | M | Mind Fool | cluster heading for Improvement |
 | Improvement | `GrowthDisposition` | H | Scott Jeffrey |  |
@@ -291,6 +329,7 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Truth | `HonestyDisposition` | H | Georgetown |  |
 | Modesty | `HumilityDisposition` | H | Schwartz 1992 | SVS Tradition item 'humble' |
 | Amusement | `HumorDisposition` | H | Scott Jeffrey | Humor: 'what is amusing' |
+| Irreverent | `HumorDisposition` | L | Scott Jeffrey | deliberately weak: it can evoke playful disregard of convention, and is neither a synonym nor a subtype of humor |
 | Playfulness | `HumorDisposition` | M | Georgetown |  |
 | Conviction | `IntegrityDisposition` | M | Georgetown |  |
 | Brilliance | `IntelligenceDisposition` | M | Scott Jeffrey | a trait term |
@@ -323,6 +362,7 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Positivity | `OptimismDisposition` | H | Mind Fool, Spall |  |
 | Organization | `OrderDisposition` | H | Georgetown | Order: 'organization' |
 | Structure | `OrderDisposition` | H | Scott Jeffrey, DevelopGoodHabits |  |
+| Inspiration | `PassionDisposition` | L | Georgetown | closer to a state or stimulus; a weak match, not a class |
 | Intensity | `PassionDisposition` | L | Scott Jeffrey |  |
 | Inner peace | `PeaceDisposition` | M | DevelopGoodHabits, Mind Fool | a state; fails the substitution test for a disposition class |
 | Silence | `PeaceDisposition` | L | Scott Jeffrey |  |
@@ -333,8 +373,11 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Famous | `RecognitionDisposition` | M | Scott Jeffrey |  |
 | Belief in God | `ReligionDisposition` | M | YourDictionary | a YourDictionary sentence about belief 'or lack thereof' in God; a topic that can trigger religion-related annotation |
 | Devotion | `ReligionDisposition` | M | Georgetown, Schwartz 1992 | Schwartz Tradition item 'devout'; evokes religion without naming it |
+| Consent | `RespectDisposition` | L | Mind Fool | valuing consent as a normative specialization of respect; no ConsentDisposition without a competency question |
+| Responsiveness | `RespectDisposition` | M | DevelopGoodHabits | DevelopGoodHabits: 'Valuing responsiveness is also about respecting other people and their time' |
 | Self-love | `SelfRespectDisposition` | M | Mind Fool |  |
 | Spirit | `SpiritualityDisposition` | H | Scott Jeffrey |  |
+| Reverence | `SpiritualityDisposition` + `RespectDisposition` | L | Georgetown | deep respect for what is regarded as sacred, which need not entail institutional or doctrinal religion |
 | Certainty | `StabilityDisposition` | M | Scott Jeffrey |  |
 | Helpfulness | `SupportDisposition` | H | Schwartz 1992 | SVS Benevolence item 'helpful' |
 | Helping | `SupportDisposition` | H | YourDictionary |  |
@@ -344,13 +387,16 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Diversity | `ToleranceDisposition` | M | DevelopGoodHabits | Schwartz universalism-tolerance: acceptance and understanding of those who are different |
 | Inclusiveness | `ToleranceDisposition` | M | DevelopGoodHabits |  |
 | Earning trust | `TrustworthinessDisposition` | H | YourDictionary |  |
+| Clarity | `UnderstandingDisposition` | L | Scott Jeffrey, Mind Fool | weak; not a label, since clarity can characterize communication, information, thought or understanding |
 | Insightful | `UnderstandingDisposition` | H | Georgetown | Understanding: 'with empathy and insight' |
 | Distinctiveness | `UniquenessDisposition` | H | Mind Fool |  |
 | Novelty | `VarietyDisposition` | H | DevelopGoodHabits | Variety: 'novelty' |
 | Surprise | `VarietyDisposition` | L | Scott Jeffrey |  |
 | Foresight | `VisionDisposition` | H | Georgetown |  |
+| Preparedness | `VisionDisposition` + `schwartz:SecurityDisposition` | M | DevelopGoodHabits | DevelopGoodHabits: 'Identifying risks in any area of your life and coming up with potential plans for action' — future-directed and security-related |
 | Prosperity | `WealthDisposition` | M | Scott Jeffrey, Mind Fool | Rokeach 'a comfortable life (a prosperous life)' — an end-state, not a name for valuing wealth |
 | Common sense | `WisdomDisposition` | M | Georgetown |  |
+| Realism | `WisdomDisposition` | L | Georgetown | attending to actual circumstances is characteristic of practical wisdom, not identical with it |
 | Accomplishment | `schwartz:AchievementDisposition` | M | Scott Jeffrey | Rokeach terminal value 'a sense of accomplishment' |
 | Capable | `schwartz:AchievementDisposition` | M | Scott Jeffrey | Schwartz Achievement item 'capable' — an indicator of the value |
 | Effectiveness | `schwartz:AchievementDisposition` | M | Scott Jeffrey | SVS 'capable' gloss |
@@ -365,37 +411,18 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | Social order | `schwartz:SecurityDisposition` | H | Schwartz 1992 | SVS Security item 'social order' |
 | World of Peace | `schwartz:UniversalismDisposition` | H | Schwartz 1992 | Schwartz Universalism item 'a world at peace' — an indicator of the value |
 
-### A3. New classes and narrower values (6)
+### A3. New classes and subclasses (6)
 
-| corpus value | proposal | parent | conf. | source | draft definition or reason |
+| corpus value | new class | parent | conf. | source | definition and reason |
 |---|---|---|---|---|---|
-| Patriotism | narrower value | `LoyaltyDisposition` | M | DevelopGoodHabits, Mind Fool | loyalty to one's country; a subclass candidate under M4, not a synonym |
-| Work-Life Balance | narrower value | `BalanceDisposition` | M | Mind Fool | the paradigm case of balance, and narrower than it; a subclass candidate under M4 |
-| Health | new `HealthDisposition` | `core:PersonalValueDisposition` | M | Scott Jeffrey, Mind Fool, Spall | draft: a personal value disposition to protect and maintain bodily and mental health. Schwartz 2012: 'health is another value' whose meaning varies across cultures; survey item 'healthy' is secondary |
-| Intelligence | new `IntelligenceDisposition` | `core:PersonalValueDisposition` | M | Scott Jeffrey, DevelopGoodHabits | draft: a personal value disposition to seek the development, possession, or exercise of intellectual ability. Rokeach 'intellectual'; README names folk:Intelligence |
-| Moderation | new `ModerationDisposition` | `core:PersonalValueDisposition` | M | Georgetown | draft: a personal value disposition to avoid excess and extremes in consumption, feeling and action. Differentia from Discipline, which trains conduct to a code or restrains impulses: moderation aims at a measure, with or without a code. Its examples must show moderation without an externally imposed rule |
-| Wealth | new `WealthDisposition` | `core:PersonalValueDisposition` | H | Schwartz 1992 | draft: a personal value disposition to seek the acquisition or retention of financial and material wealth. Under the general parent, since wealth may be valued for security, independence or family as well as power; the Schwartz Power item 'wealth' is recorded as a correspondence |
+| Health | `HealthDisposition` | `core:PersonalValueDisposition` | M | Scott Jeffrey, Mind Fool, Spall | a personal value disposition to protect and maintain bodily and mental health. Schwartz 2012: 'health is another value' whose meaning varies across cultures; survey item 'healthy' is secondary |
+| Intelligence | `IntelligenceDisposition` | `core:PersonalValueDisposition` | M | Scott Jeffrey, DevelopGoodHabits | a personal value disposition to seek the development, possession, or exercise of intellectual ability. Rokeach 'intellectual'; README names folk:Intelligence |
+| Moderation | `ModerationDisposition` | `core:PersonalValueDisposition` | M | Georgetown | a personal value disposition to avoid excess and extremes in consumption, feeling and action. Differentia from Discipline, which trains conduct to a code or restrains impulses: moderation aims at a measure, with or without a code. Its examples must show moderation without an externally imposed rule |
+| Wealth | `WealthDisposition` | `core:PersonalValueDisposition` | H | Schwartz 1992 | a personal value disposition to seek the acquisition or retention of financial and material wealth. Under the general parent, since wealth may be valued for security, independence or family as well as power; the Schwartz Power item 'wealth' is recorded as a correspondence |
+| Work-Life Balance | `WorkLifeBalanceDisposition` | `folk:BalanceDisposition` | M | Mind Fool | a balance disposition that concerns maintaining an appropriate allocation of time, attention, or effort between occupational and non-occupational domains |
+| Patriotism | `PatriotismDisposition` | `folk:LoyaltyDisposition` | M | DevelopGoodHabits, Mind Fool | a loyalty disposition that concerns commitment to and special concern for the bearer's country or political community. Passes M4; no claim of national superiority belongs in the differentia |
 
-### A4. Owner judgement (14)
-
-| corpus value | candidate | conf. | source | note |
-|---|---|---|---|---|
-| Willingness | `CooperationDisposition` | L | ValueNet |  |
-| Responsiveness | `DependabilityDisposition` | L | DevelopGoodHabits |  |
-| Grace | `GratitudeDisposition` | L | Scott Jeffrey, DevelopGoodHabits | corpus comment: unconditional love and gratitude |
-| Irreverent | `HumorDisposition` | L | Scott Jeffrey | playful disregard of convention |
-| Inspiration | `PassionDisposition` | L | Georgetown |  |
-| Reverence | `ReligionDisposition` | L | Georgetown | deep respect for the sacred |
-| Consent | `RespectDisposition` | L | Mind Fool | the noun names an act, but 'valuing consent' is a normative orientation; the source's sense decides |
-| Empowerment | `SupportDisposition` | L | Scott Jeffrey, Mind Fool | empowering others or oneself |
-| Clarity | `UnderstandingDisposition` | L | Scott Jeffrey, Mind Fool |  |
-| Experience | `VarietyDisposition, AdventureDisposition or EnjoymentDisposition` | L | Scott Jeffrey | listed under Scott Jeffrey's Enjoyment Values; its sense decides the target, which cannot be OpennessDisposition |
-| Preparedness | `VisionDisposition` | L | DevelopGoodHabits |  |
-| Realism | `WisdomDisposition` | L | Georgetown |  |
-| Management | `—` | M | Mind Fool | M1 requires the source's intended sense to be checked before exclusion; not yet done |
-| Risk-management | `—` | M | Mind Fool | M1 requires the source's intended sense to be checked before exclusion; not yet done |
-
-### A5. Excluded (22)
+### A4. Excluded (25)
 
 | corpus value | reason | conf. | source | note |
 |---|---|---|---|---|
@@ -416,7 +443,10 @@ Nothing is implemented until these are settled; the alternative labels and any r
 | FolkValue | category or heading | H | — | category or cluster heading |
 | Feasibility | not a value orientation | H | Mind Fool | a property of plans |
 | Ferocious | not a value orientation | M | Scott Jeffrey | a manner, not an orientation |
+| Management | not a value orientation | M | Mind Fool | the source gives the bare term and no sense of its own; its ordinary sense is an activity, which does not establish a value-related realizable entity |
+| Risk-management | not a value orientation | M | Mind Fool | the source gives no value-level differentia; it may operationalize Security or Prudence, but none is invented for coverage |
 | Temperament | not a value orientation | H | Mind Fool | a trait noun with no evaluative direction |
+| Willingness | not a value orientation | L | ValueNet | bare willingness is a readiness toward an unspecified action, not itself a value orientation |
 | Personal focus | structural dimension of a theory | H | — | Schwartz structural dimension |
 | Self-protection | structural dimension of a theory | H | Schwartz 1992 | Schwartz structural dimension |
 | Social focus | structural dimension of a theory | H | — | Schwartz structural dimension |
@@ -426,51 +456,51 @@ Nothing is implemented until these are settled; the alternative labels and any r
 
 *Names* lists corpus values that become alternative labels; *corresponds* lists corpus values linked in the mapping layer. *Scott Jeffrey list* is his current page, checked 2026-09-16.
 
-| class | names | corresponds | proposal |
+| class | names | corresponds | decision |
 |---|---|---|---|
 | `AssertivenessDisposition` | — | Assertion | keep — Scott Jeffrey list |
-| `AutonomyDisposition` | Independence | — | keep — named by a corpus value |
+| `AutonomyDisposition` | Independence | Empowerment | keep — named by a corpus value |
 | `BelongingDisposition` | — | Association | keep — Schwartz survey item *sense of belonging* |
 | `BoldnessDisposition` | — | Risk | keep — Scott Jeffrey list |
-| `CalmnessDisposition` | — | Composure, Poise, Serenity, Tranquility | pending under M6 (§7): no attestation found |
+| `CalmnessDisposition` | — | Composure, Poise, Serenity, Tranquility | keep — Scott Jeffrey *Calm*; DevelopGoodHabits *Calmness* (§7) |
 | `CareDisposition` | — | — | keep — Schwartz benevolence–caring; Scott Jeffrey list |
 | `ChastityDisposition` | — | — | keep — Scott Jeffrey list |
-| `DecisivenessDisposition` | — | Decision making | pending under M6 (§7): no attestation found |
-| `DependabilityDisposition` | Reliability | Responsiveness (judgement) | keep — named by a corpus value |
+| `DecisivenessDisposition` | — | Decision making | keep — Scott Jeffrey *Decisive*; The Mind Fool *Decisiveness* (§7) |
+| `DependabilityDisposition` | Reliability | — | keep — named by a corpus value |
 | `DeterminationDisposition` | — | Perseverance | keep — Scott Jeffrey list |
 | `DiligenceDisposition` | — | Accuracy, Rigor, Thoroughfulness | keep — Scott Jeffrey list |
 | `DisciplineDisposition` | Self-discipline | Self-control | keep — named by a corpus value |
-| `DiscretionDisposition` | — | — | decide under M6 (§7); a moral-epistemics mapping depends on it |
-| `DutyDisposition` | — | Dutiful | pending under M6 (§7): no attestation found |
+| `DiscretionDisposition` | — | — | removed (§7); Prudence's mapping and comment revised, with no replacement |
+| `DutyDisposition` | — | Dutiful | keep — The Mind Fool *Dutiful* (§7) |
 | `EncouragementDisposition` | — | — | keep — Scott Jeffrey list |
-| `EquityDisposition` | — | — | decide under M6 (§7); a test fixture depends on it |
+| `EquityDisposition` | — | — | keep — Favero et al. 2025, and a recorded competency reason (§7) |
 | `ExcitementDisposition` | — | Exciting life | keep — Schwartz and Rokeach item *an exciting life* |
 | `FairnessDisposition` | — | Impartial, Objectivity | keep — Scott Jeffrey list |
 | `FlexibilityDisposition` | Adaptability | Versatility | keep — named by a corpus value |
-| `ForgivenessDisposition` | — | Forgiving | keep — Schwartz survey item *forgiving*; Scott Jeffrey list |
+| `ForgivenessDisposition` | — | Forgiving, Grace | keep — Schwartz survey item *forgiving*; Scott Jeffrey list |
 | `GoodCitizenRole` | — | — | keep — value role |
 | `GrowthDisposition` | — | Development, Evolution, Improvement, Potential | keep — Scott Jeffrey list |
 | `HumilityDisposition` | — | Modesty | keep — a value in Schwartz's refined theory; Scott Jeffrey list |
-| `ImpactDisposition` | — | — | decide under M6: competency question or removal (§7) |
+| `ImpactDisposition` | — | — | removed (§7): no attestation M6 accepts, no competency question |
 | `InfluenceDisposition` | — | — | keep — survey item *influential*; Scott Jeffrey list; moves to the general parent (§6) |
 | `IntimacyDisposition` | — | — | keep — survey item *mature love* attests the value |
-| `IntuitionDisposition` | — | Intuitive, Intuitiveness, TrustYourGuts | pending under M6 (§7): no attestation found |
+| `IntuitionDisposition` | — | Intuitive, Intuitiveness, TrustYourGuts | keep — Scott Jeffrey *Intuitive*; definition condition (§7) |
 | `LeaderRole` | — | — | keep — value role |
 | `LeisureDisposition` | — | Recreation, Relaxation | keep — Rokeach *pleasure (an enjoyable leisurely life)* |
-| `LoyaltyDisposition` | — | Patriotism (narrower) | keep — survey item *loyal*; Scott Jeffrey list |
+| `LoyaltyDisposition` | — | — | keep — survey item *loyal*; Scott Jeffrey list |
 | `MasteryDisposition` | — | — | keep — Scott Jeffrey list |
-| `MindfulnessDisposition` | — | Alertness, Concentration, Consciousness, Presence, Self-awareness | pending under M6 (§7): related words only |
-| `OpennessDisposition` | — | — | retire (§7); *openness* goes to the correspondence layer |
-| `PowerDisposition` | — | — | remove after its subclasses are placed (§6) |
+| `MindfulnessDisposition` | — | Alertness, Concentration, Consciousness, Presence, Self-awareness | keep — Scott Jeffrey's Presence Values emphasize mindfulness (§7) |
+| `OpennessDisposition` | — | — | retired (§7); *openness* in the correspondence layer only |
+| `PowerDisposition` | — | — | removed; its subclasses placed as in §6 |
 | `PrivacyDisposition` | — | Isolation, Solitude | keep — Schwartz survey item *privacy*; Scott Jeffrey list |
 | `ProfessionalismRole` | — | — | keep — value role |
 | `PunctualPersonRole` | — | — | keep — value role |
-| `ResourcefulnessDisposition` | — | — | decide under M6 (§7) |
-| `SecurityDisposition` | — | — | remove — repeats `schwartz-values:SecurityDisposition` |
+| `ResourcefulnessDisposition` | — | — | removed (§7): no attestation M6 accepts, no competency question |
+| `SecurityDisposition` | — | — | removed — repeats `schwartz-values:SecurityDisposition` |
 | `SimplicityDisposition` | — | — | keep — Scott Jeffrey list |
 | `ThriftDisposition` | Frugality | Economy | keep — named by a corpus value |
 | `ToleranceDisposition` | — | Acceptance, Diversity, Inclusiveness | keep — Schwartz universalism–tolerance; Scott Jeffrey list |
-| `TraditionDisposition` | — | — | remove — repeats `schwartz-values:TraditionDisposition` |
+| `TraditionDisposition` | — | — | removed — repeats `schwartz-values:TraditionDisposition` |
 | `TrustworthinessDisposition` | — | Earning trust | keep — Schwartz benevolence–dependability; Scott Jeffrey list (*trustworthy*) |
 | `VarietyDisposition` | — | Novelty, Surprise | keep — Schwartz survey item *a varied life* |
 
@@ -484,6 +514,9 @@ Nothing is implemented until these are settled; the alternative labels and any r
 - VIA Classification of Character Strengths: [viacharacter.org](https://www.viacharacter.org/character-strengths).
 - Lastovicka, J. L. et al. (1999). "Lifestyle of the Tight and Frugal." *Journal of Consumer Research* 26(1). [Abstract](https://academic.oup.com/jcr/article-abstract/26/1/85/1916418).
 - Source lists: [Scott Jeffrey](https://scottjeffrey.com/core-values-list/), [DevelopGoodHabits](https://www.developgoodhabits.com/core-values/), [The Mind Fool](https://themindfool.com/list-of-core-values-for-a-balanced-life/), [Benjamin Spall](https://benjaminspall.com/core-values/), [YourDictionary](https://www.yourdictionary.com/articles/examples-core-values); Georgetown Psychology "inner values", [Wayback capture](https://web.archive.org/web/20200814054550/https://georgetownpsychology.com/inner-values/).
+- Primoratz, I. "Patriotism." *Stanford Encyclopedia of Philosophy*. [plato.stanford.edu](https://plato.stanford.edu/entries/patriotism/).
+- American Psychological Association. "The psychology of patriotism." [apa.org](https://www.apa.org/topics/politics/patriotism).
+- Favero, N., Jensen, C., Kim, M. & Piatak, J. (2025). "Which Public Values are Most Important? Linking Political Ideology and Public Service Motivation to Public Values Preferences." *American Review of Public Administration*. [doi:10.1177/02750740251367718](https://journals.sagepub.com/doi/10.1177/02750740251367718); [Maxwell School summary](https://www.maxwell.syr.edu/research/article/which-public-values-are-most-important).
 - ValueNet Phase 1 term lists: `docs/bfo/guides/Phase1_RawTerms.md`, `docs/bfo/guides/Phase1_NormalizedTerms.md`.
 
-**Not verified:** Rokeach's own chapter on values versus attitudes, the original Roccas et al. (2002), and the word-selection rules of the lexical value studies could not be read. Dictionary senses were seen only in search summaries. The source lists were checked for the module-only classes against Scott Jeffrey's current page only.
+**Not verified:** Rokeach's own chapter on values versus attitudes, the original Roccas et al. (2002), and the word-selection rules of the lexical value studies could not be read. Dictionary senses were seen only in search summaries. The APA page could not be read directly; its distinction was seen in a search summary, and Primoratz's entry was read. Favero et al. was read through the Maxwell School's summary, since the publisher's page refused the request. A further claim in the owner's review — that organizational-value research treats equity as part of a social-good value domain — came without a citation and was not checked. The module-only classes were checked against Scott Jeffrey's current page, and Calmness, Decisiveness and Duty also against DevelopGoodHabits and The Mind Fool.

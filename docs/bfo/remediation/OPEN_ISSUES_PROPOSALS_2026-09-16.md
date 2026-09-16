@@ -28,7 +28,7 @@ Do not move the pin to v25, which is end-of-life, or to v26, which does not beco
 - `test_the_link_report_still_holds` fails because the models page now has one more internal link.
 - The report must be regenerated with `--fresh-clone`, because the tests require that section. That step clones the repository and runs the site and licensing suites.
 
-**Proposal.** After O1, and after R15 is implemented if it is adopted — so the sign-off covers the content that will be published — run:
+**Proposal.** After O1, and after D-014 is implemented — so the sign-off covers the content that will be published — run:
 
 ```
 python tools/site/build_site.py
@@ -39,20 +39,20 @@ Then commit `config/quality-report.json`. Only the owner can make this statement
 
 ## O3. Tell the reviewer what happened after the sign-off
 
-**Facts.** The reviewer signed off on breaking changes 1–4 and said nothing further was needed. Four things were decided after that:
+**Facts.** The reviewer signed off on breaking changes 1–4 and said nothing further was needed. These things were decided after that:
 
 - **D-011** makes the form-level text classes disjoint with ICE. By the reviewer's own test — "breaking only if the repair introduces or changes OWL conditions" — this is a breaking change: data asserting aboutness of a representation was consistent before and is inconsistent now.
 - **D-012** narrows two folk definitions and adds a class. The IRIs are unchanged.
 - **D-013** adopts the reviewer's RULES 2.0 with two readings they did not state:
   - "a … disposition *to* …" conforms to "b is a c that d's";
   - web search is optional.
-- **The R15 proposal** answers the reviewer's folk-membership concern. Revision 2 incorporates the owner's review, and could retire up to nine folk IRIs, depending on the decisions: the three Schwartz copies, Openness, Impact, Discretion, Equity, Resourcefulness and Decisiveness.
+- **D-014** answers the reviewer's folk-membership concern: criteria M1–M7, coverage reported by kind, and a decision on every unpaired value and class. It retires seven folk IRIs — the three Schwartz copies, Openness, Impact, Discretion and Resourcefulness — which is an IRI break, re-parents five classes and adds six.
 
 **Proposal.** Send the reviewer:
 
 - §11 of the review response;
-- D-011 to D-013;
-- the R15 proposal.
+- D-011 to D-014;
+- the R15 record, revision 4.
 
 Ask three questions: whether D-011 needs the same review as the original breaking set, whether the two readings of RULES 2.0 are acceptable, and whether the membership criteria M1–M7 meet their concern. Record their reply beside the others in `docs/bfo/reviews/`.
 
@@ -93,7 +93,7 @@ Alternatively, count named classes only and bump the version. That makes the mea
 ## Order
 
 1. **O1** — install Node 24.
-2. **R15** — decide membership, then implement it and do the folk curation pass.
+2. **R15** — decided as D-014; implement it, then do the folk curation pass.
 3. **O2** — re-sign.
 4. **O3** — reviewer update. This can run in parallel with R15, and it would help to have the reviewer's view of M1–M7 before implementing them.
 5. **O4** — push and open the pull request.

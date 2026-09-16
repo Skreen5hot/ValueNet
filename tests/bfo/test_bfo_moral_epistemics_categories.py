@@ -100,7 +100,11 @@ def test_interior_moral_state_is_removed(ontology_graph):
 
 
 def test_acts_outputs_targets_and_status_have_distinct_categories(ontology_graph):
-    assert (VN_ME.MoralAssessmentAct, RDFS.subClassOf, CCO.ont00000636) in ontology_graph
+    # D-008: the generic parent is CCO Act, so a rash judgment is not
+    # entailed to be planned; discernment is an Act of Appraisal itself.
+    assert (VN_ME.MoralAssessmentAct, RDFS.subClassOf, CCO.ont00000005) in ontology_graph
+    assert (VN_ME.MoralAssessmentAct, RDFS.subClassOf, CCO.ont00000636) not in ontology_graph
+    assert (VN_ME.MoralDiscernmentAct, RDFS.subClassOf, CCO.ont00000636) in ontology_graph
     assert (VN_ME.MoralAssessmentICE, RDFS.subClassOf, CCO.ont00000853) in ontology_graph
     assert (VN_ME.CulpabilityAscriptionICE, RDFS.subClassOf, VN_ME.MoralAssessmentICE) in ontology_graph
     assert (VN_ME.MoralCulpabilityRole, RDFS.subClassOf, BFO.BFO_0000023) in ontology_graph

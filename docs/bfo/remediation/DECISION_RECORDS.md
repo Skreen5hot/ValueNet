@@ -10,6 +10,8 @@ D-005 was provisionally adopted on 2026-09-16, on the project owner's instructio
 
 D-006 and D-007 were adopted on 2026-09-16, after the reviewer signed off on the review response and the owner instructed that the remediation proceed. Both were implemented with D-005: D-006's source digest is corrected in the regenerated extract manifest, and D-007's properties are retired.
 
+D-008, D-009 and D-010 were adopted and implemented on 2026-09-16 under the same instruction. They record R12, R13 and R14 of the review response, following the recommendations the reviewer accepted: `RashJudgmentAct` as the negative fixture for the first two, and conditional acceptance of `contravenes` for the third.
+
 ## D-001 — Extension of the Realist Value Model
 
 **Status:** Adopted 2026-08-25  
@@ -238,6 +240,84 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 
 - a competency question needs to quantify over informational inputs or outputs as such, independently of any filler class.
 
+## D-008 — Moral Assessment Is Not Necessarily Planned
+
+**Status:** Adopted and implemented 2026-09-16
+**Finding coverage:** formal review 2026-09-16, finding 10; R12 of the response
+**Evidence:** `tests/bfo/test_moral_assessment_commitments.py`
+
+### Decision
+
+1. `vn-me:MoralAssessmentAct` is a subclass of CCO Act (`ont00000005`), not of Act of Appraisal (`ont00000636`). Its definition opens "An act in which an agent evaluates…".
+2. `vn-me:MoralDiscernmentAct` is additionally asserted a subclass of Act of Appraisal. Its definition already said so.
+3. `vn-me:RashJudgmentAct` inherits no plannedness. No local "planned moral assessment" class is introduced: discernment is the only deliberate subclass the module needs, and it takes the CCO class directly.
+
+### Rationale
+
+- Act of Appraisal is a subclass of Act of Measuring, which CCO defines as a Planned Act, and a Planned Act is "prescribed by some Directive Information Content Entity held by at least one of the Agents". Under the old parent every moral assessment was entailed to be planned in that sense, which the definition never said.
+- Spontaneous moral judgment is in scope, and the module's own `RashJudgmentAct` is the case: an unwarranted ascription produced without deliberation is the paradigm, and nothing prescribes it.
+- CCO Act, "a process in which at least one agent plays a causative role", is exactly what the class needs, and the existing `has participant some Agent` restriction already states the agent.
+- Discernment assesses observed behaviour against a norm it takes as input, deliberately; Act of Appraisal fits it and keeps CCO's appraisal classification where it is true.
+- `MixedMoralAssessmentAct`, a subclass of both, remains satisfiable, because nothing makes plannedness and its absence disjoint: an act that is not entailed to be planned may still be planned.
+
+### Reopen when
+
+- a competency question needs to distinguish planned from unplanned moral assessment in general, rather than discernment from rash judgment; or
+- CCO introduces an appraisal class that is not a Planned Act.
+
+## D-009 — Moral Culpability Is Grounded in Conduct, Not in Appraisal
+
+**Status:** Adopted and implemented 2026-09-16
+**Finding coverage:** formal review 2026-09-16, finding 12; R13 of the response
+**Evidence:** `tests/bfo/test_moral_assessment_commitments.py`
+
+### Decision
+
+1. `vn-me:MoralCulpabilityRole` is defined as *a role that inheres in an agent in virtue of that agent's having participated, as a responsible agent, in conduct that violates a moral norm applying to that agent, and that can be realized in processes of censure, correction, restitution, forgiveness, or sanction.*
+2. The OWL conditions are unchanged: a BFO role, inhering in some Agent. `CulpabilityAscriptionICE` continues not to require the role of what it describes.
+3. The role is asserted in data independently of any ascription, and only on the ground the definition names.
+
+### Rationale
+
+- The previous definition grounded the role in "a norm-governed moral appraisal [that] treats that agent as accountable". An unwarranted appraisal treats an agent as accountable too, so by definition a rash judgment would have conferred the culpability it wrongly ascribes. The class comment already denied that; the definition contradicted it.
+- What makes an agent culpable is what the agent did under a norm that applies to it. Whether anyone appraises it, and whether the appraisal is warranted, is a separate fact, carried by the moral assessment ICEs and their warrant.
+- The change is to the definition only, so it is not an OWL-breaking change. The test holds the OWL side where it was: over the suite with the worked scenario, neither the agent a rash judgment describes nor the agent who judges is inferred to bear the role, while an agent asserted to bear it is recognised in the same run.
+- "Responsible agent" is not further analysed here. Capacity, excuse and diminished responsibility are real distinctions, and a module that needs them should model them rather than have this definition pretend to.
+
+### Reopen when
+
+- a competency question needs the grounds of culpability as entities — the norm, the conduct, the capacity — rather than the status; or
+- a tradition-specific module needs a notion of culpability that this definition excludes.
+
+## D-010 — `vn-core:contravenes` Is a Justified Local Relation
+
+**Status:** Adopted and implemented 2026-09-16
+**Finding coverage:** formal review 2026-09-16, findings 2 and 8; R14 of the response
+**Evidence:** competency questions CQ1 and CQ5 in `valuenet-moral-epistemics-CQ.md`
+
+### Decision
+
+1. `vn-core:contravenes` (process → value-related realizable entity) is retained as a project-local extension. This record is the justification the reviewer's conditional acceptance required.
+2. **Reading.** Its object is a particular realizable entity borne by some agent: a process contravenes *that agent's* disposition or role. It is not violation of a norm. This is the first of the two readings finding 8 distinguishes, and it is the one the axioms already commit to, since the range is `ValueRelatedRealizableEntity`, every instance of which inheres in an agent.
+3. **Norm-centred questions** — which acts violate a rule, independently of whether anyone bears a corresponding value — are asked of `vn-me:MoralNormICE`, the prescriptive information content the module already has, not of `contravenes`.
+4. The justification is recorded on the property itself as a comment, and CQ1 and CQ5 are named in the competency-question notes as the questions that require it.
+
+### The alternatives, and why each fails the competency questions
+
+CQ1 asks *which acts run against a value that the acting agent themselves bears*; its query joins the act to the value, and the agent to the same value by `bearer of`. CQ5 asks *which processes realize one value while contravening another*.
+
+| alternative | signature and meaning (CCO 2.2) | why it does not answer CQ1 or CQ5 |
+|---|---|---|
+| `disrupts` (`ont00001888`) | process → process; one process disrupts another "from occurring as it would have" | Its object is a process. A contravened value need not be realized at all — Agent B's justice disposition is not being realized when B judges rashly — so there is no process to disrupt, and CQ1's `bearer of` join has nothing to reach. Using it would mean inventing counterfactual realizations. |
+| `inhibits` (`ont00001959`), defined through `inhibited by` (`ont00001970`) | process → process; the inhibiting process causes a decrease of a realizable entity that is realized in the inhibited process | Also process-valued, and causal: it asserts that the disposition decreased. One rash judgment does not diminish its agent's justice disposition, and CQ1 does not ask whether it did. |
+| realization, BFO `realizes` (`BFO_0000055`) | process → realizable entity; the process is the entity's realization | The opposite relation. CQ5 needs both on one process, to different values; the protective action in the scenario realizes a care disposition and contravenes a trust disposition. A process cannot realize the value it violates, so realization cannot record the violation. |
+| norm-centred, `MoralNormICE` with CCO `has input` or `prescribes` | an information content entity that prescribes | A norm is information content; no agent bears it. CQ1's join from the agent through `bearer of` cannot reach a norm, so the question the relation exists for cannot be asked. Norm violation is a different question, and item 3 routes it there. |
+
+### Reopen when
+
+- CCO or BFO introduces a relation from a process to a realizable entity that is not realization; or
+- the competency questions change so that CQ1 and CQ5 no longer need a process-to-value relation.
+
 ## Decision Gate Result
 
 | Decision | Working status | Semantic ontology edits authorized? |
@@ -249,3 +329,6 @@ Item 4 cannot be implemented while `TextSpan` is a subclass of `vn-core:Evidence
 | D-005 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are form-level GDCs with the carrier existential on the representation, `hasTextValue` is renamed and re-scoped as `hasTextualSequenceValue`, `EvidenceSource` is retired, and `TextSpanSelector` is a Designative ICE |
 | D-006 | Adopted and implemented | Yes; pins CCO v2.2 at its release digest, now recorded in the extract manifest |
 | D-007 | Adopted and implemented | Yes; `hasInformationalInput` and `hasInformationalOutput` are retired in favour of CCO `has input` and `has output` |
+| D-008 | Adopted and implemented | Yes; `MoralAssessmentAct` is a CCO Act and `MoralDiscernmentAct` an Act of Appraisal |
+| D-009 | Adopted and implemented | Yes; `MoralCulpabilityRole` is defined by the agent's conduct; no OWL condition changes |
+| D-010 | Adopted and implemented | Documentation only; `contravenes` is retained with its justification recorded |

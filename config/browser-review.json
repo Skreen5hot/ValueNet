@@ -105,9 +105,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 260345,
+              "bytes": 260417,
               "path": "docs/site/browser-review/models-chromium-narrow.png",
-              "sha256": "a0c56bc7078e2a57e7d4dd6657e3dc64389d070da44b97917ccd0f7355a05d70"
+              "sha256": "4c5579d498ab5f3400da7527336711018e48e92c7000a17c64ea6986cc081291"
             },
             "viewport": {
               "height": 780,
@@ -186,9 +186,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 255581,
+              "bytes": 255621,
               "path": "docs/site/browser-review/models-chromium-reflow-400pct-equivalent.png",
-              "sha256": "c1c3b1d47bcb92c85d40298003ecf0f3c19f6115af4a40253b7023be5e3935b7"
+              "sha256": "9669ef012740fd6995f4c8bdd5d86e8419b4f3d919e55b8540de9f6a93c22b8d"
             },
             "viewport": {
               "height": 256,
@@ -267,9 +267,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 302341,
+              "bytes": 302416,
               "path": "docs/site/browser-review/models-chromium-wide.png",
-              "sha256": "8747040e2ec4a9b5c8a14805a3c796d6ac358856314a24b77b0421c10622a9a5"
+              "sha256": "968dbfbeb2b4c2a31362f88531b98d257a2dc918671521a2da0f55406fe988a1"
             },
             "viewport": {
               "height": 900,
@@ -432,9 +432,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 267233,
+              "bytes": 267297,
               "path": "docs/site/browser-review/models-chrome-narrow.png",
-              "sha256": "fbc3a911b863493f0e36c000022fe3fd9807f44e86c6853654ab2d5513b1127a"
+              "sha256": "a2ab2d7eec72c0468372044dd85356b0ff8bc582cfff2304704c8bd7320fd60d"
             },
             "viewport": {
               "height": 780,
@@ -513,9 +513,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 263345,
+              "bytes": 263389,
               "path": "docs/site/browser-review/models-chrome-reflow-400pct-equivalent.png",
-              "sha256": "cc3836dd01841e135785ef33bc824be50903f1290783bbd6e71181ad1307b1a3"
+              "sha256": "cf5c4044fef7b3bbedc1c60e84530bb50c38011a21912079ab3057e1ef2d9fa8"
             },
             "viewport": {
               "height": 256,
@@ -594,9 +594,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 309227,
+              "bytes": 309283,
               "path": "docs/site/browser-review/models-chrome-wide.png",
-              "sha256": "71a085b86a5f1a98865b37972c24233bc06cbd819640148087ad6fad7b812731"
+              "sha256": "6bda74f9f5b41fc247ee18d1988694c08ef5712f541ba04864b0ec23f9595281"
             },
             "viewport": {
               "height": 900,
@@ -759,9 +759,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 267233,
+              "bytes": 267297,
               "path": "docs/site/browser-review/models-edge-narrow.png",
-              "sha256": "fbc3a911b863493f0e36c000022fe3fd9807f44e86c6853654ab2d5513b1127a"
+              "sha256": "a2ab2d7eec72c0468372044dd85356b0ff8bc582cfff2304704c8bd7320fd60d"
             },
             "viewport": {
               "height": 780,
@@ -840,9 +840,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 263345,
+              "bytes": 263389,
               "path": "docs/site/browser-review/models-edge-reflow-400pct-equivalent.png",
-              "sha256": "cc3836dd01841e135785ef33bc824be50903f1290783bbd6e71181ad1307b1a3"
+              "sha256": "cf5c4044fef7b3bbedc1c60e84530bb50c38011a21912079ab3057e1ef2d9fa8"
             },
             "viewport": {
               "height": 256,
@@ -921,9 +921,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 309227,
+              "bytes": 309283,
               "path": "docs/site/browser-review/models-edge-wide.png",
-              "sha256": "71a085b86a5f1a98865b37972c24233bc06cbd819640148087ad6fad7b812731"
+              "sha256": "6bda74f9f5b41fc247ee18d1988694c08ef5712f541ba04864b0ec23f9595281"
             },
             "viewport": {
               "height": 900,
@@ -1086,9 +1086,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 258486,
+              "bytes": 258488,
               "path": "docs/site/browser-review/models-firefox-narrow.png",
-              "sha256": "34616dccd26b6da32752733a5e64361526adf932dc7172c637f4111ed76844b2"
+              "sha256": "6b924c878219c317266704b7e90f33233491b4cc8cdd33e68441b5abe92f92ad"
             },
             "viewport": {
               "height": 780,
@@ -1167,9 +1167,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 252830,
+              "bytes": 252826,
               "path": "docs/site/browser-review/models-firefox-reflow-400pct-equivalent.png",
-              "sha256": "6a195af9d8b9338ae28393a582016d31ab54a088e853e3275687ff600b88dc84"
+              "sha256": "0d8db2898ce43d5512c7c98f65ef5ea2a9dc13c0212c501787c7c4b2ad6b2338"
             },
             "viewport": {
               "height": 256,
@@ -1248,9 +1248,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 313755,
+              "bytes": 313752,
               "path": "docs/site/browser-review/models-firefox-wide.png",
-              "sha256": "c84fa2215451d78d35f6367fb712f6d0f2f8ed07de50213a2afcbb3052a46ec9"
+              "sha256": "ed3889dcccd2f6d10c807dcb3d1e5139fb53ce302fb3c1890e6760bd5a3b672b"
             },
             "viewport": {
               "height": 900,
@@ -1400,9 +1400,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 251318,
+              "bytes": 251343,
               "path": "docs/site/browser-review/models-playwright-webkit-narrow.png",
-              "sha256": "c877c73236916ea7a79a86e33efacce8ca160025712208c0c0c0dca7176f4a30"
+              "sha256": "1a90862e4ca90a1d099f2c03aa332a00c48711b49069b0f8d1b8b969714453ef"
             },
             "viewport": {
               "height": 780,
@@ -1481,9 +1481,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 241908,
+              "bytes": 241921,
               "path": "docs/site/browser-review/models-playwright-webkit-reflow-400pct-equivalent.png",
-              "sha256": "9bce4f99a4376865ffdb3e3f0347f0308572f8be217b33fe59e4567ba09a5bab"
+              "sha256": "5b612908ef2af61e61b47f081609a7ca9a0008a963d3625fa6e1f480d32953f9"
             },
             "viewport": {
               "height": 256,
@@ -1562,9 +1562,9 @@
             "horizontal_scroll": false,
             "passed": true,
             "screenshot": {
-              "bytes": 273422,
+              "bytes": 273441,
               "path": "docs/site/browser-review/models-playwright-webkit-wide.png",
-              "sha256": "f7c5f2b55924cfe0c25bc1ba337c9980b8b5cb0731aedbc1daee214e27712774"
+              "sha256": "882937429bb72576bbb3074d1fcb2d3494add65f45181e2b22dffe534154adad"
             },
             "viewport": {
               "height": 900,
@@ -1647,7 +1647,7 @@
     "assets/js/ranking.js",
     "data/class-index.json"
   ],
-  "reviewed_files_sha256": "5cf8ff365e63b76fa9bc49bd7d7321176610db90766059a837b58daa9dee293e",
+  "reviewed_files_sha256": "bda6b77b21ca5f4df4cbceb3a9f3f88f35191861709b38aade20cac440128fe5",
   "screenshots_at": "docs/site/browser-review",
   "viewports": {
     "narrow": {

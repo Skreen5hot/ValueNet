@@ -12,7 +12,8 @@ when it is taken.
 **Since written:** the reviewer replied twice the same day. The first reply withdrew
 the original recommendation behind R9, which was revised and provisionally adopted as
 D-005 (§9). The second accepted C1, C2 and D-005 in substance and raised three further
-points (§10).
+points (§10). The reviewer then signed off on the response and the plan, and the owner
+instructed that it proceed; what has been implemented is in §11.
 
 ---
 
@@ -449,3 +450,72 @@ The reviewer asked for the deprecation warning to be added to D-005 immediately;
 alias, it is recorded as a constraint rather than as part of a migration. One point for
 the reply: the decision not to make spans proper parts is ours to confirm, and the reason
 is a capability — whole-utterance evidence — rather than a logical necessity.
+
+---
+
+## 11. Sign-off and implementation, 2026-09-16
+
+The reviewer's sign-off is recorded verbatim in
+`FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF.md`. It grants sign-off, raises no further
+blocker, and names four breaking changes as the required set: the D-005 text layer, the
+retirement of `EvidenceSource`, the retirement of `hasInformationalInput/Output`, and the
+re-parenting of `MoralAssessmentAct`. It adds that the `MoralCulpabilityRole` repair is
+breaking only if it changes OWL conditions, and `contravenes` only if it is replaced. The
+owner instructed that the plan proceed. All four breaking changes are made; the other two
+were made without breaking anything.
+
+| rec. | status | where |
+|---|---|---|
+| R1 | Done. CCO 2.2 is the baseline; the extract manifest records the release digest | D-006; phase A, digest corrected in phase C |
+| R2 | **Open — owner decision.** Whether RULES 2.0 is the standard | blocks R18 |
+| R3 | Done. "Retain" superseded | D-007; phase A |
+| R4 | Done. The mapping arrow points the way it is asserted, checked from the markup | phase B |
+| R5 | Done. Six foundations, with their processes, checked against the declared classes | phase B |
+| R6 | Done. The has input / has output rows state the real range | phase B |
+| R7 | Done. `AgentBehaviorProcess` is defined by participation | phase B |
+| R8 | Done. 17 such assertions, 67 overall, both derived | phase B |
+| R9 | Done. Representation and span are form-level GDCs; `hasTextualSequenceValue`; the selector is a Designative ICE and `selectsTextSpan` specializes `designates` | D-005; phase C |
+| R10 | Done. `EvidenceSource` retired; the evidence annotation is a Descriptive ICE | phase C |
+| R11 | Done. Seven restrictions on CCO has input / has output, fillers unchanged | D-007; phase C |
+| R12 | Done. `MoralAssessmentAct` is a CCO Act; discernment is an Act of Appraisal; a rash judgment is not entailed to be planned | D-008; phase D |
+| R13 | Done. The role is grounded in the agent's conduct; no OWL condition changed, so not breaking | D-009; phase D |
+| R14 | Done. `contravenes` retained, with the alternatives recorded against CQ1 and CQ5; not breaking | D-010; phase D |
+| R15 | **Open — owner decision.** Folk membership | blocks folk definition curation |
+| R16 | Not started. Genus alignment outside folk (Moral Foundations 6, Moral Epistemics 6) and a gate over the recorded baseline | — |
+| R17 | Not started. The disjunction warning is mechanical; splitting `FaithDisposition` and `OpennessDisposition` is a content decision for the owner | — |
+| R18 | Blocked on R2 | — |
+
+**Found during implementation, and recorded in D-005.**
+
+- CCO 2.2 defines Information Content Entity as *equivalent to* a generically dependent
+  continuant that is about some entity. A representation or span stays form only while
+  nothing asserts it is about something; if something does, directly or through
+  `designates` or `describes`, the reasoner re-classifies it and reports nothing. The rule
+  is in the class comments and the annotation guide and is pinned by a test in both
+  directions. A disjointness axiom would turn such an assertion into an error; D-005 does
+  not decide one, and it is not asserted.
+- A span individuated by its position has one position, but two selectors at different
+  offsets could select one span whenever both positions held the same string, and each
+  passed the substring check. A shape now rejects it.
+- The first culpability reasoning test passed for the wrong reason: the probe class came
+  back from owlready2 under a different IRI, so no individual could ever match it. Its
+  positive control failed, which is how that was found.
+
+**Evidence.** HermiT finds the suite consistent with no unsatisfiable named class, with
+and without the scenario, after phases C and D. Every new test was run against the
+unchanged ontology first and failed for its stated reason; each check added to a shape or
+a provenance record was falsified by reverting its subject.
+
+**Not yet reconciled, and why each is outside this work.**
+
+- `config/semantic-baseline.json` and `config/remediation-record.json` describe commit
+  3cb752a. The ontology has changed since, so the evidence has to be regenerated from a
+  clean commit with `tools/marep/build_evidence.py --remediation`, as the publication plan
+  prescribes.
+- `config/quality-report.json` counts one internal link fewer than the site now has, and
+  regenerating it resets the owner's public-content sign-off. The published ontology has
+  changed, so that statement is the owner's to make again.
+- 23 explorer tests fail on this machine because node 25.2.1 is on PATH and 24.20.0 is
+  pinned. They fail identically on the commit before this work.
+
+Nothing has been pushed.

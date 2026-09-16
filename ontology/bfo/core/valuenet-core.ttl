@@ -117,7 +117,8 @@ skos:definition
   rdfs:label "contravenes"@en ;
   skos:definition "A relation between a process and a value-related realizable entity that holds when the process runs contrary to the characteristic realization of that entity by its bearer."@en ;
   vn-core:historicallyCorrespondsTo <https://w3id.org/spice/SON/HaidtValues#violates> ;
-  rdfs:comment "The BFO-aligned successor to the dyadic violation structure of the original MFT module (mft:violates, mft:opposedTo, mft:Violation), which the BFO refactor did not carry over. A process cannot bfo:realize a value it violates, so violation requires a relation of its own."@en ;
+  rdfs:comment "The BFO-aligned successor to the dyadic violation structure of the original MFT module (mft:violates, mft:opposedTo, mft:Violation), which the BFO refactor did not carry over. A process cannot bfo:realize a value it violates, so violation requires a relation of its own."@en ,
+    "Justified as a project-local extension in D-010, against the CCO alternatives: disrupts (ont00001888) and inhibits (ont00001959) relate two processes, so they need a value-realizing process to act on, and a contravened value need not be realized at all; realization records the opposite relation; and a norm is information content, which no agent bears, so it cannot answer which acts run against a value the acting agent bears. The object is a particular realizable entity borne by some agent, not a norm. Questions about violating a norm are asked of vn-me:MoralNormICE."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/core#contravenes> .
 
 <https://fandaws.com/ontology/bfo/valuenet-core#ValueViolationProcess>

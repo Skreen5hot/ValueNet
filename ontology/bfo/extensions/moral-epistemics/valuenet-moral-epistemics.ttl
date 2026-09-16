@@ -61,9 +61,10 @@
       owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000197> ;
       owl:someValuesFrom cco:ont00001017
     ] ;
-  skos:definition "A role that inheres in an agent because a norm-governed moral appraisal treats that agent as accountable for some conduct, and that can be realized in processes of censure, correction, restitution, forgiveness, or sanction."@en ;
+  skos:definition "A role that inheres in an agent in virtue of that agent's having participated, as a responsible agent, in conduct that violates a moral norm applying to that agent, and that can be realized in processes of censure, correction, restitution, forgiveness, or sanction."@en ;
   rdfs:label "Moral Culpability Role"@en ;
-  rdfs:comment "An externally grounded normative status, not an intention, consent act, mental state, or information content entity. A culpability ascription does not entail that its target actually bears this role."@en ;
+  rdfs:comment "An externally grounded normative status, not an intention, consent act, mental state, or information content entity. A culpability ascription does not entail that its target actually bears this role."@en ,
+    "Grounded in what the agent did, not in how anyone appraised it (D-009). An earlier definition grounded the role in an appraisal that treats the agent as accountable; an unwarranted appraisal does that too, so a rash judgment would have conferred the culpability it wrongly ascribes."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralCulpabilityRole> .
 
 #################################################################
@@ -181,7 +182,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct>
   a owl:Class ;
-  rdfs:subClassOf cco:ont00000636 ,
+  rdfs:subClassOf cco:ont00000005 ,
     [ a owl:Restriction ;
       owl:onProperty cco:ont00001986 ;
       owl:someValuesFrom <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentICE>
@@ -190,14 +191,16 @@
       owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000057> ;
       owl:someValuesFrom cco:ont00001017
     ] ;
-  skos:definition "An act of appraisal in which an agent evaluates another agent or that agent's conduct under an actual or purported moral standard and produces a moral assessment information content entity."@en ;
+  skos:definition "An act in which an agent evaluates another agent or that agent's conduct under an actual or purported moral standard and produces a moral assessment information content entity."@en ;
   rdfs:label "Moral Assessment Act"@en ;
-  rdfs:comment "Common occurrent parent of prudent discernment and rash judgment. The act is distinct from its information-content output and from the agent or conduct that output describes."@en ;
+  rdfs:comment "Common occurrent parent of prudent discernment and rash judgment. The act is distinct from its information-content output and from the agent or conduct that output describes."@en ,
+    "A CCO Act, not an Act of Appraisal (D-008). Act of Appraisal is a Planned Act through Act of Measuring, and a Planned Act is prescribed by a directive the agent holds; spontaneous moral judgment, of which RashJudgmentAct is the case in point, is in scope. MoralDiscernmentAct, which is deliberate, is asserted under Act of Appraisal directly."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#MoralAssessmentAct> .
 
 <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralDiscernmentAct>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#MoralAssessmentAct> ,
+    cco:ont00000636 ,
     <https://fandaws.com/ontology/bfo/valuenet-core#ValueRealizationProcess> ,
     [ a owl:Restriction ;
       owl:onProperty <http://purl.obolibrary.org/obo/BFO_0000055> ;

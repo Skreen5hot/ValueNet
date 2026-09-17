@@ -13,8 +13,8 @@ every figure in it must equal what the tools measure now. An item that has been
 fixed fails these tests until it moves to the closed log; a figure that moves
 fails them until its row is updated.
 
-Three items cannot be checked from the repository, and the register marks each
-one *unchecked* with its reason. That marking is itself checked, so the excuse
+One item cannot be checked from the repository, and the register marks it
+*unchecked* with its reason. That marking is itself checked, so the excuse
 cannot spread quietly.
 """
 
@@ -41,6 +41,12 @@ PROPOSALS = ROOT / "docs/bfo/remediation/OPEN_ISSUES_PROPOSALS_2026-09-16.md"
 #: see the thing it is about. Anything else must be derivable here.
 UNCHECKABLE = {"OI-3"}
 
+#: Every section that holds items, in the order the register presents them.
+#: Named so that a section quietly disappearing, taking its items with it,
+#: fails rather than shrinking the backlog.
+SECTIONS = ("P0 — next", "P1 — soon", "P2 — when convenient", "Operational",
+            "Accepted and deferred — not work")
+
 
 def rows(section: str) -> list[list[str]]:
     text = REGISTER.read_text(encoding="utf-8")
@@ -54,9 +60,15 @@ def rows(section: str) -> list[list[str]]:
 
 @pytest.fixture(scope="module")
 def open_items():
-    found = rows("Open")
+    found = [row for section in SECTIONS for row in rows(section)]
     assert len(found) >= 5, "the register is nearly empty; these tests would pass on nothing"
     return found
+
+
+def test_every_section_is_present_and_holds_something():
+    for section in SECTIONS:
+        assert rows(section), section
+    assert rows("Closed"), "the closed log is empty"
 
 
 def test_the_register_has_one_row_per_item_and_no_duplicate_ids(open_items):
@@ -118,9 +130,47 @@ def test_the_dangling_back_link_count_is_the_one_measured(open_items, coverage):
     assert figure(open_items, "OI-5") == len(coverage["dangling_see_also"])
 
 
-def test_the_uncovered_trigger_count_is_the_one_measured(open_items, coverage):
-    assert figure(open_items, "OI-6") == len(
-        coverage["source"]["fragment_without_a_class"])
+def test_the_excluded_values_that_still_carry_a_lexicon_are_the_ones_listed(
+        open_items, coverage):
+    """OI-14 names them, because whoever decides the pipeline question needs to
+    see which values it is about. Listed and measured must be the same set."""
+    import glob
+    import os
+
+    def norm(text):
+        return re.sub(r"[^a-z0-9]", "", text.lower())
+
+    row = next(row for row in open_items if row[0] == "OI-14")
+    lexicons = {norm(os.path.basename(path)[len("folk_"):-len(".ttl")])
+                for path in glob.glob(str(ROOT / "ThatsAllFolks/folk_*.ttl"))}
+    measured = sorted(value for value in coverage["coverage"]["excluded"]
+                      if norm(value) in lexicons)
+    listed = sorted(name.strip() for name in row[1].rsplit(":", 1)[-1].split(","))
+    assert listed == measured, (
+        "OI-14 lists %s; the values excluded by D-014 that still carry a "
+        "trigger lexicon are %s" % (listed, measured))
+
+
+def test_the_invariant_that_closed_oi6_is_pinned(open_items):
+    """OI-6 closed because the invariant it was written against was replaced,
+    not because anyone measured differently. The replacement has to be held
+    somewhere, or the closure is a claim about one afternoon."""
+    closed = {row[0]: row[2] for row in rows("Closed")}
+    assert "OI-6" in closed, "OI-6 left the closed log"
+    test_name = "test_every_value_with_a_trigger_lexicon_is_reachable_or_excluded"
+    assert test_name in closed["OI-6"], "the closed entry names no test"
+    coverage_test = (ROOT / "tests/bfo/test_folk_coverage.py").read_text(encoding="utf-8")
+    assert "def %s(" % test_name in coverage_test, (
+        "the test the closed entry names does not exist")
+
+
+def test_the_modules_still_declare_the_version_the_register_names(open_items):
+    """OI-13 is an item only while every module still says 1.0."""
+    from marep.layout import bfo_artifact
+    for name in ("valuenet-core.ttl", "valuenet-folk.ttl",
+                 "valuenet-schwartz-values.ttl"):
+        text = bfo_artifact(name).read_text(encoding="utf-8")
+        assert "/bfo/1.0/" in text, "%s no longer declares 1.0; close OI-13" % name
 
 
 def test_the_measure_that_miscounts_still_miscounts(open_items):

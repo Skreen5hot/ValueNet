@@ -1044,6 +1044,10 @@ LEDGER = (
      "re-parented, six added with their annotations, nine alternative labels, "
      "150 folk corpus correspondences and five class-level related matches, "
      "Prudence's match to Discretion removed, and two comments corrected"),
+    ("8cd48be1", (340, 84), "content-change", True,
+     "folk curation under D-013: 76 definitions replaced (75 genus "
+     "corrections and Intuition's), 128 comments and 128 examples added, and "
+     "eight earlier folk examples rewritten in the modules' form"),
 )
 
 #: Named classes declared since the tag, and the decision that added each.

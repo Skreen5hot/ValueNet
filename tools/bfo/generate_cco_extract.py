@@ -26,7 +26,7 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, XSD
 CCO = Namespace("https://www.commoncoreontologies.org/")
 EXTRACT_IRI = URIRef("https://fandaws.com/ontology/imports/cco-valuenet-extract")
 EXTRACT_VERSION_IRI = URIRef(
-    "https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6"
+    "https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-09-16-d005"
 )
 CCO_RELEASE_URL = URIRef(
     "https://github.com/CommonCoreOntology/CommonCoreOntologies/releases/tag/v2.2"
@@ -66,10 +66,12 @@ ROOT_TERMS = (
     URIRef(CCO.ont00000037),  # Act of Observation
     URIRef(CCO.ont00000253),  # Information Bearing Entity
     URIRef(CCO.ont00000636),  # Act of Appraisal
+    URIRef(CCO.ont00000686),  # Designative Information Content Entity
     URIRef(CCO.ont00000853),  # Descriptive Information Content Entity
     URIRef(CCO.ont00000958),  # Information Content Entity
     URIRef(CCO.ont00000965),  # Prescriptive Information Content Entity
     URIRef(CCO.ont00001017),  # Agent
+    URIRef(CCO.ont00001916),  # designates
     URIRef(CCO.ont00001921),  # has input
     URIRef(CCO.ont00001986),  # has output
 )
@@ -200,12 +202,12 @@ def build_extract(source: Graph) -> Graph:
         (
             EXTRACT_IRI,
             OWL.versionInfo,
-            Literal("CCO 2.2 ValueNet extract, Phase 6 revision 2026-08-25", lang="en"),
+            Literal("CCO 2.2 ValueNet extract, D-005 revision 2026-09-16", lang="en"),
         )
     )
     extract.add((EXTRACT_IRI, DCTERMS.source, CCO_RELEASE_URL))
     extract.add((EXTRACT_IRI, DCTERMS.license, CCO_LICENSE_URL))
-    extract.add((EXTRACT_IRI, DCTERMS.created, Literal(date(2026, 8, 25), datatype=XSD.date)))
+    extract.add((EXTRACT_IRI, DCTERMS.created, Literal(date(2026, 9, 16), datatype=XSD.date)))
     extract.add((DCTERMS.source, RDF.type, OWL.AnnotationProperty))
     extract.add((DCTERMS.license, RDF.type, OWL.AnnotationProperty))
     extract.add((DCTERMS.created, RDF.type, OWL.AnnotationProperty))
@@ -269,13 +271,13 @@ def canonical_sha256(path: Path) -> str:
 
 def write_manifest(output: Path, manifest_path: Path, source_path: Path) -> None:
     manifest = {
-        "extract_id": "cco-valuenet-v2.2-2026-08-25-phase6",
+        "extract_id": "cco-valuenet-v2.2-2026-09-16-d005",
         "source_project": "CCO",
         "source_release": SOURCE_RELEASE,
         "source_commit": SOURCE_COMMIT,
         "source_artifact_url": SOURCE_ARTIFACT_URL,
         "source_sha256": sha256(source_path),
-        "retrieved_on": "2026-08-24",
+        "retrieved_on": "2026-09-16",
         "license": {
             "spdx": "BSD-3-Clause",
             "url": str(CCO_LICENSE_URL),
@@ -299,6 +301,7 @@ def write_manifest(output: Path, manifest_path: Path, source_path: Path) -> None
             "Selected complete root-entity descriptions from the CCO 2.2 merged release.",
             "Expanded the roots with the Phase 5 CCO superclass alignments for moral epistemics.",
             "Expanded the roots with CCO Act of Observation for the Phase 6 behavioral-observation alignment.",
+            "Expanded the roots with CCO Designative Information Content Entity and designates for the D-005 text-span selector alignment.",
             "Included inverse-property descriptions and recursive named CCO logical dependencies.",
             "Included recursive blank-node OWL expression closure and referenced entity declarations.",
             "Omitted upstream owl:imports; ValueNet supplies its pinned BFO core separately.",

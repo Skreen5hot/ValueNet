@@ -41,13 +41,13 @@
       "schemas/coverage.schema.json",
       "schemas/downloads.schema.json"
     ],
-    "total_bytes": 480337
+    "total_bytes": 625057
   },
   "browser_review": {
     "engines": [
       "chromium 151.0.7922.34",
-      "chrome 152.0.7977.65",
-      "edge 152.0.4191.53",
+      "chrome 153.0.8010.47",
+      "edge 153.0.4234.32",
       "firefox 153.0",
       "playwright-webkit 26.5"
     ],
@@ -58,21 +58,25 @@
     "passed": true,
     "record": "config/browser-review.json"
   },
-  "commit": "d9a4cb43aec26be6e8a19d776cd6ddd055dc18b9",
+  "commit": "dda2b849ce68a5f408a3a300c053b4d6534c5300",
   "format_version": 1,
   "fresh_clone": {
     "build_exit": 0,
-    "bundle_sha256": "4b2f25f7196d37f4dacdad5514e5d0269b1cbdcc13544b830b940174c2374012",
+    "bundle_sha256": "6374b57235da006bac37de107480b0fc6892b35c8ce43d46cb06833f89502d63",
     "clone_root_length": 54,
-    "commit": "d9a4cb43aec26be6e8a19d776cd6ddd055dc18b9",
+    "commit": "dda2b849ce68a5f408a3a300c053b4d6534c5300",
     "passed": true,
     "remotes": [
       "origin"
     ],
     "site_present_before_build": false,
-    "site_tree_digest": "e03661a3ffb6fbaee906953a511e50e88a718d95f2755857a0d2ea27c86d79ed",
+    "site_tree_digest": "75ea13a32fe2a13edbf2496a7c476be938b15fa48a13831f097b3e83c3305d13",
+    "tests_excluded": {
+      "tests/site/test_quality_report.py": "checks the committed quality record, which this run replaces; inside the clone it can only see the previous one"
+    },
     "tests_exit": 0,
-    "tests_summary": "248 passed in 66.75s (0:01:06)"
+    "tests_failed": [],
+    "tests_summary": "252 passed in 50.77s"
   },
   "generated_by": "tools/site/quality_report.py",
   "links": {
@@ -80,7 +84,7 @@
     "external_references": [],
     "fragments_checked": 7,
     "fragments_verified": 7,
-    "internal_references": 140,
+    "internal_references": 141,
     "note": "Resolved against the built artifact, which is what is served. A directory target resolves through its index.html, the way a web server would, and a fragment must name an id that exists on the page it lands on.",
     "passed": true,
     "unverifiable_fragments": []
@@ -96,7 +100,7 @@
       "the licence statements on the site match LICENSE and THIRD_PARTY_NOTICES.md"
     ],
     "note": "A tool cannot make this statement. It is the owner confirming that what the site publishes is what they intend to publish, and that the licensing, attribution and citation on it are correct. The measured facts it rests on are in this record.",
-    "signed_at": "2026-09-03",
+    "signed_at": "2026-09-17",
     "signed_by": "Aaron Damiano",
     "status": "signed",
     "who": "repository owner"
@@ -136,9 +140,9 @@
     "problems": []
   },
   "suite": {
-    "added": 264,
+    "added": 393,
     "collisions": [],
-    "final_collected": 970,
+    "final_collected": 1099,
     "missing_unrecorded": [],
     "passed": true,
     "pre_site_collected": 707,

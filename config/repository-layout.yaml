@@ -377,6 +377,36 @@ components:
       JSON Schemas the generated site data is validated against, so a
       shape change fails the build rather than reaching a consumer.
 
+  - id: tool.folk-coverage
+    path: tools/bfo/folk_coverage.py
+    moves_to: null
+    role: checker
+    description: >-
+      Compares the BFO folk module against the folk corpus it is supposed
+      to carry. Read-only; it applies nothing.
+
+      Declared because its own test loads it by path, and because the
+      absence of this comparison is what it exists to report. Somebody
+      demonstrating the site searched for "frugal" and found nothing:
+      folk:Frugality is in ThatsAllFolks/folk.ttl and in the alignment
+      view, and not in the BFO layer the class index is built from. The
+      folk layer had been tested for internal consistency and documented
+      as "comprehensive in its coverage", and nothing had ever asked
+      whether the values in it are the values the corpus has. D-014 then
+      decided every one of the 278, and the tool reports each kind
+      separately: 98 exact classes, 9 alternative labels, 146
+      correspondences, 25 excluded.
+
+  - id: config.folk-membership
+    path: config/folk-membership.json
+    moves_to: null
+    role: configuration
+    description: >-
+      The folk corpus values D-014 excludes from the BFO folk module, each
+      with its reason. Exclusion is the one kind of decision no triple can
+      carry -- an exact class, an alternative label and a correspondence
+      are all in the ontology -- so tool.folk-coverage reads it from here.
+
   - id: tool.check-site
     path: tools/site/check_site.py
     moves_to: null

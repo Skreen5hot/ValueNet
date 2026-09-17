@@ -48,13 +48,13 @@ The explainability chain the BFOizing rationale promises, recovered end to end: 
 # expect: rows
 SELECT ?action ?assessment ?observation ?evidence ?conduct ?textSpan WHERE {
   ?action a vn-me:ProtectiveAction ;
-          vn-me:hasInformationalInput ?assessment ;
+          cco:ont00001921 ?assessment ;           # has input
           obo:BFO_0000062 ?discernment .          # preceded by
   ?assessment vn-me:isWarrantedBy ?evidence ;
               cco:ont00001982 ?conduct .       # describes
   ?evidence cco:ont00001982 ?conduct .         # describes the same conduct
   ?discernment obo:BFO_0000062 ?observation .
-  ?observation vn-me:hasInformationalOutput ?evidence .
+  ?observation cco:ont00001986 ?evidence .      # has output
   OPTIONAL {
     ?annotation a vn-core:ValueEvidenceAnnotation ;
                 vn-core:hasEvidenceSource ?textSpan ;
@@ -77,7 +77,7 @@ The operational form of the discernment / rash judgment distinction. `FILTER NOT
 # scope: component:bfo.ontology-tree
 # expect: rows
 SELECT ?act ?agent ?ascription ?describedAgent WHERE {
-  ?act vn-me:hasInformationalOutput ?ascription ;
+  ?act cco:ont00001986 ?ascription ;            # has output
        obo:BFO_0000057 ?agent .
   ?ascription a vn-me:CulpabilityAscriptionICE ;
                cco:ont00001982 ?describedAgent .
@@ -148,7 +148,7 @@ PREFIX vcvf:   <http://www.ontologydesignpatterns.org/ont/values/valuecore_with_
 
 SELECT DISTINCT ?span ?text ?frame ?haidtValue ?disposition WHERE {
   ?span a vn-core:TextSpan ;
-        vn-core:hasTextValue ?text ;
+        vn-core:hasTextualSequenceValue ?text ;
         vn-core:evokesFrame ?frame .
   ?frame vcvf:triggers ?haidtValue .
   OPTIONAL { ?disposition vn-core:historicallyCorrespondsTo ?haidtValue }
@@ -170,8 +170,11 @@ A single `vcvf` prefix binding suffices. It did not previously: `vcvf` was bound
 * Queries are over asserted triples only. `vn-core:ValueViolationProcess` is a defined class (`owl:equivalentClass`), so an OWL reasoner will additionally classify `:protectiveActionByA` and `:rashJudgmentByB` under it from their `contravenes` axioms; the queries above do not depend on that inference.
 * Assessment acts and their outputs are distinct: `MoralAssessmentAct` is an occurrent, while `MoralAssessmentICE` is descriptive information content. CCO `describes` (`cco:ont00001982`) connects an output to the agent or conduct assessed.
 * `RashJudgmentAct` and `MoralDiscernmentAct` are not disjoint. A larger assessment process may produce both a warranted safety assessment and an unwarranted culpability ascription. The unwarranted-output criterion is enforced by SHACL because absence of a recorded warrant is closed-world.
-* A `CulpabilityAscriptionICE` describing an Agent does not entail that the Agent bears a `MoralCulpabilityRole`; assert such a role independently only when the normative status is warranted.
+* A `CulpabilityAscriptionICE` describing an Agent does not entail that the Agent bears a `MoralCulpabilityRole`. The role is grounded in the agent's own participation, as a responsible agent, in conduct that violates a moral norm applying to it (D-009), not in any appraisal of that conduct; assert it independently, and only on that ground.
+* `MoralAssessmentAct` is a CCO Act, not an Act of Appraisal, so `RashJudgmentAct` does not inherit plannedness; `MoralDiscernmentAct` is an Act of Appraisal (D-008).
+* CQ1 and CQ5 are the competency questions `vn-core:contravenes` is justified by (D-010). A question about which acts violate a norm, rather than a value an agent bears, is asked of `MoralNormICE`.
 * `obo:BFO_0000057` is *has participant* (process → continuant), not its inverse. `obo:BFO_0000196` is *bearer of* (continuant → realizable entity). `obo:BFO_0000062` is *preceded by*.
 * Value dispositions and roles appear as **individuals** (`:justiceOfB a folk:JusticeDisposition`), not as classes in object position. See the instance-level note in `annotationGuide.md`.
 * Agents are typed as `cco:ont00001017` (CCO `Agent`), which `valuenet-core` adopts by IRI. Core asserts that every `ValueRelatedRealizableEntity` inheres in some `Agent`, so CQ1 and CQ4 are asking about agents by construction.
 * The scenario keeps the transcript's information-bearing carrier, exact textual representation, text spans, selectors, and evidence annotations as distinct individuals. Offsets are zero-based Unicode code-point indexes into the exact representation string and are end-exclusive.
+* The representation and its spans are form-level generically dependent continuants, not information content entities (D-005); the selectors and evidence annotations are information content. Informational inputs and outputs use CCO `has input` (`cco:ont00001921`) and `has output` (`cco:ont00001986`) directly (D-007): the restriction fillers in the module say which information content each act takes or produces.

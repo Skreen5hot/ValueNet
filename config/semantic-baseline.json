@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "3cb752aacd225a4cea4129c538c4f3fa609f3dd7",
+  "input_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
   "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
@@ -142,10 +142,10 @@
       "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "corpus_repaired_since": {
         "artifact": "config/remediation-record.json",
-        "artifact_sha256": "1b2571b3e85874868bca6019fe8503f530347fb82d2eaeabfa19fbdedce13a7c",
+        "artifact_sha256": "d7338aac1ac4a25bc70211308aea73081ebab09e9c308e66e14e2af9721b5617",
         "before_tag": "eol-hardened-v1",
         "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-        "after_commit": "3cb752aacd225a4cea4129c538c4f3fa609f3dd7",
+        "after_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
         "corpus_files_changed": [
           "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
           "ontology/bfo/core/valuenet-core.ttl",
@@ -158,7 +158,8 @@
           "ontology/bfo/extensions/trigger-semantics/vcvf-triggers-semantics.ttl",
           "ontology/bfo/shapes/valuenet-core-shapes.ttl",
           "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
-          "ontology/bfo/shapes/vcvf-triggers-shapes.ttl"
+          "ontology/bfo/shapes/vcvf-triggers-shapes.ttl",
+          "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl"
         ],
         "events": [
           {
@@ -174,7 +175,7 @@
           },
           {
             "before_commit": "49d40511681347da5cbc2ad962d22b9be98c8172",
-            "after_commit": "3cb752aacd225a4cea4129c538c4f3fa609f3dd7",
+            "after_commit": "43e222010d67e0949fc0bc7fee0dc4ab4354a214",
             "files": [
               "ontology/bfo/core/valuenet-core.ttl",
               "ontology/bfo/core/valuenet-folk.ttl",
@@ -191,6 +192,108 @@
             "change_class": "publication-metadata",
             "ground_added": 18,
             "ground_removed": 1,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "43e222010d67e0949fc0bc7fee0dc4ab4354a214",
+            "after_commit": "4677c55e7cb35ae8358416c6a125c7cdad46cd36",
+            "files": [
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+              "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 2,
+            "ground_removed": 2,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "4677c55e7cb35ae8358416c6a125c7cdad46cd36",
+            "after_commit": "d57388a7c26e19b7a2e3ee1672b68ebdd1e2e5f4",
+            "files": [
+              "ontology/bfo/core/valuenet-core.ttl",
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-scenario.ttl",
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+              "ontology/bfo/shapes/valuenet-core-shapes.ttl",
+              "ontology/bfo/shapes/valuenet-moral-epistemics-shapes.ttl",
+              "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 65,
+            "ground_removed": 56,
+            "blank_node_shape_unchanged": false
+          },
+          {
+            "before_commit": "d57388a7c26e19b7a2e3ee1672b68ebdd1e2e5f4",
+            "after_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+            "files": [
+              "ontology/bfo/core/valuenet-core.ttl",
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 7,
+            "ground_removed": 3,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "90f5b6f066910a0f645b2693c48ddd14bc63d491",
+            "after_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+            "files": [
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+              "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 9,
+            "ground_removed": 9,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "cd9dd3dc8259542d0e559a15d8b748df9ef450fb",
+            "after_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
+            "files": [
+              "ontology/bfo/core/valuenet-core.ttl",
+              "ontology/bfo/core/valuenet-folk.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 18,
+            "ground_removed": 4,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
+            "after_commit": "1092c952b7e5cc3f113d46d14c9f438c3642e331",
+            "files": [
+              "ontology/bfo/core/valuenet-core.ttl",
+              "ontology/bfo/core/valuenet-schwartz-values.ttl",
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+              "ontology/bfo/extensions/moral-foundations/valuenet-moral-foundations.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 92,
+            "ground_removed": 0,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "1092c952b7e5cc3f113d46d14c9f438c3642e331",
+            "after_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+            "files": [
+              "ontology/bfo/core/valuenet-folk.ttl",
+              "ontology/bfo/core/valuenet-mappings.ttl",
+              "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 220,
+            "ground_removed": 56,
+            "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+            "after_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
+            "files": [
+              "ontology/bfo/core/valuenet-folk.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 340,
+            "ground_removed": 84,
             "blank_node_shape_unchanged": true
           }
         ],
@@ -225,7 +328,7 @@
       "definition": "measure_file(...).parses is True"
     },
     "distinct_triples": {
-      "value": 104780,
+      "value": 105346,
       "definition": "len of the merged graph over all parsing files"
     },
     "named_classes": {
@@ -245,23 +348,23 @@
       "definition": "distinct objects of vcvf:triggers"
     },
     "merged_ground_sha256": {
-      "value": "68da629d5021e07bbca5cea2c70f7eb29c0bafcc4946a7a4b2c53224f5bf57a9",
+      "value": "cd72324c81f0cf5ed835b4d545fe0c4a6bea69f6318c212fa60101367eb34b16",
       "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
     },
     "merged_bnode_shape": {
       "value": {
-        "blank_nodes": 8365,
-        "triples_touching": 30040,
-        "components": 6644,
+        "blank_nodes": 8375,
+        "triples_touching": 30067,
+        "components": 6648,
         "largest_component_nodes": 13,
-        "component_digest_sha256": "39863b557d59dfbe4a5d32772b2c8d261f3d58cd3d4ccfd4f81a00f209e512f9"
+        "component_digest_sha256": "ae539cff106a29e18511c87e875082f279577b290639c2b0071598bedd92eefd"
       },
       "definition": "identity-invariant digest over the blank-node subgraph: blank nodes partitioned into connected components, every triple touching a component collected with its named and literal anchors, each component canonicalized independently, sorted component digests hashed. Complete rather than heuristic. Affordable because components are OWL restrictions of a few triples each; the whole corpus canonicalized at once measured about 29 minutes."
     }
   },
   "reasoner": {
     "bfo_layer_classes": {
-      "value": 306,
+      "value": 308,
       "definition": "named classes in the HermiT scope, including the configured CCO extract"
     },
     "bfo_layer_files": {
@@ -281,7 +384,7 @@
       "definition": "unsatisfiable named classes"
     },
     "bfo_scope_canonical_sha256": {
-      "value": "470d5b967ae95b02dd3e19e6be0de316fe42dec4ab23fc6ee817a6b6f9e20aee",
+      "value": "2a8969953e45ac7032e792bca142764dfcad066db9cb8e8698d77b1970d5e860",
       "definition": "SHA-256 over sorted N-Triples of the canonicalized union of layout.reasoner_scope()"
     },
     "bfo_scope_files": {
@@ -307,18 +410,18 @@
     },
     "cco_extract": {
       "path": "ontology/bfo/vendor/cco/cco-valuenet-extract.ttl",
-      "canonical_sha256": "b3261ad21fc82c4005744cb754c3418476a79515d0f51b50769112ae36f046fc",
+      "canonical_sha256": "a1b29abbdaa9f63022a97e86dc845a09a5e85469b4de0a610297950e7117cc73",
       "canonical_is_invariant": true,
-      "byte_sha256": "ed9cd3a152b864ace9ee187910bf1f4cd9a0b9d45f6b5a0a7cdd8d29ff4e4142",
+      "byte_sha256": "05678ecaab63952b8c556601502b0ac76d970ce71dcf8c4c9c42a067070c7f93",
       "byte_is_invariant": true
     }
   },
   "tests": {
-    "collected": 982,
-    "default_selected": 966,
+    "collected": 1098,
+    "default_selected": 1082,
     "default_deselected": 16,
-    "canonical_id_sha256": "76edea5baef1b0c09fa2e16f3a2ba795bfcfa1973f08e3b22d8cfb9bad5ea0b6",
-    "default_selected_sha256": "76340432841264c9c2c15abaefb56159447173eb85b65aa34b2a5b49e7ebe47c",
+    "canonical_id_sha256": "881f3bcc1b7703ba8323e037ea970ce60d120218bea8cb37c9221383a2851e11",
+    "default_selected_sha256": "cf93724f5ca8261feb928c652e2b06a6fe35045726432a2189eff3f015fde1e5",
     "deselected_ids": [
       "test_competency_questions.py::test_every_query_does_what_its_document_claims[valuenet-moral-epistemics-CQ:CQ6]",
       "test_destination_state.py::test_every_consumer_resolves_after_each_wave[architecture]",

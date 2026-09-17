@@ -47,7 +47,7 @@
 
 :observationByA a vn-me:ActOfBehavioralObservation ;
   obo:BFO_0000057 :agentA ;
-  vn-me:hasInformationalOutput :obsRecordA .
+  cco:ont00001986 :obsRecordA .
 
 :obsRecordA a vn-me:BehavioralObservationICE ;
   cco:ont00001982 :conductOfC ;
@@ -69,8 +69,8 @@
   obo:BFO_0000057 :agentA ;
   obo:BFO_0000062 :observationByA ;
   obo:BFO_0000055 :prudenceOfA ;
-  vn-me:hasInformationalInput :obsRecordA , :householdRule ;
-  vn-me:hasInformationalOutput :assessmentByA .
+  cco:ont00001921 :obsRecordA , :householdRule ;
+  cco:ont00001986 :assessmentByA .
 
 # The protective action realizes two values and runs against a third that
 # Agent A also bears. It is therefore both a ValueRealizationProcess and,
@@ -85,7 +85,7 @@
   obo:BFO_0000062 :discernmentByA ;
   obo:BFO_0000055 :protectorRoleOfA , :careOfA ;
   vn-core:contravenes :trustOfA ;
-  vn-me:hasInformationalInput :assessmentByA ;
+  cco:ont00001921 :assessmentByA ;
   rdfs:label "Agent A limits Agent C's unsupervised contact with the children"@en .
 
 #################################################################
@@ -98,7 +98,7 @@
 
 :rashJudgmentByB a vn-me:RashJudgmentAct ;
   obo:BFO_0000057 :agentB ;
-  vn-me:hasInformationalOutput :verdictByB ;
+  cco:ont00001986 :verdictByB ;
   vn-core:contravenes :justiceOfB , :honestyOfB , :careOfB .
 
 #################################################################
@@ -106,13 +106,14 @@
 #################################################################
 
 # The carrier is a distinct independent continuant. The exact textual
-# representation, its spans, selectors, and evidence annotations are ICEs.
+# representation and its spans are form-level generically dependent
+# continuants, not ICEs (D-005); selectors and evidence annotations are ICEs.
 :transcriptCarrier1 a cco:ont00000253 ;
   obo:BFO_0000101 :transcriptRepresentation1 ;
   rdfs:label "Digital carrier of family interview transcript version 1"@en .
 
 :transcriptRepresentation1 a vn-core:TextualRepresentation ;
-  vn-core:hasTextValue "kept an eye on him and made sure he was never alone with the kids. you could just tell he had bad intentions" ;
+  vn-core:hasTextualSequenceValue "kept an eye on him and made sure he was never alone with the kids. you could just tell he had bad intentions" ;
   rdfs:label "Exact family interview transcript representation, version 1"@en .
 
 # evokesFrame reaches the existing MFTriggers data:
@@ -120,7 +121,7 @@
 # vn-mf:CareDisposition  vn-core:historicallyCorrespondsTo  haidt:Care
 # (valuenet-mappings; annotation-only).
 :textSpan1 a vn-core:TextSpan ;
-  vn-core:hasTextValue "kept an eye on him and made sure he was never alone with the kids" ;
+  vn-core:hasTextualSequenceValue "kept an eye on him and made sure he was never alone with the kids" ;
   vn-core:isTextSpanOf :transcriptRepresentation1 ;
   vn-core:evokesFrame <https://w3id.org/framester/framenet/abox/frame/Protecting> .
 
@@ -136,7 +137,7 @@
   vn-core:isEvidenceFor :protectiveActionByA .
 
 :textSpan2 a vn-core:TextSpan ;
-  vn-core:hasTextValue "you could just tell he had bad intentions" ;
+  vn-core:hasTextualSequenceValue "you could just tell he had bad intentions" ;
   vn-core:isTextSpanOf :transcriptRepresentation1 .
 
 :textSpanSelector2 a vn-core:TextSpanSelector ;

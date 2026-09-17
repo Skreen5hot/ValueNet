@@ -14,11 +14,11 @@ while testing search ranking
 
 ### Finding
 
-18 of the 187 authored classes carry a label that does not begin with a
+17 of the 186 authored classes carry a label that does not begin with a
 capital letter. They fall into two groups, which is why this is a policy
 question rather than a typo list:
 
-- **all lower case** -- 12 label(s)
+- **all lower case** -- 11 label(s)
 - **lower-case first word, capitalised remainder** -- 6 label(s)
 
 The remaining 169 labels are title case.
@@ -31,7 +31,6 @@ silently as the corpus changes.
 
 | Class | Label | Pattern |
 | --- | --- | --- |
-| `core:EvidenceSource` | `evidence source` | all lower case |
 | `core:MoralValueDisposition` | `moral value disposition` | all lower case |
 | `core:PersonalValueDisposition` | `personal value disposition` | all lower case |
 | `core:TextSpan` | `text span` | all lower case |

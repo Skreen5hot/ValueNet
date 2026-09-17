@@ -122,13 +122,15 @@ def test_the_four_category_roots_are_the_declared_ones():
     }
 
 
-def test_the_reviewed_other_set_is_the_single_expected_class():
-    """`other` is not a catch-all. A second member means either a class
+def test_the_reviewed_other_set_is_the_expected_classes():
+    """`other` is not a catch-all. A new member means either a class
     outside the four roots or a support graph that failed to load, and
-    both deserve a look rather than a silent bucket."""
-    assert B.REVIEWED_OTHER == {
-        "https://fandaws.com/ontology/bfo/valuenet-core#"
-        "ValueRelatedRealizableEntity"}
+    both deserve a look rather than a silent bucket. The two text classes
+    are there by D-005, which moved them out of information content."""
+    core = "https://fandaws.com/ontology/bfo/valuenet-core#"
+    assert B.REVIEWED_OTHER == {core + "ValueRelatedRealizableEntity",
+                                core + "TextualRepresentation",
+                                core + "TextSpan"}
 
 
 # ======================================================================
@@ -285,7 +287,7 @@ def test_two_builds_produce_identical_bytes(tmp_path):
 # revision of this project cited a class-index digest that nothing in the
 # tree could reproduce, which is how a number nobody can check survives.
 NORMALISED_CONTENT = (
-    "ec45903177df45524e9b91daffe4ca0d9b4708313c5982da42681b07841fe9f7")
+    "ec44a85ed39b8d34057e07a27acd843fda4e105d4acadc412ea2801a9d1a6ea0")
 
 #: Fields that move without the ontology moving.
 #:
@@ -801,7 +803,7 @@ RECORD = REPO / "docs/bfo/ONTOLOGY_METADATA_DECISIONS.md"
 
 
 def test_the_label_style_record_matches_the_corpus(built):
-    """M-001 lists 18 classes whose labels are not title case.
+    """M-001 lists the classes whose labels are not title case.
 
     An inventory written once is a claim about the day it was written. This
     derives the set again and requires the document to agree, so the record

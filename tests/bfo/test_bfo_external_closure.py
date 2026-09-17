@@ -19,7 +19,7 @@ ROOT = repository_root()
 CORE_ONTOLOGY = URIRef("https://fandaws.com/ontology/bfo/valuenet-core.owl")
 CCO_EXTRACT_ONTOLOGY = URIRef("https://fandaws.com/ontology/imports/cco-valuenet-extract")
 CCO_EXTRACT_VERSION = URIRef(
-    "https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-08-25-phase6"
+    "https://fandaws.com/ontology/imports/cco-valuenet-extract/2.2-2026-09-16-d005"
 )
 
 PROJECT_LOGICAL_FILES = (

@@ -47,7 +47,7 @@ Here is how we would represent this sentence as RDF triples using the new framew
 :publishingProcess rdf:type vn-core:ValueRealizationProcess .
 :article42 rdf:type bfo:0000031 .   # the source document, a generically dependent continuant
 :textSpan1 rdf:type vn-core:TextSpan ;
-           vn-core:hasTextValue "published the story to expose the corruption" ;
+           vn-core:hasTextualSequenceValue "published the story to expose the corruption" ;
            vn-core:isTextSpanOf :article42 ;
            vn-core:hasStartOffset "18"^^xsd:nonNegativeInteger ;
            vn-core:hasEndOffset   "62"^^xsd:nonNegativeInteger .

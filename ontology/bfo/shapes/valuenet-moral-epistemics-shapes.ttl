@@ -47,9 +47,9 @@ me-shapes:MoralAssessmentOutputShape
   a sh:NodeShape ;
   sh:targetClass vn-me:MoralAssessmentAct ;
   sh:property [
-    sh:path vn-me:hasInformationalOutput ;
-    sh:minCount 1 ;
-    sh:class vn-me:MoralAssessmentICE ;
+    sh:path cco:ont00001986 ;
+    sh:qualifiedValueShape [ sh:class vn-me:MoralAssessmentICE ] ;
+    sh:qualifiedMinCount 1 ;
     sh:severity sh:Violation ;
     sh:message "A MoralAssessmentAct must produce at least one MoralAssessmentICE. The act and its information-content output are distinct entities."@en ;
   ] .
@@ -93,7 +93,7 @@ me-shapes:RashJudgmentUnwarrantedOutputShape
       SELECT $this
       WHERE {
         FILTER NOT EXISTS {
-          $this vn-me:hasInformationalOutput ?ascription .
+          $this cco:ont00001986 ?ascription .
           ?ascription a vn-me:CulpabilityAscriptionICE .
           FILTER NOT EXISTS { ?ascription vn-me:isWarrantedBy ?evidence }
         }

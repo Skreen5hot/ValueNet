@@ -21,7 +21,7 @@ curated string contains a number the build could have derived.
 | Values are modelled as realizable entities inhering in an agent | [valuenet-core.ttl](../../ontology/bfo/core/valuenet-core.ttl) — `ValueRelatedRealizableEntity` subclasses `BFO_0000017` | asserted |
 | The disposition/role split sits below one common superclass | same file — `ValueDisposition` and `ValueRole` both subclass `ValueRelatedRealizableEntity` | asserted |
 | Realization and violation are distinct processes | same file — `ValueRealizationProcess`, `ValueViolationProcess`, both subclassing `BFO_0000015` | asserted |
-| Textual evidence is carried by CCO information entities | same file — `EvidenceSource`, `TextSpan`, `TextualRepresentation`, `TextSpanSelector` under `ont00000958` | asserted |
+| Textual evidence is selected and recorded by CCO information entities | same file — `TextSpanSelector` under `ont00000686` (designative ICE) and `ValueEvidenceAnnotation` under `ont00000853` (descriptive ICE); the text itself, `TextualRepresentation` and `TextSpan`, is form under BFO `BFO_0000031` (D-005) | asserted |
 | Honesty resolves to a BFO disposition through asserted edges | [valuenet-folk.ttl](../../ontology/bfo/core/valuenet-folk.ttl) → [valuenet-schwartz-values.ttl](../../ontology/bfo/core/valuenet-schwartz-values.ttl) → core | asserted chain |
 | The honesty definition quoted in the README | `skos:definition` on `HonestyDisposition` in valuenet-folk.ttl | quoted verbatim |
 

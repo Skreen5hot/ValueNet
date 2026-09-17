@@ -508,6 +508,36 @@ Most genus corrections change only the opening words. Eight definitions changed 
     | Willingness, Management, Risk-management | excluded |
     | Patriotism, Work-Life Balance | subclasses (item 10) |
 
+### How RULES 2.0 was applied to the six added classes
+
+D-013 requires, for any class a decision adds, a CCO search before its parent is chosen and a record of the clarity, inclusiveness and exclusiveness checks.
+
+**CCO search.** Searched on 2026-09-17: CCO 2.2, the merged release file, whose SHA-256 is `a9453382…` as recorded in the extract manifest. The search covered every class under BFO disposition, role and realizable entity, and the labels and definitions of all 1,400 CCO classes for each new class's concept. CCO 2.2 has no value disposition of any kind, so no CCO class can be a parent, and each class keeps the ValueNet parent in item 10. What the search found is recorded because several CCO classes sit next to these concepts and mark what they exclude:
+
+| class | nearest CCO classes | why none is a parent |
+|---|---|---|
+| `HealthDisposition` | Disease (`ont00000318`), "a disposition to undergo pathological processes"; Healthcare and Healing Artifact Functions | Disease is a disposition of the organism, not a valuing of health; the functions belong to artifacts |
+| `IntelligenceDisposition` | Skill (`ont00000089`) and Agent Capability (`ont00001379`); Act of Intelligence Gathering | Skill and Agent Capability are the ability, which this class values rather than is; intelligence gathering is another sense of the word |
+| `ModerationDisposition` | none | no CCO class concerns excess or measure |
+| `WealthDisposition` | Financial Instrument, Financial Value of Property, Act of Ownership | these are the wealth, its value and its holding, not a valuing of them |
+| `PatriotismDisposition` | Citizen Role (`ont00000987`), Allegiance Role (`ont00000392`) | Citizen Role is legal membership of a state, whatever the bearer values; Allegiance Role is support committed to another agent in a conflict. Both are roles, not dispositions |
+| `WorkLifeBalanceDisposition` | Occupation Role (`ont00000984`), Act of Employment | Occupation Role is the responsibilities of employment, the domain this class weighs against the rest of life, not a disposition |
+
+**Web search** (optional under D-013) was done in R15's research. Its sources are cited in the R15 record: Schwartz (2012) for health, Rokeach's "intellectual" for intelligence, Primoratz on patriotism, and the source lists for the others.
+
+**Checks.**
+
+| class | clarity | inclusiveness | exclusiveness |
+|---|---|---|---|
+| Health | one disposition, valuing health rather than being healthy | protecting and maintaining health, bodily and mental | being in good or bad health (CCO Disease is a disposition of the organism); concern for others' welfare (CareDisposition); pleasure (HedonismDisposition); vitality and fitness, which only correspond |
+| Intelligence | one disposition, valuing intellectual ability | developing, having, or exercising that ability | the ability itself (CCO Skill, Agent Capability); acquiring knowledge (LearningDisposition); being drawn to what is new (CuriosityDisposition); applying judgment and experience (WisdomDisposition) |
+| Moderation | one disposition, avoiding excess and extremes | in consumption, feeling and action, with or without a rule | following a code or restraining impulses (DisciplineDisposition); careful use of resources (ThriftDisposition); weighing parts of a life against each other (BalanceDisposition) |
+| Wealth | one disposition, the acquisition or retention of wealth | financial and material wealth, earned, saved or held | status and control, which wealth can serve (Schwartz Power, a related match only); careful use of resources (ThriftDisposition); safety and stability (Schwartz Security); the wealth itself (CCO Financial Instrument) |
+| Patriotism | one disposition, loyalty whose object is the bearer's country or political community | commitment to and special concern for a country, or a political community that is not a state | a claim of national superiority, which is not part of the differentia; legal membership (CCO Citizen Role; GoodCitizenRole); commitment to support in a conflict (CCO Allegiance Role); loyalty to a person, group or cause (the parent) |
+| Work-Life Balance | one disposition, the division between occupational and non-occupational life | time, attention and effort | balance among other parts of a life (the parent); free time valued for itself (LeisureDisposition); the responsibilities of a job (CCO Occupation Role); avoiding excess in anything (ModerationDisposition) |
+
+Each class's `skos:example` is a paradigm case that separates it from these neighbours, as M4 requires.
+
 ### Rationale
 
 - **The corpus has no membership rule to inherit.** Its authors scraped lists of so-called values, deduplicated them and built a taxonomy by hand ([arXiv:2303.00632](https://arxiv.org/abs/2303.00632), §5), and its clusters copy one list author's page headings.

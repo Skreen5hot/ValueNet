@@ -347,3 +347,33 @@ def test_aboutness_asserted_of_form_is_inconsistent(extra, consistent):
     if world is not None:
         assert str(ICE) not in types(
             world, URIRef("https://example.invalid/boundary#representation"))
+
+
+DIRECT = """
+@prefix cco:     <https://www.commoncoreontologies.org/> .
+@prefix vn-core: <https://fandaws.com/ontology/bfo/valuenet-core#> .
+@prefix ex:      <https://example.invalid/direct#> .
+"""
+
+
+@pytest.mark.parametrize("form", ["TextualRepresentation", "TextSpan"])
+@pytest.mark.parametrize("also_content, consistent", [
+    (False, True),
+    (True, False),
+], ids=["form-only", "form-and-information-content"])
+def test_form_typed_as_information_content_is_inconsistent(
+        form, also_content, consistent):
+    """D-011's contract, asserted directly rather than reached through
+    aboutness: one individual typed as a form-level text class and as
+    Information Content Entity is inconsistent. The reviewer suggested it on
+    2026-09-17 (FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md), so that a
+    change to the disjointness fails here even if the aboutness routes above
+    were to change with it. The form-only case is its control."""
+    graph = load((bfo_artifact("bfo-core.ttl"),
+                  bfo_artifact("cco-valuenet-extract.ttl"), CORE))
+    kinds = "vn-core:" + form + (", cco:ont00000958" if also_content else "")
+    graph.parse(data=DIRECT + "ex:x a %s .\n" % kinds, format="turtle")
+    world = reason(graph)
+    assert (world is not None) is consistent, (
+        "HermiT found ex:x, typed %s, %s"
+        % (kinds, "inconsistent" if world is None else "consistent"))

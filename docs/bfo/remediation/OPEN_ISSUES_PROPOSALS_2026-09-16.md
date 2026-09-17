@@ -93,9 +93,9 @@ Alternatively, count named classes only and bump the version. That makes the mea
 
 ## Order
 
-1. **O1** — install Node 24.
+1. **O1** — done 2026-09-17, without installing Node system-wide: Node 24.20.0, checked against nodejs.org's published SHA-256, is extracted to a per-project folder under Local AppData. It is put on PATH only for the process that runs the site suite or the quality report.
 2. **R15** — done: D-014 implemented, and the folk curation pass complete.
-3. **O2** — re-sign.
-4. **O3** — reviewer update. D-014 is already implemented, so the reviewer is asked about M1–M7 after the fact; a disagreement reopens D-014 under its own terms.
+3. **O2** — done: re-signed on 2026-09-17 against `dda2b84`, after the fresh clone was fixed.
+4. **O3** — done: the reviewer confirmed the sign-off on 2026-09-17 and accepted D-011 and D-014 as breaking (`docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md`).
 5. **O4** — push and open the pull request.
 6. **O5–O8** — whenever convenient.

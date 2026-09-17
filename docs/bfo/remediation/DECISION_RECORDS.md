@@ -18,6 +18,8 @@ D-008, D-009 and D-010 were adopted and implemented on 2026-09-16 under the same
 
 D-014 was adopted on 2026-09-16 on the owner's instruction, closing R15: the folk module's membership criteria, its coverage reported by kind, and a decision on every item the proposal's revision 3 had left pending. It supersedes D-012 item 3. It was implemented on 2026-09-17 on the owner's instruction to finish the remediation.
 
+On 2026-09-17 the reviewer reviewed the decisions taken after their sign-off, D-011 to D-014 and the folk curation, and confirmed the sign-off (`docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md`). They accepted D-011 and D-014 as justified breaking changes, D-014's membership criteria M1–M7, and D-013's three readings of RULES 2.0. The breaking set they recognize is six items: D-005's text layer, the retirement of `EvidenceSource`, the retirement of the informational input and output properties, the re-parenting of `MoralAssessmentAct`, D-011, and D-014.
+
 ## D-001 — Extension of the Realist Value Model
 
 **Status:** Adopted 2026-08-25  
@@ -329,7 +331,8 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 **Status:** Adopted and implemented 2026-09-16
 **Finding coverage:** D-005 implementation note on aboutness
 **Amends:** D-005, which left the question open
-**Evidence:** `tests/bfo/test_text_layer_follows_d005.py`
+**Evidence:** `tests/bfo/test_text_layer_follows_d005.py`, which reaches the disjointness through aboutness and, since the reviewer's suggestion of 2026-09-17, also asserts it directly (`test_form_typed_as_information_content_is_inconsistent`)
+**Reviewed:** accepted by the reviewer as a breaking change, 2026-09-17
 
 ### Decision
 
@@ -436,6 +439,7 @@ Most genus corrections change only the opening words. Eight definitions changed 
 ## D-014 — Folk Membership Is Decided by Criteria, and Coverage Is Reported by Kind
 
 **Status:** Adopted 2026-09-16; implemented 2026-09-17
+**Reviewed:** accepted by the reviewer 2026-09-17: the removals and re-parenting as a breaking change, and M1–M7 as the folk membership policy
 **Finding coverage:** formal review 2026-09-16, finding 13; N6 and R15 of the response
 **Record:** `docs/bfo/remediation/R15_FOLK_MEMBERSHIP_PROPOSAL.md`, revision 4 — the research, and a disposition for each of the 186 corpus values with no class (Table A) and each of the 45 module classes with no corpus value (Table B)
 **Supersedes:** D-012 item 3

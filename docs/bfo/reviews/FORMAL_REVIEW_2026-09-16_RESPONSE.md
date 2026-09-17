@@ -13,7 +13,11 @@ when it is taken.
 the original recommendation behind R9, which was revised and provisionally adopted as
 D-005 (§9). The second accepted C1, C2 and D-005 in substance and raised three further
 points (§10). The reviewer then signed off on the response and the plan, and the owner
-instructed that it proceed; what has been implemented is in §11.
+instructed that it proceed; what has been implemented is in §11. After the
+remediation, the reviewer was sent the decisions taken since their sign-off
+(`FORMAL_REVIEW_2026-09-16_POST_SIGNOFF_UPDATE.md`) and confirmed the sign-off,
+accepting D-011 and D-014 as breaking changes
+(`FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md`).
 
 ---
 

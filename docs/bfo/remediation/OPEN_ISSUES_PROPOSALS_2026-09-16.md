@@ -26,6 +26,7 @@ Do not move the pin to v25, which is end-of-life, or to v26, which does not beco
 
 - `config/quality-report.json` holds the owner's sign-off, signed 2026-09-03 against commit d9a4cb43. The published content has changed since: the text layer, two split folk classes, the folk membership D-014 decided (seven classes removed, six added), every term's comment and example, and new definitions.
 - `test_the_link_report_still_holds` fails because the models page now has one more internal link.
+- The first attempt, on 2026-09-17, showed that it could not pass: the clone ran `test_quality_report.py`, which checks the record already committed — 140 links — against the clone's build, with 141. Any record committed first failed the clone another way. The tool now leaves that one file out of the clone's run and records the exclusion with its reason. The same run measures links and schemas itself, and the suite checks the new record once it is committed. It also names any failing clone test instead of only counting them.
 - The report must be regenerated with `--fresh-clone`, because the tests require that section. That step clones the repository and runs the site and licensing suites.
 
 **Proposal.** After O1, and after D-014 is implemented — so the sign-off covers the content that will be published — run:

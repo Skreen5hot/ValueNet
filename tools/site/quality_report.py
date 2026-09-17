@@ -18,7 +18,9 @@ than ceremonial.
 
 The fresh clone is real: it clones this repository into a temporary
 directory, builds there with no `_site` present, and runs the site and
-licensing suites. It is optional only because it takes a few minutes.
+licensing suites -- all but the tests of this record itself, which inside
+the clone could only check the record being replaced (CLONE_EXCLUDED). It
+is optional only because it takes a few minutes.
 """
 
 from __future__ import annotations
@@ -287,6 +289,31 @@ def suite_comparison() -> dict:
 
 # ------------------------------------------------------ fresh clone
 
+#: What the clone runs.
+CLONE_SUITES = ("tests/site/", "tests/licensing/")
+
+#: Tests the clone leaves out, each with its reason, recorded in the report.
+#: Only one, and it is structural: test_quality_report.py checks the record
+#: this tool is about to replace. Inside the clone it can only read the record
+#: already committed, so the first time a measured figure moves -- the link
+#: count went from 140 to 141 -- the clone fails on the old record, and no
+#: sequence of runs can commit a new one that passes. Nothing goes unchecked:
+#: this run measures links and schemas itself, and the suite runs those tests
+#: against the new record once it is committed.
+CLONE_EXCLUDED = {
+    "tests/site/test_quality_report.py": (
+        "checks the committed quality record, which this run replaces; "
+        "inside the clone it can only see the previous one"),
+}
+
+
+def clone_test_command(python: str) -> list[str]:
+    """The pytest invocation run inside the clone."""
+    command = [python, "-m", "pytest", *CLONE_SUITES, "-q", "-p", "no:randomly",
+               "-rf"]
+    command += ["--ignore=" + path for path in sorted(CLONE_EXCLUDED)]
+    return command
+
 
 def fresh_clone_record(python: str) -> dict:
     """Clone, build with nothing present, run the suites, measure."""
@@ -305,12 +332,15 @@ def fresh_clone_record(python: str) -> dict:
             if "tree digest" in line:
                 digest = line.split()[-1]
 
-        tests = subprocess.run(
-            [python, "-m", "pytest", "tests/site/", "tests/licensing/",
-             "-q", "-p", "no:randomly"],
-            cwd=str(target), capture_output=True, text=True)
+        tests = subprocess.run(clone_test_command(python),
+                               cwd=str(target), capture_output=True, text=True)
         summary = [l for l in tests.stdout.splitlines()
                    if " passed" in l or " failed" in l]
+        # Named, not only counted: a failing clone that says "1 failed" and
+        # nothing else has to be re-run by hand to find out which.
+        failed = sorted(l.split(" - ")[0][len("FAILED "):]
+                        for l in tests.stdout.splitlines()
+                        if l.startswith("FAILED "))
 
         bundle = target / "_site/downloads/bfo-aligned-valuenet.zip"
         bundle_sha = (hashlib.sha256(bundle.read_bytes()).hexdigest()
@@ -325,6 +355,8 @@ def fresh_clone_record(python: str) -> dict:
             "bundle_sha256": bundle_sha,
             "tests_exit": tests.returncode,
             "tests_summary": summary[-1] if summary else tests.stdout[-200:],
+            "tests_failed": failed,
+            "tests_excluded": dict(CLONE_EXCLUDED),
             "passed": (build.returncode == 0 and tests.returncode == 0
                        and not had_site and remotes == ["origin"]),
         }

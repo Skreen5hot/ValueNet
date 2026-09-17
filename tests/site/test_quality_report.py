@@ -154,6 +154,51 @@ def test_the_fresh_clone_record_is_present_and_clean(record):
     assert clone["remotes"] == ["origin"], clone["remotes"]
     assert clone["build_exit"] == 0 and clone["tests_exit"] == 0
     assert clone["site_tree_digest"] and clone["bundle_sha256"]
+    # Records from before the exclusion existed carry neither field. A record
+    # that has them must exclude exactly what the tool declares, and a passed
+    # clone can name no failure.
+    if "tests_excluded" in record["fresh_clone"]:
+        tool = _load("qr_tool_excluded", "tools/site/quality_report.py")
+        assert clone["tests_excluded"] == tool.CLONE_EXCLUDED, (
+            clone["tests_excluded"])
+    assert not clone.get("tests_failed"), clone["tests_failed"]
+
+
+def test_the_clone_leaves_out_only_the_tests_of_this_record():
+    """The clone cannot run the tests of the record it is replacing.
+
+    Inside the clone, test_quality_report.py reads the record already
+    committed and checks it against a fresh build. The first time a measured
+    figure moved -- the link count, 140 to 141 -- every clone failed on the
+    previous record, and no run could commit a new one that passed: without
+    a passing fresh-clone section the clone fails that check instead. So the
+    clone leaves that one file out, and says so in the record.
+
+    Held here so the exclusion cannot grow into a way of skipping whatever
+    fails: exactly one file, which exists, which has a stated reason, and
+    which is the only test in the clone's suites that reads the record.
+    """
+    tool = _load("qr_tool_clone", "tools/site/quality_report.py")
+    assert set(tool.CLONE_EXCLUDED) == {"tests/site/test_quality_report.py"}
+    for path, reason in tool.CLONE_EXCLUDED.items():
+        assert (REPO / path).is_file(), path
+        assert reason.strip(), path
+
+    command = tool.clone_test_command("python")
+    assert [a for a in command if a.startswith("--ignore=")] == [
+        "--ignore=tests/site/test_quality_report.py"]
+    for suite in tool.CLONE_SUITES:
+        assert suite in command, suite
+
+    readers = sorted(
+        path.relative_to(REPO).as_posix()
+        for suite in tool.CLONE_SUITES
+        for path in (REPO / suite).rglob("*.py")
+        if "quality-report.json" in path.read_text(encoding="utf-8"))
+    assert readers == sorted(tool.CLONE_EXCLUDED), (
+        "another test in the clone's suites reads the committed quality "
+        "record, so the clone would fail on the previous record again: %s"
+        % readers)
 
 
 def test_the_browser_review_is_referenced_and_passed(record):

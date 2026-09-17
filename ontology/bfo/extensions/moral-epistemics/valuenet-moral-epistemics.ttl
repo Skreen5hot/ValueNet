@@ -38,11 +38,11 @@
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#MoralValueDisposition> ;
   vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition> ;
-  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> ;
   skos:definition "A moral value disposition to apply right reason to particular practical judgments, inclining its bearer to assess a situation in proportion to the evidence actually available and to act on that assessment."@en ;
   rdfs:label "Prudence Disposition"@en ;
   skos:altLabel "Prudence"@en ;
-  rdfs:comment "Distinguished from folk:WisdomDisposition, which covers the accumulation and application of knowledge generally, and from folk:DiscretionDisposition, which concerns restraint in speech and the handling of private information. Prudence is specifically the fit between the strength of an assessment and the evidence for it."@en ;
+  rdfs:comment "Distinguished from folk:WisdomDisposition, which covers the accumulation and application of knowledge generally. Prudence is specifically the fit between the strength of an assessment and the evidence for it."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/moral-epistemics#PrudenceDisposition> ;
   skos:example "A parent's standing inclination to act on what they have actually seen of a new carer's conduct, neither ignoring warning signs nor assuming the worst."@en .
 

@@ -10,11 +10,17 @@ Each sense now has exactly one home:
 
 - trust or confidence without proof     -> FaithDisposition (narrowed)
 - a religious system as a guide to life -> ReligionDisposition (new; it is
-  folk:Religion in the folk corpus, which had no class)
+  folk:Religion in this repository's copy of the folk corpus, which had no
+  class)
 - openness to new experience            -> OpennessDisposition (narrowed; the
   sense its Schwartz mappings, Stimulation and Self-Direction, already had)
 - being candid and transparent          -> CandorDisposition and
   TransparencyDisposition, which already existed under HonestyDisposition
+
+D-014 then retired OpennessDisposition: no corpus value or value-survey item
+carries it, its experience sense is already Variety, Adventure and Curiosity,
+and "openness" names too many things to be any class's label. The candour sense
+keeps the home D-012 gave it. `test_folk_membership.py` holds the retirement.
 
 The three classes touched carry every annotation RULES 2.0 section 5 asks for,
 the reviewer's standard that ValueNet has not adopted wholesale (R2): what was
@@ -36,8 +42,7 @@ FOLK = Namespace("https://fandaws.com/ontology/bfo/valuenet-folk#")
 CORE = Namespace("https://fandaws.com/ontology/bfo/valuenet-core#")
 W3ID = Namespace("https://w3id.org/valuenet/folk#")
 
-TOUCHED = (FOLK.FaithDisposition, FOLK.ReligionDisposition,
-           FOLK.OpennessDisposition)
+TOUCHED = (FOLK.FaithDisposition, FOLK.ReligionDisposition)
 
 
 @pytest.fixture(scope="module")
@@ -71,13 +76,7 @@ def test_the_religious_sense_is_its_own_class(folk):
     assert (cls, RDFS.seeAlso, W3ID.ReligionDisposition) in folk
 
 
-def test_openness_keeps_one_sense_and_candour_keeps_its_home(folk):
-    text = definition(folk, FOLK.OpennessDisposition).lower()
-    assert "new experiences" in text
-    for other in ("transparen", "candid", "candor", "candour"):
-        assert other not in text, (
-            "OpennessDisposition's definition joins a second sense again: %s"
-            % text)
+def test_candour_keeps_its_home(folk):
     for home in (FOLK.CandorDisposition, FOLK.TransparencyDisposition):
         assert (home, RDFS.subClassOf, FOLK.HonestyDisposition) in folk, (
             "%s no longer carries the sense taken out of OpennessDisposition"

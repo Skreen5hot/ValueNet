@@ -12,10 +12,12 @@ with "ICE" read as "information content entity" -- the labels abbreviate and
 the definitions do not, and without that two correct definitions read as
 wrong. It checks the genus only and says nothing about the differentia.
 
-On 2026-09-16 every module but folk was brought to zero. Folk has 84, and its
-curation waits on R15, the decision about which folk classes belong at all:
+On 2026-09-16 every module but folk was brought to zero. Folk had 84, and its
+curation waited on R15, the decision about which folk classes belong at all:
 normalising definitions first would curate classes that may be removed. So the
-84 are recorded by name, and the gate is equality. A new misalignment anywhere
+84 were recorded by name, and the gate is equality. D-014 decided membership:
+five of the 84 were removed, and four more align under the general parent they
+moved to, which leaves 75. A new misalignment anywhere
 fails. So does fixing one without removing it from the record, which is how
 paying the debt down shows up in a diff instead of disappearing into it.
 
@@ -33,7 +35,7 @@ term for a label, a definition, a comment and an example. Every authored class
 and property has the first two. The last two were mostly missing, so the gap is
 recorded by name, per module and annotation, as it stood at adoption, and the
 gate is equality again: a new term without them fails, and so does annotating a
-recorded one without removing it. Folk's gap waits on R15, like its genera.
+recorded one without removing it. Folk's gap waited on R15, like its genera.
 """
 
 from __future__ import annotations
@@ -56,8 +58,8 @@ MODULES = ("valuenet-core.ttl", "valuenet-schwartz-values.ttl",
 #: Where the labels of CCO and BFO parents come from.
 SUPPORT = ("bfo-core.ttl", "cco-valuenet-extract.ttl")
 
-#: Misaligned genera, by module, as recorded on 2026-09-16. Folk only, pending
-#: R15. Everything else is zero and must stay there.
+#: Misaligned genera, by module, as recorded on 2026-09-16 and reduced by D-014.
+#: Folk only. Everything else is zero and must stay there.
 RECORDED_MISALIGNED = {
     "valuenet-core.ttl": frozenset(),
     "valuenet-schwartz-values.ttl": frozenset(),
@@ -70,33 +72,28 @@ RECORDED_MISALIGNED = {
         "ChastityDisposition", "CollaborationDisposition",
         "CommitmentDisposition", "CommunityDisposition",
         "CompassionDisposition", "ConnectionDisposition",
-        "ControlDisposition", "CourtesyDisposition", "CreativityDisposition",
-        "CuriosityDisposition", "DependabilityDisposition",
-        "DeterminationDisposition", "DiligenceDisposition",
-        "DiscoveryDisposition", "DiscretionDisposition", "DutyDisposition",
+        "CourtesyDisposition", "CreativityDisposition", "CuriosityDisposition",
+        "DependabilityDisposition", "DeterminationDisposition",
+        "DiligenceDisposition", "DiscoveryDisposition", "DutyDisposition",
         "EmpathyDisposition", "EncouragementDisposition",
-        "EnjoymentDisposition", "EnthusiasmDisposition",
-        "EqualityDisposition", "EquityDisposition", "EthicsDisposition",
-        "ExcellenceDisposition", "ExcitementDisposition",
-        "ExplorationDisposition", "ExpressivenessDisposition",
-        "FairnessDisposition", "FamilyDisposition", "FidelityDisposition",
-        "ForgivenessDisposition", "FreedomDisposition",
-        "FriendshipDisposition", "GenerosityDisposition",
+        "EnjoymentDisposition", "EnthusiasmDisposition", "EqualityDisposition",
+        "EquityDisposition", "EthicsDisposition", "ExcellenceDisposition",
+        "ExcitementDisposition", "ExplorationDisposition",
+        "ExpressivenessDisposition", "FairnessDisposition",
+        "FamilyDisposition", "FidelityDisposition", "ForgivenessDisposition",
+        "FreedomDisposition", "FriendshipDisposition", "GenerosityDisposition",
         "GratitudeDisposition", "GrowthDisposition", "HonestyDisposition",
         "HonorDisposition", "HopeDisposition", "ImaginationDisposition",
-        "ImpactDisposition", "InfluenceDisposition", "InnovationDisposition",
-        "IntegrityDisposition", "IntimacyDisposition", "JusticeDisposition",
-        "KindnessDisposition", "LeadershipDisposition", "LeisureDisposition",
+        "InnovationDisposition", "IntegrityDisposition", "IntimacyDisposition",
+        "JusticeDisposition", "KindnessDisposition", "LeisureDisposition",
         "LoveDisposition", "LoyaltyDisposition", "MasteryDisposition",
         "MeaningDisposition", "MindfulnessDisposition", "PeaceDisposition",
-        "PowerDisposition", "RecognitionDisposition", "RespectDisposition",
-        "SecurityDisposition", "SelflessnessDisposition",
+        "RespectDisposition", "SelflessnessDisposition",
         "SensitivityDisposition", "SharingDisposition",
         "SpontaneityDisposition", "StabilityDisposition", "StatusDisposition",
         "StrengthDisposition", "SupportDisposition",
         "SustainabilityDisposition", "TeamworkDisposition",
-        "ToleranceDisposition", "TraditionDisposition",
-        "TransparencyDisposition", "TrustDisposition",
+        "ToleranceDisposition", "TransparencyDisposition", "TrustDisposition",
         "TrustworthinessDisposition", "VarietyDisposition",
     }),
 }
@@ -108,8 +105,9 @@ DISJUNCTION = re.compile(r",\s+or\s+(?:a|an|the|to)\b|;\s+or\b", re.I)
 REVIEWED_DISJUNCTIONS: dict[str, str] = {}
 
 
-#: Every folk term but the three D-012 wrote to RULES 2.0 lacks both a comment
-#: and an example; the two gaps are the same set.
+#: Every folk term but those D-012 and D-014 wrote to RULES 2.0 lacks both a
+#: comment and an example; the two gaps are the same set. D-014 removed six of
+#: the terms recorded here.
 FOLK_UNANNOTATED = frozenset({
     "AccountabilityRole", "AdventureDisposition", "AltruismDisposition",
     "AmbitionDisposition", "AssertivenessDisposition",
@@ -122,14 +120,13 @@ FOLK_UNANNOTATED = frozenset({
     "CompetitionDisposition", "ConnectionDisposition",
     "ConsistencyDisposition", "ContributionDisposition", "ControlDisposition",
     "CooperationDisposition", "CourageDisposition", "CourtesyDisposition",
-    "CreativityDisposition", "CuriosityDisposition",
-    "DecisivenessDisposition", "DependabilityDisposition",
-    "DeterminationDisposition", "DignityDisposition", "DiligenceDisposition",
-    "DisciplineDisposition", "DiscoveryDisposition", "DiscretionDisposition",
-    "DutyDisposition", "EmpathyDisposition", "EncouragementDisposition",
-    "EnduranceDisposition", "EnjoymentDisposition", "EnthusiasmDisposition",
-    "EqualityDisposition", "EquityDisposition", "EthicsDisposition",
-    "ExcellenceDisposition", "ExcitementDisposition",
+    "CreativityDisposition", "CuriosityDisposition", "DecisivenessDisposition",
+    "DependabilityDisposition", "DeterminationDisposition",
+    "DignityDisposition", "DiligenceDisposition", "DisciplineDisposition",
+    "DiscoveryDisposition", "DutyDisposition", "EmpathyDisposition",
+    "EncouragementDisposition", "EnduranceDisposition", "EnjoymentDisposition",
+    "EnthusiasmDisposition", "EqualityDisposition", "EquityDisposition",
+    "EthicsDisposition", "ExcellenceDisposition", "ExcitementDisposition",
     "ExplorationDisposition", "ExpressivenessDisposition",
     "FairnessDisposition", "FamilyDisposition", "FidelityDisposition",
     "FlexibilityDisposition", "ForgivenessDisposition", "FreedomDisposition",
@@ -137,35 +134,32 @@ FOLK_UNANNOTATED = frozenset({
     "GratitudeDisposition", "GrowthDisposition", "HarmonyDisposition",
     "HonestyDisposition", "HonorDisposition", "HopeDisposition",
     "HumilityDisposition", "HumorDisposition", "ImaginationDisposition",
-    "ImpactDisposition", "InfluenceDisposition", "InnovationDisposition",
-    "IntegrityDisposition", "IntimacyDisposition", "IntuitionDisposition",
-    "JoyDisposition", "JusticeDisposition", "KindnessDisposition",
-    "LeaderRole", "LeadershipDisposition", "LearningDisposition",
-    "LeisureDisposition", "LogicDisposition", "LoveDisposition",
-    "LoyaltyDisposition", "MasteryDisposition", "MaturityDisposition",
-    "MeaningDisposition", "MindfulnessDisposition",
-    "OpenMindednessDisposition", "OptimismDisposition", "OrderDisposition",
-    "PassionDisposition", "PatienceDisposition", "PeaceDisposition",
-    "PowerDisposition", "PrivacyDisposition", "ProfessionalismRole",
-    "PunctualPersonRole", "PunctualityDisposition", "PurposeDisposition",
-    "RecognitionDisposition", "ResilienceDisposition",
-    "ResourcefulnessDisposition", "RespectDisposition",
-    "ResponsibilityDisposition", "SecurityDisposition",
+    "InfluenceDisposition", "InnovationDisposition", "IntegrityDisposition",
+    "IntimacyDisposition", "IntuitionDisposition", "JoyDisposition",
+    "JusticeDisposition", "KindnessDisposition", "LeaderRole",
+    "LeadershipDisposition", "LearningDisposition", "LeisureDisposition",
+    "LogicDisposition", "LoveDisposition", "LoyaltyDisposition",
+    "MasteryDisposition", "MaturityDisposition", "MeaningDisposition",
+    "MindfulnessDisposition", "OpenMindednessDisposition",
+    "OptimismDisposition", "OrderDisposition", "PassionDisposition",
+    "PatienceDisposition", "PeaceDisposition", "PrivacyDisposition",
+    "ProfessionalismRole", "PunctualPersonRole", "PunctualityDisposition",
+    "PurposeDisposition", "RecognitionDisposition", "ResilienceDisposition",
+    "RespectDisposition", "ResponsibilityDisposition",
     "SelfRespectDisposition", "SelflessnessDisposition",
     "SensitivityDisposition", "SharingDisposition", "SimplicityDisposition",
     "SpiritualityDisposition", "SpontaneityDisposition",
     "StabilityDisposition", "StatusDisposition", "StrengthDisposition",
     "SupportDisposition", "SustainabilityDisposition", "TeamworkDisposition",
-    "ThriftDisposition", "ToleranceDisposition", "TraditionDisposition",
-    "TransparencyDisposition", "TrustDisposition",
-    "TrustworthinessDisposition", "UnderstandingDisposition",
-    "UniquenessDisposition", "UnityDisposition", "VarietyDisposition",
-    "VisionDisposition", "WisdomDisposition"
+    "ThriftDisposition", "ToleranceDisposition", "TransparencyDisposition",
+    "TrustDisposition", "TrustworthinessDisposition",
+    "UnderstandingDisposition", "UniquenessDisposition", "UnityDisposition",
+    "VarietyDisposition", "VisionDisposition", "WisdomDisposition",
 })
 
 #: Terms lacking an annotation RULES 2.0 requires. At adoption (D-013) the
 #: non-folk modules lacked 32 comments and 60 examples; all were written the
-#: same day, so only folk's gap, which waits on R15, remains. Labels and
+#: same day, so only folk's gap, which waited on R15, remains. Labels and
 #: definitions are complete and must stay so.
 RECORDED_UNANNOTATED = {
     ("valuenet-folk.ttl", "comment"): FOLK_UNANNOTATED,

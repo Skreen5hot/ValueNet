@@ -392,8 +392,20 @@ components:
       view, and not in the BFO layer the class index is built from. The
       folk layer had been tested for internal consistency and documented
       as "comprehensive in its coverage", and nothing had ever asked
-      whether the values in it are the values the corpus has. It carries
-      91 of 278.
+      whether the values in it are the values the corpus has. D-014 then
+      decided every one of the 278, and the tool reports each kind
+      separately: 98 exact classes, 9 alternative labels, 146
+      correspondences, 25 excluded.
+
+  - id: config.folk-membership
+    path: config/folk-membership.json
+    moves_to: null
+    role: configuration
+    description: >-
+      The folk corpus values D-014 excludes from the BFO folk module, each
+      with its reason. Exclusion is the one kind of decision no triple can
+      carry -- an exact class, an alternative label and a correspondence
+      are all in the ontology -- so tool.folk-coverage reads it from here.
 
   - id: tool.check-site
     path: tools/site/check_site.py

@@ -21,7 +21,7 @@ a question for whoever wrote the ontology, and answering it here would
 put a value on the public site that nothing in the RDF asserts.
 
 Invent. A class with no `skos:definition` fails rather than borrowing its
-label. There is no allowlist; all 187 authored classes carry one today
+label. There is no allowlist; all 186 authored classes carry one today
 and the gate is what keeps that true.
 
 Infer. `category` comes from transitive closure over named

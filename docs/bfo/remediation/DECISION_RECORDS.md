@@ -16,7 +16,7 @@ D-011 and D-012 were adopted and implemented on 2026-09-16 on the owner's instru
 
 D-008, D-009 and D-010 were adopted and implemented on 2026-09-16 under the same instruction. They record R12, R13 and R14 of the review response, following the recommendations the reviewer accepted: `RashJudgmentAct` as the negative fixture for the first two, and conditional acceptance of `contravenes` for the third.
 
-D-014 was adopted on 2026-09-16 on the owner's instruction, closing R15: the folk module's membership criteria, its coverage reported by kind, and a decision on every item the proposal's revision 3 had left pending. It supersedes D-012 item 3. It is not yet implemented.
+D-014 was adopted on 2026-09-16 on the owner's instruction, closing R15: the folk module's membership criteria, its coverage reported by kind, and a decision on every item the proposal's revision 3 had left pending. It supersedes D-012 item 3. It was implemented on 2026-09-17 on the owner's instruction to finish the remediation.
 
 ## D-001 — Extension of the Realist Value Model
 
@@ -418,7 +418,7 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 
 ## D-014 — Folk Membership Is Decided by Criteria, and Coverage Is Reported by Kind
 
-**Status:** Adopted 2026-09-16; not yet implemented
+**Status:** Adopted 2026-09-16; implemented 2026-09-17
 **Finding coverage:** formal review 2026-09-16, finding 13; N6 and R15 of the response
 **Record:** `docs/bfo/remediation/R15_FOLK_MEMBERSHIP_PROPOSAL.md`, revision 4 — the research, and a disposition for each of the 186 corpus values with no class (Table A) and each of the 45 module classes with no corpus value (Table B)
 **Supersedes:** D-012 item 3
@@ -520,6 +520,14 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 - Table A2 adds 150 mapping assertions, four corpus values having two targets; §6 of the record adds the Power correspondences; `PrudenceDisposition` loses one. The site's mapping counts and the evidence ledger move with them.
 - The implementation order is §8 of the record, each step with its tests, site pins and evidence.
 
+### Implementation notes
+
+- **Measured, not asserted.** `tools/bfo/folk_coverage.py` now reports the four kinds from the ontology itself — `rdfs:seeAlso` for exact classes, `skos:altLabel` for synonyms, the mapping assertions for correspondences — and reads exclusions from `config/folk-membership.json`, the only kind no triple can carry. It measures 98, 9, 146 and 25, with none pending and no value of two kinds. Before, it stopped at a class's first matching name, so an alternative label could never count.
+- **The record is the test's input.** `tests/bfo/test_folk_membership.py` reads items 7 to 10 of this record and Tables A1 to A4 of the R15 record, and checks the ontology against them: the removed IRIs are used nowhere, the placements and definitions are as recorded, and the 150 correspondences are exactly Table A2's.
+- **Correspondence IRIs.** Each correspondence points at the IRI the corpus's trigger lexicon uses, so annotation reaches the class. They differ from folk.ttl's declared IRI for one value only: the lexicon uses `folk:Accomplishment`, and folk.ttl declares `FolkValues.owl#:Accomplishment`.
+- **Mapping counts.** Phase 5's 45 broader, 5 related and 17 historical become 42, 159 and 17: Openness and Resourcefulness took three broader matches with them; Prudence lost its match to Discretion, and 150 corpus correspondences and five class-level related matches arrived — Control, Leadership and Wealth to Schwartz Power, Recognition to Power and Achievement. The site's diagram description says 218 mapping assertions overall.
+- **Annotations.** The six new classes carry every RULES 2.0 annotation. The records in `test_definition_discipline.py` fall to 75 misaligned genera and 128 missing comments and examples, as simulated.
+
 ### Reopen when
 
 - a competency question is recorded that needs a removed class, or a distinction a correspondence does not carry — `ConsentDisposition` is the named case;
@@ -543,4 +551,4 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 | D-011 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are disjoint with CCO Information Content Entity |
 | D-012 | Adopted and implemented; item 3 superseded by D-014 | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |
 | D-013 | Adopted; non-folk implemented, folk after D-014 | Annotations only; the non-folk modules are complete, and folk's 134 comments and 134 examples are recorded and gated |
-| D-014 | Adopted; not yet implemented | Yes, when implemented in the order the R15 record's §8 sets: seven folk classes removed and five re-parented, six added, 9 alternative labels, the correspondences, coverage reported by kind, then folk curation under D-013 |
+| D-014 | Adopted and implemented | Yes; seven folk classes removed and five re-parented, six added, 9 alternative labels, 150 corpus correspondences, coverage reported by kind; folk curation under D-013 follows |

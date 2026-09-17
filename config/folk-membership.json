@@ -1,0 +1,157 @@
+{
+  "decision": "D-014",
+  "record": "docs/bfo/remediation/R15_FOLK_MEMBERSHIP_PROPOSAL.md",
+  "what_this_is": "The folk corpus values D-014 excludes from the BFO folk module under M1: not value-related realizable entities. The other kinds live in the ontology itself -- an exact class carries rdfs:seeAlso to its value, a lexical synonym is a skos:altLabel, a correspondence is an assertion in valuenet-mappings.ttl -- so exclusion is the only kind with no triple to carry it. tools/bfo/folk_coverage.py reads this file.",
+  "excluded": [
+    {
+      "value": "Affective_autonomy",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Affective_autonomy",
+      "kind": "a culture-level analytical construct",
+      "reason": "a culture-level analytical construct, outside the module's bearer-level pattern"
+    },
+    {
+      "value": "Anticipation",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Anticipation",
+      "kind": "a category or heading",
+      "reason": "category or cluster heading"
+    },
+    {
+      "value": "BadHealth",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#BadHealth",
+      "kind": "a belief, not a value",
+      "reason": "negative world belief or situation (mft:NegativeValue)"
+    },
+    {
+      "value": "Beliefs",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Beliefs",
+      "kind": "a category or heading",
+      "reason": "category or cluster heading"
+    },
+    {
+      "value": "Egalitarianism",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Egalitarianism",
+      "kind": "a culture-level analytical construct",
+      "reason": "a culture-level analytical construct, outside the module's bearer-level pattern"
+    },
+    {
+      "value": "Embeddedness",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Embeddedness",
+      "kind": "a culture-level analytical construct",
+      "reason": "a culture-level analytical construct, outside the module's bearer-level pattern"
+    },
+    {
+      "value": "Feasibility",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Feasibility",
+      "kind": "not a value orientation",
+      "reason": "a property of plans"
+    },
+    {
+      "value": "Feelings",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Feelings",
+      "kind": "a category or heading",
+      "reason": "category or cluster heading"
+    },
+    {
+      "value": "Ferocious",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Ferocious",
+      "kind": "not a value orientation",
+      "reason": "a manner, not an orientation"
+    },
+    {
+      "value": "FolkValue",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#FolkValue",
+      "kind": "a category or heading",
+      "reason": "category or cluster heading"
+    },
+    {
+      "value": "Happyness",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Happyness",
+      "kind": "a misspelling",
+      "reason": "misspelling of Happiness; its trigger lexicon joins Happiness's in the correspondence layer"
+    },
+    {
+      "value": "Hierarchy",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Hierarchy",
+      "kind": "a culture-level analytical construct",
+      "reason": "a culture-level analytical construct, outside the module's bearer-level pattern"
+    },
+    {
+      "value": "Intellectual_autonomy",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Intellectual_autonomy",
+      "kind": "a culture-level analytical construct",
+      "reason": "a culture-level analytical construct, outside the module's bearer-level pattern"
+    },
+    {
+      "value": "LifeIsMeaningless",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#LifeIsMeaningless",
+      "kind": "a belief, not a value",
+      "reason": "negative world belief or situation (mft:NegativeValue)"
+    },
+    {
+      "value": "Management",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Management",
+      "kind": "not a value orientation",
+      "reason": "the source gives the bare term and no sense of its own; its ordinary sense is an activity, which does not establish a value-related realizable entity"
+    },
+    {
+      "value": "OtherPeopleCannotBeTrusted",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#OtherPeopleCannotBeTrusted",
+      "kind": "a belief, not a value",
+      "reason": "negative world belief or situation (mft:NegativeValue)"
+    },
+    {
+      "value": "PeopleCannotChangeTheirSituation",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#PeopleCannotChangeTheirSituation",
+      "kind": "a belief, not a value",
+      "reason": "negative world belief or situation (mft:NegativeValue)"
+    },
+    {
+      "value": "Personal_focus",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Personal_focus",
+      "kind": "a structural dimension of a theory",
+      "reason": "Schwartz structural dimension"
+    },
+    {
+      "value": "Risk-management",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Risk-management",
+      "kind": "not a value orientation",
+      "reason": "the source gives no value-level differentia; it may operationalize Security or Prudence, but none is invented for coverage"
+    },
+    {
+      "value": "Self-protection",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Self-protection",
+      "kind": "a structural dimension of a theory",
+      "reason": "Schwartz structural dimension"
+    },
+    {
+      "value": "SelfDoesntDeserveGood",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#SelfDoesntDeserveGood",
+      "kind": "a belief, not a value",
+      "reason": "negative world belief or situation (mft:NegativeValue)"
+    },
+    {
+      "value": "Social_focus",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Social_focus",
+      "kind": "a structural dimension of a theory",
+      "reason": "Schwartz structural dimension"
+    },
+    {
+      "value": "StrongSurviveInBrutalWorld",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#StrongSurviveInBrutalWorld",
+      "kind": "a belief, not a value",
+      "reason": "negative world belief or situation (mft:NegativeValue)"
+    },
+    {
+      "value": "Temperament",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Temperament",
+      "kind": "not a value orientation",
+      "reason": "a trait noun with no evaluative direction"
+    },
+    {
+      "value": "Willingness",
+      "iri": "http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Willingness",
+      "kind": "not a value orientation",
+      "reason": "bare willingness is a readiness toward an unspecified action, not itself a value orientation"
+    }
+  ]
+}

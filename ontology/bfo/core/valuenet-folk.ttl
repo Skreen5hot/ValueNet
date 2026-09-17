@@ -151,15 +151,6 @@
   skos:altLabel "Resilience"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#ResilienceDisposition> .
 
-<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition>
-  a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
-  vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition> ;
-  skos:definition "A personal value disposition to find quick and clever ways to overcome difficulties."@en ;
-  rdfs:label "Resourcefulness Disposition"@en ;
-  skos:altLabel "Resourcefulness"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/folk#ResourcefulnessDisposition> .
-
 <https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
@@ -239,7 +230,7 @@
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#ResponsibilityDisposition> ;
   skos:definition "A personal value disposition to be consistently reliable and trustworthy, such that others can count on one to fulfill commitments."@en ;
   rdfs:label "Dependability Disposition"@en ;
-  skos:altLabel "Dependability"@en ;
+  skos:altLabel "Dependability"@en, "Reliability"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#DependabilityDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition>
@@ -264,15 +255,8 @@
   vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> ;
   skos:definition "A personal value disposition to hold oneself in esteem and to act in a way that upholds one's own dignity and honor."@en ;
   rdfs:label "Self-Respect Disposition"@en ;
+  skos:altLabel "Respect for self"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#SelfRespectDisposition> .
-
-<https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition>
-  a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> ;
-  skos:definition "A personal value disposition to seek safety, harmony, and stability in society, relationships, and for oneself."@en ;
-  rdfs:label "Security Disposition"@en ;
-  skos:altLabel "Security"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/folk#SecurityDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition>
   a owl:Class ;
@@ -300,14 +284,6 @@
   skos:altLabel "Consistency"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#ConsistencyDisposition> .
 
-<https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition>
-  a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition> ;
-  skos:definition "A personal value disposition to respect, accept, and commit to the customs or ideas that one's culture or religion provide."@en ;
-  rdfs:label "Tradition Disposition"@en ;
-  skos:altLabel "Tradition"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/folk#TraditionDisposition> .
-
 <https://fandaws.com/ontology/bfo/valuenet-folk#CleanlinessDisposition>
   a owl:Class ;
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
@@ -322,7 +298,7 @@
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> ;
   skos:definition "A personal value disposition to be self-directing and independent in thought and action."@en ;
   rdfs:label "Autonomy Disposition"@en ;
-  skos:altLabel "Autonomy"@en ;
+  skos:altLabel "Autonomy"@en, "Independence"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#AutonomyDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#FreedomDisposition>
@@ -459,17 +435,10 @@
   skos:altLabel "Tolerance"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#ToleranceDisposition> .
 
-<https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition>
-  a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> ;
-  skos:definition "A personal value disposition to seek social status, prestige, and control or dominance over people and resources."@en ;
-  rdfs:label "Power Disposition"@en ;
-  skos:altLabel "Power"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/folk#PowerDisposition> .
-
 <https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> ;
   skos:definition "A personal value disposition to guide, direct, or command a group, organization, or country."@en ;
   rdfs:label "Leadership Disposition"@en ;
   skos:altLabel "Leadership"@en ;
@@ -484,7 +453,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
   skos:definition "A personal value disposition to seek the capacity to have an effect on the character, development, or behavior of someone or something."@en ;
   rdfs:label "Influence Disposition"@en ;
   skos:altLabel "Influence"@en ;
@@ -501,7 +470,8 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> ;
   skos:definition "A personal value disposition to seek acknowledgment, appreciation, or validation from others for one's achievements or status."@en ;
   rdfs:label "Recognition Disposition"@en ;
   skos:altLabel "Recognition"@en ;
@@ -596,7 +566,7 @@
   vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition> ;
   skos:definition "A personal value disposition to train oneself to follow a code of behavior or to control impulses."@en ;
   rdfs:label "Discipline Disposition"@en ;
-  skos:altLabel "Discipline"@en ;
+  skos:altLabel "Discipline"@en, "Self-discipline"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#DisciplineDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#PatienceDisposition>
@@ -630,7 +600,7 @@
   vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> ;
   skos:definition "A personal value disposition to use money and other resources carefully and not wastefully."@en ;
   rdfs:label "Thrift Disposition"@en ;
-  skos:altLabel "Thrift"@en ;
+  skos:altLabel "Thrift"@en, "Frugality"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#ThriftDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#LogicDisposition>
@@ -649,17 +619,6 @@
   skos:definition "A personal value disposition to be receptive to new and different ideas or the opinions of others."@en ;
   rdfs:label "Open-Mindedness Disposition"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#OpenMindednessDisposition> .
-
-<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition>
-  a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
-  vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> ;
-  skos:definition "A personal value disposition to be receptive to new experiences, including unfamiliar activities, sensations, and ways of living."@en ;
-  rdfs:label "Openness Disposition"@en ;
-  skos:altLabel "Openness"@en ;
-  rdfs:comment "Receptive rather than seeking: VarietyDisposition and AdventureDisposition seek out change and daring experience, OpenMindednessDisposition is receptive to ideas and opinions, and this class to experience. The definition formerly also covered being transparent and candid (R17, D-012); those senses are CandorDisposition and TransparencyDisposition, under HonestyDisposition. The broader conceptual matches below, Stimulation and Self-Direction, were already those of the sense kept."@en ;
-  skos:example "Accepting an invitation to a festival of a culture one knows nothing about, and taking part rather than watching."@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/folk#OpennessDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition>
   a owl:Class ;
@@ -841,7 +800,7 @@
   skos:definition "A personal value disposition to hold a system of religious belief and practice as a guide to living."@en ;
   rdfs:label "Religion Disposition"@en ;
   skos:altLabel "Religion"@en ;
-  rdfs:comment "The religious sense formerly joined to FaithDisposition's definition (R17, D-012), and the class for folk:Religion in the folk corpus, which places it under Beliefs alongside Faith and Belief in God. The system of belief itself is information content, as CCO Religion (ont00000616) models it; this class is the disposition of an agent who holds one as a guide to living, not the religion."@en ;
+  rdfs:comment "The religious sense formerly joined to FaithDisposition's definition (R17, D-012), and the class for folk:Religion, which this repository added to its copy of the folk corpus, under Beliefs alongside Faith and Belief in God; the upstream corpus has no such value. The system of belief itself is information content, as CCO Religion (ont00000616) models it; this class is the disposition of an agent who holds one as a guide to living, not the religion."@en ;
   skos:example "Keeping the prayer and dietary observances of one's tradition, and weighing a major decision against its teaching."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#ReligionDisposition> .
 
@@ -875,7 +834,7 @@
   vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition> ;
   skos:definition "A personal value disposition to face and deal with danger, difficulty, or pain without being overcome by fear."@en ;
   rdfs:label "Courage Disposition"@en ;
-  skos:altLabel "Courage"@en ;
+  skos:altLabel "Courage"@en, "Bravery"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#CourageDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition>
@@ -893,14 +852,6 @@
   rdfs:label "Diligence Disposition"@en ;
   skos:altLabel "Diligence"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#DiligenceDisposition> .
-
-<https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition>
-  a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition> ;
-  skos:definition "A personal value disposition to seek to have a strong and marked effect on someone or something."@en ;
-  rdfs:label "Impact Disposition"@en ;
-  skos:altLabel "Impact"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/folk#ImpactDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#StrengthDisposition>
   a owl:Class ;
@@ -948,7 +899,7 @@
   vn-core:hasBroaderConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> ;
   skos:definition "A personal value disposition to be willing to change or compromise; adaptability."@en ;
   rdfs:label "Flexibility Disposition"@en ;
-  skos:altLabel "Flexibility"@en ;
+  skos:altLabel "Flexibility"@en, "Adaptability"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#FlexibilityDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#ImaginationDisposition>
@@ -995,7 +946,8 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> ;
   skos:definition "A personal value disposition to seek the power to influence or direct people's behavior or the course of events."@en ;
   rdfs:label "Control Disposition"@en ;
   skos:altLabel "Control"@en ;
@@ -1006,16 +958,8 @@
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> ;
   skos:definition "A personal value disposition to show politeness in one's attitude and behavior toward others."@en ;
   rdfs:label "Courtesy Disposition"@en ;
-  skos:altLabel "Courtesy"@en ;
+  skos:altLabel "Courtesy"@en, "Politeness"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#CourtesyDisposition> .
-
-<https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition>
-  a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition> ;
-  skos:definition "A personal value disposition to speak or behave in such a way as to avoid causing offense or revealing private information."@en ;
-  rdfs:label "Discretion Disposition"@en ;
-  skos:altLabel "Discretion"@en ;
-  rdfs:seeAlso <https://w3id.org/valuenet/folk#DiscretionDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition>
   a owl:Class ;
@@ -1030,7 +974,7 @@
   rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#BenevolenceDisposition> ;
   skos:definition "A personal value disposition to be ready to show appreciation for and to return kindness."@en ;
   rdfs:label "Gratitude Disposition"@en ;
-  skos:altLabel "Gratitude"@en ;
+  skos:altLabel "Gratitude"@en, "Thankfulness"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#GratitudeDisposition> .
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#HopeDisposition>
@@ -1067,7 +1011,7 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> ;
   skos:definition "A personal value disposition to seek a high relative social or professional standing."@en ;
   rdfs:label "Status Disposition"@en ;
   skos:altLabel "Status"@en ;
@@ -1145,3 +1089,64 @@
   rdfs:label "Sustainability Disposition"@en ;
   skos:altLabel "Sustainability"@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#SustainabilityDisposition> .
+
+<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  skos:definition "A personal value disposition to protect and maintain bodily and mental health."@en ;
+  rdfs:label "Health Disposition"@en ;
+  skos:altLabel "Health"@en ;
+  rdfs:comment "Valuing health, not being healthy: a person in poor health can hold this disposition, and a healthy one can lack it. Schwartz treats health as a value whose meaning varies across cultures. Trait and state words such as vitality and fitness correspond to it in the mapping layer without naming it (D-014)."@en ;
+  skos:example "Keeping up exercise and medical check-ups through a demanding year because staying well matters to one, not because anyone requires it."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/folk#HealthDisposition> .
+
+<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  skos:definition "A personal value disposition to seek the development, possession, or exercise of intellectual ability."@en ;
+  rdfs:label "Intelligence Disposition"@en ;
+  skos:altLabel "Intelligence"@en ;
+  rdfs:comment "Valuing intellectual ability, as Rokeach's instrumental value 'intellectual' does, rather than having it. Distinguished from LearningDisposition, which values acquiring knowledge or skill, and from CuriosityDisposition, which values exploring what is new: this disposition values the ability itself."@en ;
+  skos:example "Choosing the harder course of study for the chance to sharpen one's reasoning, and admiring colleagues for the quality of their thinking."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/folk#IntelligenceDisposition> .
+
+<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  skos:definition "A personal value disposition to avoid excess and extremes in consumption, feeling and action."@en ;
+  rdfs:label "Moderation Disposition"@en ;
+  skos:altLabel "Moderation"@en ;
+  rdfs:comment "Aims at a measure between too much and too little. Distinguished from DisciplineDisposition, which trains conduct to a code or restrains impulses: moderation needs no code, and a disciplined person can follow a code to excess."@en ;
+  skos:example "Stopping after one drink at a celebration where no one is counting, because more would be too much."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/folk#ModerationDisposition> .
+
+<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition> ;
+  skos:definition "A personal value disposition to seek the acquisition or retention of financial and material wealth."@en ;
+  rdfs:label "Wealth Disposition"@en ;
+  skos:altLabel "Wealth"@en ;
+  rdfs:comment "Placed under the general personal-value parent rather than Schwartz Power, because wealth can be valued for security, independence or family as much as for power; Schwartz's survey item 'wealth' indicates Power, and is recorded as a related match rather than a parent (D-014)."@en ;
+  skos:example "Taking the better-paid of two job offers, over the one with more congenial work, in order to build up savings and property."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/folk#WealthDisposition> .
+
+<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#LoyaltyDisposition> ;
+  skos:definition "A loyalty disposition that concerns commitment to and special concern for the bearer's country or political community."@en ;
+  rdfs:label "Patriotism Disposition"@en ;
+  skos:altLabel "Patriotism"@en ;
+  rdfs:comment "Loyalty whose object is one's own country or political community. It carries no claim that the country is superior to others, which is what distinguishes patriotism from nationalism (D-014)."@en ;
+  skos:example "Volunteering to rebuild one's town after a flood, and voting in every election, out of attachment to one's country."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/folk#PatriotismDisposition> .
+
+<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition>
+  a owl:Class ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-folk#BalanceDisposition> ;
+  skos:definition "A balance disposition that concerns maintaining an appropriate allocation of time, attention, or effort between occupational and non-occupational domains."@en ;
+  rdfs:label "Work-Life Balance Disposition"@en ;
+  skos:altLabel "Work-Life Balance"@en ;
+  rdfs:comment "The case of BalanceDisposition that divides a life between work and everything else; BalanceDisposition itself concerns equilibrium among all the aspects of a life."@en ;
+  skos:example "Declining routine evening meetings in order to be home for dinner, while giving the job full attention during working hours."@en ;
+  rdfs:seeAlso <https://w3id.org/valuenet/folk#WorkLifeBalanceDisposition> .

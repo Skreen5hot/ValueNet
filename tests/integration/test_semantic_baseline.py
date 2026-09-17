@@ -1039,11 +1039,29 @@ LEDGER = (
      "classes and properties; the event spans 4e849e4..cf48895"),
 )
 
-#: Named classes declared since the tag, net of those removed, and the
-#: decision that added each. Phase C's swap -- Designative ICE in, EvidenceSource
-#: out -- nets to zero and is not listed.
+#: Named classes declared since the tag, and the decision that added each.
+#: Phase C's swap -- Designative ICE in, EvidenceSource out -- nets to zero and
+#: is not listed in either record.
 CLASSES_ADDED_SINCE_TAG = {
     "https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition": "D-012",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition": "D-014",
+}
+
+#: Named classes the tag declared that are gone, and the decision that removed
+#: each. Removal is an IRI break, so each must stay undeclared.
+CLASSES_REMOVED_SINCE_TAG = {
+    "https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition": "D-014",
+    "https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition": "D-014",
 }
 
 
@@ -1195,7 +1213,8 @@ def test_only_the_measures_the_repair_touches_have_moved():
 
     D-012 then declared a class, ReligionDisposition, so the corpus's named
     classes and class declarations each rise by one, and the reasoner's count
-    by one more.
+    by one more. D-014 added six folk classes and removed seven, so each of
+    those counts moves by the difference.
     """
     # Same reader, same hazard: an evidence artifact holding a non-ASCII
     # definition would decode to different characters under the locale
@@ -1232,12 +1251,12 @@ def test_only_the_measures_the_repair_touches_have_moved():
             key + " moved; no event in the ledger declares a file or a "
             "trigger")
     # Classes move only by the ones a decision added, each still declared.
-    added_classes = len(CLASSES_ADDED_SINCE_TAG)
+    added_classes = len(CLASSES_ADDED_SINCE_TAG) - len(CLASSES_REMOVED_SINCE_TAG)
     for key in ("named_classes", "class_declarations_summed"):
         assert (BASELINE["corpus"][key]["value"]
                 == old["corpus"][key]["value"] + added_classes), (
             key + " moved by other than the classes CLASSES_ADDED_SINCE_TAG "
-            "records")
+            "and CLASSES_REMOVED_SINCE_TAG record")
     import rdflib as _rdflib
     from rdflib.namespace import OWL as _OWL, RDF as _RDF
     declared = _rdflib.Graph()
@@ -1246,6 +1265,9 @@ def test_only_the_measures_the_repair_touches_have_moved():
     for iri, decision in CLASSES_ADDED_SINCE_TAG.items():
         assert (_rdflib.URIRef(iri), _RDF.type, _OWL.Class) in declared, (
             "%s, added by %s, is no longer declared" % (iri, decision))
+    for iri, decision in CLASSES_REMOVED_SINCE_TAG.items():
+        assert (_rdflib.URIRef(iri), _RDF.type, _OWL.Class) not in declared, (
+            "%s, removed by %s, is declared again" % (iri, decision))
 
     # Every reasoner verdict and count.
     for key in ("bfo_layer_files",
@@ -1257,7 +1279,8 @@ def test_only_the_measures_the_repair_touches_have_moved():
             == old["reasoner"]["bfo_layer_classes"]["value"] + 2
             + added_classes), (
         "bfo_layer_classes moved by other than the two anonymous classes "
-        "phase C added and the classes CLASSES_ADDED_SINCE_TAG records")
+        "phase C added and the classes CLASSES_ADDED_SINCE_TAG and "
+        "CLASSES_REMOVED_SINCE_TAG record")
 
     for name in ("folk_source", "folk_aligned"):
         assert BASELINE["artifacts"][name] == old["artifacts"][name], (

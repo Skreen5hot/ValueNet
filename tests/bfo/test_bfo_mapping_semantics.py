@@ -132,6 +132,14 @@ def test_canonical_skos_mapping_properties_are_not_asserted(ontology_graph):
 
 
 def test_mapping_inventory_has_the_adjudicated_phase5_counts(ontology_graph):
+    """Phase 5 adjudicated 45 broader, 5 related and 17 historical. D-014 moved
+    two of them. Broader: 42, since OpennessDisposition (Stimulation and
+    Self-Direction) and ResourcefulnessDisposition (Stimulation) were removed.
+    Related: 159 -- Prudence's match to the removed DiscretionDisposition goes,
+    150 folk corpus correspondences arrive in valuenet-mappings.ttl, and five
+    class-level ones on the classes D-014 placed under the general parent:
+    Control, Leadership and Wealth to Schwartz Power, Recognition to Power and
+    Achievement."""
     counts = Counter(
         predicate
         for predicate in PROJECT_MAPPING_PREDICATES
@@ -139,8 +147,8 @@ def test_mapping_inventory_has_the_adjudicated_phase5_counts(ontology_graph):
     )
     assert counts == Counter(
         {
-            VN_CORE.hasBroaderConceptualMatch: 45,
-            VN_CORE.hasRelatedConceptualMatch: 5,
+            VN_CORE.hasBroaderConceptualMatch: 45 - 3,
+            VN_CORE.hasRelatedConceptualMatch: 5 - 1 + 150 + 5,
             VN_CORE.historicallyCorrespondsTo: 17,
         }
     )

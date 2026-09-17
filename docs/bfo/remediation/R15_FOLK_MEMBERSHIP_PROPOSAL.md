@@ -1,6 +1,6 @@
 # R15 — Folk Value Membership
 
-**Status:** Revision 4, final, 2026-09-16. Adopted as **D-014** in `DECISION_RECORDS.md`, the governing membership and coverage policy for the folk module. No decision is pending. Nothing is implemented yet; the ontology changes land under D-014 in the order of §8.
+**Status:** Revision 4, final, 2026-09-16. Adopted as **D-014** in `DECISION_RECORDS.md`, the governing membership and coverage policy for the folk module. No decision is pending. Implemented 2026-09-17: steps 1 to 6 of §8 in one change, with the folk curation of step 7 after it.
 **Question (R15 of the formal review response):** which folk values belong in `valuenet-folk.ttl`, before its genus corrections and its comments and examples are written (D-013).
 **Evidence:**
 - web research carried out 2026-09-16, with every quotation checked against its source;

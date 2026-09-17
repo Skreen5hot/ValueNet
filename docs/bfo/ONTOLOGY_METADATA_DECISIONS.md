@@ -14,7 +14,7 @@ while testing search ranking
 
 ### Finding
 
-17 of the 187 authored classes carry a label that does not begin with a
+17 of the 186 authored classes carry a label that does not begin with a
 capital letter. They fall into two groups, which is why this is a policy
 question rather than a typo list:
 

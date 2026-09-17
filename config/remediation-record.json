@@ -1,5 +1,5 @@
 {
-  "after_commit": "cf48895cb018c40290df6e421217b8b476c84e73",
+  "after_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -1258,7 +1258,7 @@
       }
     },
     {
-      "after_commit": "cf48895cb018c40290df6e421217b8b476c84e73",
+      "after_commit": "1092c952b7e5cc3f113d46d14c9f438c3642e331",
       "before_commit": "74e7a6f4f4fdd7f68baad263361b9aaf8f78010f",
       "blank_node_shape": {
         "after": {
@@ -1734,6 +1734,1266 @@
         ],
         "count": 92,
         "removed": [],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+      "before_commit": "1092c952b7e5cc3f113d46d14c9f438c3642e331",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 28,
+          "component_digest_sha256": "58daf6f9ae61388cf6febb5d69238bf1dd4dc6ae23c685b460ddfd6442d5ddbc",
+          "components": 25,
+          "largest_component_nodes": 4,
+          "triples_touching": 106
+        },
+        "before": {
+          "blank_nodes": 28,
+          "component_digest_sha256": "58daf6f9ae61388cf6febb5d69238bf1dd4dc6ae23c685b460ddfd6442d5ddbc",
+          "components": 25,
+          "largest_component_nodes": 4,
+          "triples_touching": 106
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": false,
+        "predicates_touched": [
+          "http://purl.org/dc/terms/description",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+          "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+          "http://www.w3.org/2004/02/skos/core#altLabel",
+          "http://www.w3.org/2004/02/skos/core#definition",
+          "http://www.w3.org/2004/02/skos/core#example",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasBroaderConceptualMatch",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch"
+        ],
+        "subclass_edges_unchanged": false,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AdventureDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AltruismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AmbitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AssertivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AuthenticityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#BalanceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#BelongingDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CharityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CollaborationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CompetitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ContributionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CourageDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CourtesyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DecisivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DependabilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DeterminationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ExcitementDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ExpressivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FlexibilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#GenerosityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HumilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HumorDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#IntegrityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#JoyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LearningDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LogicDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OpenMindednessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OptimismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OrderDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PassionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PrivacyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PunctualityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PurposeDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SelfRespectDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SpiritualityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SustainabilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ThriftDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#UniquenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#VisionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-mappings.owl",
+          "https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-folk.ttl",
+        "ontology/bfo/core/valuenet-mappings.ttl",
+        "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Independence\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourageDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Bravery\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourtesyDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Politeness\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DependabilityDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Reliability\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Self-discipline\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FlexibilityDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Adaptability\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Thankfulness\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing health, not being healthy: a person in poor health can hold this disposition, and a healthy one can lack it. Schwartz treats health as a value whose meaning varies across cultures. Trait and state words such as vitality and fitness correspond to it in the mapping layer without naming it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Health Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#HealthDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Health\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to protect and maintain bodily and mental health.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Keeping up exercise and medical check-ups through a demanding year because staying well matters to one, not because anyone requires it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing intellectual ability, as Rokeach's instrumental value 'intellectual' does, rather than having it. Distinguished from LearningDisposition, which values acquiring knowledge or skill, and from CuriosityDisposition, which values exploring what is new: this disposition values the ability itself.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Intelligence Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#IntelligenceDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Intelligence\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek the development, possession, or exercise of intellectual ability.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Choosing the harder course of study for the chance to sharpen one's reasoning, and admiring colleagues for the quality of their thinking.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Aims at a measure between too much and too little. Distinguished from DisciplineDisposition, which trains conduct to a code or restrains impulses: moderation needs no code, and a disciplined person can follow a code to excess.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Moderation Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#ModerationDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Moderation\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to avoid excess and extremes in consumption, feeling and action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Stopping after one drink at a celebration where no one is counting, because more would be too much.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Loyalty whose object is one's own country or political community. It carries no claim that the country is superior to others, which is what distinguishes patriotism from nationalism (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Patriotism Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#PatriotismDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#LoyaltyDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Patriotism\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A loyalty disposition that concerns commitment to and special concern for the bearer's country or political community.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Volunteering to rebuild one's town after a flood, and voting in every election, out of attachment to one's country.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The religious sense formerly joined to FaithDisposition's definition (R17, D-012), and the class for folk:Religion, which this repository added to its copy of the folk corpus, under Beliefs alongside Faith and Belief in God; the upstream corpus has no such value. The system of belief itself is information content, as CCO Religion (ont00000616) models it; this class is the disposition of an agent who holds one as a guide to living, not the religion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelfRespectDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Respect for self\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ThriftDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Frugality\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Placed under the general personal-value parent rather than Schwartz Power, because wealth can be valued for security, independence or family as much as for power; Schwartz's survey item 'wealth' indicates Power, and is recorded as a related match rather than a parent (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Wealth Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#WealthDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Wealth\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek the acquisition or retention of financial and material wealth.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Taking the better-paid of two job offers, over the one with more congenial work, in order to build up savings and property.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The case of BalanceDisposition that divides a life between work and everything else; BalanceDisposition itself concerns equilibrium among all the aspects of a life.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Work-Life Balance Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#WorkLifeBalanceDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#BalanceDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Work-Life Balance\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A balance disposition that concerns maintaining an appropriate allocation of time, attention, or effort between occupational and non-occupational domains.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Declining routine evening meetings in order to be home for dinner, while giving the job full attention during working hours.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AdventureDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Daring>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AltruismDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Doing_good>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AmbitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Drive>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AssertivenessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Assertion>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AuthenticityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Congruence>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Empowerment>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BalanceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Rest>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BelongingDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Association>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Risk>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Composure>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Poise>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Serenity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Tranquility>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CharityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Philanthropy>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CollaborationDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Partnership>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Building_communities>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Involvement>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompetitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Healthy_competition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompetitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Victory>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Healthy_relationships>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Trusting_relationships>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ContributionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Service>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourageDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Fearless>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourageDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Valor>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Improvisation>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Originality>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Inquisitive>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Wonder>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DecisivenessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Decision_making>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DeterminationDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Perseverance>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Accuracy>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Rigor>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Thoroughfulness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Self-control>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Dutiful>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Experience>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Fun>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Lively>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Zeal>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Goodness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Morality>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Greatness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Performance>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Quality>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Workmanship>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcitementDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Exciting_life>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExpressivenessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Communication>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Impartial>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Objectivity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FlexibilityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Versatility>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Forgiving>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Grace>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GenerosityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Giving>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Grace>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Development>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Evolution>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Improvement>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Potential>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Energy>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Fitness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Longevity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Vitality>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Sincerity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Truth>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumilityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Modesty>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumorDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Amusement>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumorDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Irreverent>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumorDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Playfulness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntegrityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Conviction>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Brilliance>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Cleverness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Genius>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Reflection>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Smart>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Intuitive>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Intuitiveness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#TrustYourGuts>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JoyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Contentment>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JoyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Happiness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JoyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Satisfaction>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Approachability>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Consideration>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Welcoming>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LearningDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Continuous_learning>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LearningDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Education>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LearningDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Knowledge>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Recreation>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Relaxation>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LogicDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Analysis>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LogicDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Reason>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Alertness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Concentration>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Consciousness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Presence>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Self-awareness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpenMindednessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Receptiveness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OptimismDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Positivity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OrderDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Organization>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OrderDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Structure>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PassionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Inspiration>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PassionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Intensity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Inner_peace>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Silence>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PrivacyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Isolation>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PrivacyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Solitude>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PunctualityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Timeliness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PurposeDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Meaningful_work>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Famous>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Belief_in_God>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Devotion>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Consent>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Responsiveness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Reverence>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelfRespectDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Self-love>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpiritualityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Reverence>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpiritualityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Spirit>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Certainty>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Empowerment>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Helpfulness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Helping>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SustainabilityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Stewardship>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ThriftDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Economy>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Acceptance>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Diversity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Inclusiveness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Earning_trust>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Clarity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Insightful>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UniquenessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Distinctiveness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Novelty>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Surprise>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VisionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Foresight>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VisionDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Preparedness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Prosperity>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Common_sense>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Realism>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-mappings.owl> <http://purl.org/dc/terms/description> \"Provides annotation-only correspondences from BFO-aligned ValueNet entities to entities in the original ValueNet and related value ontologies: historical correspondences, and the folk corpus values that D-014 records as related to a class without naming it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Accomplishment>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Capable>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Effectiveness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#AchievementDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Efficiency>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Compliance>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Lawfulness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Comfort>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Pleasure>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#HedonismDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Self-indulgence>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Family_security>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Financial_stability>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Preparedness>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#Social_order>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <http://www.ontologydesignpatterns.org/ont/values/FolkValues.owl#World_of_Peace>"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Distinguished from folk:WisdomDisposition, which covers the accumulation and application of knowledge generally. Prudence is specifically the fit between the strength of an assessment and the evidence for it.\"@en"
+          }
+        ],
+        "count": 276,
+        "removed": [
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Discretion Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#DiscretionDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Discretion\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to speak or behave in such a way as to avoid causing offense or revealing private information.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Impact Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#ImpactDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Impact\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImpactDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek to have a strong and marked effect on someone or something.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Receptive rather than seeking: VarietyDisposition and AdventureDisposition seek out change and daring experience, OpenMindednessDisposition is receptive to ideas and opinions, and this class to experience. The definition formerly also covered being transparent and candid (R17, D-012); those senses are CandorDisposition and TransparencyDisposition, under HonestyDisposition. The broader conceptual matches below, Stimulation and Self-Direction, were already those of the sense kept.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Openness Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#OpennessDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Openness\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be receptive to new experiences, including unfamiliar activities, sensations, and ways of living.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Accepting an invitation to a festival of a culture one knows nothing about, and taking part rather than watching.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasBroaderConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpennessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasBroaderConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Power Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Power\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek social status, prestige, and control or dominance over people and resources.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The religious sense formerly joined to FaithDisposition's definition (R17, D-012), and the class for folk:Religion in the folk corpus, which places it under Beliefs alongside Faith and Belief in God. The system of belief itself is information content, as CCO Religion (ont00000616) models it; this class is the disposition of an agent who holds one as a guide to living, not the religion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Resourcefulness Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#ResourcefulnessDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Resourcefulness\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to find quick and clever ways to overcome difficulties.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResourcefulnessDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasBroaderConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Security Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#SecurityDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SecurityDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Security\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SecurityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek safety, harmony, and stability in society, relationships, and for oneself.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-folk#PowerDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition> <http://www.w3.org/2000/01/rdf-schema#label> \"Tradition Disposition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <https://w3id.org/valuenet/folk#TraditionDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition> <http://www.w3.org/2004/02/skos/core#altLabel> \"Tradition\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TraditionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to respect, accept, and commit to the customs or ideas that one's culture or religion provide.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-mappings.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-mappings.owl> <http://purl.org/dc/terms/description> \"Provides annotation-only historical correspondences from BFO-aligned ValueNet entities to entities in the original ValueNet and related value ontologies.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Distinguished from folk:WisdomDisposition, which covers the accumulation and application of knowledge generally, and from folk:DiscretionDisposition, which concerns restraint in speech and the handling of private information. Prudence is specifically the fit between the strength of an assessment and the evidence for it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition>"
+          }
+        ],
         "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
       }
     }

@@ -1034,9 +1034,16 @@ LEDGER = (
      "disjoint with ICE, with their comments (D-011); FaithDisposition and "
      "OpennessDisposition narrowed, ReligionDisposition added, and a comment "
      "and an example on each of the three (D-012)"),
-    ("cf48895c", (92, 0), "content-change", True,
+    ("1092c952", (92, 0), "content-change", True,
      "RULES 2.0 adopted (D-013): 32 comments and 60 examples on the non-folk "
-     "classes and properties; the event spans 4e849e4..cf48895"),
+     "classes and properties, written at 1092c95. First measured with HEAD at "
+     "cf48895, a docs-only commit; an event lands at the last commit that "
+     "changes Turtle once a later one exists"),
+    ("7e71a939", (220, 56), "content-change", True,
+     "folk membership (D-014): seven folk classes removed and five "
+     "re-parented, six added with their annotations, nine alternative labels, "
+     "150 folk corpus correspondences and five class-level related matches, "
+     "Prudence's match to Discretion removed, and two comments corrected"),
 )
 
 #: Named classes declared since the tag, and the decision that added each.

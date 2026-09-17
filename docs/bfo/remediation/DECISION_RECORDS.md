@@ -18,6 +18,8 @@ D-008, D-009 and D-010 were adopted and implemented on 2026-09-16 under the same
 
 D-014 was adopted on 2026-09-16 on the owner's instruction, closing R15: the folk module's membership criteria, its coverage reported by kind, and a decision on every item the proposal's revision 3 had left pending. It supersedes D-012 item 3. It was implemented on 2026-09-17 on the owner's instruction to finish the remediation.
 
+D-015 was adopted and implemented on 2026-09-17, after the remediation, on the owner's assessment of the open-items backlog: two folk classes sat under a Schwartz value that neither their definitions nor, in one case, the corpus supported.
+
 On 2026-09-17 the reviewer reviewed the decisions taken after their sign-off, D-011 to D-014 and the folk curation, and confirmed the sign-off (`docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md`). They accepted D-011 and D-014 as justified breaking changes, D-014's membership criteria M1–M7, and D-013's three readings of RULES 2.0. The breaking set they recognize is six items: D-005's text layer, the retirement of `EvidenceSource`, the retirement of the informational input and output properties, the re-parenting of `MoralAssessmentAct`, D-011, and D-014.
 
 ## D-001 — Extension of the Realist Value Model
@@ -585,6 +587,37 @@ Each class's `skos:example` is a paradigm case that separates it from these neig
 - the reviewer, on seeing M1–M7, disputes a criterion; or
 - the folk corpus is re-imported and its values change.
 
+## D-015 — Creativity and Respect Are Placed by Their Definitions
+
+**Status:** Adopted and implemented 2026-09-17
+**Finding coverage:** OI-8 in `docs/bfo/OPEN_ITEMS.md`
+**Applies:** D-014's M3, that a corpus grouping or a survey item is evidence for a mapping and not for a parent
+**Evidence:** `tests/bfo/test_open_items.py` re-derives the comparison; the genus gate in `tests/bfo/test_definition_discipline.py`; the mapping inventory in `tests/bfo/test_bfo_mapping_semantics.py`
+
+### Decision
+
+1. `folk:CreativityDisposition` moves from `schwartz-values:StimulationDisposition` to `schwartz-values:SelfDirectionDisposition`, with an annotation-only related match to Stimulation.
+2. `folk:RespectDisposition` moves from `schwartz-values:UniversalismDisposition` to `core:PersonalValueDisposition`, with annotation-only related matches to Universalism, Conformity and Tradition.
+3. Neither definition changes except its opening genus, which D-013 requires to name the asserted parent. No definition is narrowed to fit a parent.
+4. This is an IRI-preserving but logically breaking change: `CreativityDisposition` is no longer entailed to be a Stimulation disposition, and `RespectDisposition` and its subclass `CourtesyDisposition` are no longer entailed to be Universalism dispositions. ValueNet is new and nothing consumes its IRIs.
+
+### Rationale
+
+- **Creativity belongs to Self-Direction.** Schwartz's Self-Direction has the defining goal of independent thought and action — choosing, creating, exploring — and its survey items include creativity. Stimulation's items are a varied life, an exciting life and daring: novelty and arousal, not origination. The folk corpus places `folk:Creativity` under Self-Direction as well, which is evidence pointing the same way rather than the reason.
+- **Respect belongs to no one Schwartz value.** Its extension is due regard for others' feelings, wishes, rights *or* traditions. Universalism covers others' welfare and rights, Conformity the restraint from upsetting people, and Tradition respect for custom — Schwartz's own item "respect for tradition" sits under Tradition, not under a general respect value. A class whose extension crosses three values has no single Schwartz parent, so it takes the general one, and the overlap is recorded where overlap belongs, in annotation-only matches.
+- **The alternative was worse.** Either narrow the definition until it fits one Schwartz value, which would change what the class means to preserve a hierarchy, or leave the corpus's grouping to decide, which D-014's M3 rejects for mappings and which the corpus itself contradicts in one of the two cases.
+
+### Consequences
+
+- The project's related matches go from 159 to 163.
+- Both definitions open with their new parent, so the genus gate stays at zero in every module.
+- OI-8 closes, and the placement comparison it rested on is now a test: if any folk class comes to sit under a Schwartz value the corpus does not place it under, that test fails rather than the register quietly going stale.
+
+### Reopen when
+
+- a competency question needs `RespectDisposition` subsumed by a Schwartz value, which would mean narrowing it or splitting it; or
+- Schwartz's own theory is re-mapped in this repository, which would revisit every folk class with a Schwartz parent rather than these two.
+
 ## Decision Gate Result
 
 | Decision | Working status | Semantic ontology edits authorized? |
@@ -603,3 +636,4 @@ Each class's `skos:example` is a paradigm case that separates it from these neig
 | D-012 | Adopted and implemented; item 3 superseded by D-014 | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |
 | D-013 | Adopted and implemented | Annotations and definitions; every module has every term's comment and example, and every definition opens with its asserted parent. Both gates are at zero |
 | D-014 | Adopted and implemented | Yes; seven folk classes removed and five re-parented, six added, 9 alternative labels, 150 corpus correspondences, coverage reported by kind; folk curation under D-013 done |
+| D-015 | Adopted and implemented | Yes; `CreativityDisposition` moves to Schwartz Self-Direction and `RespectDisposition` to the general parent, with the overlaps recorded as annotation-only matches |

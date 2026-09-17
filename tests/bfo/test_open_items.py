@@ -248,9 +248,15 @@ def test_the_schwartz_placements_that_differ_are_the_ones_listed(open_items):
         if not ({norm(p) for p in placed} & mine or norm(here[0]) in theirs):
             differing.add(name)
 
-    listed = {name for name in re.findall(r"`(\w+Disposition)`",
-                                          next(row[1] for row in open_items
-                                               if row[0] == "OI-8"))}
+    row = next((row for row in open_items if row[0] == "OI-8"), None)
+    if row is None:
+        closed = {row[0]: row[2] for row in rows("Closed")}
+        assert "OI-8" in closed, "OI-8 is neither open nor closed"
+        assert not differing, (
+            "OI-8 is closed, but these classes still sit under a Schwartz "
+            "value the corpus does not place them under: %s" % sorted(differing))
+        return
+    listed = set(re.findall(r"`(\w+Disposition)`", row[1]))
     assert differing == listed, (
         "the classes whose Schwartz parent differs from the corpus are %s; "
         "OI-8 lists %s" % (sorted(differing), sorted(listed)))

@@ -1,5 +1,5 @@
 {
-  "after_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
+  "after_commit": "3413e404681175b1b773b0320b13b13c6e8debba",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -4873,6 +4873,122 @@
           {
             "file": "ontology/bfo/core/valuenet-folk.ttl",
             "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Declining routine evening meetings in order to be home for dinner, while giving the job full attention during working hours.\"@en"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "3413e404681175b1b773b0320b13b13c6e8debba",
+      "before_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 0,
+          "component_digest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "components": 0,
+          "largest_component_nodes": 0,
+          "triples_touching": 0
+        },
+        "before": {
+          "blank_nodes": 0,
+          "component_digest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "components": 0,
+          "largest_component_nodes": 0,
+          "triples_touching": 0
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+          "http://www.w3.org/2004/02/skos/core#definition",
+          "https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch"
+        ],
+        "subclass_edges_unchanged": false,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-folk.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Generating and recognizing useful new ideas. Its subclasses divide it: ImaginationDisposition forms ideas not present to the senses, and InnovationDisposition introduces new methods and products. 'Originality' and 'improvisation' correspond to it (D-014). D-015 placed it under Schwartz Self-Direction, whose defining goal is independent thought and action and whose survey items include creativity; the related match records what it shares with Stimulation, which is novelty rather than origination.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A self-direction disposition towards generating or recognizing ideas, alternatives, or possibilities that may be useful in solving problems, communicating with others, and entertaining oneself and others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Due regard for others' feelings, wishes, rights, and traditions. 'Consent' and 'responsiveness' correspond to it, and 'reverence' to it and to SpiritualityDisposition (D-014). Its subclass CourtesyDisposition is respect shown in politeness; ToleranceDisposition accepts what one disagrees with. D-015 moved it to the general parent: no one Schwartz value covers that extension, which reaches across Universalism's concern for others' welfare and rights, Conformity's restraint from upsetting people, and Tradition's respect for custom. The three related matches record that overlap.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to show due regard for the feelings, wishes, rights, or traditions of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition>"
+          }
+        ],
+        "count": 16,
+        "removed": [
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Generating and recognizing useful new ideas. Its subclasses divide it: ImaginationDisposition forms ideas not present to the senses, and InnovationDisposition introduces new methods and products. 'Originality' and 'improvisation' correspond to it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition towards generating or recognizing ideas, alternatives, or possibilities that may be useful in solving problems, communicating with others, and entertaining oneself and others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Due regard for others' feelings, wishes, rights, and traditions. 'Consent' and 'responsiveness' correspond to it, and 'reverence' to it and to SpiritualityDisposition (D-014). Its subclass CourtesyDisposition is respect shown in politeness; ToleranceDisposition accepts what one disagrees with.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition>"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A universalism disposition to show due regard for the feelings, wishes, rights, or traditions of others.\"@en"
           }
         ],
         "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."

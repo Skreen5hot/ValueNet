@@ -1048,6 +1048,11 @@ LEDGER = (
      "folk curation under D-013: 76 definitions replaced (75 genus "
      "corrections and Intuition's), 128 comments and 128 examples added, and "
      "eight earlier folk examples rewritten in the modules' form"),
+    ("3413e404", (10, 6), "content-change", True,
+     "D-015: CreativityDisposition moved from Schwartz Stimulation to "
+     "Self-Direction and RespectDisposition to the general parent, each with "
+     "its genus corrected, its comment extended, and the Schwartz values it "
+     "overlaps recorded as related matches"),
 )
 
 #: Named classes declared since the tag, and the decision that added each.

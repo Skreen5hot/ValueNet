@@ -24,7 +24,7 @@ Do not move the pin to v25, which is end-of-life, or to v26, which does not beco
 
 **Facts.**
 
-- `config/quality-report.json` holds the owner's sign-off, signed 2026-09-03 against commit d9a4cb43. The published content has changed since: the text layer, two split folk classes, 92 new comments and examples, and new definitions.
+- `config/quality-report.json` holds the owner's sign-off, signed 2026-09-03 against commit d9a4cb43. The published content has changed since: the text layer, two split folk classes, the folk membership D-014 decided (seven classes removed, six added), every term's comment and example, and new definitions.
 - `test_the_link_report_still_holds` fails because the models page now has one more internal link.
 - The report must be regenerated with `--fresh-clone`, because the tests require that section. That step clones the repository and runs the site and licensing suites.
 
@@ -88,13 +88,13 @@ Alternatively, count named classes only and bump the version. That makes the mea
 
 **Facts.** After D-005, `TextualRepresentation` and `TextSpan` reach none of the explorer's four category roots, so the class index files them under "other". They are listed as reviewed there. Adding a fifth category would change the site schema and the explorer.
 
-**Proposal.** No change. They are two of 187 classes, "other" is accurate, and a category for them would be a site feature built for a single decision. Reconsider if a later module adds more form-level classes.
+**Proposal.** No change. They are two of 186 classes, "other" is accurate, and a category for them would be a site feature built for a single decision. Reconsider if a later module adds more form-level classes.
 
 ## Order
 
 1. **O1** — install Node 24.
-2. **R15** — decided as D-014; implement it, then do the folk curation pass.
+2. **R15** — done: D-014 implemented, and the folk curation pass complete.
 3. **O2** — re-sign.
-4. **O3** — reviewer update. This can run in parallel with R15, and it would help to have the reviewer's view of M1–M7 before implementing them.
+4. **O3** — reviewer update. D-014 is already implemented, so the reviewer is asked about M1–M7 after the fact; a disagreement reopens D-014 under its own terms.
 5. **O4** — push and open the pull request.
 6. **O5–O8** — whenever convenient.

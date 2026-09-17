@@ -287,7 +287,7 @@ def test_two_builds_produce_identical_bytes(tmp_path):
 # revision of this project cited a class-index digest that nothing in the
 # tree could reproduce, which is how a number nobody can check survives.
 NORMALISED_CONTENT = (
-    "c9f89101d0d7bc2c78b9b34acc2aad41c2db79db038a0d2076c69d71e3b7887b")
+    "ec44a85ed39b8d34057e07a27acd843fda4e105d4acadc412ea2801a9d1a6ea0")
 
 #: Fields that move without the ontology moving.
 #:

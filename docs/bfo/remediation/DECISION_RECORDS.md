@@ -10,7 +10,7 @@ D-005 was provisionally adopted on 2026-09-16, on the project owner's instructio
 
 D-006 and D-007 were adopted on 2026-09-16, after the reviewer signed off on the review response and the owner instructed that the remediation proceed. Both were implemented with D-005: D-006's source digest is corrected in the regenerated extract manifest, and D-007's properties are retired.
 
-D-013 was adopted on 2026-09-16 on the owner's instruction, following the recommendation that answered R2: RULES 2.0 becomes the standard, with the readings the record states.
+D-013 was adopted on 2026-09-16 on the owner's instruction, following the recommendation that answered R2: RULES 2.0 becomes the standard, with the readings the record states. Its non-folk half was implemented the same day, and its folk half on 2026-09-17, after D-014.
 
 D-011 and D-012 were adopted and implemented on 2026-09-16 on the owner's instruction after phase E: the disjointness D-005 had left undecided, and the two splits R17 had left to the owner.
 
@@ -389,7 +389,7 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 
 ## D-013 — RULES 2.0 Is ValueNet's Definition and Annotation Standard
 
-**Status:** Adopted 2026-09-16; implemented for the non-folk modules, folk pending R15
+**Status:** Adopted 2026-09-16; implemented for the non-folk modules 2026-09-16, and for folk 2026-09-17 after D-014
 **Finding coverage:** formal review 2026-09-16, finding 13; R2 and R18 of the response
 **Standard:** `docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RULES_2.0.md`
 **Evidence:** `tests/bfo/test_definition_discipline.py`
@@ -410,6 +410,23 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 - The definition-form rule already had its substantive part enforced: genus alignment is gated. Rewriting "to" as "that" would change the wording of 148 definitions and the meaning of none.
 - The annotation gap is a writing programme, not a defect with a single fix. A gate that records it and admits no new debt lets it be paid down in reviewable steps.
 - Folk curation waits on membership, for the same reason its genus corrections do.
+
+### Folk implementation, 2026-09-17
+
+After D-014 settled membership, the folk module was curated in one pass: the 75 remaining misaligned definitions now open with their asserted parent, and the 128 terms lacking a comment and an example have both. Every module is at zero on both gates, and the records in `test_definition_discipline.py` are empty. The examples use the form the other modules use for a disposition, "a person's standing inclination to …"; the three folk examples written earlier (Faith, Religion, and D-014's six classes) were brought to the same form.
+
+Most genus corrections change only the opening words. Eight definitions changed more, each for a reason under RULES 2.0 or D-014, and the owner may want to read them:
+
+| class | now | why |
+|---|---|---|
+| `IntuitionDisposition` | "a personal value disposition to favor intuitive judgment, understanding reached immediately without conscious reasoning, as a guide to belief and action" | D-014: valuing or favoring intuitive judgment, not having the faculty |
+| `EquityDisposition` | "a justice disposition to distribute resources and opportunities according to individuals' needs and other materially relevant differences, so that the outcome is fair rather than identical" | D-014: the definition carries the competency reason; it had named need only and ended in "a fair and equal outcome" |
+| `StrengthDisposition` | "a resilience disposition to value and cultivate the capacity to withstand great force, pressure, or adversity" | was "to possess and value": a value disposition is valuing, not having (M1) |
+| `ExcellenceDisposition` | "an achievement disposition to strive for qualities of a very high degree and for superiority in performance or outcome" | was "to possess qualities to a very high degree", for the same reason |
+| `PeaceDisposition` | "a calmness disposition to seek freedom from disturbance, within oneself and in one's surroundings" | dropped "; a state of tranquility or quiet": the state corresponds, it is not the disposition (M5) |
+| `BoldnessDisposition` | "a courage disposition to take risks and act with confidence and forwardness" | dropped "; a form of courage", which the new genus states |
+| `LeisureDisposition` | "an enjoyment disposition to value time free from work or other occupation" | dropped the gloss "; free time" |
+| `ForgivenessDisposition` | "… toward a person or group who has harmed one" | was "who has harmed you" |
 
 ### Reopen when
 
@@ -550,5 +567,5 @@ CQ1 asks *which acts run against a value that the acting agent themselves bears*
 | D-010 | Adopted and implemented | Documentation only; `contravenes` is retained with its justification recorded |
 | D-011 | Adopted and implemented | Yes; `TextualRepresentation` and `TextSpan` are disjoint with CCO Information Content Entity |
 | D-012 | Adopted and implemented; item 3 superseded by D-014 | Yes; `FaithDisposition` and `OpennessDisposition` narrowed to one sense each; `ReligionDisposition` added |
-| D-013 | Adopted; non-folk implemented, folk after D-014 | Annotations only; the non-folk modules are complete, and folk's 134 comments and 134 examples are recorded and gated |
-| D-014 | Adopted and implemented | Yes; seven folk classes removed and five re-parented, six added, 9 alternative labels, 150 corpus correspondences, coverage reported by kind; folk curation under D-013 follows |
+| D-013 | Adopted and implemented | Annotations and definitions; every module has every term's comment and example, and every definition opens with its asserted parent. Both gates are at zero |
+| D-014 | Adopted and implemented | Yes; seven folk classes removed and five re-parented, six added, 9 alternative labels, 150 corpus correspondences, coverage reported by kind; folk curation under D-013 done |

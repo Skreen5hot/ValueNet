@@ -1,6 +1,6 @@
 {
   "tool_version": 5,
-  "input_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+  "input_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
   "input_tree_state": "clean apart from config/remediation-record.json",
   "reproduce": {
     "command": "python tools/marep/build_evidence.py",
@@ -142,10 +142,10 @@
       "describes_corpus_at": "04b16ed1aede740e343038dd95b52392ef31b8a5",
       "corpus_repaired_since": {
         "artifact": "config/remediation-record.json",
-        "artifact_sha256": "882d45063e98204379f3e36d85cd2122bc7baac17291d80c2cef9f5d1fa05111",
+        "artifact_sha256": "d7338aac1ac4a25bc70211308aea73081ebab09e9c308e66e14e2af9721b5617",
         "before_tag": "eol-hardened-v1",
         "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
-        "after_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+        "after_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
         "corpus_files_changed": [
           "ThatsAllFolks/MFRC_1k_graphs/357_GRAPH.ttl",
           "ontology/bfo/core/valuenet-core.ttl",
@@ -284,6 +284,17 @@
             "ground_added": 220,
             "ground_removed": 56,
             "blank_node_shape_unchanged": true
+          },
+          {
+            "before_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+            "after_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
+            "files": [
+              "ontology/bfo/core/valuenet-folk.ttl"
+            ],
+            "change_class": "content-change",
+            "ground_added": 340,
+            "ground_removed": 84,
+            "blank_node_shape_unchanged": true
           }
         ],
         "not_remediated": {
@@ -317,7 +328,7 @@
       "definition": "measure_file(...).parses is True"
     },
     "distinct_triples": {
-      "value": 105090,
+      "value": 105346,
       "definition": "len of the merged graph over all parsing files"
     },
     "named_classes": {
@@ -337,7 +348,7 @@
       "definition": "distinct objects of vcvf:triggers"
     },
     "merged_ground_sha256": {
-      "value": "4e5954461a8e58f3c77faafaa45cf1773950e25f876156eb1acd07f139592364",
+      "value": "cd72324c81f0cf5ed835b4d545fe0c4a6bea69f6318c212fa60101367eb34b16",
       "definition": "SHA-256 over sorted N-Triples of every triple with no blank node. Catches a renamed class, a re-pointed subClassOf, a swapped literal \u2014 changes the counts cannot see."
     },
     "merged_bnode_shape": {
@@ -373,7 +384,7 @@
       "definition": "unsatisfiable named classes"
     },
     "bfo_scope_canonical_sha256": {
-      "value": "9c8ea64ffaeeda53a716aded2274bc33cf6a77884594388ce3c3f92245bf6808",
+      "value": "2a8969953e45ac7032e792bca142764dfcad066db9cb8e8698d77b1970d5e860",
       "definition": "SHA-256 over sorted N-Triples of the canonicalized union of layout.reasoner_scope()"
     },
     "bfo_scope_files": {

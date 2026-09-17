@@ -1,5 +1,5 @@
 {
-  "after_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+  "after_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
   "before_commit": "04b16ed1aede740e343038dd95b52392ef31b8a5",
   "before_commit_is": "the commit the transition matrix measured. It is the parent of eol-hardened-v1, which carries the evidence generated from it. No Turtle differs between the two; that was checked, not assumed.",
   "before_tag": "eol-hardened-v1",
@@ -2992,6 +2992,1887 @@
           {
             "file": "ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics.ttl",
             "triple": "<https://fandaws.com/ontology/bfo/valuenet-moral-epistemics#PrudenceDisposition> <https://fandaws.com/ontology/bfo/valuenet-core#hasRelatedConceptualMatch> <https://fandaws.com/ontology/bfo/valuenet-folk#DiscretionDisposition>"
+          }
+        ],
+        "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."
+      }
+    },
+    {
+      "after_commit": "8cd48be18b2d341fb95920d99b0c269203b7f92f",
+      "before_commit": "7e71a9399b2fe9aa4b5cc5fa5437a5bdf2521369",
+      "blank_node_shape": {
+        "after": {
+          "blank_nodes": 0,
+          "component_digest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "components": 0,
+          "largest_component_nodes": 0,
+          "triples_touching": 0
+        },
+        "before": {
+          "blank_nodes": 0,
+          "component_digest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "components": 0,
+          "largest_component_nodes": 0,
+          "triples_touching": 0
+        },
+        "scope": "computed over this event's changed files only, which is sound because a blank node never spans a Turtle document",
+        "unchanged": true
+      },
+      "classification": {
+        "basis": "publication-metadata requires all five: every changed ground triple on a subject the graph types owl:Ontology, every changed predicate an approved header predicate, the named class inventory and named subclass edges identical, and the blank-node fingerprint identical. Ground triples and the fingerprint between them cover every triple; either alone leaves a change invisible.",
+        "blank_node_shape_unchanged": true,
+        "change_class": "content-change",
+        "header_predicates_only": false,
+        "header_subjects_only": false,
+        "named_classes_unchanged": true,
+        "predicates_touched": [
+          "http://www.w3.org/2000/01/rdf-schema#comment",
+          "http://www.w3.org/2004/02/skos/core#definition",
+          "http://www.w3.org/2004/02/skos/core#example"
+        ],
+        "subclass_edges_unchanged": true,
+        "subjects_touched": [
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AccountabilityRole",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AdventureDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AltruismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AmbitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AssertivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AuthenticityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#BalanceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#BeautyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#BelongingDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CandorDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CareDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ChallengeDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CharityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ChastityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CleanlinessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CollaborationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CommitmentDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CompassionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CompetitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ConsistencyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ContributionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CooperationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CourageDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CourtesyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DecisivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DependabilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DeterminationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DignityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DiscoveryDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EmpathyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EncouragementDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EnduranceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EqualityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EquityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ExcitementDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ExplorationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ExpressivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FamilyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FidelityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FlexibilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FreedomDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#FriendshipDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#GenerosityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#GoodCitizenRole",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HarmonyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HonorDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HopeDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HumilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#HumorDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ImaginationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#InnovationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#IntegrityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#IntimacyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#JoyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#JusticeDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LeaderRole",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LearningDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LogicDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LoveDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#LoyaltyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#MasteryDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#MaturityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#MeaningDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OpenMindednessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OptimismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#OrderDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PassionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PatienceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PrivacyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ProfessionalismRole",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PunctualPersonRole",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PunctualityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#PurposeDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ResilienceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ResponsibilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SelfRespectDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SelflessnessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SensitivityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SharingDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SimplicityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SpiritualityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SpontaneityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#StrengthDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#SustainabilityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#TeamworkDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ThriftDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#TransparencyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#TrustDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#UniquenessDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#UnityDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#VisionDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition",
+          "https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition"
+        ]
+      },
+      "files": [
+        "ontology/bfo/core/valuenet-folk.ttl"
+      ],
+      "substitutions": {
+        "added": [
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AccountabilityRole> <http://www.w3.org/2000/01/rdf-schema#comment> \"A role, not a disposition: it is grounded in the social or professional position that makes its bearer answerable, whatever the bearer values. Valuing being accountable is part of ResponsibilityDisposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AccountabilityRole> <http://www.w3.org/2004/02/skos/core#example> \"The role a club treasurer bears of answering to the members for how the club's funds were spent.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AdventureDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeks experiences that are unusual and carry some risk. VarietyDisposition seeks change without daring, and ChallengeDisposition seeks difficult tasks that test one's abilities.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AdventureDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition to seek out unusual, exciting, and daring experiences.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AdventureDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to spend vacations trekking in remote country rather than returning to a familiar resort.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AltruismDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Concern for others' well-being for its own sake, not from obligation, loyalty, or expected return. Its subclass SelflessnessDisposition puts others' needs ahead of one's own; GenerosityDisposition concerns giving, which can have other motives.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AltruismDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to act with selfless concern for the well-being of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AltruismDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to spend weekends helping an elderly neighbor, expecting nothing in return.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AmbitionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The drive toward success and distinction. DeterminationDisposition persists in a task however hard it is, and ExcellenceDisposition aims at the quality of a performance rather than the standing it brings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AmbitionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An achievement disposition to strive for success, power, or distinction.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AmbitionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to apply for promotion at every opportunity and to plan a career several steps ahead.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AssertivenessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Stating one's views and needs with confidence while respecting others', which separates it from aggression and from ControlDisposition, which seeks to direct others. The corpus word 'assertion', which names an act, corresponds to it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AssertivenessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to say plainly in a meeting that a deadline cannot be met, without blaming anyone.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AuthenticityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Being true to one's own character under outside pressure. Its subclass ExpressivenessDisposition concerns conveying one's thoughts and feelings; HonestyDisposition concerns truthfulness toward others rather than fidelity to oneself.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AuthenticityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep dressing and speaking as they choose after joining a firm where everyone conforms to one style.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Independence in thought and action, the core of Schwartz's self-direction value. FreedomDisposition values the absence of external constraint rather than governing oneself. 'Independence' is an alternative label; 'empowerment' only corresponds (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A self-direction disposition to be self-directing and independent in thought and action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to work out their own view of a contested question rather than adopting the one their friends hold.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BalanceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Equilibrium among the parts of a life, so that none crowds out the rest. Its subclass WorkLifeBalanceDisposition concerns the division between work and everything else; ModerationDisposition avoids excess in any one thing rather than weighing several against each other.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BalanceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to rearrange their commitments when one part of life, whether work, family, friends, or health, starts to take over the rest.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BeautyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing what pleases the senses or the mind, in nature, art, or ideas. Schwartz's universalism includes the survey item 'a world of beauty', which the class's broader match to Universalism records.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BeautyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take the longer walk to work because it passes through a park in bloom.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BelongingDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeks to be an accepted and integral member of a group; 'sense of belonging' is a Schwartz survey item. CommunityDisposition values taking part in a community, and UnityDisposition values a group's being joined together.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BelongingDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep attending a choir for the sense of being one of its members, as much as for the singing.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"The forward, risk-taking form of courage. CourageDisposition as a whole also covers enduring danger or pain without being overcome by fear, which need not be bold. 'Risk' corresponds to it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A courage disposition to take risks and act with confidence and forwardness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to pitch an untested idea to senior management when colleagues think it too risky.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Remaining tranquil and free from agitation. Kept under D-014 on direct attestation: Scott Jeffrey lists 'Calm' and DevelopGoodHabits 'Calmness'. The states composure, serenity, and tranquility correspond to the class without naming it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CalmnessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to slow down and speak evenly when a situation at work turns tense.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CandorDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Honesty in saying what one thinks, even when it is unwelcome. Its sibling TransparencyDisposition concerns making one's actions visible, not speaking frankly. D-012 gave candor this home when it narrowed OpennessDisposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CandorDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An honesty disposition to be frank, open, and sincere in speech or expression.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CandorDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to tell a friend that their business plan has a serious flaw, rather than offering polite encouragement.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CareDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Providing for others' needs as well as caring about them. A different class from moral-foundations:CareDisposition, the moral value disposition realized in appraising harm. CompassionDisposition is moved by suffering in particular.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CareDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to provide for the needs of, and show concern for, the well-being of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CareDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to cook for and look in on a housebound relative every week.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChallengeDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeks tasks that are new and difficult because they test one's abilities. AdventureDisposition seeks daring experience rather than difficulty, and MasteryDisposition seeks the skill a challenge might build.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChallengeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition to seek out and engage with tasks that are new and difficult, testing one's abilities.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChallengeDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to volunteer for the project nobody yet knows how to do.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CharityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Generosity directed at people in need, usually through gifts of money or resources. Its parent GenerosityDisposition covers giving time, kindness, or resources to anyone. 'Philanthropy' corresponds to it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CharityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A generosity disposition to voluntarily give help, typically in the form of money or resources, to those in need.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CharityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to give a fixed share of their income each month to a food bank.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChastityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Discipline applied to sexual conduct. Whether it excludes all sexual intercourse or only intercourse outside marriage depends on the code its bearer follows; the class covers both.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChastityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A discipline disposition to refrain from extramarital, or from all, sexual intercourse.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChastityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep a religious vow of celibacy.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CleanlinessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Keeping oneself and one's surroundings clean. OrderDisposition values neatness of arrangement and structure rather than freedom from dirt.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CleanlinessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to wash up and wipe down the kitchen before going to bed.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CollaborationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Cooperation in making or achieving something together, each contributing to a shared result. Its sibling TeamworkDisposition values taking part in a group's combined action, which need not produce a joint work. 'Partnership' corresponds to it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CollaborationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A cooperation disposition to work jointly on an activity or project to create or achieve something.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CollaborationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to draft a report together with colleagues rather than writing it alone and circulating it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommitmentDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Dedication to something one has taken on. DutyDisposition concerns obligations one has whether or not one chose them, and LoyaltyDisposition standing by a person, group, or cause.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommitmentDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A responsibility disposition to be dedicated to a cause, activity, or person.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommitmentDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep training for a marathon they signed up for after the novelty has worn off.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Taking part in, and giving back to, a community one belongs to. BelongingDisposition seeks acceptance in a group, and ContributionDisposition values service to any community, cause, or group.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A universalism disposition to value and actively participate in a social group with shared characteristics, interests, or location.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to help run the neighborhood association and its annual street fair.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompassionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Moved by others' suffering to relieve it. EmpathyDisposition shares others' feelings without being directed at relieving them, and CareDisposition provides for needs whether or not anyone is suffering.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompassionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to recognize the suffering of others and be motivated to alleviate it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompassionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to stop and help someone who has fallen in the street and is in pain.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompetitionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeks to win by outdoing others. ExcellenceDisposition aims at a high standard whatever others achieve, and AmbitionDisposition seeks success and distinction by any route. 'Victory' and 'healthy competition' correspond to it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompetitionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to enter every tournament their club runs, for the chance of beating the other players.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Rapport and meaningful relationship with others. FriendshipDisposition values bonds of mutual affection, and IntimacyDisposition close and usually loving relationships; connection can hold with people who are neither friends nor intimates.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to seek and maintain a feeling of rapport and meaningful relationship with others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to learn about the lives of the colleagues they work with, not only about their work.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConsistencyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Steadiness and predictability in one's own conduct and thought over time. StabilityDisposition prefers constancy in one's circumstances, and DependabilityDisposition is being reliable to others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConsistencyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep the same morning routine and to apply the same standards to every decision of a kind.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ContributionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Making a positive difference to a community, cause, or group through service. 'Service' corresponds to it (D-014). CommunityDisposition values belonging to and taking part in a particular community.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ContributionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to spend a Saturday each month volunteering at an animal shelter.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeks the power to direct people's behavior or the course of events. D-014 placed it under the general parent rather than Schwartz Power, because directing the course of events need not mean control over people or resources, and records the overlap as a related match. The definition was not narrowed to fit a parent.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ControlDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take charge of planning a group trip so that it goes the way they intend.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CooperationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Working with others toward a shared goal. Its subclasses divide it: CollaborationDisposition produces something jointly, and TeamworkDisposition takes part in a group's combined action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CooperationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to agree on a common plan with the other parents before a school event rather than acting alone.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourageDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Facing danger, difficulty, or pain without being overcome by fear. 'Bravery' is an alternative label; 'fearless' and 'valor' only correspond, because fearlessness lacks the fear courage acts despite, and valor is courage in battle (D-014). BoldnessDisposition is its forward, risk-taking form.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourageDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to report a colleague's misconduct despite fearing the consequences for their career.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourtesyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Respect shown through politeness in manner and speech. 'Politeness' is an alternative label (D-014). Its parent RespectDisposition covers due regard for others' feelings, wishes, rights, and traditions, of which politeness is the outward form.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourtesyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A respect disposition to show politeness in one's attitude and behavior toward others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourtesyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to thank store staff and hold doors for the people behind them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Generating and recognizing useful new ideas. Its subclasses divide it: ImaginationDisposition forms ideas not present to the senses, and InnovationDisposition introduces new methods and products. 'Originality' and 'improvisation' correspond to it (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition towards generating or recognizing ideas, alternatives, or possibilities that may be useful in solving problems, communicating with others, and entertaining oneself and others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to invent a new game for the children rather than buying one.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Wanting to explore, investigate, and learn about what is new. Its subclasses are ExplorationDisposition, which travels through the unfamiliar, and DiscoveryDisposition, which values finding. LearningDisposition values acquiring knowledge or skill, new or not.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition to explore, investigate, and learn about new things or ideas.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to look up how something works whenever they come across a device they do not understand.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DecisivenessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Making decisions quickly and effectively. Kept under D-014 on direct attestation: Scott Jeffrey lists 'Decisive' and The Mind Fool 'Decisiveness'. 'Decision making' names an activity and only corresponds.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DecisivenessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to settle a choice as soon as the relevant facts are in, rather than reopening it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DependabilityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Being someone others can count on to fulfill commitments. 'Reliability' is an alternative label (D-014). TrustworthinessDisposition concerns deserving others' confidence in general, and CommitmentDisposition dedication to a cause, activity, or person.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DependabilityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A responsibility disposition to be consistently reliable and trustworthy, such that others can count on one to fulfill commitments.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DependabilityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to turn up on the day they promised to help a friend move, whatever else comes up.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DeterminationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Persisting with something difficult. 'Perseverance' corresponds to it rather than naming it (D-014). Its subclass DiligenceDisposition applies careful, persistent effort; AmbitionDisposition supplies a goal rather than persistence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DeterminationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An achievement disposition to continue trying to do something, although it is very difficult.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DeterminationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep resubmitting a rejected grant proposal, revising it each time.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DignityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing the worth that makes a person deserving of honor or respect, one's own and others'. SelfRespectDisposition concerns one's own dignity only, and RespectDisposition the regard shown to others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DignityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to object when a colleague is spoken to with contempt, as they would if it were them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Determination in the form of careful, thorough effort. 'Accuracy', 'rigor', and 'thoroughfulness' correspond to it (D-014). Its parent persists against difficulty; diligence attends to care and thoroughness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A determination disposition to apply careful and persistent work or effort.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to check every figure in a report twice before sending it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Training oneself to follow a code of behavior or to control impulses. 'Self-discipline' is an alternative label; 'self-control' corresponds (D-014). ModerationDisposition avoids excess with or without a code, and ChastityDisposition is discipline applied to sexual conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DisciplineDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to finish their study hours before looking at their phone.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscoveryDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Curiosity that values the finding itself. Its sibling ExplorationDisposition values traveling through the unfamiliar, whether or not anything is found.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscoveryDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A curiosity disposition to value the process of finding something unexpectedly or during a search.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscoveryDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to browse used bookstores for books they did not know existed.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Fulfilling moral or legal obligations. Kept under D-014 on direct attestation: The Mind Fool lists 'Dutiful', which attests the value but stays a correspondence, since it fails the substitution test. CommitmentDisposition concerns what one has chosen to take on.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A responsibility disposition to fulfill one's moral or legal obligations.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to serve on a jury when summoned, although it disrupts their work.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EmpathyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Understanding and sharing another's feelings. CompassionDisposition adds the motive to relieve suffering, and its subclass SensitivityDisposition is the quick and delicate appreciation of feelings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EmpathyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to understand and share the feelings of another.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EmpathyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to imagine how a friend feels about a loss before offering any advice.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EncouragementDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Giving others support, confidence, or hope. SupportDisposition gives assistance and comfort as well; encouragement aims at strengthening someone's own confidence to act.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EncouragementDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to give support, confidence, or hope to someone.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EncouragementDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to tell a nervous colleague before a presentation that they are well prepared.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnduranceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Withstanding hardship, adversity, or stress over a long period. ResilienceDisposition recovers quickly from setbacks, and PatienceDisposition tolerates delay without annoyance.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnduranceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep working steadily through a year of caring for a sick parent.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Hedonism in its lighthearted form. 'Fun' and 'experience' correspond to it (D-014). Its subclass LeisureDisposition values free time; JoyDisposition seeks intense happiness rather than fun.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A hedonism disposition to seek pleasure, fun, and lighthearted gratification.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to fill a free afternoon with games and outings with friends.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Passion shown as eager enjoyment or approval. 'Zeal' and 'lively' correspond to it (D-014). Its parent PassionDisposition pursues activities with intense emotion; enthusiasm is that emotion shown.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A passion disposition to feel and show intense and eager enjoyment, interest, or approval.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to throw themselves into every new club project and draw others in.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EqualityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Justice as identical treatment. Its sibling EquityDisposition distributes according to materially relevant differences; D-014 keeps both because queries may need to tell equal treatment from fair treatment sensitive to such differences.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EqualityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A justice disposition to ensure that each individual or group is given the same resources or opportunities, regardless of circumstances.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EqualityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to split a shared restaurant bill evenly among everyone at the table.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EquityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Justice sensitive to materially relevant differences. D-014 keeps the class for that distinction: queries may need to tell equal treatment, which is EqualityDisposition, from fair treatment sensitive to differences such as need. Equity is also measured as a core public value (Favero, Jensen, Kim and Piatak 2025).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EquityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A justice disposition to distribute resources and opportunities according to individuals' needs and other materially relevant differences, so that the outcome is fair rather than identical.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EquityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to give the extra tutoring hours to the pupils who are furthest behind.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Integrity as adherence to a system of moral principles. 'Morality' and 'goodness' correspond to it (D-014). HonorDisposition adheres to what is right or to a standard of conduct, without requiring a system of principles.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An integrity disposition to adhere to a system of moral principles that govern a person's behavior or the conducting of an activity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to decline a profitable contract whose terms would require misleading customers.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Achievement measured against a high standard of quality. 'Quality', 'performance', 'greatness', and 'workmanship' correspond to it (D-014). CompetitionDisposition measures against other people, and MasteryDisposition seeks command of a field rather than an outstanding result.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An achievement disposition to strive for qualities of a very high degree and for superiority in performance or outcome.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to rework a piece of furniture until every joint is flawless, although no one else would notice.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcitementDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking feelings of great enthusiasm and eagerness. 'An exciting life', a Schwartz and Rokeach value item, corresponds to it (D-014). AdventureDisposition seeks daring experiences; excitement is the feeling, whatever produces it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcitementDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition to seek and experience feelings of great enthusiasm and eagerness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcitementDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to choose the fast-paced job over the calm one for the thrill it gives.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExplorationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Curiosity that travels in or through unfamiliar places to learn about them. Its sibling DiscoveryDisposition values finding things, and AdventureDisposition values daring experience whether or not anything is learned.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExplorationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A curiosity disposition to travel in or through an unfamiliar area in order to learn about it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExplorationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to walk the back streets of a new city without a map.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExpressivenessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Authenticity carried into expression: conveying what one actually thinks and feels. 'Communication' corresponds to it (D-014). CandorDisposition is frankness, which may say what is unwelcome; expressiveness is conveying oneself well.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExpressivenessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An authenticity disposition to effectively convey one's thoughts and feelings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExpressivenessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to tell their partner how an argument left them feeling, rather than letting it pass.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Treating people impartially, without favoritism or discrimination. 'Impartial' and 'objectivity' correspond to it (D-014). JusticeDisposition upholds just treatment in actions and systems more broadly, and moral-foundations:FairnessDisposition is the moral value disposition, a different class.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A universalism disposition to treat people impartially and without favoritism or discrimination.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination, as a hiring manager, to score every candidate against the same criteria, friends' children included.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to stay confident that an estranged friend will make amends, and to keep a place for them, though nothing yet suggests they will.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FamilyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Love directed at one's family, whoever the bearer counts as family. Its sibling IntimacyDisposition values close relationships wherever they are, and BelongingDisposition seeks acceptance in any group.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FamilyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A love disposition to prioritize the well-being, support, and bonds of one's family.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FamilyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to turn down a job abroad in order to stay near their parents and siblings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FidelityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Integrity as continuing faithfulness to a person, cause, or belief one has pledged oneself to. LoyaltyDisposition, under Benevolence, is devotion to a person, group, cause, or nation, whether or not anything was pledged.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FidelityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An integrity disposition to be faithful to a person, cause, or belief, demonstrated by continuing loyalty and support.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FidelityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to remain faithful to their spouse when temptation arises.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FlexibilityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Willingness to change or compromise. 'Adaptability' is an alternative label; 'versatility' corresponds (D-014). SpontaneityDisposition acts on impulse, and ToleranceDisposition accepts others' views without changing one's own.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FlexibilityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to rework their plans without complaint when a project's requirements change.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Releasing resentment toward those who have done harm; 'forgiving' is a Schwartz survey item, and it corresponds to the class, as, with GratitudeDisposition, does 'grace' (D-014). The release is chosen, which distinguishes it from forgetting or excusing.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to consciously and deliberately decide to release feelings of resentment or vengeance toward a person or group who has harmed one.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to resume a friendship after a friend has apologized for betraying a confidence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FreedomDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing liberty and the absence of constraint on choice and action, for oneself and for others. AutonomyDisposition values governing oneself; freedom values the room to do so.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FreedomDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A self-direction disposition to value liberty and the absence of necessity, coercion, or constraint in choice or action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FreedomDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to oppose rules that would restrict what their neighbors may say or do.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FriendshipDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Forming and keeping bonds of mutual affection. ConnectionDisposition values rapport more widely, and IntimacyDisposition close and usually loving relationships.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FriendshipDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to form and maintain bonds of mutual affection with others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FriendshipDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep in touch with school friends decades later.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GenerosityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Giving freely, whether time, resources, or kindness. 'Giving' corresponds to it (D-014). Its subclass CharityDisposition gives to those in need; SharingDisposition shares what one has rather than giving it away.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GenerosityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to freely give to others, such as time, resources, or kindness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GenerosityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to lend their car to a neighbor without being asked.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GoodCitizenRole> <http://www.w3.org/2000/01/rdf-schema#comment> \"A role grounded in membership of a community or state, which carries its expectation whether or not the bearer values civic life. Valuing one's own country is PatriotismDisposition; valuing service to a community is ContributionDisposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GoodCitizenRole> <http://www.w3.org/2004/02/skos/core#example> \"The role a resident of a town bears of obeying its laws, paying its taxes, and serving on a jury when called.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Readiness to show appreciation for kindness and to return it. 'Thankfulness' is an alternative label; 'grace' corresponds, with ForgivenessDisposition (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to be ready to show appreciation for and to return kindness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to write to a former teacher years later to say what their help meant.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Continuous personal development and improvement. 'Development', 'evolution', 'improvement', and 'potential' correspond to it (D-014). LearningDisposition acquires knowledge or skill; growth is development of the person.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A self-direction disposition to seek continuous personal development and improvement.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to ask for honest feedback after every project and act on it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HarmonyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Agreement and concord, within oneself and in relations with others. PeaceDisposition seeks freedom from disturbance, and UnityDisposition a group's being joined as a whole.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HarmonyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to look for a solution both sides of a family dispute can accept.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep up exercise and medical check-ups through a demanding year because staying well matters to them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Truthfulness, sincerity, and straightforwardness. 'Sincerity' and 'truth' correspond to it (D-014). Its subclasses are CandorDisposition, frankness in speech, and TransparencyDisposition, openness of action; AuthenticityDisposition is truthfulness to oneself.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An integrity disposition to be truthful, sincere, and straightforward in communication and action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to point out when a store has undercharged them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonorDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Adhering to what is right or to a standard of conduct, and to the esteem that goes with it. EthicsDisposition adheres to a system of moral principles, and DignityDisposition values worthiness of respect rather than conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonorDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An integrity disposition to adhere to what is right or to a conventional standard of conduct, showing high respect and esteem.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonorDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep their word on a handshake deal when breaking it would cost them nothing.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HopeDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Optimism directed at a particular outcome one desires. Its parent OptimismDisposition is a hopeful and confident attitude toward the future in general.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HopeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An optimism disposition to maintain a feeling of expectation and desire for a certain thing to happen.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HopeDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep applying for jobs after many rejections, expecting that one will succeed.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumilityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"A modest view of one's own importance; humility is a value in Schwartz's refined theory. 'Modesty' corresponds to it (D-014). SelflessnessDisposition puts others' needs first, which does not require a modest view of oneself.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumilityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to credit their team when their own work is praised.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumorDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Appreciating, expressing, and seeking what is amusing. 'Amusement' and 'playfulness' correspond to it, and so, deliberately weakly, does 'irreverent' (D-014). EnjoymentDisposition seeks fun more broadly.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HumorDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to find the joke in a frustrating day and share it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImaginationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Creativity as forming ideas and images not present to the senses. Its sibling InnovationDisposition introduces new methods or products into use.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImaginationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A creativity disposition to form new ideas, images, or concepts not present to the senses.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImaginationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to spend evenings inventing a fictional world, with its maps and histories.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking the capacity to affect the character, development, or behavior of people or things; 'influential' is a Schwartz survey item. D-014 placed it under the general parent, because an effect on development is not dominance and so does not satisfy Schwartz Power.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InfluenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to mentor junior colleagues in order to shape how they approach their work.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InnovationDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Creativity put into practice through new methods, ideas, or products. Its sibling ImaginationDisposition forms ideas whether or not they are put to use.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InnovationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A creativity disposition to introduce new methods, ideas, or products.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InnovationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to redesign a tedious office procedure rather than follow it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntegrityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Adherence to moral and ethical principles as a matter of character. 'Conviction' corresponds to it (D-014). Its subclasses divide it into truthfulness (Honesty), faithfulness (Fidelity), principle (Ethics), and right conduct (Honor).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntegrityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A universalism disposition to adhere to moral and ethical principles, demonstrating honesty, consistency, and strong moral character.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntegrityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to act the same way whether or not anyone is watching.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to choose the harder course of study for the chance to sharpen their reasoning.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntimacyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Love sought in close, familiar, and usually affectionate relationships; 'mature love' is a Schwartz survey item. FamilyDisposition concerns one's family specifically, and FriendshipDisposition bonds of mutual affection that need not be intimate.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntimacyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A love disposition to seek and maintain close, familiar, and usually affectionate or loving personal relationships with others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntimacyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to set aside time each evening to talk openly with their partner.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing and favoring intuitive judgment, not having an intuitive faculty (D-014). Kept on direct attestation: Scott Jeffrey lists 'Intuitive'. 'Intuitive', 'intuitiveness', and 'trust your guts' correspond to it. LogicDisposition favors explicit reasoning instead.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to favor intuitive judgment, understanding reached immediately without conscious reasoning, as a guide to belief and action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to go with their first impression of a job candidate when the interview scores are close.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JoyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking intense happiness and delight. 'Happiness', 'contentment', and 'satisfaction' correspond to it without naming it: they are emotional states, and the class is valuing them (D-014). EnjoymentDisposition seeks lighter fun.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JoyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to arrange their weekends around the things that delight them most.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JusticeDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Upholding just treatment and moral rightness in actions and systems. Its subclasses are EqualityDisposition, identical treatment, and EquityDisposition, treatment sensitive to relevant differences; FairnessDisposition is impartiality in one's own dealings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JusticeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A universalism disposition to uphold just behavior and treatment, ensuring fairness and moral rightness in actions and systems.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JusticeDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to campaign against a local rule that falls hardest on those least able to bear it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Being friendly, generous, and considerate as the everyday manner of dealing with others. 'Approachability', 'consideration', and 'welcoming' correspond to it (D-014). CompassionDisposition responds to suffering in particular.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to be friendly, generous, and considerate in action or speech.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to welcome a new neighbor with a meal and an offer of help.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeaderRole> <http://www.w3.org/2000/01/rdf-schema#comment> \"A role grounded in a position of leadership, formal or informal, and in the expectations a group attaches to it. LeadershipDisposition, valuing guiding a group, can be borne by someone who holds no such position, and this role by someone who does not value it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeaderRole> <http://www.w3.org/2004/02/skos/core#example> \"The role the captain of a sports team bears of setting the team's tactics and speaking for it to the referee.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing guiding, directing, or commanding a group. D-014 placed it under the general parent, because guiding a group need not seek dominance or status, with a related match to Schwartz Power. LeaderRole is the role of someone in a leadership position, which can be held without this disposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeadershipDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to step forward and organize volunteers when a local emergency needs a response.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LearningDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Acquiring new knowledge, behavior, skill, or understanding. 'Knowledge', 'education', and 'continuous learning' correspond to it (D-014). CuriosityDisposition is drawn to what is new, and IntelligenceDisposition values intellectual ability itself.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LearningDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take an evening course in a subject unrelated to their work.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Enjoyment of free time as such; Rokeach's 'pleasure (an enjoyable, leisurely life)' attests it. 'Recreation' and 'relaxation' correspond to it (D-014). WorkLifeBalanceDisposition divides time between work and the rest of life; leisure values the rest.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An enjoyment disposition to value time free from work or other occupation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep Sundays unscheduled for reading and walking.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LogicDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking and applying valid reasoning and inference. 'Analysis' and 'reason' correspond to it (D-014). IntuitionDisposition favors understanding reached without conscious reasoning, and WisdomDisposition joins judgment and experience to knowledge.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LogicDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to write out the steps of an argument before accepting its conclusion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoveDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Deep affection for a person, group, or ideal, felt and expressed. Its subclasses are FamilyDisposition and IntimacyDisposition; FriendshipDisposition values mutual affection, which may be less deep.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoveDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to feel and express deep or intense affection for another person, group, or ideal.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoveDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to tell the people they love that they love them, and to show it in what they do.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoyaltyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Faithfulness and devotion to a person, group, cause, or nation; 'loyal' is a Schwartz survey item. Its subclass PatriotismDisposition is loyalty to one's country or political community, and FidelityDisposition, under Integrity, keeps faith with what one has pledged.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoyaltyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to be faithful and devoted to a person, group, cause, or nation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoyaltyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to defend a friend who is being criticized in their absence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MasteryDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking comprehensive knowledge or skill in a subject or activity. ExcellenceDisposition aims at an outstanding result; mastery aims at command of a whole field.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MasteryDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An achievement disposition to seek comprehensive knowledge or skill in a particular subject or activity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MasteryDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to practice the piano daily for years, working through the whole repertoire.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MaturityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Responding to one's circumstances appropriately, with developed mental and emotional qualities. WisdomDisposition applies knowledge and judgment; maturity is concerned with fitting emotional response.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MaturityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take criticism at work calmly and consider whether it is fair.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MeaningDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking profound significance in life. Its parent PurposeDisposition seeks a central aim that organizes one's goals; meaning is the significance such an aim can give.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MeaningDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A purpose disposition to seek and find profound or implicit significance in life.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MeaningDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to leave a well-paid job for work they find significant.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Moment-by-moment awareness of one's thoughts, feelings, body, and surroundings. Kept under D-014 on concept-level attestation: Scott Jeffrey's Presence Values 'emphasize mindfulness, awareness, and inner stillness'. 'Presence', 'alertness', 'concentration', 'consciousness', and 'self-awareness' correspond to it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A calmness disposition to maintain a moment-by-moment awareness of one's thoughts, feelings, bodily sensations, and surrounding environment.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to pause several times a day and notice what they are feeling.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to stop after one drink at a celebration where no one is counting, because more would be too much.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpenMindednessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Receptiveness to new and different ideas and to others' opinions. 'Receptiveness' corresponds to it (D-014). The bare word 'openness' is not its label: it also names a personality trait and Schwartz's openness to change, which is why D-014 retired OpennessDisposition. ToleranceDisposition permits views without being receptive to them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OpenMindednessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to read the strongest case for a view they disagree with.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OptimismDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"A hopeful, confident attitude toward the future. 'Positivity' corresponds to it (D-014). Its subclass HopeDisposition hopes for a particular outcome.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OptimismDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to treat a setback as temporary and plan the next attempt.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OrderDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Preferring neatness, organization, and established structure. 'Organization' and 'structure' correspond to it (D-014). CleanlinessDisposition values freedom from dirt, and ConsistencyDisposition steadiness of one's own conduct.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#OrderDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep files labeled and a fixed place for every tool.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PassionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Pursuing activities with intense enthusiasm and emotion. 'Intensity' corresponds to it, and so, weakly, does 'inspiration', which is closer to a state (D-014). Its subclass EnthusiasmDisposition is eager enjoyment shown.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PassionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to spend every free hour restoring old motorcycles.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatienceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Accepting delay, problems, or suffering without annoyance or anxiety. EnduranceDisposition withstands prolonged hardship; patience is the calm acceptance of waiting.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatienceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to explain a task again to a slow learner without irritation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to help rebuild their town after a flood, and to vote in every election, out of attachment to their country.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Calmness sought as freedom from disturbance: valuing peace, not the state of being at peace. 'Inner peace' and 'silence' correspond to it (D-014). HarmonyDisposition seeks concord rather than the absence of disturbance.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A calmness disposition to seek freedom from disturbance, within oneself and in one's surroundings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to spend an hour each morning in a quiet room before the household wakes.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PrivacyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Freedom from public attention, observation, or intrusion; 'privacy' is a Schwartz survey item. 'Isolation' and 'solitude' correspond to it (D-014). TransparencyDisposition values the opposite for one's actions.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PrivacyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep their social media accounts closed and their address unlisted.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ProfessionalismRole> <http://www.w3.org/2000/01/rdf-schema#comment> \"A role grounded in practicing a profession, whose standards of competence and conduct the profession sets rather than the bearer.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ProfessionalismRole> <http://www.w3.org/2004/02/skos/core#example> \"The role a nurse bears of keeping to clinical standards of care and confidentiality while on duty.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PunctualPersonRole> <http://www.w3.org/2000/01/rdf-schema#comment> \"A role grounded in an arrangement that sets a time, such as an appointment or a deadline, and in the expectation it creates. PunctualityDisposition is valuing being on time; a person can bear this role without it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PunctualPersonRole> <http://www.w3.org/2004/02/skos/core#example> \"The role a guest who has accepted a dinner invitation for seven o'clock bears of arriving at that time.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PunctualityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Completing tasks and meeting obligations at or before the agreed time. 'Timeliness' corresponds to it (D-014). PunctualPersonRole is the expectation an arrangement creates; this is valuing meeting it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PunctualityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to arrive ten minutes early for appointments.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PurposeDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking a central life aim that organizes one's goals. 'Meaningful work' corresponds to it (D-014). Its subclass MeaningDisposition seeks the significance such an aim gives, and VisionDisposition plans the future with a clear direction.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PurposeDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to judge job offers by whether they serve their aim of improving public health.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking acknowledgment of one's achievements or status. D-014 placed it under the general parent, because recognition does not entail control, with related matches to Schwartz Power and Achievement, for which 'social recognition' is a survey item. 'Famous' corresponds to it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RecognitionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to enter their work for awards and to mention them when they win.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep the prayer and dietary observances of their tradition and to weigh major decisions against its teaching.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResilienceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Recovering quickly from difficulties and setbacks. Its subclass StrengthDisposition values the capacity to withstand pressure, and EnduranceDisposition withstands hardship over a long time rather than recovering from it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResilienceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to start rebuilding the week after their business fails.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Due regard for others' feelings, wishes, rights, and traditions. 'Consent' and 'responsiveness' correspond to it, and 'reverence' to it and to SpiritualityDisposition (D-014). Its subclass CourtesyDisposition is respect shown in politeness; ToleranceDisposition accepts what one disagrees with.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A universalism disposition to show due regard for the feelings, wishes, rights, or traditions of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to ask before taking someone's photograph.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResponsibilityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Being reliable, trustworthy, and accountable for one's actions and duties. Its subclasses divide it: Dependability, Trustworthiness, Commitment, Duty, and Sustainability. AccountabilityRole is the expectation a position creates; this is valuing it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ResponsibilityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to own up to a mistake that delayed a project.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelfRespectDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Holding oneself in esteem and upholding one's own dignity. 'Respect for self' is an alternative label; 'self-love' corresponds (D-014). DignityDisposition values worth in oneself and others alike.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelfRespectDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to leave a relationship in which they are repeatedly belittled.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelflessnessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Altruism that puts others' needs and wishes ahead of one's own. Its parent AltruismDisposition is concern for others' well-being, which need not come at one's own expense.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelflessnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An altruism disposition to be more concerned with the needs and wishes of others than with one's own.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelflessnessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to give up their own vacation so that a colleague can be with their family.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SensitivityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Empathy in its quick and delicate form: noticing others' feelings readily. Its parent EmpathyDisposition understands and shares feelings once they are noticed.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SensitivityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An empathy disposition to have a quick and delicate appreciation of others' feelings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SensitivityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to notice that a quiet guest is uncomfortable and draw them into conversation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SharingDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Having or using something together with others. GenerosityDisposition gives things away; sharing keeps a portion for oneself.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SharingDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to have or use a portion of something with another or others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SharingDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to split their lunch with a colleague who has forgotten theirs.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SimplicityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing what is plain, natural, and easy to understand or do; Scott Jeffrey lists it. ThriftDisposition avoids waste; simplicity avoids embellishment and complication.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SimplicityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to furnish their home sparsely and keep few possessions.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpiritualityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Concern with the human spirit and the search for meaning beyond material things. 'Spirit' corresponds to it, and 'reverence' to it and to RespectDisposition (D-014). ReligionDisposition holds a particular system of belief and practice; spirituality need not.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpiritualityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to spend time each week in contemplation, without belonging to any religion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpontaneityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Acting on sudden impulses and desires without planning. VarietyDisposition seeks change; spontaneity acts without premeditation, whether or not the result is new.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpontaneityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition to act upon sudden impulses and desires without premeditation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpontaneityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to accept a last-minute invitation to go away for the weekend.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Preferring constancy and predictability in one's circumstances. 'Certainty' corresponds to it (D-014). ConsistencyDisposition is steadiness in one's own conduct; stability is steadiness in what surrounds one.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A security disposition to prefer constancy, predictability, and resistance to change.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to stay in the same town and job for decades.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Power as social or professional standing. D-014 placed it under Schwartz Power, whose differentia, social status and prestige, it satisfies; folk Power's other former subclasses went to the general parent. RecognitionDisposition seeks acknowledgment rather than rank.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A power disposition to seek a high relative social or professional standing.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to join the most exclusive club in town for the standing it confers.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StrengthDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Resilience as the capacity to withstand pressure, valued and cultivated rather than simply possessed. Its parent ResilienceDisposition recovers from setbacks, and CourageDisposition faces danger despite fear.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StrengthDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A resilience disposition to value and cultivate the capacity to withstand great force, pressure, or adversity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StrengthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to train hard, physically and mentally, so as to hold up under pressure.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Giving assistance, approval, or comfort to others. 'Helpfulness' and 'helping' correspond to it, and 'empowerment' to it and to AutonomyDisposition (D-014). EncouragementDisposition aims at others' confidence, and CareDisposition provides for their needs.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to give assistance, approval, or comfort to others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to sit with a friend through a hospital appointment.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SustainabilityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Responsibility for ecological balance, avoiding depletion of natural resources. 'Stewardship' corresponds to it (D-014). ThriftDisposition avoids waste for one's own sake; sustainability avoids it for the environment's.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SustainabilityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A responsibility disposition to seek the maintenance of ecological balance by avoiding depletion of natural resources.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SustainabilityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to repair appliances rather than replace them, and to cycle instead of driving.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TeamworkDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Cooperation as effective participation in a group's combined action. Its sibling CollaborationDisposition works jointly to produce something; teamwork plays one's part in what the group does.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TeamworkDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A cooperation disposition to value and effectively participate in the combined action of a group.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TeamworkDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take the unglamorous position their team needs filled.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ThriftDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Using money and other resources carefully, without waste. 'Frugality' is an alternative label, so the search that found nothing in a demonstration of the site now finds this class; 'economy' only corresponds, since it also names the economy (D-014).\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ThriftDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to buy used goods and keep to a monthly budget.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Accepting others' opinions, beliefs, and practices that one does not share. 'Acceptance', 'diversity', and 'inclusiveness' correspond to it (D-014). OpenMindednessDisposition is receptive to others' ideas; tolerance permits them without being receptive.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A universalism disposition to accept and permit the opinions, beliefs, practices, or behavior of others that one does not necessarily agree with.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to let a neighbor fly a flag they dislike without complaint.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TransparencyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Honesty in action: operating so that others can see what one does. Its sibling CandorDisposition is frankness in speech. D-012 gave transparency this home when it narrowed OpennessDisposition.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TransparencyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"An honesty disposition to operate in such a way that it is easy for others to see what actions are performed, implying openness and accountability.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TransparencyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination, as a club treasurer, to publish the accounts to all members.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Firm confidence in the reliability, truth, ability, or strength of someone or something. FaithDisposition places confidence without requiring proof, while trust rests on some grounds for it (D-012). TrustworthinessDisposition is deserving trust, not placing it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A benevolence disposition to have a firm belief in the reliability, truth, ability, or strength of someone or something.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to leave their house keys with a long-standing neighbor while away.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Acting so as to deserve others' confidence. 'Earning trust' corresponds to it (D-014). DependabilityDisposition is being counted on for commitments; trustworthiness deserves confidence in general, secrets and valuables included.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A responsibility disposition to act in a way that makes one worthy of the confidence or trust of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to keep a confidence even after falling out with the friend who shared it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking comprehension of people, ideas, and situations. 'Clarity' and 'insightful' correspond to it (D-014). EmpathyDisposition shares feelings; understanding comprehends, with or without sharing them.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UnderstandingDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to ask why a colleague holds a view before arguing against it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UniquenessDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Valuing and expressing one's distinctiveness. 'Distinctiveness' corresponds to it (D-014). AuthenticityDisposition is fidelity to one's own character, which need not be unusual.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UniquenessDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to design their own clothes rather than buy what is in fashion.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UnityDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking and promoting a group's being joined together or in agreement as a whole. BelongingDisposition seeks one's own acceptance in a group, and HarmonyDisposition seeks concord, which a group can have without acting as one.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#UnityDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to bring two rival factions of a society together behind a single plan.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking change, novelty, and freedom from monotony; 'a varied life' is a Schwartz survey item. 'Novelty' and 'surprise' correspond to it (D-014). AdventureDisposition adds daring; variety needs only change.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A stimulation disposition to seek change, novelty, and a lack of uniformity or monotony.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take a different route to work and try a new recipe every week.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VisionDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Thinking about and planning the future with imagination and a clear direction. 'Foresight' corresponds to it, and 'preparedness' to it and to Schwartz Security (D-014). PurposeDisposition seeks a central life aim; vision plans the route toward the future.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VisionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to sketch where their small business should be in ten years and plan backward from there.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to take the better-paid of two job offers, over the one with more congenial work, in order to build up savings and property.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition> <http://www.w3.org/2000/01/rdf-schema#comment> \"Seeking and applying experience, knowledge, and good judgment. 'Common sense' and 'realism' correspond to it (D-014). LearningDisposition acquires knowledge, and wisdom applies it well; moral-epistemics:PrudenceDisposition is the moral value disposition of fitting judgment to evidence.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WisdomDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to draw on past mistakes before advising a friend who faces a similar choice.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"A person's standing inclination to decline routine evening meetings in order to be home for dinner, while giving the job full attention during working hours.\"@en"
+          }
+        ],
+        "count": 424,
+        "removed": [
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AdventureDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek out unusual, exciting, and daring experiences.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AltruismDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to act with selfless concern for the well-being of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AmbitionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to strive for success, power, or distinction.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#AutonomyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be self-directing and independent in thought and action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#BoldnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be willing to take risks and act with confidence; a form of courage characterized by forwardness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CandorDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be frank, open, and sincere in speech or expression.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CareDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to provide for the needs of, and show concern for, the well-being of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChallengeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek out and engage with tasks that are new and difficult, testing one's abilities.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CharityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to voluntarily give help, typically in the form of money or resources, to those in need.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ChastityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to refrain from extramarital, or from all, sexual intercourse.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CollaborationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to work jointly on an activity or project to create or achieve something.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommitmentDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be dedicated to a cause, activity, or person.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CommunityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to value and actively participate in a social group with shared characteristics, interests, or location.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CompassionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to recognize the suffering of others and be motivated to alleviate it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ConnectionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek and maintain a feeling of rapport and meaningful relationship with others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CourtesyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to show politeness in one's attitude and behavior toward others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition towards generating or recognizing ideas, alternatives, or possibilities that may be useful in solving problems, communicating with others, and entertaining oneself and others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#CuriosityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to explore, investigate, and learn about new things or ideas.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DependabilityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be consistently reliable and trustworthy, such that others can count on one to fulfill commitments.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DeterminationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to continue trying to do something, although it is very difficult.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiligenceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to apply careful and persistent work or effort.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DiscoveryDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to value the process of finding something unexpectedly or during a search.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#DutyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to fulfill one's moral or legal obligations.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EmpathyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to understand and share the feelings of another.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EncouragementDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to give support, confidence, or hope to someone.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnjoymentDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek pleasure, fun, and lighthearted gratification.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EnthusiasmDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to feel and show intense and eager enjoyment, interest, or approval.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EqualityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to ensure that each individual or group is given the same resources or opportunities, regardless of circumstances.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EquityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to distribute resources and opportunities based on the needs of individuals to reach a fair and equal outcome.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#EthicsDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to adhere to a system of moral principles that govern a person's behavior or the conducting of an activity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcellenceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to possess qualities to a very high degree and to strive for superiority in performance or outcome.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExcitementDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek and experience feelings of great enthusiasm and eagerness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExplorationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to travel in or through an unfamiliar area in order to learn about it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ExpressivenessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to effectively convey one's thoughts and feelings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FairnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to treat people impartially and without favoritism or discrimination.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FaithDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Staying confident that an estranged friend will make amends, and keeping a place for them, though nothing yet suggests they will.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FamilyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to prioritize the well-being, support, and bonds of one's family.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FidelityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be faithful to a person, cause, or belief, demonstrated by continuing loyalty and support.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ForgivenessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to consciously and deliberately decide to release feelings of resentment or vengeance toward a person or group who has harmed you.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FreedomDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to value liberty and the absence of necessity, coercion, or constraint in choice or action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#FriendshipDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to form and maintain bonds of mutual affection with others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GenerosityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to freely give to others, such as time, resources, or kindness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GratitudeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be ready to show appreciation for and to return kindness.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#GrowthDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek continuous personal development and improvement.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HealthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Keeping up exercise and medical check-ups through a demanding year because staying well matters to one, not because anyone requires it.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonestyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be truthful, sincere, and straightforward in communication and action.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HonorDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to adhere to what is right or to a conventional standard of conduct, showing high respect and esteem.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#HopeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to maintain a feeling of expectation and desire for a certain thing to happen.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ImaginationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to form new ideas, images, or concepts not present to the senses.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#InnovationDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to introduce new methods, ideas, or products.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntegrityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to adhere to moral and ethical principles, demonstrating honesty, consistency, and strong moral character.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntelligenceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Choosing the harder course of study for the chance to sharpen one's reasoning, and admiring colleagues for the quality of their thinking.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntimacyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek and maintain close, familiar, and usually affectionate or loving personal relationships with others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#IntuitionDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to trust and rely on the ability to understand something immediately, without conscious reasoning.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#JusticeDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to uphold just behavior and treatment, ensuring fairness and moral rightness in actions and systems.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#KindnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be friendly, generous, and considerate in action or speech.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LeisureDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to value time when one is not working or occupied; free time.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoveDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to feel and express deep or intense affection for another person, group, or ideal.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#LoyaltyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be faithful and devoted to a person, group, cause, or nation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MasteryDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek comprehensive knowledge or skill in a particular subject or activity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MeaningDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek and find profound or implicit significance in life.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#MindfulnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to maintain a moment-by-moment awareness of one's thoughts, feelings, bodily sensations, and surrounding environment.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ModerationDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Stopping after one drink at a celebration where no one is counting, because more would be too much.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PatriotismDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Volunteering to rebuild one's town after a flood, and voting in every election, out of attachment to one's country.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#PeaceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek freedom from disturbance; a state of tranquility or quiet.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ReligionDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Keeping the prayer and dietary observances of one's tradition, and weighing a major decision against its teaching.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to show due regard for the feelings, wishes, rights, or traditions of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SelflessnessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to be more concerned with the needs and wishes of others than with one's own.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SensitivityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to have a quick and delicate appreciation of others' feelings.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SharingDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to have or use a portion of something with another or others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SpontaneityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to act upon sudden impulses and desires without premeditation.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StabilityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to prefer constancy, predictability, and resistance to change.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StatusDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek a high relative social or professional standing.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#StrengthDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to possess and value the capacity to withstand great force, pressure, or adversity.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SupportDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to give assistance, approval, or comfort to others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#SustainabilityDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek the maintenance of ecological balance by avoiding depletion of natural resources.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TeamworkDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to value and effectively participate in the combined action of a group.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#ToleranceDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to accept and permit the opinions, beliefs, practices, or behavior of others that one does not necessarily agree with.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TransparencyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to operate in such a way that it is easy for others to see what actions are performed, implying openness and accountability.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to have a firm belief in the reliability, truth, ability, or strength of someone or something.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#TrustworthinessDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to act in a way that makes one worthy of the confidence or trust of others.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#VarietyDisposition> <http://www.w3.org/2004/02/skos/core#definition> \"A personal value disposition to seek change, novelty, and a lack of uniformity or monotony.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WealthDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Taking the better-paid of two job offers, over the one with more congenial work, in order to build up savings and property.\"@en"
+          },
+          {
+            "file": "ontology/bfo/core/valuenet-folk.ttl",
+            "triple": "<https://fandaws.com/ontology/bfo/valuenet-folk#WorkLifeBalanceDisposition> <http://www.w3.org/2004/02/skos/core#example> \"Declining routine evening meetings in order to be home for dinner, while giving the job full attention during working hours.\"@en"
           }
         ],
         "scope": "ground triples only -- those with no blank node. Blank-node structure is compared by the fingerprint below, because a blank node is renamed by every parse and cannot be diffed by identity."

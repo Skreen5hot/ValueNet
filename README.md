@@ -12,6 +12,21 @@ record textual evidence.
 
 ---
 
+## Status
+
+Active development stopped on 2026-09-18. The formal review of 2026-09-16 was
+remediated, reviewed again, signed off, merged and deployed, and the published
+site reflects that state. Nothing is in progress.
+
+- [docs/HANDOFF.md](docs/HANDOFF.md) says where things stand, which conventions
+  the tests enforce, and what to do first.
+- [docs/bfo/OPEN_ITEMS.md](docs/bfo/OPEN_ITEMS.md) is the backlog, checked by a
+  test so that it cannot go stale. Its first tier is a release: the modules
+  still declare version 1.0 after seven breaking changes, and there is no
+  release tag.
+
+---
+
 ## Why BFO alignment
 
 Value vocabularies usually model a value as a category you assign to something.

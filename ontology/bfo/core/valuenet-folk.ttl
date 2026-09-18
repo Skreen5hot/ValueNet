@@ -106,11 +106,12 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#CreativityDisposition>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition> ;
-  skos:definition "A stimulation disposition towards generating or recognizing ideas, alternatives, or possibilities that may be useful in solving problems, communicating with others, and entertaining oneself and others."@en ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#SelfDirectionDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#StimulationDisposition> ;
+  skos:definition "A self-direction disposition towards generating or recognizing ideas, alternatives, or possibilities that may be useful in solving problems, communicating with others, and entertaining oneself and others."@en ;
   rdfs:label "Creativity Disposition"@en ;
   skos:altLabel "Creativity"@en ;
-  rdfs:comment "Generating and recognizing useful new ideas. Its subclasses divide it: ImaginationDisposition forms ideas not present to the senses, and InnovationDisposition introduces new methods and products. 'Originality' and 'improvisation' correspond to it (D-014)."@en ;
+  rdfs:comment "Generating and recognizing useful new ideas. Its subclasses divide it: ImaginationDisposition forms ideas not present to the senses, and InnovationDisposition introduces new methods and products. 'Originality' and 'improvisation' correspond to it (D-014). D-015 placed it under Schwartz Self-Direction, whose defining goal is independent thought and action and whose survey items include creativity; the related match records what it shares with Stimulation, which is novelty rather than origination."@en ;
   skos:example "A person's standing inclination to invent a new game for the children rather than buying one."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#CreativityDisposition> .
 
@@ -509,11 +510,12 @@
 
 <https://fandaws.com/ontology/bfo/valuenet-folk#RespectDisposition>
   a owl:Class ;
-  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition> ;
-  skos:definition "A universalism disposition to show due regard for the feelings, wishes, rights, or traditions of others."@en ;
+  rdfs:subClassOf <https://fandaws.com/ontology/bfo/valuenet-core#PersonalValueDisposition> ;
+  vn-core:hasRelatedConceptualMatch <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#ConformityDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#TraditionDisposition>, <https://fandaws.com/ontology/bfo/valuenet-schwartz-values#UniversalismDisposition> ;
+  skos:definition "A personal value disposition to show due regard for the feelings, wishes, rights, or traditions of others."@en ;
   rdfs:label "Respect Disposition"@en ;
   skos:altLabel "Respect"@en ;
-  rdfs:comment "Due regard for others' feelings, wishes, rights, and traditions. 'Consent' and 'responsiveness' correspond to it, and 'reverence' to it and to SpiritualityDisposition (D-014). Its subclass CourtesyDisposition is respect shown in politeness; ToleranceDisposition accepts what one disagrees with."@en ;
+  rdfs:comment "Due regard for others' feelings, wishes, rights, and traditions. 'Consent' and 'responsiveness' correspond to it, and 'reverence' to it and to SpiritualityDisposition (D-014). Its subclass CourtesyDisposition is respect shown in politeness; ToleranceDisposition accepts what one disagrees with. D-015 moved it to the general parent: no one Schwartz value covers that extension, which reaches across Universalism's concern for others' welfare and rights, Conformity's restraint from upsetting people, and Tradition's respect for custom. The three related matches record that overlap."@en ;
   skos:example "A person's standing inclination to ask before taking someone's photograph."@en ;
   rdfs:seeAlso <https://w3id.org/valuenet/folk#RespectDisposition> .
 

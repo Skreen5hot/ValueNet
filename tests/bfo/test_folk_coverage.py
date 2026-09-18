@@ -267,6 +267,27 @@ def test_frugality_is_still_the_worked_example(live):
             "label": "Frugality"} in live["coverage"]["synonyms"]
 
 
+def test_every_value_with_a_trigger_lexicon_is_reachable_or_excluded(live):
+    """The invariant D-014 replaced "has its own class" with.
+
+    A corpus value that can fire an annotation must reach a BFO-aligned class
+    -- as an exact class, an alternative label, or a correspondence -- or be
+    excluded on the record. Before D-014, this was written as "37 values have
+    a trigger lexicon and no class in folk.ttl", which counted duplication of
+    corpus terms rather than what the ontology can express (OI-6 in
+    docs/bfo/OPEN_ITEMS.md). Nine excluded values still carry a lexicon, which
+    is a pipeline question, not an ontology gap: OI-14.
+    """
+    assert live["coverage"]["pending"] == [], (
+        "a corpus value is of no kind, so a trigger could fire on a value the "
+        "BFO layer neither carries nor excludes: %s"
+        % live["coverage"]["pending"][:6])
+    fragments = set(live["source"]["fragment_without_a_class"])
+    assert fragments, "no value has a lexicon without a class; this proved nothing"
+    excluded_with_a_lexicon = fragments & set(live["coverage"]["excluded"])
+    assert len(excluded_with_a_lexicon) == 2, sorted(excluded_with_a_lexicon)
+
+
 def test_the_dangling_back_links_are_the_ones_recorded(live):
     assert len(live["dangling_see_also"]) == DANGLING_BACK_LINKS
 

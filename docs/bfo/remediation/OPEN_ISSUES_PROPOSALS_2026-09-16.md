@@ -1,6 +1,6 @@
 # Open Issues After the Formal-Review Remediation: Proposals
 
-**Status:** Proposals, 2026-09-16. None of them is decided here.
+**Status:** Proposals, 2026-09-16. None of them was decided here. **Superseded, 2026-09-17,** by `docs/bfo/OPEN_ITEMS.md`, the living register of open work; O1 to O4 are done, and what remained of O5 to O8 is carried there as OI-1 to OI-4. This document stays as the record of what was proposed on its date.
 **Scope:** everything still open on branch `formal-review-remediation` other than folk membership, which has its own document, `R15_FOLK_MEMBERSHIP_PROPOSAL.md`.
 
 The issues are listed in the order they should be done. Most of them depend on the one before.

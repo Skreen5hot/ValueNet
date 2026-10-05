@@ -99,6 +99,58 @@ quality claim.
 | It supplies trigger data and corpora | [MFTriggers/](../../MFTriggers), [ThatsAllFolks/](../../ThatsAllFolks) | present in repository |
 | It is a mapping target, not a deprecated release | editorial position, publication plan §3.1 | policy |
 
+## Claims in the owner's statement
+
+The home page carries a statement of why the suite was built, in the first
+person, under the owner's name. It is a different kind of content from the rest
+of this table, and it is marked as one. Where it says something about this
+repository, the claim is sourced like any other. Where it says something about
+the owner's reasons, or about work that is not in this repository, the source
+is the owner, the page says so by attributing it, and the site reports that the
+owner says it and nothing more.
+
+| claim | source | kind |
+|---|---|---|
+| The suite was built as the value foundation for Integral Ethics | the owner, instructing this page on 2026-10-05 | owner statement |
+| Integral Ethics is part of a larger body of work, Ethical Computation | the same instruction | owner statement |
+| Its aim, its propose-constrain-decide division of labour, and that it is designed never to make the moral decision | the owner's talk *Showing the Work* (2026-09-29), whose script the owner supplied for this page; the script is not in this repository | owner statement |
+| There is no finished system yet; what exists is the design, a test instrument and this ontology | the same script | owner statement |
+| ValueNet was created by Stefano De Giorgis, Aldo Gangemi and Rossana Damiano | the conference-paper reference in [CITATION.cff](../../CITATION.cff) | cited |
+| The suite is a refactoring of ValueNet onto the Basic Formal Ontology | [valuenet-core.ttl](../../ontology/bfo/core/valuenet-core.ttl) and the mapping annotations in [valuenet-mappings.ttl](../../ontology/bfo/core/valuenet-mappings.ttl) | asserted |
+| A value is a disposition that somebody bears | valuenet-core.ttl — `ValueDisposition`, and the restriction that a value-related realizable entity inheres in some agent | asserted |
+| What goes against a value is a process | same file — `ValueViolationProcess`, defined by `contravenes` | asserted |
+| A reading of a text divides into which words, which value, whose value, and realized or violated | same file — `TextSpan` and `selectsTextSpan`, `isEvidenceFor` a process, that process realizing or contravening a disposition, the disposition inhering in an agent; worked through in the [annotation guide](../../docs/bfo/guides/annotationGuide.md) | asserted |
+
+The first four rows cannot be checked from here and are not presented as if
+they could. What is checked is the frame: the byline, the credit to ValueNet's
+authors read from the citation record, and the two cautions in the fourth row
+and the third, which `tests/site/test_home.py` requires the statement to keep.
+
+## Claims on the home page beside the statement
+
+| claim | source | kind |
+|---|---|---|
+| The three terms of the core pattern, and that a role is borne because of a position | `ValueDisposition`, `ValueRole`, `ValueRealizationProcess`, `ValueViolationProcess` in valuenet-core.ttl; each is linked to its class record, and a test resolves the links against the generated index | asserted |
+| An act can contravene a value its own agent bears | the definition of `ValueViolationProcess`, and its comment that it is deliberately not disjoint with realization | quoted in substance |
+| BFO is an upper ontology; CCO is reused for agents and for the information entities that record textual evidence | the imports in valuenet-core.ttl; `cco:Agent` as bearer; the CCO parents of `TextSpanSelector` and `ValueEvidenceAnnotation` | asserted |
+| What is measured | [site.json](site.json) `evidence_statement`, itself sourced under "Claims about validation" above; the page is required to carry it word for word | curated, bound |
+| The suite has been through a formal ontology review, and the records are in the repository | [docs/bfo/reviews/](../../docs/bfo/reviews) | present in repository |
+
+## Claims on the documentation page
+
+Every stop on the reading path is a link and a sentence. The link is checked on
+every build: it must name a path git tracks. The sentence is curated, and says
+what the document says of itself.
+
+| claim | source | kind |
+|---|---|---|
+| Each document is what its line says it is | the opening of the document itself | curated, flagged |
+| The review, the first sign-off and the second, and RULES 2.0 are recorded verbatim | the provenance header on each of those files | quoted in substance |
+| RULES 2.0 is adopted as the project's standard, with stated readings | D-013 in [DECISION_RECORDS.md](../../docs/bfo/remediation/DECISION_RECORDS.md) | decision record |
+| The open-items register is re-derived by a test | [tests/bfo/test_open_items.py](../../tests/bfo/test_open_items.py) | test |
+| A sign-off covers what had been decided when it was given | the dates in the decision records against the dates on the sign-offs; at the time of writing D-015 is later than both | decision record |
+| What the evidence does and does not show | "What is deliberately not claimed", above | policy |
+
 ## Claims the site must never make
 
 - That a canonical IRI can be fetched.
@@ -106,4 +158,8 @@ quality claim.
 - That vendored BFO or CCO classes are ValueNet-authored.
 - That a mapping annotation is a logical equivalence.
 - That the ontology is verified, validated, or correct.
+- That a review or a sign-off shows the ontology to be any of those. A sign-off
+  is a reviewer's statement about a remediation, as of the day it was given.
+- That Integral Ethics is a finished system, or that it makes a moral decision.
+- Anything in the first person without the name of the person saying it.
 - Any count written by hand where the build could derive it.

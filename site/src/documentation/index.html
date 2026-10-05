@@ -23,9 +23,174 @@
   <main id="main" tabindex="-1">
     <h1>Documentation</h1>
     <p class="lead">A reading path into the technical documentation and the validation evidence.</p>
-    <section class="placeholder">
-      <h2>Not built yet</h2>
-      <p>This page is a Phase 2 shell. Curated documentation links arrive with the content build.</p>
+
+    <p>The documents below are in the project's repository, and each link
+      opens one there, on the branch this site is built from. They are the
+      working documents, not copies made for the site. They are listed in
+      the order a new reader needs them, and this is a path through them
+      rather than an index of everything.</p>
+
+    <section aria-labelledby="model">
+      <h2 id="model">1. Start with the model</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/README.md">The repository README</a></dt>
+        <dd>The shortest account of the core model, with a quick start
+          and a table of the modules.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/guides/BFOizing%20ValueNet.md">From description to reality</a></dt>
+        <dd>The rationale for the refactoring: why a value is modelled as
+          something an agent bears rather than as a description, and what
+          changed in structure and in axioms.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/original-valuenet/README.md">Original ValueNet</a></dt>
+        <dd>Where the original ValueNet material sits in this repository,
+          and why it stays at the paths its authors use.</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="use">
+      <h2 id="use">2. Use it</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/guides/annotationGuide.md">Annotation guide</a></dt>
+        <dd>A step-by-step process for annotating text: the action, the
+          agent, the value, how they connect, and the words that are the
+          evidence. With worked examples.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md">Competency questions</a></dt>
+        <dd>The questions the moral-epistemics module has to answer, each
+          with its query and its result over a worked scenario.</dd>
+      </dl>
+      <p>The worked scenario is published with the modules, on the
+        <a href="../downloads/">downloads page</a>.</p>
+    </section>
+
+    <section aria-labelledby="checks">
+      <h2 id="checks">3. How it is checked</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/guides/TestingFramework.md">Testing framework</a></dt>
+        <dd>How the suite is tested by reasoner, by query and by manual
+          review.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/tree/main/tests">The test suite</a></dt>
+        <dd>The automated checks. Many re-derive a figure or a claim made
+          in one of the documents on this page, so that a document cannot
+          quietly stop being true.</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="decisions">
+      <h2 id="decisions">4. The decisions</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/remediation/DECISION_RECORDS.md">Decision records</a></dt>
+        <dd>Each modelling decision, with its rationale, its consequences
+          and the condition that would reopen it. The table at the end
+          says which are implemented.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RULES_2.0.md">RULES 2.0</a></dt>
+        <dd>The standard for definitions and annotations, recorded
+          verbatim as received from the reviewer. The decision records
+          say that it is adopted and how this project reads it.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/remediation/R15_FOLK_MEMBERSHIP_PROPOSAL.md">Folk value membership</a></dt>
+        <dd>How membership of the folk module was decided: the criteria,
+          the evidence, and the decision taken on each value.</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="review">
+      <h2 id="review">5. The formal review</h2>
+      <p>The suite was formally reviewed. What the reviewer wrote is
+        recorded verbatim, and the records are listed in the order they
+        were written.</p>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16.md">The review</a></dt>
+        <dd>Recorded verbatim, with the commit it examined.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RESPONSE.md">The response</a></dt>
+        <dd>What was done with it: each claim checked against the
+          repository before it was accepted, and the places where the
+          check disagreed.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF.md">The reviewer's sign-off</a></dt>
+        <dd>Sign-off on the response and on the plan for the
+          remediation.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_POST_SIGNOFF_UPDATE.md">The update after the work</a></dt>
+        <dd>What was decided and done after that sign-off, written for
+          the reviewer.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md">The reviewer's second sign-off</a></dt>
+        <dd>Confirmation of the sign-off, after the reviewer had read
+          those later decisions.</dd>
+      </dl>
+      <p>A sign-off covers what had been decided when it was given.
+        Anything decided later is in the decision records, each with the
+        date it was adopted. The reviewer's intermediate replies sit
+        beside these files, in the
+        <a href="https://github.com/Skreen5hot/ValueNet/tree/main/docs/bfo/reviews">reviews
+        directory</a>.</p>
+    </section>
+
+    <section aria-labelledby="open">
+      <h2 id="open">6. What is still open</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/OPEN_ITEMS.md">Open items</a></dt>
+        <dd>What is known to be unfinished or deliberately left, ordered
+          by what should be done next. A test re-derives it from the
+          repository, so an item that has been fixed cannot stay listed
+          and a figure cannot go stale.</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="evidence">
+      <h2 id="evidence">7. Evidence and provenance</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/config/semantic-baseline.json">Semantic baseline</a></dt>
+        <dd>What the current commit measures: a fingerprint of the whole
+          corpus that reproduces from any checkout.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/config/eol-transition-matrix.json">Transition matrix</a></dt>
+        <dd>The experiment that showed why earlier digests depended on
+          where the repository was checked out.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/config/remediation-record.json">Remediation record</a></dt>
+        <dd>Every repair made to the source data since that experiment,
+          triple by triple.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/architecture/PROVENANCE.md">Provenance index</a></dt>
+        <dd>Where every tracked file came from and how it is
+          maintained.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/config/quality-report.json">Site quality report</a></dt>
+        <dd>This site's own gate: its links, its schemas, a build from a
+          fresh clone, the browser review, and the owner's sign-off on
+          what is published.</dd>
+      </dl>
+      <p>This evidence shows that the measurements reproduce and that the
+        changes are accounted for. It does not show that the ontology is
+        correct, complete, or validated against an external standard.</p>
+    </section>
+
+    <section aria-labelledby="terms">
+      <h2 id="terms">8. Terms and credit</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/LICENSE">Licensing</a></dt>
+        <dd>Which licence governs which part of the repository, and what
+          neither project licence covers.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/CITATION.cff">How to cite</a></dt>
+        <dd>The citation record for this suite. The original ValueNet is
+          separate work and is cited separately in it.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/ACKNOWLEDGMENTS.md">Acknowledgments</a></dt>
+        <dd>Who and what contributed, in specific terms.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a></dt>
+        <dd>The material this repository carries but did not author, and
+          the terms each part is under.</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="continue">
+      <h2 id="continue">9. Continuing the work</h2>
+      <dl class="reasons">
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/HANDOFF.md">Handoff</a></dt>
+        <dd>For whoever picks the work up: where it stands, the
+          conventions the tests enforce, and what to do first.</dd>
+        <dt><a href="https://github.com/Skreen5hot/ValueNet/blob/main/docs/architecture/PUBLICATION_AND_GITHUB_PAGES_PLAN.md">Publication plan</a></dt>
+        <dd>How this site is built, and what it may and may not
+          claim.</dd>
+      </dl>
+      <p>Phase exit reviews, design notes and audit run records are the
+        working history rather than the reading path. They stay in the
+        repository, under
+        <a href="https://github.com/Skreen5hot/ValueNet/tree/main/docs/bfo/remediation">the
+        remediation records</a> and
+        <a href="https://github.com/Skreen5hot/ValueNet/tree/main/docs/marep">the
+        audit records</a>.</p>
     </section>
   </main>
   <footer class="footer">

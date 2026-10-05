@@ -23,8 +23,87 @@
   <main id="main" tabindex="-1">
     <h1>BFO-Aligned ValueNet</h1>
     <p class="lead">An ontology of human values as realizable entities that inhere in an agent and are realized when that agent appraises, chooses, feels, or acts.</p>
-    <section>
-      <h2>Why BFO alignment</h2>
+
+    <section aria-labelledby="why">
+      <h2 id="why">Why I built this</h2>
+      <div class="statement">
+        <p class="byline">A statement from the author, Aaron Damiano.</p>
+        <p>More and more of the decisions that shape people's lives are
+          made, or shaped, by AI systems: who gets hired, who gets flagged,
+          what we read, what we are told is true. Many of those systems
+          can't reliably show why they said what they said. Human dignity
+          depends on agency: on being the one who decides, and on being
+          able to see and challenge the reasons behind decisions made about
+          you. If we hand moral judgment to systems we can't inspect, we
+          surrender that agency, even when the answers sound good.</p>
+        <p>So the problem I am working on is whether we can build systems
+          whose moral reasoning is transparent and accountable by design.
+          Not a machine that decides what is right, but one that shows its
+          work, so that a human stays answerable for the decision. That
+          work is Integral Ethics, and it is part of a larger body of work,
+          Ethical Computation.</p>
+        <p>Its division of labour is propose, constrain, decide. A language
+          model proposes: it reads messy human text and suggests what might
+          be at stake. An ontology constrains: it forces those suggestions
+          into explicit, checkable claims. And a person decides. Integral
+          Ethics is being designed so that it never makes the moral
+          decision, and there is no finished system yet. What exists so far
+          is the design, a test instrument, and this ontology.</p>
+        <p>BFO-Aligned ValueNet is the value foundation for that work. To
+          make moral reasoning inspectable you first need a way to write
+          values down that a machine can work with and a person can argue
+          with. ValueNet is one, and it is not mine: it was created by
+          Stefano De Giorgis, Aldo Gangemi and Rossana Damiano. What I
+          built is a refactoring of it onto a different foundation, the
+          Basic Formal Ontology.</p>
+        <p>That foundation buys one move. A value is not a floating
+          abstraction like fairness in general. It is a disposition that a
+          real person bears, and what goes against it is a process: an
+          event in the world. Values belong to someone.</p>
+        <p>So a moral reading of a text stops being one vague judgment and
+          becomes separate claims: which words, which value, whose value it
+          is, and whether it was realized or violated. Each can be disputed
+          on its own terms. You can agree about the value and dispute who
+          bears it. Not precision for its own sake: precision so that
+          disagreement has somewhere to land.</p>
+        <p>We shouldn't be asking whether AI can be moral. We should be
+          asking whether its moral reasoning can be audited by the people
+          it affects.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="pattern">
+      <h2 id="pattern">The core pattern</h2>
+      <p>The model keeps apart things that a list of value labels runs
+        together: what somebody holds, what happens when they act on it,
+        and what happens when it is gone against.</p>
+      <dl class="reasons">
+        <dt><a href="explore/?class=core:ValueDisposition">Value disposition</a></dt>
+        <dd>What somebody holds: a standing tendency of an agent, grounded
+          in how that agent is. A value borne because of a position an
+          agent occupies is a
+          <a href="explore/?class=core:ValueRole">value role</a>
+          instead.</dd>
+        <dt><a href="explore/?class=core:ValueRealizationProcess">Value realization process</a></dt>
+        <dd>What happens when a value is acted on. It realizes the
+          disposition without being it: the disposition was there before
+          and is there afterwards.</dd>
+        <dt><a href="explore/?class=core:ValueViolationProcess">Value violation process</a></dt>
+        <dd>What happens when a value is gone against. An act can
+          contravene a value its own agent bears, so the model can say so
+          without claiming the agent lacks the value.</dd>
+      </dl>
+      <p>The <a href="models/">models page</a> draws this pattern and the
+        others the suite uses, each with a written description.</p>
+    </section>
+
+    <section aria-labelledby="bfo">
+      <h2 id="bfo">Why BFO alignment</h2>
+      <p>BFO is the Basic Formal Ontology, an upper ontology: a small set
+        of very general categories that more specific ontologies are built
+        beneath. CCO is the Common Core Ontologies, which this suite reuses
+        for agents and for the information entities that record textual
+        evidence.</p>
       <dl class="reasons">
         <dt>A bearer</dt>
         <dd>A value disposition inheres in an agent. Asking whose value it is
@@ -37,6 +116,46 @@
         <dd>Every class descends from a BFO or CCO term, so ValueNet composes
           with other BFO-aligned ontologies rather than needing a bespoke
           bridge to each one.</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="measured">
+      <h2 id="measured">What is measured</h2>
+      <p>Ontology changes here are measured rather than asserted. The
+        repository records a semantic fingerprint of the whole corpus that
+        reproduces from any checkout, an experiment showing why earlier
+        digests did not, and a triple-by-triple record of every source-data
+        repair made since.</p>
+      <p>The suite has also been through a formal ontology review. The
+        review, the response to it, the decisions that followed and the
+        reviewer's sign-offs are all in the repository, and the
+        <a href="documentation/#review">documentation page</a> links to
+        each, beside the <a href="documentation/#evidence">evidence
+        records</a> and the <a href="documentation/#open">register of what
+        is still open</a>.</p>
+      <p>None of this is a claim that the ontology is correct. It shows
+        that the measurements reproduce and that the changes are accounted
+        for.</p>
+    </section>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Where to go next</h2>
+      <dl class="reasons">
+        <dt><a href="explore/">Explore classes</a></dt>
+        <dd>Search every class by label, identifier or definition, and
+          read its parents and mappings.</dd>
+        <dt><a href="models/">Models</a></dt>
+        <dd>The patterns that say how the suite uses BFO, drawn and
+          described.</dd>
+        <dt><a href="modules/">Modules</a></dt>
+        <dd>What each published file declares, extracted from the file
+          itself.</dd>
+        <dt><a href="downloads/">Downloads</a></dt>
+        <dd>The Turtle files, byte for byte from the repository, with
+          checksums.</dd>
+        <dt><a href="documentation/">Documentation</a></dt>
+        <dd>A reading path through the guides, the decisions, the review
+          and the evidence.</dd>
       </dl>
     </section>
   </main>

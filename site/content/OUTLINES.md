@@ -24,15 +24,40 @@ Two rules apply to every page:
 | block | content | source |
 |---|---|---|
 | Hero | Site name, tagline, one-sentence summary | curated (`site.json`) |
-| Why BFO | Three points: bearer, realization, interoperability | curated, each illustrated by a real class |
-| Core pattern | The realization diagram, with a link into Models | generated class links |
-| Modules at a glance | Authored module names and purposes, with class counts | curated purpose + generated counts |
-| Quality statement | One short paragraph, linked to evidence | curated tone, linked artifacts |
+| Why I built this | The owner's reason for the work, in the first person, under a byline | owner statement — see below |
+| Core pattern | What somebody holds, what happens when they act on it, what happens when it is gone against; a link into Models | curated, each term linked to its real class |
+| Why BFO | A one-sentence gloss of BFO and CCO, then three points: bearer, realization, interoperability | curated |
+| Quality statement | What is measured, that the suite was formally reviewed, and what neither shows | curated (`site.json` `evidence_statement`), linked into Documentation |
+| Where to go next | One line for each of the other pages | curated |
 | IRI notice | The non-dereferenceable notice | `site.json` notices |
 
 The home page must be readable by someone who has never heard of BFO. It states
 what a value *is* in this model before it states which upper ontology supplies
-the scaffolding.
+the scaffolding, and it uses neither acronym before saying what it stands for.
+
+**The owner statement.** Added 2026-10-05, on the owner's instruction. It is the
+only first-person passage on the site and the only content that is about
+something outside this repository: Integral Ethics, the larger work this suite
+was built to serve. It is published as the owner's statement of purpose, under
+their name, and not as a finding. Three things hold it:
+
+- It carries a byline, and nothing outside its section speaks in the first
+  person.
+- Where it says ValueNet was refactored here, it names the people who created
+  ValueNet, as [CITATION.cff](../../CITATION.cff) credits them.
+- It says of the larger system that it is designed never to make the moral
+  decision and that it does not exist yet. Both sentences stay.
+
+Its wording is the owner's to change. The text lives on the page and is not
+copied into `site.json`, because a second copy of somebody's own words is a
+copy that can come to differ from what they said.
+
+**Two blocks changed from the Phase 1 outline.** "Core pattern" was to be the
+realization diagram; it is prose with class links, and the diagram stays on the
+Models page, where the tests that check it against the ontology already read it.
+"Modules at a glance" is not built: a module's purpose written here would be a
+second description of the module, which is the thing `site.json` was changed to
+stop carrying. The Modules page generates it, and the home page links there.
 
 ## Explore classes
 
@@ -122,13 +147,45 @@ The acknowledgment appears in the footer of every page, not only here. A credit 
 
 ## Documentation
 
-Curated links, in reading order: BFO alignment rationale, annotation guide,
-competency questions and worked scenario, testing framework, provenance,
-original ValueNet overview, validation and evidence summary.
+Curated links, in reading order, each with a sentence saying what the document
+is. The Phase 1 outline listed seven stops: BFO alignment rationale, annotation
+guide, competency questions and worked scenario, testing framework, provenance,
+original ValueNet overview, validation and evidence summary. The page was built
+on 2026-10-05, after the formal review and its remediation, so it also carries
+what that work produced.
+
+| section | documents | source |
+|---|---|---|
+| 1. Start with the model | `README.md`, `BFOizing ValueNet.md` (the rationale), `docs/original-valuenet/README.md` | curated links |
+| 2. Use it | `annotationGuide.md`, `valuenet-moral-epistemics-CQ.md`; the worked scenario by a link to Downloads, where it is published | curated links |
+| 3. How it is checked | `TestingFramework.md`, the `tests/` directory | curated links |
+| 4. The decisions | `DECISION_RECORDS.md`, `FORMAL_REVIEW_2026-09-16_RULES_2.0.md` (the definition standard D-013 adopts), `R15_FOLK_MEMBERSHIP_PROPOSAL.md` | curated links |
+| 5. The formal review | `FORMAL_REVIEW_2026-09-16.md`, `FORMAL_REVIEW_2026-09-16_RESPONSE.md`, `FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF.md`, `FORMAL_REVIEW_2026-09-16_POST_SIGNOFF_UPDATE.md`, `FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md` | curated links |
+| 6. What is still open | `OPEN_ITEMS.md` | curated link |
+| 7. Evidence and provenance | `semantic-baseline.json`, `eol-transition-matrix.json`, `remediation-record.json`, `PROVENANCE.md`, `quality-report.json` | curated links |
+| 8. Terms and credit | `LICENSE`, `CITATION.cff`, `ACKNOWLEDGMENTS.md`, `THIRD_PARTY_NOTICES.md` | curated links |
+| 9. Continuing the work | `HANDOFF.md`, `PUBLICATION_AND_GITHUB_PAGES_PLAN.md` | curated links |
 
 Phase exit reviews and MAREP run records stay reachable in the repository but
-are not primary navigation. This page is a reading path, not an index of
-everything.
+are not primary navigation: the page ends by pointing at the two directories
+that hold them. This page is a reading path, not an index of everything.
+
+**Every document link leaves the site, and only for the repository.** These
+documents are not copied into the build; each link opens one on GitHub, on the
+branch the site is built from. That is the single exception to "no reference with a scheme", and
+it is as narrow as it sounds: an anchor, to this repository as `CITATION.cff`
+names it, on `main`, to a path git tracks. `tools/site/check_site.py` enforces
+it on every build and `tests/site/test_public_links.py` shows each way it
+refuses. Anything that loads from another origin is still refused, as before.
+
+**Two sentences are part of the contract.** Under the review: a sign-off covers
+what had been decided when it was given. Under the evidence: it shows that the
+measurements reproduce and that the changes are accounted for, and does not show
+that the ontology is correct. A list of reviews and records reads as a verdict
+unless the page says it is not one.
+
+**No counts.** The page does not say how many decisions, sign-offs or records
+there are. Its only figures are its own section numbers.
 
 ---
 

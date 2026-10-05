@@ -16,7 +16,9 @@ record textual evidence.
 
 Active development stopped on 2026-09-18. The formal review of 2026-09-16 was
 remediated, reviewed again, signed off, merged and deployed, and the published
-site reflects that state. Nothing is in progress.
+site reflects that state. Nothing is in progress. The site's home and
+documentation pages were built out on 2026-10-05; the ontology has not changed
+since the date above.
 
 - [docs/HANDOFF.md](docs/HANDOFF.md) says where things stand, which conventions
   the tests enforce, and what to do first.
@@ -155,11 +157,15 @@ is declared under them and no query should rely on them.
 
 ## Browsing the ontology
 
-A public class explorer and a set of explanatory BFO diagrams are planned and
-are not yet deployed. This README deliberately does not link to a site that
-does not exist. Until it does, the module files above and the
-[competency questions](ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md)
-are the way in. Progress and scope for the public site are recorded in the
+The suite is published at <https://skreen5hot.github.io/ValueNet/>: a class
+explorer, the explanatory BFO diagrams, the modules with their checksums, and a
+[documentation page](https://skreen5hot.github.io/ValueNet/documentation/) that
+sets the documents in this repository out as a reading path. Its home page says
+why the suite was built.
+
+The site is rebuilt from `main` on every merge and is labelled "latest from
+main"; it is not a release. How it is built, and what it may and may not claim,
+are recorded in the
 [publication plan](docs/architecture/PUBLICATION_AND_GITHUB_PAGES_PLAN.md).
 
 ---

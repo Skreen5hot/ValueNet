@@ -12,6 +12,7 @@ The formal ontology review of 2026-09-16 has been remediated, reviewed again, si
 - **The reviewer** signed off twice: on the plan (`FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF.md`) and, after the work, on everything done since (`..._REVIEWER_SIGNOFF_2.md`). They recognize six breaking changes. D-015 came after that and is a seventh.
 - **The folk module** is settled: membership decided by criteria (D-014), then curated (D-013). Every definition in all five modules opens with its asserted parent, and every term has a comment and an example. Both gates are at zero, and their records in `tests/bfo/test_definition_discipline.py` are empty.
 - **The site** is deployed at https://skreen5hot.github.io/ValueNet/ and the owner's public-content sign-off in `config/quality-report.json` is current as of `dda2b84`.
+- **Since this was written:** on 2026-10-05 the site's home page gained the owner's statement of why the suite was built, and the documentation page, a placeholder until then, became a reading path into this repository. Both are published content, so the sign-off has to be regenerated and signed by the owner again; until it is, `tests/site/test_quality_report.py` fails on the link count, which is the gate working.
 
 ## What to do next
 
@@ -39,6 +40,10 @@ Event boundaries are re-derived from the commits that touch Turtle, so an event 
 
 **Site pins move with published content.** Definitions and labels are published. When they change, `tests/site/test_class_index.py`'s `NORMALISED_CONTENT` digest changes (the test prints the new value), and the browser review must be re-run:
 `python tools/site/build_site.py -o <scratch>/site` then `python tools/site/browser_review.py --site <scratch>/site`. It writes `config/browser-review.json` and screenshots under `docs/site/browser-review/`.
+
+**The site links out to one place, and checks the link.** The documentation page is a reading path into this repository, so its links leave the site. That is the only exception to "no reference with a scheme": an anchor, to the repository `CITATION.cff` names, on `main`, to a path git tracks. `tools/site/check_site.py` refuses everything else, and anything that loads from another origin at all. So moving or renaming a document the page lists fails the site suite until the page follows, and a new document has to be committed before the page can link to it. The page's stops are also named in `site/content/OUTLINES.md`, and `tests/site/test_documentation.py` holds the two together.
+
+**The home page carries the owner's own words.** The "Why I built this" section is a first-person statement under the owner's byline, about work outside this repository. Do not reword it; `site/content/OUTLINES.md` says what holds it and `tests/site/test_home.py` checks the frame. Changing its text is the owner's to do, and any change to a published page means the sign-off below is owed again.
 
 **The pinned Node runtime is per-process.** `.nvmrc` pins 24.20.0; this machine's system Node is 25.2.1 and stays that way. The pinned runtime lives in `%LOCALAPPDATA%\ValueNet\toolchains\node-v24.20.0-win-x64`, verified against nodejs.org's published SHA-256. Put it at the front of PATH for the one process that needs it — the site suite, the full suite, or the quality report — and verify `node --version` before proceeding. Do not change the machine PATH, PowerShell profiles, or the HIRI project's toolchain. Without it, 23 explorer tests fail.
 

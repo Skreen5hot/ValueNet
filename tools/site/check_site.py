@@ -22,11 +22,31 @@ iteration and is refused in CI by not passing it.
 The inverse is checked too: a path git tracks under `site/` that is no
 longer on disk means the source and the repository disagree about what
 the site is made of.
+
+WHAT MAY LEAVE THE SITE
+
+The publication plan forbids a required third-party request -- no CDN, no
+web font, no analytics -- and it also says the documentation page is
+curated and that "deep records remain repository links". The first form
+of this check refused every reference with a scheme, which enforced the
+first sentence by making the second impossible: a documentation page
+could not link to a single document.
+
+A link a reader chooses to follow is not a request the page makes. So the
+two are told apart by the element that carries the reference, and the
+permission is as narrow as the plan's wording. Anything that loads -- a
+script, a stylesheet, an image, a frame -- stays refused at any origin.
+An anchor may leave the site for one place only, this project's own
+repository as CITATION.cff names it, on the branch the site is built
+from, and only to a path git tracks. That last condition is the plan's
+"repository source links exist at the measured commit": a reading path
+pointing at a document that has moved sends its reader to a 404.
 """
 
 from __future__ import annotations
 
 import argparse
+import html.parser
 import re
 import subprocess
 import sys
@@ -90,25 +110,138 @@ def check_source(allow_untracked: bool) -> list[str]:
 
 LINK_ATTR = re.compile(r'(?:href|src)="([^"]+)"')
 
+#: The branch the Pages workflow deploys, and so the one a reader of the
+#: site is reading. A link to any other ref would show a document the
+#: site was not built beside.
+PUBLISHED_REF = "main"
+
+
+class References(html.parser.HTMLParser):
+    """Every href and src, with the element and attribute that carried it.
+
+    LINK_ATTR finds the values and cannot say what they are on, and what
+    they are on is the whole question: `<a href>` is somewhere a reader
+    may go, `<link href>` is something the page fetches.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.found: list[tuple[str, str, str]] = []
+
+    def handle_starttag(self, tag, attrs):
+        for name, value in attrs:
+            if name in ("href", "src") and value and value.strip():
+                self.found.append((tag, name, value.strip()))
+
+
+def references(text: str) -> list[tuple[str, str, str]]:
+    parser = References()
+    parser.feed(text)
+    return parser.found
+
+
+def leaves_the_site(target: str) -> bool:
+    """A scheme, or the protocol-relative form that borrows one."""
+    return bool(urlparse(target).scheme) or target.startswith("//")
+
+
+def repository_url() -> str:
+    """Where the repository is, read from the citation record.
+
+    Read rather than retyped. CITATION.cff is the project's own statement
+    of where its source lives; a second copy here could name a different
+    repository from the one a reader is told to cite. The top-level key
+    only: the file also records the original ValueNet's repository, under
+    a reference, and that one is indented.
+    """
+    text = (_root / "CITATION.cff").read_text(encoding="utf-8")
+    found = re.findall(r"(?m)^repository-code:[ \t]*(\S+)[ \t]*$", text)
+    if len(found) != 1:
+        raise SystemExit(
+            "CITATION.cff names %d top-level repository-code value(s); "
+            "exactly one is needed to say which repository the site may "
+            "link to" % len(found))
+    return found[0].rstrip("/")
+
+
+def tracked_files() -> set[str]:
+    """Every path git tracks. Empty when git cannot answer, which refuses
+    every repository link rather than waving them through unchecked."""
+    r = subprocess.run(["git", "ls-files"], cwd=str(_root),
+                       capture_output=True, text=True)
+    return set(r.stdout.splitlines()) if r.returncode == 0 else set()
+
+
+def outbound_problem(tag: str, attr: str, target: str,
+                     tracked: set[str]) -> str | None:
+    """Why a reference that leaves the site may not ship, or None.
+
+    The order matters. What the reference is on is asked first, so the
+    repository's address on a `<script src>` is refused as a load and not
+    accepted as a link.
+    """
+    if (tag, attr) != ("a", "href"):
+        return ("<%s %s> loads %r from an external origin; the site must "
+                "work with no third-party request" % (tag, attr, target))
+
+    repository = repository_url()
+    if target.rstrip("/") == repository:
+        return None
+    if not target.startswith(repository + "/"):
+        return ("links to %r. The only place a link may leave the site for "
+                "is this project's repository, %s" % (target, repository))
+
+    parsed = urlparse(target)
+    if parsed.query or parsed.fragment:
+        return ("links to %r with a query or fragment. Neither can be "
+                "resolved against the repository, so neither is checked, "
+                "and an unchecked link is not published" % target)
+
+    rest = unquote(parsed.path)[len(urlparse(repository).path) + 1:]
+    kind, _, remainder = rest.partition("/")
+    ref, _, path = remainder.partition("/")
+    path = path.rstrip("/")
+    if kind not in ("blob", "tree") or not path:
+        return ("links to %r, which is not a file or directory view of the "
+                "repository" % target)
+    if ref != PUBLISHED_REF:
+        return ("links to %r at %r. The site is built from %r, and a link "
+                "to another ref shows a document it was not built beside"
+                % (path, ref, PUBLISHED_REF))
+
+    if kind == "blob":
+        present = path in tracked and (_root / path).is_file()
+    else:
+        present = (any(name.startswith(path + "/") for name in tracked)
+                   and (_root / path).is_dir())
+    if not present:
+        return ("links to %r, which git does not track as a %s here. The "
+                "link would resolve to nothing once published"
+                % (path, "file" if kind == "blob" else "directory"))
+    return None
+
 
 def check_built(out: Path) -> list[str]:
-    """Every internal reference resolves, and none assumes the domain root."""
+    """Every internal reference resolves, none assumes the domain root,
+    and nothing leaves the site except a checked link to the repository."""
     problems = []
     pages = sorted(out.rglob("*.html"))
     if not pages:
         problems.append("no HTML in " + out.name + "; build it first")
         return problems
 
+    tracked = None
     for page in pages:
         rel = page.relative_to(out).as_posix()
         text = page.read_text(encoding="utf-8")
-        for raw in LINK_ATTR.findall(text):
-            target = raw.strip()
+        for tag, attr, target in references(text):
             parsed = urlparse(target)
-            if parsed.scheme or target.startswith("//"):
-                problems.append(
-                    "%s references an external origin %r; the site must work "
-                    "with no third-party request" % (rel, target))
+            if leaves_the_site(target):
+                if tracked is None:
+                    tracked = tracked_files()
+                problem = outbound_problem(tag, attr, target, tracked)
+                if problem:
+                    problems.append("%s %s" % (rel, problem))
                 continue
             if target.startswith("#") or not target:
                 continue

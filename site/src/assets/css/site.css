@@ -18,6 +18,10 @@
   --accent-ink: #ffffff;
   --notice-bg: #f4f1e8;
   --focus: #1b4d89;
+  /* Declared, because an undeclared link takes the browser's default
+   * blue, and that default does not change with this palette: under the
+   * dark theme it was 1.9:1 against --bg, on every link in the page body. */
+  --link: #1b4d89;
   /* --rule draws decorative separators, which WCAG exempts. The edge of a
    * text input is not decorative: it is what tells a sighted user where the
    * control is, so 1.4.11 asks 3:1 of it. --rule gives 1.43. */
@@ -36,6 +40,7 @@
     --accent-ink: #16171a;
     --notice-bg: #232529;
     --focus: #8ab4f8;
+    --link: #8ab4f8;
     --field-edge: #767880;
   }
 }
@@ -105,6 +110,22 @@ h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 0.75rem; }
 h2 { font-size: 1.25rem; margin: 2rem 0 0.5rem; }
 
 .lead { font-size: 1.1rem; color: var(--ink-soft); margin: 0 0 1.5rem; }
+
+/* Links in running text. Visited links take the same colour: the
+ * browser's visited purple is no more legible on the dark ground than
+ * its blue. The underline is the browser's and is kept, so a link is
+ * never told from its sentence by colour alone. */
+main a, .footer a { color: var(--link); }
+
+/* An attributed statement. Marked off so that a first-person passage
+ * reads as one person's, on a site otherwise written impersonally. */
+.statement {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+}
+.statement .byline { color: var(--ink-soft); font-size: 0.9rem;
+  margin: 0 0 0.75rem; }
+.statement p:last-child { margin-bottom: 0; }
 
 .reasons dt { font-weight: 650; margin-top: 1rem; }
 .reasons dd { margin: 0.25rem 0 0; color: var(--ink-soft); }

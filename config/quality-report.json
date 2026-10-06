@@ -41,13 +41,13 @@
       "schemas/coverage.schema.json",
       "schemas/downloads.schema.json"
     ],
-    "total_bytes": 625057
+    "total_bytes": 644796
   },
   "browser_review": {
     "engines": [
       "chromium 151.0.7922.34",
-      "chrome 153.0.8010.47",
-      "edge 153.0.4234.32",
+      "chrome 154.0.8037.58",
+      "edge 154.0.4258.53",
       "firefox 153.0",
       "playwright-webkit 26.5"
     ],
@@ -58,33 +58,154 @@
     "passed": true,
     "record": "config/browser-review.json"
   },
-  "commit": "dda2b849ce68a5f408a3a300c053b4d6534c5300",
+  "commit": "4c86bdebadbc6dd66e9ca70e4a75548fbb39adbf",
   "format_version": 1,
   "fresh_clone": {
     "build_exit": 0,
-    "bundle_sha256": "6374b57235da006bac37de107480b0fc6892b35c8ce43d46cb06833f89502d63",
+    "bundle_sha256": "6f8b41cd06d40bd128a94a587f166a2bae0185ff08c2da3e8a230bb23be9942b",
     "clone_root_length": 54,
-    "commit": "dda2b849ce68a5f408a3a300c053b4d6534c5300",
+    "commit": "4c86bdebadbc6dd66e9ca70e4a75548fbb39adbf",
     "passed": true,
     "remotes": [
       "origin"
     ],
     "site_present_before_build": false,
-    "site_tree_digest": "75ea13a32fe2a13edbf2496a7c476be938b15fa48a13831f097b3e83c3305d13",
+    "site_tree_digest": "e8402f3893b4c28a4439102dedec7de50683e08bcb6f853b7bf983e3c3b41a1a",
     "tests_excluded": {
       "tests/site/test_quality_report.py": "checks the committed quality record, which this run replaces; inside the clone it can only see the previous one"
     },
     "tests_exit": 0,
     "tests_failed": [],
-    "tests_summary": "252 passed in 50.77s"
+    "tests_summary": "288 passed in 54.10s"
   },
   "generated_by": "tools/site/quality_report.py",
   "links": {
     "broken": [],
-    "external_references": [],
-    "fragments_checked": 7,
-    "fragments_verified": 7,
-    "internal_references": 141,
+    "external_references": [
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/README.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/guides/BFOizing%20ValueNet.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/original-valuenet/README.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/guides/annotationGuide.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/ontology/bfo/extensions/moral-epistemics/valuenet-moral-epistemics-CQ.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/guides/TestingFramework.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/tree/main/tests"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/remediation/DECISION_RECORDS.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RULES_2.0.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/remediation/R15_FOLK_MEMBERSHIP_PROPOSAL.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_RESPONSE.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_POST_SIGNOFF_UPDATE.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/reviews/FORMAL_REVIEW_2026-09-16_REVIEWER_SIGNOFF_2.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/tree/main/docs/bfo/reviews"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/bfo/OPEN_ITEMS.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/config/semantic-baseline.json"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/config/eol-transition-matrix.json"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/config/remediation-record.json"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/architecture/PROVENANCE.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/config/quality-report.json"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/LICENSE"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/CITATION.cff"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/ACKNOWLEDGMENTS.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/THIRD_PARTY_NOTICES.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/HANDOFF.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/blob/main/docs/architecture/PUBLICATION_AND_GITHUB_PAGES_PLAN.md"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/tree/main/docs/bfo/remediation"
+      },
+      {
+        "page": "documentation/index.html",
+        "target": "https://github.com/Skreen5hot/ValueNet/tree/main/docs/marep"
+      }
+    ],
+    "fragments_checked": 10,
+    "fragments_verified": 10,
+    "internal_references": 155,
     "note": "Resolved against the built artifact, which is what is served. A directory target resolves through its index.html, the way a web server would, and a fragment must name an id that exists on the page it lands on.",
     "passed": true,
     "unverifiable_fragments": []
@@ -100,7 +221,7 @@
       "the licence statements on the site match LICENSE and THIRD_PARTY_NOTICES.md"
     ],
     "note": "A tool cannot make this statement. It is the owner confirming that what the site publishes is what they intend to publish, and that the licensing, attribution and citation on it are correct. The measured facts it rests on are in this record.",
-    "signed_at": "2026-09-17",
+    "signed_at": "2026-10-05",
     "signed_by": "Aaron Damiano",
     "status": "signed",
     "who": "repository owner"
@@ -140,9 +261,9 @@
     "problems": []
   },
   "suite": {
-    "added": 393,
+    "added": 448,
     "collisions": [],
-    "final_collected": 1099,
+    "final_collected": 1154,
     "missing_unrecorded": [],
     "passed": true,
     "pre_site_collected": 707,

@@ -86,16 +86,61 @@ def test_no_page_uses_a_root_absolute_url(built):
         + str(offenders))
 
 
+def outbound(built):
+    """Every reference that leaves the site, with what carries it."""
+    for page in sorted(built.rglob("*.html")):
+        rel = page.relative_to(built).as_posix()
+        for tag, attr, target in CHECK.references(
+                page.read_text(encoding="utf-8")):
+            if CHECK.leaves_the_site(target):
+                yield rel, tag, attr, target
+
+
 def test_no_page_requires_a_third_party_origin(built):
     """The site must render with no external request: no CDN, no web font,
-    no analytics."""
-    external = []
-    for page in sorted(built.rglob("*.html")):
-        for target in references(page):
-            if urlparse(target).scheme or target.startswith("//"):
-                external.append(
-                    "%s -> %s" % (page.relative_to(built).as_posix(), target))
-    assert not external, external
+    no analytics.
+
+    This asserted that no reference had a scheme at all, which is a
+    stronger rule than the one in its own first line and made the
+    documentation page the plan asks for impossible: a link a reader
+    chooses to follow is not a request the page makes. It now asks the
+    question it names. Anything that is not an anchor loads, and nothing
+    that loads may leave the site. Where an anchor may go is the next
+    test's.
+    """
+    loads = ["%s <%s %s> -> %s" % row for row in outbound(built)
+             if row[1:3] != ("a", "href")]
+    assert not loads, loads
+
+
+def test_every_outbound_link_goes_to_the_repository_and_finds_a_file(built):
+    """The plan's "repository source links exist at the measured commit".
+
+    One destination, read from the citation record, on the branch the
+    site is built from, and only to a path git tracks. A reading path
+    that names a document which has since moved sends its reader to a
+    404, and nothing about the page looks wrong.
+    """
+    tracked = CHECK.tracked_files()
+    assert tracked, "git listed no files, so no link could be confirmed"
+
+    rows = list(outbound(built))
+    assert len(rows) >= 20, (
+        "only %d outbound link(s) were found. The documentation page is "
+        "a reading path into the repository, so this checked almost "
+        "nothing" % len(rows))
+    refused = ["%s %s" % (rel, problem)
+               for rel, tag, attr, target in rows
+               for problem in [CHECK.outbound_problem(tag, attr, target,
+                                                      tracked)]
+               if problem]
+    assert not refused, refused
+
+    assert CHECK.repository_url() == "https://github.com/Skreen5hot/ValueNet"
+    workflow = (REPO / ".github/workflows/pages.yml").read_text(
+        encoding="utf-8")
+    assert "branches: [%s]" % CHECK.PUBLISHED_REF in workflow, (
+        "the links name a branch the Pages workflow does not deploy")
 
 
 def test_every_reference_resolves_from_a_project_subpath(built, tmp_path):
@@ -257,6 +302,104 @@ def test_the_checker_rejects_a_page_that_lost_a_notice(built, tmp_path):
         encoding="utf-8")
     problems = CHECK.check_built(stripped)
     assert any("IRI-resolution notice" in p for p in problems), problems
+
+
+REPOSITORY = "https://github.com/Skreen5hot/ValueNet"
+
+#: Each is one way a reference could leave the site that must stay
+#: refused, with the words the refusal has to contain. The last four are
+#: all the repository's own address, which is the case a rule keyed on
+#: the address alone would wave through.
+REFUSED_OUTBOUND = [
+    ("a script from a CDN",
+     '<script src="https://cdn.example.org/lib.js"></script>',
+     "loads"),
+    ("a stylesheet from another origin",
+     '<link rel="stylesheet" href="https://example.org/site.css">',
+     "loads"),
+    ("an image from another origin",
+     '<img src="//example.org/pixel.gif" alt="">',
+     "loads"),
+    ("a link to somewhere else",
+     '<a href="https://example.org/">elsewhere</a>',
+     "only place a link may leave"),
+    ("the repository's address on something that loads",
+     '<script src="%s/blob/main/README.md"></script>' % REPOSITORY,
+     "loads"),
+    ("a repository link to a file that is not there",
+     '<a href="%s/blob/main/docs/NO_SUCH_DOCUMENT.md">gone</a>' % REPOSITORY,
+     "does not track"),
+    ("a repository link on another branch",
+     '<a href="%s/blob/some-branch/README.md">elsewhere</a>' % REPOSITORY,
+     "another ref"),
+    ("a repository link with a fragment nothing can resolve",
+     '<a href="%s/blob/main/README.md#quick-start">anchor</a>' % REPOSITORY,
+     "query or fragment"),
+    ("a repository page that is not a file or a directory",
+     '<a href="%s/issues">issues</a>' % REPOSITORY,
+     "not a file or directory view"),
+    ("a file addressed as a directory",
+     '<a href="%s/tree/main/README.md">not a directory</a>' % REPOSITORY,
+     "does not track"),
+    ("a repository whose name merely begins the same way",
+     '<a href="%s-elsewhere/blob/main/README.md">lookalike</a>' % REPOSITORY,
+     "only place a link may leave"),
+]
+
+
+@pytest.mark.parametrize("what, markup, expected",
+                         REFUSED_OUTBOUND,
+                         ids=[row[0] for row in REFUSED_OUTBOUND])
+def test_the_checker_rejects_what_may_not_leave_the_site(
+        built, tmp_path, what, markup, expected):
+    """Forced, one case at a time, into a copy of the real artifact."""
+    broken = tmp_path / "outbound"
+    shutil.copytree(built, broken)
+    page = broken / "documentation" / "index.html"
+    original = page.read_text(encoding="utf-8")
+    mutated = original.replace("</main>", markup + "\n  </main>", 1)
+    assert mutated != original, "the mutation did not apply"
+    page.write_text(mutated, encoding="utf-8", newline="")
+
+    problems = CHECK.check_built(broken)
+    assert len(problems) == 1, (what, problems)
+    assert expected in problems[0], (what, problems)
+
+
+def test_the_checker_accepts_the_repository_links_it_is_meant_to(built,
+                                                                 tmp_path):
+    """And is not simply refusing every absolute reference, as it did.
+
+    A file, a directory, the repository itself, and a path with an
+    escaped space, which is how one of the guides is actually named.
+    """
+    accepted = tmp_path / "accepted"
+    shutil.copytree(built, accepted)
+    page = accepted / "documentation" / "index.html"
+    markup = "".join('<a href="%s%s">ok</a>' % (REPOSITORY, suffix)
+                     for suffix in ("", "/", "/blob/main/README.md",
+                                    "/tree/main/docs",
+                                    "/tree/main/docs/",
+                                    "/blob/main/docs/bfo/guides/"
+                                    "BFOizing%20ValueNet.md"))
+    page.write_text(
+        page.read_text(encoding="utf-8").replace(
+            "</main>", markup + "\n  </main>", 1),
+        encoding="utf-8", newline="")
+    assert CHECK.check_built(accepted) == []
+
+
+def test_a_link_to_an_untracked_file_is_refused(built, tmp_path,
+                                                monkeypatch):
+    """On disk is not published. The repository a reader lands in holds
+    what git tracks, so a document that exists only in this working tree
+    is a 404 there -- and a check that asked the filesystem would pass."""
+    monkeypatch.setattr(CHECK, "tracked_files",
+                        lambda: CHECK.tracked_under("docs") - {
+                            "docs/HANDOFF.md"})
+    problems = CHECK.check_built(built)
+    assert any("docs/HANDOFF.md" in p and "does not track" in p
+               for p in problems), problems
 
 
 def test_the_checker_passes_on_the_real_artifact(built):

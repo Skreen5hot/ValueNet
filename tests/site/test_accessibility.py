@@ -72,6 +72,13 @@ TEXT_PAIRS = [
     # --focus began as a ring colour and is now also the bypass link's
     # text, which asks 4.5 of it rather than 3.
     ("the bypass link", "focus", "bg"),
+    # Links had no declared colour, so nothing here computed one: they
+    # took the browser's default blue, which the dark palette does not
+    # change and which is 1.9:1 on its ground. A colour that is not a
+    # token is a colour this arithmetic never sees.
+    ("a link on the page", "link", "bg"),
+    ("a link on a card or in the footer", "link", "surface"),
+    ("a link in a notice", "link", "notice-bg"),
 ]
 
 #: Boundaries that identify a control. 1.4.11 asks 3:1 of these. The
@@ -94,6 +101,22 @@ def test_every_text_pair_meets_wcag_aa():
                 poor.append("%s/%s: %s is %.2f:1, needs 4.5"
                             % (theme, what, fg, ratio))
     assert not poor, poor
+
+
+def test_links_in_running_text_take_the_declared_colour():
+    """The pair above is only arithmetic unless the rule exists.
+
+    Without it the token is declared, the contrast is computed, the test
+    passes, and every link is still the browser's default blue. And the
+    default is what the dark theme cannot carry: #0000ee on the dark
+    ground, checked here so the reason for the rule stays measured.
+    """
+    rule = re.search(r"main a\s*,\s*\.footer a\s*\{([^}]*)\}", CSS)
+    assert rule, "no rule colours the links in the page body and footer"
+    assert "var(--link)" in rule.group(1), rule.group(1)
+    assert contrast("#0000ee", DARK["bg"]) < 3.0, (
+        "the browser default is legible on the dark ground after all, so "
+        "the comment on --link no longer describes anything")
 
 
 def test_every_control_boundary_meets_wcag_non_text_contrast():
